@@ -60,6 +60,8 @@ export default function AppLayout() {
       <Tabs.Screen name="team" options={{ href: null }} />
       <Tabs.Screen name="notifications" options={{ href: null }} />
       <Tabs.Screen name="settings" options={{ href: null }} />
+      <Tabs.Screen name="dashboard" options={{ href: null }} />
+      <Tabs.Screen name="lessons" options={{ href: null }} />
     </Tabs>
   );
 }
