@@ -9,6 +9,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { useAuth, useAuthBootstrap } from "@/hooks/useAuth";
 import { useMemberships } from "@/hooks/useMemberships";
+import { usePushRegistration } from "@/lib/notifications";
 import { queryClient } from "@/lib/queryClient";
 import { MERCHANT_IDENTIFIER, STRIPE_PUBLISHABLE_KEY } from "@/lib/stripe";
 import { useBarnStore } from "@/stores/barnStore";
@@ -38,6 +39,7 @@ export default function RootLayout() {
 
 function RootNavigation() {
   useAuthBootstrap();
+  usePushRegistration();
   const { user, isSignedIn, isLoading } = useAuth();
   const memberships = useMemberships(user?.id);
   const setBarn = useBarnStore((s) => s.setBarn);

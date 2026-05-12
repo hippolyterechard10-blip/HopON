@@ -58,6 +58,7 @@ export default function AppLayout() {
       {/* Hidden from the tab bar but reachable via router.push */}
       <Tabs.Screen name="booking" options={{ href: null }} />
       <Tabs.Screen name="team" options={{ href: null }} />
+      <Tabs.Screen name="notifications" options={{ href: null }} />
     </Tabs>
   );
 }

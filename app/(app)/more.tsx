@@ -22,7 +22,7 @@ export default function More() {
     { label: "Team", sub: "Members & roles", emoji: "👥", path: "/(app)/team" },
     { label: "Booking", sub: "Pick a lesson slot", emoji: "📅", path: "/(app)/booking" },
     { label: "Payments", sub: "Invoices & history", emoji: "💳" },
-    { label: "Notifications", sub: "Quiet hours, alerts", emoji: "🔔" },
+    { label: "Notifications", sub: "Activity & quiet hours", emoji: "🔔", path: "/(app)/notifications" },
     { label: "Barn settings", sub: "Name, address, tax", emoji: "🏠" },
   ];
 
