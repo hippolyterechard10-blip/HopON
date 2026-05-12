@@ -134,7 +134,7 @@ export function TrainerHome({ topStrip }: Props) {
                 <Text variant="bodyMedium" color="ink2">
                   {formatTime(l.starts_at)}
                 </Text>
-              </View>
+              </Pressable>
             ))}
           </Card>
         )}

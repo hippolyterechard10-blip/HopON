@@ -21,6 +21,8 @@ export default function More() {
   const rows: Row[] = [
     { label: "Team", sub: "Members, roles & invites", emoji: "👥", path: "/(app)/settings/team" },
     { label: "Booking", sub: "Pick a lesson slot", emoji: "📅", path: "/(app)/booking" },
+    { label: "Invoices", sub: "Paid, sent, overdue", emoji: "🧾", path: "/(app)/invoices" },
+    { label: "Dashboard", sub: "Revenue & payments", emoji: "📈", path: "/(app)/dashboard" },
     { label: "Notifications", sub: "Activity & quiet hours", emoji: "🔔", path: "/(app)/notifications" },
     { label: "Profile", sub: "Name, phone, quiet hours", emoji: "👤", path: "/(app)/settings/profile" },
     { label: "Barn settings", sub: "Name, address, fees", emoji: "🏠", path: "/(app)/settings/barn" },
