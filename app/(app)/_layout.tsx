@@ -1,5 +1,5 @@
 import { Tabs } from "expo-router";
-import { Calendar, Home as HomeIcon, MoreHorizontal, NotebookText, Users } from "lucide-react-native";
+import { Calendar, Home as HomeIcon, ListChecks, MoreHorizontal, NotebookText } from "lucide-react-native";
 
 import { colors } from "@/constants/colors";
 
@@ -42,10 +42,10 @@ export default function AppLayout() {
         }}
       />
       <Tabs.Screen
-        name="team"
+        name="tasks"
         options={{
-          title: "Team",
-          tabBarIcon: ({ color, size }) => <Users color={color} size={size - 4} />,
+          title: "Tasks",
+          tabBarIcon: ({ color, size }) => <ListChecks color={color} size={size - 4} />,
         }}
       />
       <Tabs.Screen
@@ -55,6 +55,9 @@ export default function AppLayout() {
           tabBarIcon: ({ color, size }) => <MoreHorizontal color={color} size={size - 4} />,
         }}
       />
+      {/* Hidden from the tab bar but reachable via router.push */}
+      <Tabs.Screen name="booking" options={{ href: null }} />
+      <Tabs.Screen name="team" options={{ href: null }} />
     </Tabs>
   );
 }

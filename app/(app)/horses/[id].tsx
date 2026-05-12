@@ -6,10 +6,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Card } from "@/components/ui/Card";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { Tag } from "@/components/ui/Tag";
 import { Text } from "@/components/ui/Text";
 import { colors } from "@/constants/colors";
 import { spacing } from "@/constants/spacing";
+import { useHorseFeed } from "@/hooks/useHorseFeed";
+import { useHorsePlanning } from "@/hooks/useHorsePlanning";
 import { useHorse } from "@/hooks/useHorses";
+import { formatDayLabel, formatTime } from "@/lib/dateRange";
 import type { Horse } from "@/types/app.types";
 
 type Tab = "info" | "feed" | "planning";
@@ -70,12 +74,8 @@ export default function HorseDetail() {
 
         <View style={styles.body}>
           {tab === "info" ? <InfoTab horse={horse} /> : null}
-          {tab === "feed" ? (
-            <EmptyState emoji="📓" title="No updates yet." subtitle="Care notes, photos, and vet reports will appear here." />
-          ) : null}
-          {tab === "planning" ? (
-            <EmptyState emoji="🗓️" title="Nothing scheduled." subtitle="Upcoming lessons, farrier, vet and shows will appear here." />
-          ) : null}
+          {tab === "feed" ? <FeedTab horseId={horse.id} /> : null}
+          {tab === "planning" ? <PlanningTab horseId={horse.id} /> : null}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -100,6 +100,95 @@ function InfoTab({ horse }: { horse: Horse }) {
         value={[horse.farrier_name, horse.farrier_phone].filter(Boolean).join(" · ") || "Not set"}
       />
     </View>
+  );
+}
+
+function FeedTab({ horseId }: { horseId: string }) {
+  const { data, isLoading } = useHorseFeed(horseId);
+  const items = data ?? [];
+
+  if (isLoading) {
+    return (
+      <Text variant="caption" color="ink3">
+        Loading…
+      </Text>
+    );
+  }
+  if (items.length === 0) {
+    return (
+      <EmptyState
+        emoji="📓"
+        title="No updates yet."
+        subtitle="Care notes, photos, and vet reports will appear here."
+      />
+    );
+  }
+  return (
+    <View style={{ gap: spacing.s }}>
+      {items.map((item) => (
+        <Card key={item.id} padding="md">
+          <View style={styles.feedHead}>
+            <Text variant="eyebrow" color="ink3">
+              {new Date(item.created_at).toLocaleString()}
+            </Text>
+            {item.author ? (
+              <Text variant="caption" color="ink2">
+                · {item.author.full_name}
+              </Text>
+            ) : null}
+          </View>
+          <Text variant="body" style={{ marginTop: 6 }}>
+            {item.content}
+          </Text>
+        </Card>
+      ))}
+    </View>
+  );
+}
+
+function PlanningTab({ horseId }: { horseId: string }) {
+  const { data, isLoading } = useHorsePlanning(horseId);
+  const items = data ?? [];
+
+  if (isLoading) {
+    return (
+      <Text variant="caption" color="ink3">
+        Loading…
+      </Text>
+    );
+  }
+  if (items.length === 0) {
+    return (
+      <EmptyState
+        emoji="🗓️"
+        title="Nothing scheduled."
+        subtitle="Upcoming lessons, farrier, vet and shows will appear here."
+      />
+    );
+  }
+  return (
+    <Card padding="none">
+      {items.map((it, i) => (
+        <View
+          key={it.id}
+          style={[styles.planRow, i !== 0 && { borderTopWidth: 1, borderTopColor: colors.border }]}
+        >
+          <View style={{ width: 64 }}>
+            <Text variant="eyebrow" color="ink3">
+              {formatDayLabel(it.starts_at)}
+            </Text>
+            <Text variant="bodyMedium">{formatTime(it.starts_at)}</Text>
+          </View>
+          <Text variant="body" style={{ flex: 1 }}>
+            {it.title}
+          </Text>
+          <Tag
+            label={it.kind === "lesson" ? "Lesson" : "Event"}
+            tone={it.kind === "lesson" ? "brand" : "neutral"}
+          />
+        </View>
+      ))}
+    </Card>
   );
 }
 
@@ -155,4 +244,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.g500,
   },
   body: { padding: spacing.lg, gap: spacing.md, paddingBottom: spacing["3xl"] },
+  feedHead: { flexDirection: "row", alignItems: "center", gap: spacing.xs },
+  planRow: { flexDirection: "row", alignItems: "center", gap: spacing.sm, padding: spacing.md },
 });
