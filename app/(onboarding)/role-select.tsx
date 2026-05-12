@@ -7,7 +7,10 @@ import { Button } from "@/components/ui/Button";
 import { Text } from "@/components/ui/Text";
 import { colors } from "@/constants/colors";
 import { radii, spacing } from "@/constants/spacing";
+import { useOnboardingStore } from "@/stores/onboardingStore";
 import { ROLE_LABELS, type BarnRole } from "@/types/roles";
+
+import { Progress } from "./_progress";
 
 type RoleOption = {
   role: BarnRole;
@@ -25,9 +28,10 @@ const OPTIONS: RoleOption[] = [
 ];
 
 export default function RoleSelect() {
-  const [selected, setSelected] = useState<Set<BarnRole>>(new Set());
   const router = useRouter();
-  const canContinue = selected.size > 0;
+  const setRoles = useOnboardingStore((s) => s.setRoles);
+  const saved = useOnboardingStore((s) => s.roles);
+  const [selected, setSelected] = useState<Set<BarnRole>>(new Set(saved));
 
   const toggle = (r: BarnRole) => {
     const next = new Set(selected);
@@ -36,16 +40,15 @@ export default function RoleSelect() {
     setSelected(next);
   };
 
+  const onContinue = () => {
+    setRoles(Array.from(selected));
+    router.push("/(onboarding)/barn-setup");
+  };
+
   return (
     <SafeAreaView style={styles.container} edges={["top", "bottom"]}>
       <ScrollView contentContainerStyle={styles.content}>
-        <View style={styles.progress}>
-          <View style={[styles.progressDot, styles.progressDotActive]} />
-          <View style={styles.progressDot} />
-          <View style={styles.progressDot} />
-          <View style={styles.progressDot} />
-        </View>
-
+        <Progress step={1} />
         <Text variant="eyebrow" color="ink3">
           STEP 1 OF 4
         </Text>
@@ -84,8 +87,8 @@ export default function RoleSelect() {
           variant="primary"
           size="lg"
           fullWidth
-          disabled={!canContinue}
-          onPress={() => router.push("/(onboarding)/barn-setup")}
+          disabled={selected.size === 0}
+          onPress={onContinue}
         />
       </View>
     </SafeAreaView>
@@ -95,9 +98,6 @@ export default function RoleSelect() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   content: { padding: spacing.lg, paddingBottom: spacing["2xl"] },
-  progress: { flexDirection: "row", gap: spacing.xs, marginBottom: spacing.lg },
-  progressDot: { flex: 1, height: 3, borderRadius: 2, backgroundColor: colors.n200 },
-  progressDotActive: { backgroundColor: colors.g500 },
   title: { marginTop: spacing.xs, letterSpacing: -0.5 },
   grid: { marginTop: spacing.xl, gap: spacing.s, flexDirection: "row", flexWrap: "wrap" },
   card: {
@@ -111,10 +111,7 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
     minHeight: 110,
   },
-  cardSelected: {
-    backgroundColor: colors.g500,
-    borderColor: colors.g500,
-  },
+  cardSelected: { backgroundColor: colors.g500, borderColor: colors.g500 },
   emoji: { fontSize: 24 },
   footer: {
     padding: spacing.lg,

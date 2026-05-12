@@ -6,8 +6,10 @@ import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import { queryClient } from "@/lib/queryClient";
 import { useAuth, useAuthBootstrap } from "@/hooks/useAuth";
+import { useMemberships } from "@/hooks/useMemberships";
+import { queryClient } from "@/lib/queryClient";
+import { useBarnStore } from "@/stores/barnStore";
 
 SplashScreen.preventAutoHideAsync().catch(() => {
   /* no-op */
@@ -28,7 +30,10 @@ export default function RootLayout() {
 
 function RootNavigation() {
   useAuthBootstrap();
-  const { isSignedIn, isLoading } = useAuth();
+  const { user, isSignedIn, isLoading } = useAuth();
+  const memberships = useMemberships(user?.id);
+  const setBarn = useBarnStore((s) => s.setBarn);
+
   const segments = useSegments();
   const router = useRouter();
 
@@ -36,13 +41,45 @@ function RootNavigation() {
     if (isLoading) return;
     SplashScreen.hideAsync().catch(() => {});
 
-    const inAuthGroup = segments[0] === "(auth)";
-    if (!isSignedIn && !inAuthGroup) {
-      router.replace("/(auth)/welcome");
-    } else if (isSignedIn && inAuthGroup) {
+    const group = segments[0];
+
+    if (!isSignedIn) {
+      if (group !== "(auth)") {
+        router.replace("/(auth)/welcome");
+      }
+      return;
+    }
+
+    // Signed in — wait for memberships to load
+    if (memberships.isLoading) return;
+
+    const rows = memberships.data ?? [];
+    if (rows.length === 0) {
+      // No barn yet — push through onboarding
+      if (group !== "(onboarding)") {
+        router.replace("/(onboarding)/role-select");
+      }
+      return;
+    }
+
+    // Hydrate the first active membership into the barn store
+    const first = rows[0];
+    if (first?.barn) {
+      setBarn({ id: first.barn_id, name: first.barn.name, roles: first.roles });
+    }
+
+    if (group !== "(app)") {
       router.replace("/(app)");
     }
-  }, [isSignedIn, isLoading, segments, router]);
+  }, [
+    isLoading,
+    isSignedIn,
+    memberships.isLoading,
+    memberships.data,
+    segments,
+    router,
+    setBarn,
+  ]);
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
