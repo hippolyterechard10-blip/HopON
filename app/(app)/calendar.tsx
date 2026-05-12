@@ -1,4 +1,5 @@
-import { ScrollView, StyleSheet, View } from "react-native";
+import { useRouter } from "expo-router";
+import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { EmptyState } from "@/components/ui/EmptyState";
@@ -12,6 +13,7 @@ import { useBarnStore } from "@/stores/barnStore";
 const HOURS = ["07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18"];
 
 export default function Calendar() {
+  const router = useRouter();
   const barnId = useBarnStore((s) => s.currentBarnId);
   const { data, isLoading } = useTodayLessons(barnId);
   const lessons = data ?? [];
@@ -77,7 +79,8 @@ export default function Calendar() {
                 </Text>
                 <View style={styles.hourLine} />
                 {lesson ? (
-                  <View
+                  <Pressable
+                    onPress={() => router.push(`/(app)/lessons/${lesson.id}` as never)}
                     style={[
                       styles.lessonBlock,
                       !lesson.is_paid && styles.lessonUnpaid,
@@ -93,7 +96,7 @@ export default function Calendar() {
                     <Text variant="caption" color="ink3">
                       {(lesson.location ?? "Barn")} · {formatTime(lesson.starts_at)}
                     </Text>
-                  </View>
+                  </Pressable>
                 ) : null}
               </View>
             );

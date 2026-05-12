@@ -1,4 +1,5 @@
-import { StyleSheet, View } from "react-native";
+import { useRouter } from "expo-router";
+import { Pressable, StyleSheet, View } from "react-native";
 
 import { StatusDot } from "@/components/ui/StatusDot";
 import { Text } from "@/components/ui/Text";
@@ -14,6 +15,7 @@ export function OwnerTrainerHome() {
 }
 
 function BarnStrip() {
+  const router = useRouter();
   const barnId = useBarnStore((s) => s.currentBarnId);
   const { data } = useBarnMetrics(barnId);
 
@@ -21,7 +23,7 @@ function BarnStrip() {
   const todos = data?.teamTodos ?? 0;
 
   return (
-    <View style={styles.strip}>
+    <Pressable onPress={() => router.push("/(app)/dashboard")} style={styles.strip}>
       <StatusDot status={alerts > 0 ? "warn" : "ok"} size={5} />
       <Text variant="caption" color="ink2">
         Barn {alerts > 0 ? "needs attention" : "OK"} · {todos} tasks · {alerts} alerts
@@ -30,7 +32,7 @@ function BarnStrip() {
       <Text variant="caption" color="g600">
         Dashboard ›
       </Text>
-    </View>
+    </Pressable>
   );
 }
 

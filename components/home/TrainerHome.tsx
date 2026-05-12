@@ -1,4 +1,5 @@
-import { ScrollView, StyleSheet, View } from "react-native";
+import { useRouter } from "expo-router";
+import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
@@ -20,6 +21,7 @@ type Props = {
 };
 
 export function TrainerHome({ topStrip }: Props) {
+  const router = useRouter();
   const barnId = useBarnStore((s) => s.currentBarnId);
   const userId = useAuthStore((s) => s.user?.id);
   const lessonsQ = useTodayLessons(barnId, userId);
@@ -92,7 +94,13 @@ export function TrainerHome({ topStrip }: Props) {
             <Tag label={next.is_paid ? "Paid" : "Unpaid"} tone={next.is_paid ? "ok" : "warn"} />
           </View>
           <View style={styles.heroActions}>
-            <Button label="Start lesson" variant="primary" size="md" fullWidth />
+            <Button
+              label="Start lesson"
+              variant="primary"
+              size="md"
+              fullWidth
+              onPress={() => router.push(`/(app)/lessons/${next.id}` as never)}
+            />
             <Button label="Running late" variant="secondary" size="md" fullWidth />
           </View>
         </Card>
@@ -109,8 +117,9 @@ export function TrainerHome({ topStrip }: Props) {
         ) : (
           <Card padding="none">
             {rest.map((l, i) => (
-              <View
+              <Pressable
                 key={l.id}
+                onPress={() => router.push(`/(app)/lessons/${l.id}` as never)}
                 style={[styles.row, i !== 0 && { borderTopWidth: 1, borderTopColor: colors.border }]}
               >
                 <StatusDot status={l.is_paid ? "ok" : "warn"} />

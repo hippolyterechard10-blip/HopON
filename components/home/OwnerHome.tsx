@@ -1,4 +1,5 @@
-import { ScrollView, StyleSheet, View } from "react-native";
+import { useRouter } from "expo-router";
+import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 
 import { AlertBar } from "@/components/ui/AlertBar";
 import { Card } from "@/components/ui/Card";
@@ -16,6 +17,7 @@ import { formatTime } from "@/lib/dateRange";
 import { useBarnStore } from "@/stores/barnStore";
 
 export function OwnerHome() {
+  const router = useRouter();
   const barnId = useBarnStore((s) => s.currentBarnId);
   const barnName = useBarnStore((s) => s.currentBarnName);
 
@@ -51,7 +53,9 @@ export function OwnerHome() {
           </>
         ) : (
           <>
-            <Metric label="Revenue MTD" value={`$${(metricsQ.data?.revenueMtd ?? 0).toLocaleString()}`} />
+            <Pressable onPress={() => router.push("/(app)/dashboard")} style={styles.metricCardWrap}>
+              <Metric label="Revenue MTD" value={`$${(metricsQ.data?.revenueMtd ?? 0).toLocaleString()}`} />
+            </Pressable>
             <Metric
               label="Open alerts"
               value={String(metricsQ.data?.openAlerts ?? 0)}
@@ -67,12 +71,13 @@ export function OwnerHome() {
         <Section title="Alerts">
           <View style={{ gap: spacing.s }}>
             {alerts.slice(0, 3).map((a) => (
-              <AlertBar
-                key={a.id}
-                severity={a.priority === "urgent" ? "alert" : "warn"}
-                title={a.title}
-                subtitle={a.horse ? `Horse: ${a.horse.name}` : undefined}
-              />
+              <Pressable key={a.id} onPress={() => router.push(`/(app)/tasks/${a.id}` as never)}>
+                <AlertBar
+                  severity={a.priority === "urgent" ? "alert" : "warn"}
+                  title={a.title}
+                  subtitle={a.horse ? `Horse: ${a.horse.name}` : undefined}
+                />
+              </Pressable>
             ))}
           </View>
         </Section>
@@ -89,8 +94,9 @@ export function OwnerHome() {
         ) : (
           <Card padding="none">
             {(lessonsQ.data ?? []).slice(0, 5).map((l, i) => (
-              <View
+              <Pressable
                 key={l.id}
+                onPress={() => router.push(`/(app)/lessons/${l.id}` as never)}
                 style={[styles.eventRow, i !== 0 && { borderTopWidth: 1, borderTopColor: colors.border }]}
               >
                 <StatusDot status={l.is_paid ? "ok" : "warn"} />
@@ -105,7 +111,7 @@ export function OwnerHome() {
                 <Text variant="bodyMedium" color="ink2">
                   {formatTime(l.starts_at)}
                 </Text>
-              </View>
+              </Pressable>
             ))}
           </Card>
         )}
@@ -190,6 +196,7 @@ const styles = StyleSheet.create({
   greeting: { letterSpacing: -0.4 },
   metrics: { flexDirection: "row", flexWrap: "wrap", gap: spacing.s },
   metricCard: { flexBasis: "48%", flexGrow: 1 },
+  metricCardWrap: { flexBasis: "48%", flexGrow: 1 },
   section: { gap: spacing.s },
   eventRow: {
     flexDirection: "row",
