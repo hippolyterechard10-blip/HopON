@@ -10,7 +10,7 @@ import { spacing } from "@/constants/spacing";
 import { supabase } from "@/lib/supabase";
 import { useBarnStore } from "@/stores/barnStore";
 
-type BarnSettings = {
+type BarnSettingsForm = {
   name: string;
   address: string;
   timezone: string;
@@ -22,7 +22,7 @@ export default function BarnSettings() {
   const setBarn = useBarnStore((s) => s.setBarn);
   const currentRoles = useBarnStore((s) => s.currentRoles);
 
-  const [form, setForm] = useState<BarnSettings>({
+  const [form, setForm] = useState<BarnSettingsForm>({
     name: "",
     address: "",
     timezone: "America/New_York",

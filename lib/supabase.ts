@@ -3,8 +3,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createClient } from "@supabase/supabase-js";
 import Constants from "expo-constants";
 
-import type { Database } from "@/types/database.types";
-
 const supabaseUrl =
   process.env.EXPO_PUBLIC_SUPABASE_URL ??
   (Constants.expoConfig?.extra?.supabaseUrl as string | undefined);
@@ -20,7 +18,10 @@ if (!supabaseUrl || !supabaseAnonKey) {
   );
 }
 
-export const supabase = createClient<Database>(
+// Untyped client until `supabase gen types` is wired up. Each hook applies
+// its own TS shape via the `Returns: <T>` generic on .select() or by
+// asserting on the result.
+export const supabase = createClient(
   supabaseUrl ?? "http://localhost:54321",
   supabaseAnonKey ?? "anon-key-missing",
   {

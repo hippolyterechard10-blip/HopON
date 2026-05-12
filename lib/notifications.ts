@@ -9,6 +9,9 @@ import { useAuthStore } from "@/stores/authStore";
 // Behavior: show banners + play sound when in foreground.
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
+    // Older expo-notifications API
+    shouldShowAlert: true,
+    // Newer expo-notifications API
     shouldShowBanner: true,
     shouldShowList: true,
     shouldPlaySound: true,
