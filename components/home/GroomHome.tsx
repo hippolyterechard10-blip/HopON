@@ -1,23 +1,34 @@
-import { ScrollView, StyleSheet, View } from "react-native";
+import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { EmptyState } from "@/components/ui/EmptyState";
+import { Skeleton } from "@/components/ui/Skeleton";
 import { StatusDot } from "@/components/ui/StatusDot";
 import { Text } from "@/components/ui/Text";
 import { colors } from "@/constants/colors";
-import { radii, spacing } from "@/constants/spacing";
-import { mockHorses, mockTasks } from "@/lib/mockData";
+import { spacing } from "@/constants/spacing";
+import { useHorses } from "@/hooks/useHorses";
+import { useTodayTasks, useUpdateTaskStatus, type TodayTask } from "@/hooks/useTodayTasks";
+import { formatTime } from "@/lib/dateRange";
+import { useBarnStore } from "@/stores/barnStore";
 
 export function GroomHome() {
-  const urgent = mockTasks.filter((t) => t.status === "urgent").length;
-  const done = mockTasks.filter((t) => t.status === "done").length;
-  const todo = mockTasks.length - done;
+  const barnId = useBarnStore((s) => s.currentBarnId);
+  const tasksQ = useTodayTasks({ barnId, mineOnly: true });
+  const horsesQ = useHorses(barnId);
+  const update = useUpdateTaskStatus();
+
+  const tasks = tasksQ.data ?? [];
+  const urgent = tasks.filter((t) => t.priority === "urgent" && t.status !== "done").length;
+  const done = tasks.filter((t) => t.status === "done").length;
+  const todo = tasks.length - done;
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text variant="eyebrow" color="g200">
-          GOOD MORNING, JESS
+          GOOD MORNING
         </Text>
         <View style={styles.headerStats}>
           <HeaderStat label="Tasks" value={String(todo)} />
@@ -31,41 +42,42 @@ export function GroomHome() {
           My tasks today
         </Text>
 
-        <Card padding="none">
-          {mockTasks.map((t, i) => (
-            <View
-              key={t.id}
-              style={[
-                styles.taskRow,
-                t.status === "urgent" && styles.taskUrgent,
-                i !== 0 && { borderTopWidth: 1, borderTopColor: colors.border },
-              ]}
-            >
-              {t.status === "urgent" ? <View style={styles.urgentBar} /> : null}
-              <View style={[styles.checkbox, t.status === "done" && styles.checkboxDone]}>
-                {t.status === "done" ? (
-                  <Text style={{ color: colors.white, fontSize: 12 }}>✓</Text>
-                ) : null}
-              </View>
-              <Text
-                variant="compressed"
-                color={t.status === "done" ? "ink3" : "ink1"}
-                style={[
-                  { flex: 1 },
-                  t.status === "done" && { textDecorationLine: "line-through", opacity: 0.5 },
-                ]}
-              >
-                {t.status === "urgent" ? "! " : ""}
-                {t.horse} · {t.type} · {t.time}
+        {tasksQ.isLoading ? (
+          <Card padding="md">
+            <Skeleton height={18} />
+            <View style={{ height: 8 }} />
+            <Skeleton height={18} />
+            <View style={{ height: 8 }} />
+            <Skeleton height={18} />
+          </Card>
+        ) : tasks.length === 0 ? (
+          <EmptyState
+            emoji="✅"
+            title="Nothing on your list right now."
+            subtitle="Tasks assigned to you will show up here. You can also add a quick one."
+          />
+        ) : (
+          <Card padding="none">
+            {tasks.map((t, i) => (
+              <TaskRow
+                key={t.id}
+                task={t}
+                first={i === 0}
+                onToggle={() =>
+                  update.mutate({
+                    taskId: t.id,
+                    status: t.status === "done" ? "pending" : "done",
+                  })
+                }
+              />
+            ))}
+            <View style={[styles.taskRow, styles.addRow]}>
+              <Text variant="caption" color="ink3">
+                + Add quick task
               </Text>
             </View>
-          ))}
-          <View style={[styles.taskRow, styles.addRow]}>
-            <Text variant="caption" color="ink3">
-              + Add quick task
-            </Text>
-          </View>
-        </Card>
+          </Card>
+        )}
 
         <View style={styles.quickBar}>
           <Button label="Done" variant="primary" size="sm" fullWidth />
@@ -78,25 +90,72 @@ export function GroomHome() {
           Horses at a glance
         </Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.horseStrip}>
-          {mockHorses.map((h) => (
+          {(horsesQ.data ?? []).map((h) => (
             <Card key={h.id} padding="sm" style={styles.horseCard}>
               <View style={styles.horseTop}>
-                <StatusDot status={h.status} />
+                <StatusDot status="ok" />
                 <Text variant="caption" color="ink3">
-                  #{h.stall}
+                  {h.stall ? `#${h.stall}` : ""}
                 </Text>
               </View>
               <Text variant="bodyMedium" style={{ marginTop: spacing.xs }}>
                 {h.name}
               </Text>
               <Text variant="caption" color="ink3">
-                {h.breed}
+                {h.breed ?? ""}
               </Text>
             </Card>
           ))}
         </ScrollView>
       </ScrollView>
     </View>
+  );
+}
+
+function TaskRow({
+  task,
+  first,
+  onToggle,
+}: {
+  task: TodayTask;
+  first: boolean;
+  onToggle: () => void;
+}) {
+  const isUrgent = task.priority === "urgent" && task.status !== "done";
+  const isDone = task.status === "done";
+  const compressed = [
+    task.horse?.name?.toUpperCase() ?? "BARN",
+    task.title.toUpperCase(),
+    task.due_at ? formatTime(task.due_at) : "",
+  ]
+    .filter(Boolean)
+    .join(" · ");
+
+  return (
+    <Pressable
+      onPress={onToggle}
+      style={[
+        styles.taskRow,
+        isUrgent && styles.taskUrgent,
+        !first && { borderTopWidth: 1, borderTopColor: colors.border },
+      ]}
+    >
+      {isUrgent ? <View style={styles.urgentBar} /> : null}
+      <View style={[styles.checkbox, isDone && styles.checkboxDone]}>
+        {isDone ? <Text style={{ color: colors.white, fontSize: 12 }}>✓</Text> : null}
+      </View>
+      <Text
+        variant="compressed"
+        color={isDone ? "ink3" : "ink1"}
+        style={[
+          { flex: 1 },
+          isDone && { textDecorationLine: "line-through", opacity: 0.5 },
+        ]}
+      >
+        {isUrgent ? "! " : ""}
+        {compressed}
+      </Text>
+    </Pressable>
   );
 }
 

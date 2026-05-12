@@ -1,35 +1,58 @@
+import { Image } from "expo-image";
 import { useLocalSearchParams } from "expo-router";
 import { useState } from "react";
-import { Pressable, ScrollView, StyleSheet, View } from "react-native";
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Card } from "@/components/ui/Card";
-import { Tag } from "@/components/ui/Tag";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { Text } from "@/components/ui/Text";
 import { colors } from "@/constants/colors";
-import { radii, spacing } from "@/constants/spacing";
-import { mockHorses } from "@/lib/mockData";
+import { spacing } from "@/constants/spacing";
+import { useHorse } from "@/hooks/useHorses";
+import type { Horse } from "@/types/app.types";
 
 type Tab = "info" | "feed" | "planning";
 
 export default function HorseDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const horse = mockHorses.find((h) => h.id === id) ?? mockHorses[0];
+  const { data: horse, isLoading } = useHorse(id);
   const [tab, setTab] = useState<Tab>("info");
 
-  if (!horse) return null;
+  if (isLoading) {
+    return (
+      <SafeAreaView style={[styles.container, styles.loading]} edges={["top"]}>
+        <ActivityIndicator color={colors.g500} />
+      </SafeAreaView>
+    );
+  }
+  if (!horse) {
+    return (
+      <SafeAreaView style={styles.container} edges={["top"]}>
+        <View style={{ padding: spacing.lg }}>
+          <EmptyState emoji="🐴" title="Horse not found." subtitle="It may have been removed from this barn." />
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container} edges={["top"]}>
       <ScrollView>
         <View style={styles.hero}>
+          {horse.photo_url ? (
+            <Image source={{ uri: horse.photo_url }} style={StyleSheet.absoluteFill} contentFit="cover" />
+          ) : null}
+          <View style={styles.heroGradient} />
           <View style={styles.heroOverlay}>
-            <Text variant="eyebrow" color="g200">
-              STALL #{horse.stall}
-            </Text>
+            {horse.stall ? (
+              <Text variant="eyebrow" color="g200">
+                STALL #{horse.stall}
+              </Text>
+            ) : null}
             <Text style={styles.heroName}>{horse.name}</Text>
             <Text variant="caption" color="g200">
-              {horse.breed} · {horse.age}y
+              {[horse.breed, horse.age ? `${horse.age}y` : null].filter(Boolean).join(" · ")}
             </Text>
           </View>
         </View>
@@ -47,25 +70,35 @@ export default function HorseDetail() {
 
         <View style={styles.body}>
           {tab === "info" ? <InfoTab horse={horse} /> : null}
-          {tab === "feed" ? <FeedTab /> : null}
-          {tab === "planning" ? <PlanningTab /> : null}
+          {tab === "feed" ? (
+            <EmptyState emoji="📓" title="No updates yet." subtitle="Care notes, photos, and vet reports will appear here." />
+          ) : null}
+          {tab === "planning" ? (
+            <EmptyState emoji="🗓️" title="Nothing scheduled." subtitle="Upcoming lessons, farrier, vet and shows will appear here." />
+          ) : null}
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 }
 
-function InfoTab({ horse }: { horse: (typeof mockHorses)[number] }) {
+function InfoTab({ horse }: { horse: Horse }) {
   return (
     <View style={{ gap: spacing.md }}>
-      <Field label="Stall" value={`#${horse.stall}`} />
-      <Field label="Breed" value={horse.breed} />
-      <Field label="Age" value={`${horse.age} years`} />
-      <Field label="Feeding" value="Morning + evening hay, beet pulp PM." />
-      <Field label="Medication" value="None at the moment." />
-      <Field label="Equipment" value="Saddle: jumping (Antares). Bit: D-ring snaffle." />
-      <Field label="Vet" value="Dr. Torres · (561) 555-0124" />
-      <Field label="Farrier" value="Mike Garcia · (561) 555-0177" />
+      <Field label="Stall" value={horse.stall ? `#${horse.stall}` : "—"} />
+      <Field label="Breed" value={horse.breed ?? "—"} />
+      <Field label="Age" value={horse.age ? `${horse.age} years` : "—"} />
+      <Field label="Feeding" value={horse.feeding_notes ?? "Not set"} />
+      <Field label="Medication" value={horse.medication_notes ?? "None recorded."} />
+      <Field label="Equipment" value={horse.equipment_notes ?? "Not set"} />
+      <Field
+        label="Vet"
+        value={[horse.vet_name, horse.vet_phone].filter(Boolean).join(" · ") || "Not set"}
+      />
+      <Field
+        label="Farrier"
+        value={[horse.farrier_name, horse.farrier_phone].filter(Boolean).join(" · ") || "Not set"}
+      />
     </View>
   );
 }
@@ -83,71 +116,17 @@ function Field({ label, value }: { label: string; value: string }) {
   );
 }
 
-function FeedTab() {
-  const items = [
-    { time: "1h ago", author: "Jess (Groom)", text: "Bella had a calm hack — went well." },
-    { time: "Today 07:30", author: "Sam (Trainer)", text: "Lesson scheduled at 09:00." },
-    { time: "Yesterday", author: "Dr. Torres", text: "Routine checkup — all good." },
-    { time: "May 10", author: "Mike (Farrier)", text: "New shoes on front. Next visit June 7." },
-  ];
-  return (
-    <View style={{ gap: spacing.s }}>
-      {items.map((i, idx) => (
-        <Card key={idx} padding="md">
-          <View style={styles.feedHead}>
-            <Text variant="eyebrow" color="ink3">
-              {i.time}
-            </Text>
-            <Text variant="caption" color="ink2">
-              · {i.author}
-            </Text>
-          </View>
-          <Text variant="body" style={{ marginTop: 6 }}>
-            {i.text}
-          </Text>
-        </Card>
-      ))}
-    </View>
-  );
-}
-
-function PlanningTab() {
-  const items = [
-    { day: "Today", time: "09:00", title: "Lesson with Sam", tag: "Confirmed", tone: "ok" as const },
-    { day: "Fri", time: "11:00", title: "Farrier — Mike", tag: "Scheduled", tone: "neutral" as const },
-    { day: "Sat", time: "08:30", title: "Lesson with Sam", tag: "Confirmed", tone: "ok" as const },
-    { day: "May 24", time: "All day", title: "Wellington Show", tag: "Registered", tone: "brand" as const },
-  ];
-  return (
-    <Card padding="none">
-      {items.map((i, idx) => (
-        <View
-          key={idx}
-          style={[styles.planRow, idx !== 0 && { borderTopWidth: 1, borderTopColor: colors.border }]}
-        >
-          <View style={{ width: 60 }}>
-            <Text variant="eyebrow" color="ink3">
-              {i.day}
-            </Text>
-            <Text variant="bodyMedium">{i.time}</Text>
-          </View>
-          <Text variant="body" style={{ flex: 1 }}>
-            {i.title}
-          </Text>
-          <Tag label={i.tag} tone={i.tone} />
-        </View>
-      ))}
-    </Card>
-  );
-}
-
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
+  loading: { justifyContent: "center", alignItems: "center" },
   hero: {
     height: 220,
     backgroundColor: colors.g500,
     justifyContent: "flex-end",
+    position: "relative",
+    overflow: "hidden",
   },
+  heroGradient: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(13,32,24,0.35)" },
   heroOverlay: { padding: spacing.lg, gap: 2 },
   heroName: {
     fontFamily: "DMSerifDisplay_400Regular_Italic",
@@ -176,11 +155,4 @@ const styles = StyleSheet.create({
     backgroundColor: colors.g500,
   },
   body: { padding: spacing.lg, gap: spacing.md, paddingBottom: spacing["3xl"] },
-  feedHead: { flexDirection: "row", alignItems: "center", gap: spacing.xs },
-  planRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: spacing.sm,
-    padding: spacing.md,
-  },
 });

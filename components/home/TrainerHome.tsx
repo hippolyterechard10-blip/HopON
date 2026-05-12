@@ -2,22 +2,39 @@ import { ScrollView, StyleSheet, View } from "react-native";
 
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { EmptyState } from "@/components/ui/EmptyState";
+import { SkeletonRow } from "@/components/ui/Skeleton";
 import { StatusDot } from "@/components/ui/StatusDot";
 import { Tag } from "@/components/ui/Tag";
 import { Text } from "@/components/ui/Text";
 import { colors } from "@/constants/colors";
-import { radii, spacing } from "@/constants/spacing";
-import { mockHorses, mockLessons } from "@/lib/mockData";
+import { spacing } from "@/constants/spacing";
+import { useHorses } from "@/hooks/useHorses";
+import { useTodayLessons } from "@/hooks/useTodayLessons";
+import { formatTime } from "@/lib/dateRange";
+import { useAuthStore } from "@/stores/authStore";
+import { useBarnStore } from "@/stores/barnStore";
 
 type Props = {
-  /** Header strip slot (used by OwnerTrainerHome to show the barn strip). */
   topStrip?: React.ReactNode;
 };
 
 export function TrainerHome({ topStrip }: Props) {
-  const next = mockLessons[0];
-  if (!next) return null;
-  const rest = mockLessons.slice(1, 4);
+  const barnId = useBarnStore((s) => s.currentBarnId);
+  const userId = useAuthStore((s) => s.user?.id);
+  const lessonsQ = useTodayLessons(barnId, userId);
+  const horsesQ = useHorses(barnId);
+
+  const lessons = lessonsQ.data ?? [];
+  const next = lessons[0];
+  const rest = lessons.slice(1, 4);
+  const horses = (horsesQ.data ?? []).slice(0, 3);
+
+  const today = new Date().toLocaleDateString(undefined, {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  });
 
   return (
     <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
@@ -25,64 +42,93 @@ export function TrainerHome({ topStrip }: Props) {
 
       <View style={styles.greeting}>
         <Text variant="eyebrow" color="ink3">
-          THURSDAY · MAY 13
+          {today.toUpperCase()}
         </Text>
         <Text variant="display" color="ink1">
-          Good morning, Sam.
+          Good morning.
         </Text>
       </View>
 
-      <Card variant="dark" padding="lg">
-        <Text variant="eyebrow" color="g200">
-          NEXT LESSON
-        </Text>
-        <Text style={styles.bigTime}>{next.time}</Text>
-        <View style={styles.lessonMeta}>
-          <View style={styles.avatar}>
-            <Text variant="bodyMedium" color="g700">
-              {next.horse[0]}
-            </Text>
-          </View>
-          <View style={{ flex: 1 }}>
-            <Text variant="bodyMedium" color="white">
-              {next.client} · {next.horse}
-            </Text>
-            <Text variant="caption" color="g200">
-              {next.location}
-            </Text>
-          </View>
-        </View>
-        <View style={styles.tagRow}>
-          <Tag label={next.level} tone="brand" />
-          <Tag label={next.discipline} tone="brand" />
-          <Tag label={next.paid ? "Paid" : "Unpaid"} tone={next.paid ? "ok" : "warn"} />
-        </View>
-        <View style={styles.heroActions}>
-          <Button label="Start lesson" variant="primary" size="md" fullWidth />
-          <Button label="Running late" variant="secondary" size="md" fullWidth />
-        </View>
-      </Card>
-
-      <Section title="Today's schedule">
-        <Card padding="none">
-          {rest.map((l, i) => (
-            <View
-              key={l.id}
-              style={[styles.row, i !== 0 && { borderTopWidth: 1, borderTopColor: colors.border }]}
-            >
-              <StatusDot status={l.paid ? "ok" : "warn"} />
-              <View style={{ flex: 1 }}>
-                <Text variant="bodyMedium">{l.client} · {l.horse}</Text>
-                <Text variant="caption" color="ink3">
-                  {l.location} · {l.discipline}
-                </Text>
-              </View>
-              <Text variant="bodyMedium" color="ink2">
-                {l.time}
+      {lessonsQ.isLoading ? (
+        <Card variant="dark" padding="lg">
+          <SkeletonRow />
+        </Card>
+      ) : !next ? (
+        <Card variant="dark" padding="lg">
+          <Text variant="eyebrow" color="g200">
+            NEXT LESSON
+          </Text>
+          <Text variant="h2" color="white" style={{ marginTop: spacing.s }}>
+            Nothing on the schedule today.
+          </Text>
+          <Text variant="caption" color="g200" style={{ marginTop: spacing.xs }}>
+            Add a lesson to fill the day.
+          </Text>
+        </Card>
+      ) : (
+        <Card variant="dark" padding="lg">
+          <Text variant="eyebrow" color="g200">
+            NEXT LESSON
+          </Text>
+          <Text style={styles.bigTime}>{formatTime(next.starts_at)}</Text>
+          <View style={styles.lessonMeta}>
+            <View style={styles.avatar}>
+              <Text variant="bodyMedium" color="g700">
+                {next.horse?.name?.[0] ?? "H"}
               </Text>
             </View>
-          ))}
+            <View style={{ flex: 1 }}>
+              <Text variant="bodyMedium" color="white">
+                {next.client?.full_name ?? "—"} · {next.horse?.name ?? "—"}
+              </Text>
+              <Text variant="caption" color="g200">
+                {next.location ?? "Barn"}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.tagRow}>
+            {next.level ? <Tag label={next.level} tone="brand" /> : null}
+            {next.discipline ? <Tag label={next.discipline} tone="brand" /> : null}
+            <Tag label={next.is_paid ? "Paid" : "Unpaid"} tone={next.is_paid ? "ok" : "warn"} />
+          </View>
+          <View style={styles.heroActions}>
+            <Button label="Start lesson" variant="primary" size="md" fullWidth />
+            <Button label="Running late" variant="secondary" size="md" fullWidth />
+          </View>
         </Card>
+      )}
+
+      <Section title="Today's schedule">
+        {lessonsQ.isLoading ? (
+          <Card padding="none">
+            <SkeletonRow />
+            <SkeletonRow />
+          </Card>
+        ) : rest.length === 0 ? (
+          <EmptyState emoji="🗓️" title="Open afternoon." subtitle="Either a quiet day or time to book another." />
+        ) : (
+          <Card padding="none">
+            {rest.map((l, i) => (
+              <View
+                key={l.id}
+                style={[styles.row, i !== 0 && { borderTopWidth: 1, borderTopColor: colors.border }]}
+              >
+                <StatusDot status={l.is_paid ? "ok" : "warn"} />
+                <View style={{ flex: 1 }}>
+                  <Text variant="bodyMedium">
+                    {l.client?.full_name ?? "—"} · {l.horse?.name ?? "—"}
+                  </Text>
+                  <Text variant="caption" color="ink3">
+                    {(l.location ?? "Barn")} · {l.discipline ?? "Lesson"}
+                  </Text>
+                </View>
+                <Text variant="bodyMedium" color="ink2">
+                  {formatTime(l.starts_at)}
+                </Text>
+              </View>
+            ))}
+          </Card>
+        )}
       </Section>
 
       <View style={styles.twoCol}>
@@ -91,17 +137,23 @@ export function TrainerHome({ topStrip }: Props) {
             Horses
           </Text>
           <Card padding="sm">
-            {mockHorses.slice(0, 3).map((h) => (
-              <View key={h.id} style={styles.miniRow}>
-                <StatusDot status={h.status} />
-                <Text variant="body" style={{ flex: 1 }}>
-                  {h.name}
-                </Text>
-                <Text variant="caption" color="ink3">
-                  #{h.stall}
-                </Text>
-              </View>
-            ))}
+            {horses.length === 0 ? (
+              <Text variant="caption" color="ink3">
+                No horses yet.
+              </Text>
+            ) : (
+              horses.map((h) => (
+                <View key={h.id} style={styles.miniRow}>
+                  <StatusDot status="ok" />
+                  <Text variant="body" style={{ flex: 1 }}>
+                    {h.name}
+                  </Text>
+                  <Text variant="caption" color="ink3">
+                    {h.stall ? `#${h.stall}` : ""}
+                  </Text>
+                </View>
+              ))
+            )}
           </Card>
         </View>
         <View style={{ flex: 1, gap: spacing.s }}>
@@ -109,45 +161,11 @@ export function TrainerHome({ topStrip }: Props) {
             Clients
           </Text>
           <Card padding="sm">
-            <View style={styles.miniRow}>
-              <StatusDot status="ok" />
-              <Text variant="body" style={{ flex: 1 }}>
-                Emma C.
-              </Text>
-              <Text variant="caption" color="ink3">
-                Paid
-              </Text>
-            </View>
-            <View style={styles.miniRow}>
-              <StatusDot status="ok" />
-              <Text variant="body" style={{ flex: 1 }}>
-                Sofia R.
-              </Text>
-              <Text variant="caption" color="ink3">
-                Paid
-              </Text>
-            </View>
-            <View style={styles.miniRow}>
-              <StatusDot status="warn" />
-              <Text variant="body" style={{ flex: 1 }}>
-                Mateo B.
-              </Text>
-              <Text variant="caption" color="warn">
-                Due
-              </Text>
-            </View>
-          </Card>
-        </View>
-      </View>
-
-      <View style={styles.quickActions}>
-        {(["Add lesson", "Move lesson", "Charge", "Message"] as const).map((a) => (
-          <Card key={a} padding="sm" style={styles.quickAction}>
-            <Text variant="label" color="ink2">
-              {a}
+            <Text variant="caption" color="ink3">
+              Detail view lands next wave.
             </Text>
           </Card>
-        ))}
+        </View>
       </View>
     </ScrollView>
   );
@@ -195,6 +213,4 @@ const styles = StyleSheet.create({
   },
   twoCol: { flexDirection: "row", gap: spacing.s },
   miniRow: { flexDirection: "row", alignItems: "center", gap: spacing.s, paddingVertical: 6 },
-  quickActions: { flexDirection: "row", gap: spacing.s, flexWrap: "wrap" },
-  quickAction: { flexBasis: "48%", flexGrow: 1, alignItems: "center" },
 });

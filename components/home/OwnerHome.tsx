@@ -2,85 +2,140 @@ import { ScrollView, StyleSheet, View } from "react-native";
 
 import { AlertBar } from "@/components/ui/AlertBar";
 import { Card } from "@/components/ui/Card";
+import { EmptyState } from "@/components/ui/EmptyState";
+import { Skeleton, SkeletonRow } from "@/components/ui/Skeleton";
 import { StatusDot } from "@/components/ui/StatusDot";
 import { Text } from "@/components/ui/Text";
 import { colors } from "@/constants/colors";
-import { radii, spacing } from "@/constants/spacing";
-import { mockAlerts, mockBarn, mockLessons, mockNews } from "@/lib/mockData";
+import { spacing } from "@/constants/spacing";
+import { useBarnMetrics } from "@/hooks/useBarnMetrics";
+import { useBarnNews } from "@/hooks/useBarnNews";
+import { useTodayLessons } from "@/hooks/useTodayLessons";
+import { useTodayTasks } from "@/hooks/useTodayTasks";
+import { formatTime } from "@/lib/dateRange";
+import { useBarnStore } from "@/stores/barnStore";
 
 export function OwnerHome() {
+  const barnId = useBarnStore((s) => s.currentBarnId);
+  const barnName = useBarnStore((s) => s.currentBarnName);
+
+  const metricsQ = useBarnMetrics(barnId);
+  const lessonsQ = useTodayLessons(barnId);
+  const tasksQ = useTodayTasks({ barnId });
+  const newsQ = useBarnNews(barnId);
+
+  const alerts = (tasksQ.data ?? []).filter(
+    (t) => t.priority === "urgent" || t.status === "delayed",
+  );
+
   return (
     <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
       <View style={styles.header}>
         <Text variant="eyebrow" color="ink3">
-          {mockBarn.name.toUpperCase()}
+          {(barnName ?? "Your barn").toUpperCase()}
         </Text>
         <Text variant="display" color="ink1" style={styles.greeting}>
-          Your barn is running well today.
+          {alerts.length > 0
+            ? "Your barn needs a moment today."
+            : "Your barn is running well today."}
         </Text>
       </View>
 
       <View style={styles.metrics}>
-        <Metric label="Revenue MTD" value={`$${mockBarn.revenueMtd.toLocaleString()}`} delta={`+${mockBarn.revenueDelta}%`} />
-        <Metric label="Open alerts" value={String(mockBarn.openAlerts)} tone="warn" />
-        <Metric label="Tasks" value={String(mockBarn.teamTodos)} />
-        <Metric label="Lessons" value={String(mockBarn.lessonsMtd)} delta={`+${mockBarn.lessonsDelta}%`} />
+        {metricsQ.isLoading ? (
+          <>
+            <MetricSkeleton />
+            <MetricSkeleton />
+            <MetricSkeleton />
+            <MetricSkeleton />
+          </>
+        ) : (
+          <>
+            <Metric label="Revenue MTD" value={`$${(metricsQ.data?.revenueMtd ?? 0).toLocaleString()}`} />
+            <Metric
+              label="Open alerts"
+              value={String(metricsQ.data?.openAlerts ?? 0)}
+              tone={metricsQ.data?.openAlerts ? "warn" : "neutral"}
+            />
+            <Metric label="Tasks" value={String(metricsQ.data?.teamTodos ?? 0)} />
+            <Metric label="Lessons" value={String(metricsQ.data?.lessonsMtd ?? 0)} />
+          </>
+        )}
       </View>
 
-      <Section title="Alerts">
-        <View style={{ gap: spacing.s }}>
-          {mockAlerts.map((a) => (
-            <AlertBar key={a.id} severity={a.severity} title={a.title} subtitle={a.subtitle} />
-          ))}
-        </View>
-      </Section>
+      {alerts.length > 0 ? (
+        <Section title="Alerts">
+          <View style={{ gap: spacing.s }}>
+            {alerts.slice(0, 3).map((a) => (
+              <AlertBar
+                key={a.id}
+                severity={a.priority === "urgent" ? "alert" : "warn"}
+                title={a.title}
+                subtitle={a.horse ? `Horse: ${a.horse.name}` : undefined}
+              />
+            ))}
+          </View>
+        </Section>
+      ) : null}
 
       <Section title="Next up · Today">
-        <Card padding="none">
-          {mockLessons.slice(0, 4).map((l, i) => (
-            <View
-              key={l.id}
-              style={[styles.eventRow, i !== 0 && { borderTopWidth: 1, borderTopColor: colors.border }]}
-            >
-              <StatusDot status={l.paid ? "ok" : "warn"} />
-              <View style={{ flex: 1 }}>
-                <Text variant="bodyMedium">{l.client} · {l.horse}</Text>
-                <Text variant="caption" color="ink3">
-                  {l.location} · {l.discipline}
+        {lessonsQ.isLoading ? (
+          <Card padding="none">
+            <SkeletonRow />
+            <SkeletonRow />
+          </Card>
+        ) : (lessonsQ.data ?? []).length === 0 ? (
+          <EmptyState emoji="🐴" title="Nothing on the board." subtitle="Lessons added today will appear here." />
+        ) : (
+          <Card padding="none">
+            {(lessonsQ.data ?? []).slice(0, 5).map((l, i) => (
+              <View
+                key={l.id}
+                style={[styles.eventRow, i !== 0 && { borderTopWidth: 1, borderTopColor: colors.border }]}
+              >
+                <StatusDot status={l.is_paid ? "ok" : "warn"} />
+                <View style={{ flex: 1 }}>
+                  <Text variant="bodyMedium">
+                    {l.client?.full_name ?? "—"} · {l.horse?.name ?? "—"}
+                  </Text>
+                  <Text variant="caption" color="ink3">
+                    {(l.location ?? "Barn")} · {(l.discipline ?? "Lesson")}
+                  </Text>
+                </View>
+                <Text variant="bodyMedium" color="ink2">
+                  {formatTime(l.starts_at)}
                 </Text>
               </View>
-              <Text variant="bodyMedium" color="ink2">
-                {l.time}
-              </Text>
-            </View>
-          ))}
-        </Card>
-      </Section>
-
-      <Section title="Team">
-        <View style={styles.teamGrid}>
-          <TeamCell label="Grooms active" value="3" />
-          <TeamCell label="Lessons done" value="2 of 5" />
-          <TeamCell label="Tasks late" value="1" tone="warn" />
-        </View>
+            ))}
+          </Card>
+        )}
       </Section>
 
       <Section title="Hop News">
-        <Card padding="none">
-          {mockNews.map((n, i) => (
-            <View
-              key={n.id}
-              style={[styles.newsRow, i !== 0 && { borderTopWidth: 1, borderTopColor: colors.border }]}
-            >
-              <Text variant="caption" color="ink3" style={{ width: 56 }}>
-                {n.date}
-              </Text>
-              <Text variant="body" style={{ flex: 1 }}>
-                {n.title}
-              </Text>
-            </View>
-          ))}
-        </Card>
+        {newsQ.isLoading ? (
+          <Card padding="none">
+            <SkeletonRow />
+            <SkeletonRow />
+          </Card>
+        ) : (newsQ.data ?? []).length === 0 ? (
+          <EmptyState emoji="📰" title="No news yet." subtitle="Post an update so your team and clients stay in the loop." />
+        ) : (
+          <Card padding="none">
+            {(newsQ.data ?? []).map((n, i) => (
+              <View
+                key={n.id}
+                style={[styles.newsRow, i !== 0 && { borderTopWidth: 1, borderTopColor: colors.border }]}
+              >
+                <Text variant="caption" color="ink3" style={{ width: 64 }}>
+                  {new Date(n.created_at).toLocaleDateString(undefined, { month: "short", day: "numeric" })}
+                </Text>
+                <Text variant="body" style={{ flex: 1 }}>
+                  {n.title}
+                </Text>
+              </View>
+            ))}
+          </Card>
+        )}
       </Section>
     </ScrollView>
   );
@@ -89,12 +144,10 @@ export function OwnerHome() {
 function Metric({
   label,
   value,
-  delta,
   tone = "neutral",
 }: {
   label: string;
   value: string;
-  delta?: string;
   tone?: "neutral" | "warn";
 }) {
   return (
@@ -105,32 +158,16 @@ function Metric({
       <Text variant="h1" color={tone === "warn" ? "warn" : "ink1"} style={{ marginTop: 2 }}>
         {value}
       </Text>
-      {delta ? (
-        <Text variant="caption" color="ok">
-          {delta}
-        </Text>
-      ) : null}
     </Card>
   );
 }
 
-function TeamCell({
-  label,
-  value,
-  tone = "neutral",
-}: {
-  label: string;
-  value: string;
-  tone?: "neutral" | "warn";
-}) {
+function MetricSkeleton() {
   return (
-    <Card padding="sm" style={styles.teamCell}>
-      <Text variant="label" color="ink3">
-        {label}
-      </Text>
-      <Text variant="h2" color={tone === "warn" ? "warn" : "ink1"} style={{ marginTop: 2 }}>
-        {value}
-      </Text>
+    <Card padding="sm" style={styles.metricCard}>
+      <Skeleton width={70} height={10} />
+      <View style={{ height: 8 }} />
+      <Skeleton width={90} height={20} />
     </Card>
   );
 }
@@ -161,8 +198,6 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.md,
   },
-  teamGrid: { flexDirection: "row", gap: spacing.s },
-  teamCell: { flex: 1 },
   newsRow: {
     flexDirection: "row",
     alignItems: "center",
