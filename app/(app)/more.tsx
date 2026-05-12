@@ -6,12 +6,12 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Text } from "@/components/ui/Text";
 import { colors } from "@/constants/colors";
-import { radii, spacing } from "@/constants/spacing";
+import { spacing } from "@/constants/spacing";
 import { signOut } from "@/lib/auth";
 import { useAuthStore } from "@/stores/authStore";
 import { useBarnStore } from "@/stores/barnStore";
 
-type Row = { label: string; sub?: string; emoji: string; path?: string; danger?: boolean };
+type Row = { label: string; sub?: string; emoji: string; path?: string };
 
 export default function More() {
   const router = useRouter();
@@ -19,11 +19,11 @@ export default function More() {
   const barnName = useBarnStore((s) => s.currentBarnName);
 
   const rows: Row[] = [
-    { label: "Team", sub: "Members & roles", emoji: "👥", path: "/(app)/team" },
+    { label: "Team", sub: "Members, roles & invites", emoji: "👥", path: "/(app)/settings/team" },
     { label: "Booking", sub: "Pick a lesson slot", emoji: "📅", path: "/(app)/booking" },
-    { label: "Payments", sub: "Invoices & history", emoji: "💳" },
     { label: "Notifications", sub: "Activity & quiet hours", emoji: "🔔", path: "/(app)/notifications" },
-    { label: "Barn settings", sub: "Name, address, tax", emoji: "🏠" },
+    { label: "Profile", sub: "Name, phone, quiet hours", emoji: "👤", path: "/(app)/settings/profile" },
+    { label: "Barn settings", sub: "Name, address, fees", emoji: "🏠", path: "/(app)/settings/barn" },
   ];
 
   return (
