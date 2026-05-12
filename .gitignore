@@ -1,19 +1,31 @@
-node_modules
-.next
-out
-dist
-build
+node_modules/
+.expo/
+dist/
+web-build/
+ios/
+android/
 
 .env
 .env.local
 .env.*.local
 
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
 .DS_Store
 *.log
-.vscode
-.idea
+.vscode/
+.idea/
+.cursor/
 
-coverage
-.next/types
-next-env.d.ts
-tsconfig.tsbuildinfo
+# macOS
+*.pem
+
+# Local Supabase
+supabase/.branches/
+supabase/.temp/
+
+# TS
+*.tsbuildinfo
+expo-env.d.ts

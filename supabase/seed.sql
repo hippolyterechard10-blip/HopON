@@ -1,0 +1,16 @@
+-- Placeholder seed file. Populated once auth users exist (use Supabase Studio
+-- to create a test user, then run targeted inserts here).
+
+-- Example shape (uncomment and substitute UUIDs after creating an auth user):
+--
+-- insert into profiles (id, full_name) values
+--   ('00000000-0000-0000-0000-000000000001', 'Test Owner');
+--
+-- insert into barns (id, name, slug, owner_id) values
+--   ('11111111-1111-1111-1111-111111111111', 'Ocala North', 'ocala-north',
+--    '00000000-0000-0000-0000-000000000001');
+--
+-- insert into barn_memberships (barn_id, user_id, roles) values
+--   ('11111111-1111-1111-1111-111111111111',
+--    '00000000-0000-0000-0000-000000000001',
+--    array['barn_owner']::barn_role[]);

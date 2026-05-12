@@ -2,77 +2,84 @@
 
 > The operating system for high-performance equestrian businesses.
 
-HopOn turns the daily chaos of a professional stable — lessons, payments, grooms, vets, shows — into one calm, shared plan. US-first (Ocala + Wellington), targeting the winter 2027 show season.
+Mobile-first React Native app for professional US barns. Replaces the WhatsApp + spreadsheet chaos with a calm, role-aware coordination layer. US-first (Ocala + Wellington), targeting the **January 2027** show season.
 
-## North Star
-
-**90% retention of target barns at 6 months.**
-
-| Metric | Target |
-| --- | --- |
-| Self-onboarding | 5 target barns that self-onboard |
-| Activation rate | % who complete onboarding |
-| Blocking bugs | Resolution < 2 days |
-| Non-blocking bugs | Resolution < 1 week |
-
-## Personas
-
-- **Professionals** — Pro riders, trainers (single/multi-location), barn managers, grooms, secretaries.
-- **Amateurs** — Non-owners, owners with 1 horse, parents (booking for minors).
-- **Barn owner** — Pays a boarding/program for their horse.
-- **External providers** — Farriers (priority), emergency vets, physios, dentists, braiders.
-
-Two distinct home views: **Pro/Owner** (revenue, lessons MTD, team overview) and **Groom/Rider/Trainer** (next up, my to-do, news).
-
-## V1 — September 2026
-
-Booking (Doctolib-style) · Employee/client listing · Advanced calendar · Task management · Horse page · Rider homepage · Pro homepage · Access rights · Payments (Stripe + Apple Pay) · US tax · Notifications · Service requests · Lesson admin · Internal dashboard.
-
-V2 (Dec 2026): QR per box, daily routines, show scraper (WEF/Thermal/Hits Ocala), show map, private barn feed, barn mapping.
-
-V3 (2027): Contracts, reminders, QuickBooks, voice reports.
-
-## Brand
-
-- **Personality** — Lululemon energy · intentional · 80% serious / 20% friendly. References: Strava (habits), MindBody (vertical), Doctolib (trust), Uber (just works), Airbnb (elegant two-sided).
-- **Forbidden** — Not the Facebook of horses · no cluttered UI · not low-cost · not slow.
-- **Palette** — Green teal direction. `#F0FDF4` `#3BAEA4` `#B3FFC1`.
-- **Type** — Calibre (sans) + a serif for editorial moments.
-- **Logo** — Built around the H; H and second O capitalized → **HopOn**.
+**North Star:** 90% retention of target barns at 6 months.
 
 ## Stack
 
-- **Framework** — Next.js 15 (App Router) + React 19 + TypeScript
-- **Styling** — Tailwind CSS with HopOn brand tokens (see `tailwind.config.ts`)
-- **Auth/DB/Payments (planned)** — NextAuth + Prisma/Postgres + Stripe
-- **Icons** — lucide-react
+- **Mobile** — React Native + Expo (managed) · TypeScript strict · Expo Router v3
+- **Backend** — Supabase (Auth · Postgres · Realtime · Storage · Edge Functions) with RLS on every table
+- **Payments** — Stripe React Native SDK + Apple Pay / Google Pay (Stripe Connect for barns)
+- **State** — TanStack Query (server) · Zustand (UI) · React Hook Form + Zod (forms)
+- **Notifications** — Expo Notifications (APNs + FCM)
+
+See [`CLAUDE.md`](./CLAUDE.md) for the full V1 spec, and [`docs/`](./docs) for sprint outputs.
+
+## Project layout
+
+```
+app/                Expo Router routes (auth · onboarding · app tabs)
+components/ui/      Design system primitives (Text, Card, Button, Tag, AlertBar, ...)
+components/home/    Role-specific home widgets (Owner, Trainer, Groom, Client, OwnerTrainer)
+constants/          colors · typography · spacing tokens
+hooks/              useAuth, useRole, ...
+lib/                supabase client, queryClient
+stores/             Zustand stores (auth, barn, ui)
+types/              roles + app + database types
+supabase/
+  migrations/       SQL migrations (V1 schema + RLS)
+  seed.sql          Local dev seed
+docs/               Sprint recaps + wireframes
+```
 
 ## Getting started
 
 ```bash
+# 1. Install deps
 npm install
+
+# 2. Wire up env
 cp .env.example .env.local
-npm run dev
+# Fill in EXPO_PUBLIC_SUPABASE_URL + EXPO_PUBLIC_SUPABASE_ANON_KEY
+
+# 3. (Local Supabase) Start the stack and apply migrations
+supabase start
+supabase db reset           # applies migrations + seed
+
+# 4. Run the app
+npm run start               # then i / a / w for iOS / Android / Web
 ```
 
-Then open http://localhost:3000.
+Generate Supabase types after schema changes:
 
-## Scripts
-
-- `npm run dev` — start the dev server
-- `npm run build` — production build
-- `npm run lint` — Next.js ESLint
-- `npm run typecheck` — TypeScript check
-- `npm run format` — Prettier (with Tailwind class sorting)
-
-## Repo layout
-
-```
-src/
-  app/                # Next.js App Router (routes, layouts, pages)
-    globals.css       # Tailwind layers + brand component classes
-    layout.tsx        # Root layout + metadata
-    page.tsx          # Landing page
+```bash
+npm run db:types            # writes types/database.types.ts
 ```
 
-More directories will land as features grow: `src/components/`, `src/lib/`, `src/server/`, `prisma/`.
+## Build order
+
+Tracked in `CLAUDE.md §11`:
+
+1. **Project scaffold** ✅
+2. **Supabase schema + RLS** ✅
+3. Auth flow (magic link + email/password)
+4. Onboarding wizard
+5. Role-adaptive home screens
+6. Task management (groom flow first)
+7. Calendar + booking
+8. Horse pages
+9. Payments
+10. Notifications
+11. Team & access rights
+12. Settings
+
+## Design north stars
+
+- One glance, one action.
+- Zero-scroll home for 80% of use cases.
+- Compressed copy (`BELLA · MEDS · 12:00`).
+- Urgent = muted terracotta + 2px left bar. **Never** full red.
+- Calmer than WhatsApp.
+
+> "Would a groom with muddy gloves, 3 seconds to spare, be able to do this in one tap?"
