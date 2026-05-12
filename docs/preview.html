@@ -596,6 +596,9 @@
         <button class="tab" data-target="ownertrainer">Owner + Trainer</button>
         <button class="tab" data-target="groom">Groom home</button>
         <button class="tab" data-target="client">Client home</button>
+        <button class="tab" data-target="horse">Horse detail</button>
+        <button class="tab" data-target="day">Calendar day</button>
+        <button class="tab" data-target="booking">Booking flow</button>
         <button class="tab" data-target="components">Components</button>
       </div>
     </header>
@@ -1233,6 +1236,228 @@
                 <div class="tab-item"><div class="tab-icon tab-cal"></div>Book</div>
                 <div class="tab-item"><div class="tab-icon tab-team"></div>Messages</div>
                 <div class="tab-item"><div class="tab-icon tab-more"></div>More</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- HORSE DETAIL -->
+          <div class="screen-wrap" id="screen-horse">
+            <div class="screen-label">Horse · <span>horses/[id].tsx</span></div>
+            <div class="phone">
+              <div class="notch"></div>
+              <div class="statusbar" style="color:white"><span>9:41</span><span class="right">●●● ●</span></div>
+              <div class="body" style="padding:0">
+                <div style="height:220px; background: radial-gradient(circle at 65% 35%, var(--g300), var(--g700)); position:relative;">
+                  <div style="position:absolute; left:0; right:0; bottom:0; padding:18px;">
+                    <div class="t-eyebrow c-g200">STALL #12</div>
+                    <div style="font-family:var(--serif);font-style:italic;font-size:44px;line-height:48px;letter-spacing:-0.6px;color:white;">Bella</div>
+                    <div class="t-caption c-g200">Hanoverian · 9y</div>
+                  </div>
+                </div>
+                <div style="display:flex; background:var(--surface); border-bottom:1px solid var(--border);">
+                  <div style="flex:1; padding:14px; text-align:center; position:relative;">
+                    <span class="t-body-medium">Info</span>
+                    <div style="position:absolute; bottom:0; left:30%; right:30%; height:2px; background:var(--g500);"></div>
+                  </div>
+                  <div style="flex:1; padding:14px; text-align:center;"><span class="t-body-medium c-ink3">Feed</span></div>
+                  <div style="flex:1; padding:14px; text-align:center;"><span class="t-body-medium c-ink3">Planning</span></div>
+                </div>
+                <div class="screen-body">
+                  <div class="card pad-md"><div class="t-eyebrow">STALL</div><div class="t-body" style="margin-top:4px">#12</div></div>
+                  <div class="card pad-md"><div class="t-eyebrow">BREED</div><div class="t-body" style="margin-top:4px">Hanoverian</div></div>
+                  <div class="card pad-md"><div class="t-eyebrow">FEEDING</div><div class="t-body" style="margin-top:4px">Morning + evening hay, beet pulp PM.</div></div>
+                  <div class="card pad-md"><div class="t-eyebrow">MEDICATION</div><div class="t-body" style="margin-top:4px">None at the moment.</div></div>
+                  <div class="card pad-md"><div class="t-eyebrow">EQUIPMENT</div><div class="t-body" style="margin-top:4px">Saddle: jumping (Antares). Bit: D-ring snaffle.</div></div>
+                  <div class="card pad-md"><div class="t-eyebrow">VET</div><div class="t-body" style="margin-top:4px">Dr. Torres · (561) 555-0124</div></div>
+                  <div class="card pad-md"><div class="t-eyebrow">FARRIER</div><div class="t-body" style="margin-top:4px">Mike Garcia · (561) 555-0177</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CALENDAR DAY VIEW -->
+          <div class="screen-wrap" id="screen-day">
+            <div class="screen-label">Calendar · <span>calendar.tsx</span></div>
+            <div class="phone">
+              <div class="notch"></div>
+              <div class="statusbar"><span>9:41</span><span class="right">●●● ●</span></div>
+              <div class="body" style="padding:0">
+                <div style="padding:20px 20px 16px; background:var(--surface); border-bottom:1px solid var(--border);">
+                  <div class="t-eyebrow">THURSDAY · MAY 13</div>
+                  <div class="t-display" style="margin-top:4px">Today.</div>
+                  <div style="display:flex; gap:6px; margin-top:12px;">
+                    <div style="flex:1; padding:8px; border-radius:12px; background:var(--n50); text-align:center;">
+                      <div class="t-caption c-ink3">Wed</div>
+                      <div class="t-body-medium">12</div>
+                    </div>
+                    <div style="flex:1; padding:8px; border-radius:12px; background:var(--g500); text-align:center;">
+                      <div class="t-caption c-white" style="opacity:0.9">Thu</div>
+                      <div class="t-body-medium c-white">13</div>
+                    </div>
+                    <div style="flex:1; padding:8px; border-radius:12px; background:var(--n50); text-align:center;">
+                      <div class="t-caption c-ink3">Fri</div>
+                      <div class="t-body-medium">14</div>
+                    </div>
+                    <div style="flex:1; padding:8px; border-radius:12px; background:var(--n50); text-align:center;">
+                      <div class="t-caption c-ink3">Sat</div>
+                      <div class="t-body-medium">15</div>
+                    </div>
+                    <div style="flex:1; padding:8px; border-radius:12px; background:var(--n50); text-align:center;">
+                      <div class="t-caption c-ink3">Sun</div>
+                      <div class="t-body-medium">16</div>
+                    </div>
+                  </div>
+                </div>
+                <div style="padding:18px 20px;">
+                  <!-- Hour rows -->
+                  <div style="position:relative;">
+                    <div style="display:flex; align-items:flex-start; min-height:54px; position:relative;">
+                      <div class="t-caption c-ink3" style="width:44px; padding-top:2px;">08:00</div>
+                      <div style="position:absolute; top:8px; left:56px; right:0; height:1px; background:var(--border);"></div>
+                    </div>
+                    <div style="display:flex; align-items:flex-start; min-height:68px; position:relative;">
+                      <div class="t-caption c-ink3" style="width:44px; padding-top:2px;">09:00</div>
+                      <div style="position:absolute; top:8px; left:56px; right:0; height:1px; background:var(--border);"></div>
+                      <div style="margin-left:60px; margin-top:4px; flex:1; background:var(--g50); border-left:3px solid var(--g500); border-radius:10px; padding:10px;">
+                        <div class="t-label c-g600">JUMP</div>
+                        <div class="t-body-medium" style="margin-top:2px">Emma Carter · Bella</div>
+                        <div class="t-caption c-ink3">Outdoor Arena · 09:00</div>
+                      </div>
+                    </div>
+                    <div style="display:flex; align-items:flex-start; min-height:68px; position:relative;">
+                      <div class="t-caption c-ink3" style="width:44px; padding-top:2px;">10:00</div>
+                      <div style="position:absolute; top:8px; left:56px; right:0; height:1px; background:var(--border);"></div>
+                      <div style="margin-left:60px; margin-top:4px; flex:1; background:var(--g50); border-left:3px solid var(--g500); border-radius:10px; padding:10px;">
+                        <div class="t-label c-g600">FLAT</div>
+                        <div class="t-body-medium" style="margin-top:2px">Sofia Reyes · Storm</div>
+                        <div class="t-caption c-ink3">Indoor Arena · 10:30</div>
+                      </div>
+                    </div>
+                    <div style="display:flex; align-items:flex-start; min-height:54px; position:relative;">
+                      <div class="t-caption c-ink3" style="width:44px; padding-top:2px;">11:00</div>
+                      <div style="position:absolute; top:8px; left:56px; right:0; height:1px; background:var(--border);"></div>
+                    </div>
+                    <div style="display:flex; align-items:flex-start; min-height:68px; position:relative;">
+                      <div class="t-caption c-ink3" style="width:44px; padding-top:2px;">12:00</div>
+                      <div style="position:absolute; top:8px; left:56px; right:0; height:1px; background:var(--border);"></div>
+                      <div style="margin-left:60px; margin-top:4px; flex:1; background:var(--warn-bg); border-left:3px solid var(--warn-dot); border-radius:10px; padding:10px;">
+                        <div class="t-label c-warn">JUMP · UNPAID</div>
+                        <div class="t-body-medium" style="margin-top:2px">Mateo Bell · Indigo</div>
+                        <div class="t-caption c-ink3">Outdoor Arena · 12:00</div>
+                      </div>
+                    </div>
+                    <div style="display:flex; align-items:flex-start; min-height:54px; position:relative;">
+                      <div class="t-caption c-ink3" style="width:44px; padding-top:2px;">13:00</div>
+                      <div style="position:absolute; top:8px; left:56px; right:0; height:1px; background:var(--border);"></div>
+                    </div>
+                    <div style="display:flex; align-items:flex-start; min-height:68px; position:relative;">
+                      <div class="t-caption c-ink3" style="width:44px; padding-top:2px;">14:00</div>
+                      <div style="position:absolute; top:8px; left:56px; right:0; height:1px; background:var(--border);"></div>
+                      <div style="margin-left:60px; margin-top:4px; flex:1; background:var(--g50); border-left:3px solid var(--g500); border-radius:10px; padding:10px;">
+                        <div class="t-label c-g600">FLAT</div>
+                        <div class="t-body-medium" style="margin-top:2px">Liv Andersen · Juno</div>
+                        <div class="t-caption c-ink3">Outdoor Arena · 14:00</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tabbar">
+                <div class="tab-item"><div class="tab-icon tab-home"></div>Home</div>
+                <div class="tab-item active"><div class="tab-icon tab-cal"></div>Calendar</div>
+                <div class="tab-item"><div class="tab-icon tab-horse"></div>Horses</div>
+                <div class="tab-item"><div class="tab-icon tab-team"></div>Team</div>
+                <div class="tab-item"><div class="tab-icon tab-more"></div>More</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BOOKING FLOW -->
+          <div class="screen-wrap" id="screen-booking">
+            <div class="screen-label">Booking · <span>booking.tsx</span></div>
+            <div class="phone">
+              <div class="notch"></div>
+              <div class="statusbar"><span>9:41</span><span class="right">●●● ●</span></div>
+              <div class="body">
+                <div class="screen-body">
+                  <div>
+                    <div class="t-eyebrow">BOOK A LESSON</div>
+                    <div class="t-display" style="margin-top:4px">Pick a lesson type.</div>
+                  </div>
+
+                  <div class="col gap-8">
+                    <div style="display:flex; align-items:center; gap:12px; padding:14px; background:var(--g500); color:white; border-radius:14px; border:1px solid var(--g500);">
+                      <div class="flex-1">
+                        <div class="t-body-medium c-white">Private lesson</div>
+                        <div class="t-caption" style="color:var(--g100)">60 min</div>
+                      </div>
+                      <div class="t-h2 c-white">$120</div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:12px; padding:14px; background:var(--surface); border:1px solid var(--border); border-radius:14px;">
+                      <div class="flex-1">
+                        <div class="t-body-medium">Group lesson</div>
+                        <div class="t-caption c-ink3">60 min</div>
+                      </div>
+                      <div class="t-h2">$75</div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:12px; padding:14px; background:var(--surface); border:1px solid var(--border); border-radius:14px;">
+                      <div class="flex-1">
+                        <div class="t-body-medium">Jump training</div>
+                        <div class="t-caption c-ink3">90 min</div>
+                      </div>
+                      <div class="t-h2">$180</div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="t-eyebrow" style="margin-bottom:8px">AVAILABLE SLOTS</div>
+                    <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                      <div style="flex:1 1 22%; padding:8px; border-radius:12px; background:var(--surface); border:1px solid var(--border); text-align:center;">
+                        <div class="t-eyebrow">TODAY</div><div class="t-body-medium">09:00</div>
+                      </div>
+                      <div style="flex:1 1 22%; padding:8px; border-radius:12px; background:var(--n50); border:1px solid var(--n100); text-align:center; opacity:0.6;">
+                        <div class="t-eyebrow c-ink3">TODAY</div><div class="t-body-medium c-ink3">10:30</div>
+                      </div>
+                      <div style="flex:1 1 22%; padding:8px; border-radius:12px; background:var(--g500); border:1px solid var(--g500); text-align:center;">
+                        <div class="t-eyebrow c-white" style="opacity:0.9">TODAY</div><div class="t-body-medium c-white">14:00</div>
+                      </div>
+                      <div style="flex:1 1 22%; padding:8px; border-radius:12px; background:var(--surface); border:1px solid var(--border); text-align:center;">
+                        <div class="t-eyebrow">TODAY</div><div class="t-body-medium">16:30</div>
+                      </div>
+                      <div style="flex:1 1 22%; padding:8px; border-radius:12px; background:var(--surface); border:1px solid var(--border); text-align:center;">
+                        <div class="t-eyebrow">FRI</div><div class="t-body-medium">09:00</div>
+                      </div>
+                      <div style="flex:1 1 22%; padding:8px; border-radius:12px; background:var(--surface); border:1px solid var(--border); text-align:center;">
+                        <div class="t-eyebrow">FRI</div><div class="t-body-medium">10:30</div>
+                      </div>
+                      <div style="flex:1 1 22%; padding:8px; border-radius:12px; background:var(--n50); border:1px solid var(--n100); text-align:center; opacity:0.6;">
+                        <div class="t-eyebrow c-ink3">FRI</div><div class="t-body-medium c-ink3">14:00</div>
+                      </div>
+                      <div style="flex:1 1 22%; padding:8px; border-radius:12px; background:var(--surface); border:1px solid var(--border); text-align:center;">
+                        <div class="t-eyebrow">SAT</div><div class="t-body-medium">08:30</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="card pad-md">
+                    <div class="t-eyebrow">YOUR HORSE</div>
+                    <div class="row" style="margin-top:8px; gap:10px;">
+                      <div class="avatar">B</div>
+                      <div class="flex-1">
+                        <div class="t-body-medium">Bella</div>
+                        <div class="t-caption c-ink3">Hanoverian · Stall #12</div>
+                      </div>
+                      <span class="pill neutral">DEFAULT</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div style="padding:16px 20px; background:var(--surface); border-top:1px solid var(--border);">
+                <div style="display:flex; align-items:baseline; justify-content:space-between; margin-bottom:10px;">
+                  <span class="t-caption c-ink3">Prepay with Apple Pay</span>
+                  <span class="t-h2">$120</span>
+                </div>
+                <button class="btn primary lg fw">Confirm booking</button>
               </div>
             </div>
           </div>
