@@ -1,7 +1,7 @@
 import { Image } from "expo-image";
 import { useLocalSearchParams } from "expo-router";
 import { useState } from "react";
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, View } from "react-native";
+import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Card } from "@/components/ui/Card";
@@ -14,14 +14,50 @@ import { useHorseFeed } from "@/hooks/useHorseFeed";
 import { useHorsePlanning } from "@/hooks/useHorsePlanning";
 import { useHorse } from "@/hooks/useHorses";
 import { formatDayLabel, formatTime } from "@/lib/dateRange";
+import { uploadImage } from "@/lib/storage";
+import { supabase } from "@/lib/supabase";
 import type { Horse } from "@/types/app.types";
 
 type Tab = "info" | "feed" | "planning";
 
 export default function HorseDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { data: horse, isLoading } = useHorse(id);
+  const { data: horse, isLoading, refetch } = useHorse(id);
   const [tab, setTab] = useState<Tab>("info");
+
+  const onChangePhoto = async () => {
+    if (!horse) return;
+    try {
+      const { launchImageLibraryAsync, MediaTypeOptions, requestMediaLibraryPermissionsAsync } =
+        await import("expo-image-picker");
+      const perm = await requestMediaLibraryPermissionsAsync();
+      if (!perm.granted) return;
+      const res = await launchImageLibraryAsync({
+        mediaTypes: MediaTypeOptions.Images,
+        quality: 0.7,
+        allowsEditing: true,
+        aspect: [16, 9],
+      });
+      if (res.canceled || !res.assets[0]) return;
+      const url = await uploadImage(
+        "horse-photos",
+        res.assets[0].uri,
+        `${horse.id}/${Date.now()}.jpg`,
+      );
+      if (!url) {
+        Alert.alert("Upload failed", "Could not upload photo. Is the bucket configured?");
+        return;
+      }
+      const { error } = await supabase.from("horses").update({ photo_url: url }).eq("id", horse.id);
+      if (error) {
+        Alert.alert("Save failed", error.message);
+        return;
+      }
+      await refetch();
+    } catch (e) {
+      Alert.alert("Photo error", e instanceof Error ? e.message : "Try again.");
+    }
+  };
 
   if (isLoading) {
     return (
@@ -59,6 +95,11 @@ export default function HorseDetail() {
               {[horse.breed, horse.age ? `${horse.age}y` : null].filter(Boolean).join(" · ")}
             </Text>
           </View>
+          <Pressable onPress={onChangePhoto} style={styles.heroEdit}>
+            <Text variant="label" color="white">
+              {horse.photo_url ? "Change photo" : "Add photo"}
+            </Text>
+          </Pressable>
         </View>
 
         <View style={styles.tabs}>
@@ -217,6 +258,17 @@ const styles = StyleSheet.create({
   },
   heroGradient: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(13,32,24,0.35)" },
   heroOverlay: { padding: spacing.lg, gap: 2 },
+  heroEdit: {
+    position: "absolute",
+    top: spacing.md,
+    right: spacing.md,
+    backgroundColor: "rgba(13,32,24,0.45)",
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 6,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.18)",
+  },
   heroName: {
     fontFamily: "DMSerifDisplay_400Regular_Italic",
     fontSize: 44,
