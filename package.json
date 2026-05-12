@@ -30,6 +30,8 @@
     "expo-linking": "~6.3.1",
     "expo-notifications": "~0.28.19",
     "expo-router": "~3.5.24",
+    "expo-clipboard": "~6.0.3",
+    "expo-device": "~6.0.2",
     "expo-secure-store": "~13.0.2",
     "expo-splash-screen": "~0.27.7",
     "expo-status-bar": "~1.12.1",
