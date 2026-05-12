@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-calibre: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Source Serif 4", ui-serif, Georgia, serif;
+}
+
+html,
+body {
+  background-color: theme("colors.canvas.DEFAULT");
+  color: theme("colors.ink.DEFAULT");
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl bg-canvas-raised shadow-soft border border-sage-100/60 p-5;
+  }
+  .pill {
+    @apply inline-flex items-center gap-1.5 rounded-full bg-sage-50 px-2.5 py-1 text-xs font-medium text-sage-700;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-full bg-sage-500 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-sage-600;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-medium text-ink-soft transition hover:bg-sage-50;
+  }
+}
