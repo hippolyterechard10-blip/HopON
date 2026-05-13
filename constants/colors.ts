@@ -1,20 +1,24 @@
 /**
  * HopOn color tokens.
- * Forest green primary · muted status signals · never alarming.
+ * Eucalyptus primary · muted status signals · never alarming.
+ *
+ * Locked Day 3 sprint (May 13, 2026): Eucalyptus is the official brand
+ * color. Anchor #2A957F. Reference: Lululemon. Moderate use recommended —
+ * primary CTAs only, the rest stays in ink/surface/border neutrals.
  */
 
 export const colors = {
-  // Forest green — primary brand
-  g900: "#0D2018",
-  g800: "#122A20",
-  g700: "#193828",
-  g600: "#224D35",
-  g500: "#2E6644",
-  g400: "#3E8258",
-  g300: "#62A87A",
-  g200: "#9ECFB0",
-  g100: "#D4EDE0",
-  g50: "#EDF7F2",
+  // Eucalyptus — primary brand (Day 3 locked)
+  g900: "#0B2F23",
+  g800: "#114836",
+  g700: "#18604F",
+  g600: "#207A66",
+  g500: "#2A957F", // anchor — primary CTA, brand fill
+  g400: "#36B399",
+  g300: "#5CC0A4",
+  g200: "#95CDBA",
+  g100: "#D6EFE1",
+  g50: "#ECFBF6",
 
   // Surfaces
   bg: "#F3F5F3",

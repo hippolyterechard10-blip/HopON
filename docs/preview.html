@@ -15,16 +15,17 @@
          Design tokens — mirror of constants/colors.ts + typography.ts
       ──────────────────────────────────────────────────────────── */
       :root {
-        --g900: #0d2018;
-        --g800: #122a20;
-        --g700: #193828;
-        --g600: #224d35;
-        --g500: #2e6644;
-        --g400: #3e8258;
-        --g300: #62a87a;
-        --g200: #9ecfb0;
-        --g100: #d4ede0;
-        --g50: #edf7f2;
+        /* Eucalyptus locked Day 3 sprint (May 13, 2026) */
+        --g900: #0b2f23;
+        --g800: #114836;
+        --g700: #18604f;
+        --g600: #207a66;
+        --g500: #2a957f;
+        --g400: #36b399;
+        --g300: #5cc0a4;
+        --g200: #95cdba;
+        --g100: #d6efe1;
+        --g50: #ecfbf6;
 
         --bg: #f3f5f3;
         --surface: #ffffff;
@@ -1785,9 +1786,10 @@
       });
       document.getElementById("theme-reset")?.addEventListener("click", () => applyTheme("forest"));
 
-      // Apply persisted choice or default to Forest on load
-      let initial = "forest";
-      try { initial = localStorage.getItem("hopon-theme") || "forest"; } catch (e) {}
+      // Apply persisted choice or default to Eucalyptus on load
+      // (locked Day 3 sprint, May 13, 2026)
+      let initial = "eucalyptus";
+      try { initial = localStorage.getItem("hopon-theme") || "eucalyptus"; } catch (e) {}
       applyTheme(initial);
     </script>
   </body>

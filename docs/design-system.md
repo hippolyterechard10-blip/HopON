@@ -2,21 +2,30 @@
 
 Source of truth: `constants/colors.ts`, `constants/typography.ts`, `constants/spacing.ts`.
 
-## Colors
+## Colors — Eucalyptus (locked Day 3 sprint · May 13, 2026)
 
-Forest green primary. Muted status signals — **never alarming**, never full red.
+Eucalyptus green primary. Lululemon reference. Muted status signals — **never alarming**, never full red.
 
 | Token        | Hex       | Role                                                |
 | ------------ | --------- | --------------------------------------------------- |
-| `g900`       | `#0D2018` | Deep forest — splash, welcome, hero dark surfaces   |
-| `g700`       | `#193828` | Dark trainer/owner hero cards                       |
-| `g500`       | `#2E6644` | Primary brand · CTAs                                |
-| `g300`       | `#62A87A` | Accent dot · success-light text                     |
-| `g50`        | `#EDF7F2` | Soft brand wash · tag background                    |
+| `g900`       | `#0B2F23` | Welcome screen background · darkest shade          |
+| `g800`       | `#114836` | Deep headers (groom dark zone)                      |
+| `g700`       | `#18604F` | Dark hero cards (trainer / owner-trainer)           |
+| `g600`       | `#207A66` | Brand text · links                                  |
+| `g500`       | `#2A957F` | **Anchor · Primary CTA · brand fill**               |
+| `g400`       | `#36B399` | —                                                   |
+| `g300`       | `#5CC0A4` | Dots · mid accents                                  |
+| `g200`       | `#95CDBA` | Light accents · avatars                             |
+| `g100`       | `#D6EFE1` | Brand tag background                                |
+| `g50`        | `#ECFBF6` | Very light background · tints                       |
 | `bg`         | `#F3F5F3` | App background                                      |
 | `surface`    | `#FFFFFF` | Cards                                               |
 | `ink1` → `ink3` | `#181D18` → `#8A908A` | Text levels                              |
 | `ok` / `warn` / `alert` | green / amber / terracotta — muted, with matching `*Bg` and `*Dot` companions |
+
+**Why Eucalyptus** (Day 3): Optimal compromise — universal, works on every UI element. Mint = "too girly" for the masculine target. Teal = goes out of style. Jade = flat on buttons. Cypress = too dark, less modern.
+
+**Usage rule**: moderate use — primary CTAs only. The rest stays in ink/surface/border neutrals.
 
 ## Typography
 
@@ -36,7 +45,7 @@ Forest green primary. Muted status signals — **never alarming**, never full re
 
 ## Shadows
 
-Two presets: `soft` (cards), `raised` (sheets / modals). Color tinted to `#0D2018` for green-tinged elevation.
+Two presets: `soft` (cards), `raised` (sheets / modals). Color tinted to `#0B2F23` for eucalyptus-tinged elevation.
 
 ## Components
 
@@ -48,6 +57,9 @@ Implemented in `components/ui/`:
 - `Tag` — `neutral | ok | warn | alert | brand`
 - `StatusDot` — 6 / 8 / 10 px green-amber-terracotta-neutral dot
 - `AlertBar` — left-bar accent row (never full red background)
+- `Input` — labeled input with focus / error / helper states
+- `Skeleton` — animated loading placeholder
+- `EmptyState` — first-time-empty placeholder card
 
 ## UX hard rules
 
