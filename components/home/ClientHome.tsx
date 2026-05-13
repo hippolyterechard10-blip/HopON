@@ -1,7 +1,7 @@
+import { useRouter } from "expo-router";
 import { Image } from "expo-image";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 
-import { AlertBar } from "@/components/ui/AlertBar";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { EmptyState } from "@/components/ui/EmptyState";
@@ -9,6 +9,7 @@ import { Tag } from "@/components/ui/Tag";
 import { Text } from "@/components/ui/Text";
 import { colors } from "@/constants/colors";
 import { radii, spacing } from "@/constants/spacing";
+import { useBarnNews } from "@/hooks/useBarnNews";
 import { useHorses } from "@/hooks/useHorses";
 import { useUpcomingForClient } from "@/hooks/useUpcomingForClient";
 import { formatDayLabel, formatTime } from "@/lib/dateRange";
@@ -16,14 +17,18 @@ import { useAuthStore } from "@/stores/authStore";
 import { useBarnStore } from "@/stores/barnStore";
 
 export function ClientHome() {
+  const router = useRouter();
   const barnId = useBarnStore((s) => s.currentBarnId);
   const userId = useAuthStore((s) => s.user?.id);
   const horsesQ = useHorses(barnId);
   const upcomingQ = useUpcomingForClient(barnId, userId);
+  const newsQ = useBarnNews(barnId, 3);
 
   // A client's horse is the first horse where owner_id matches them.
   const myHorse = (horsesQ.data ?? []).find((h) => h.owner_id === userId) ?? null;
   const upcoming = (upcomingQ.data ?? []).slice(0, 5);
+  const lessonsThisMonth = (upcomingQ.data ?? []).filter((u) => u.kind === "lesson").length;
+  const next = upcoming[0];
 
   return (
     <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
@@ -43,17 +48,31 @@ export function ClientHome() {
         </View>
       </View>
 
-      <Card variant="dark" padding="lg" style={styles.bookCard}>
-        <View style={{ flex: 1 }}>
-          <Text variant="eyebrow" color="g200">
-            BOOK A LESSON
-          </Text>
-          <Text variant="h2" color="white" style={{ marginTop: 2 }}>
-            Your next ride is one tap away.
-          </Text>
-        </View>
-        <Button label="Book" variant="secondary" size="md" />
-      </Card>
+      <View style={styles.statRow}>
+        <Stat label="Health" value="Good" tone="ok" />
+        <Stat label="Lessons booked" value={String(lessonsThisMonth)} />
+        <Stat
+          label="Next ride"
+          value={next ? formatDayLabel(next.starts_at) : "—"}
+        />
+      </View>
+
+      <Pressable onPress={() => router.push("/(app)/booking")}>
+        <Card variant="dark" padding="lg" style={styles.bookCard}>
+          <View style={{ flex: 1 }}>
+            <Text variant="eyebrow" color="g200">
+              BOOK A LESSON
+            </Text>
+            <Text variant="h2" color="white" style={{ marginTop: 2 }}>
+              Your next ride is one tap away.
+            </Text>
+            <Text variant="caption" color="g200" style={{ marginTop: 6 }}>
+              Lessons, jump sessions, or a farrier visit.
+            </Text>
+          </View>
+          <Button label="Book" variant="secondary" size="md" onPress={() => router.push("/(app)/booking")} />
+        </Card>
+      </Pressable>
 
       <Section title="Upcoming">
         {upcomingQ.isLoading ? (
@@ -96,7 +115,52 @@ export function ClientHome() {
           </Card>
         )}
       </Section>
+
+      <Section title="From the barn">
+        {newsQ.isLoading ? (
+          <Card padding="md">
+            <Text variant="caption" color="ink3">
+              Loading…
+            </Text>
+          </Card>
+        ) : (newsQ.data ?? []).length === 0 ? (
+          <EmptyState
+            emoji="📰"
+            title="Quiet at the barn."
+            subtitle="Announcements from your trainer will appear here."
+          />
+        ) : (
+          <Card padding="none">
+            {(newsQ.data ?? []).map((n, i) => (
+              <View
+                key={n.id}
+                style={[styles.newsRow, i !== 0 && { borderTopWidth: 1, borderTopColor: colors.border }]}
+              >
+                <Text variant="caption" color="ink3" style={{ width: 64 }}>
+                  {new Date(n.created_at).toLocaleDateString(undefined, { month: "short", day: "numeric" })}
+                </Text>
+                <Text variant="body" style={{ flex: 1 }}>
+                  {n.title}
+                </Text>
+              </View>
+            ))}
+          </Card>
+        )}
+      </Section>
     </ScrollView>
+  );
+}
+
+function Stat({ label, value, tone = "neutral" }: { label: string; value: string; tone?: "neutral" | "ok" }) {
+  return (
+    <Card padding="sm" style={{ flex: 1 }}>
+      <Text variant="label" color="ink3">
+        {label.toUpperCase()}
+      </Text>
+      <Text variant="h3" color={tone === "ok" ? "ok" : "ink1"} style={{ marginTop: 2 }}>
+        {value}
+      </Text>
+    </Card>
   );
 }
 
@@ -133,6 +197,7 @@ const styles = StyleSheet.create({
     color: colors.white,
     letterSpacing: -0.5,
   },
+  statRow: { flexDirection: "row", gap: spacing.s },
   bookCard: { flexDirection: "row", alignItems: "center", gap: spacing.sm },
   row: {
     flexDirection: "row",
@@ -141,4 +206,11 @@ const styles = StyleSheet.create({
     padding: spacing.md,
   },
   dayCol: { width: 56 },
+  newsRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.sm,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+  },
 });

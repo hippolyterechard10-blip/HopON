@@ -49,6 +49,13 @@ export function TrainerHome({ topStrip }: Props) {
         <Text variant="display" color="ink1">
           Good morning.
         </Text>
+        {!lessonsQ.isLoading ? (
+          <Text variant="bodyMedium" color="ink2" style={{ marginTop: spacing.xs }}>
+            {lessons.length === 0
+              ? "Nothing on the schedule. Time to fill the day."
+              : `${lessons.length} ${lessons.length === 1 ? "lesson" : "lessons"} booked today · ${lessons.filter((l) => l.is_paid).length} paid`}
+          </Text>
+        ) : null}
       </View>
 
       {lessonsQ.isLoading ? (
