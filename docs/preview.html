@@ -132,6 +132,72 @@
       .tab.active { background: var(--g500); color: white; }
 
       /* ────────────────────────────────────────────────────────────
+         Theme picker — switch the brand ramp in place
+      ──────────────────────────────────────────────────────────── */
+      .themes {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 24px 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .themes-label {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 1.4px;
+        text-transform: uppercase;
+        color: var(--ink3);
+      }
+      .theme-swatch {
+        position: relative;
+        height: 28px;
+        padding: 0 12px 0 36px;
+        border-radius: 999px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--ink2);
+        font-size: 12px;
+        font-weight: 500;
+        font-family: var(--sans);
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: border-color 120ms ease, transform 120ms ease;
+      }
+      .theme-swatch::before {
+        content: "";
+        position: absolute;
+        left: 4px;
+        top: 4px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: var(--swatch);
+        box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+      }
+      .theme-swatch:hover {
+        border-color: rgba(0, 0, 0, 0.18);
+        transform: translateY(-1px);
+      }
+      .theme-swatch.active {
+        border-color: var(--ink1);
+        background: var(--bg);
+      }
+      .theme-reset {
+        margin-left: auto;
+        font-size: 11px;
+        color: var(--ink3);
+        background: transparent;
+        border: 0;
+        cursor: pointer;
+        text-decoration: underline;
+        font-family: var(--sans);
+      }
+
+      /* ────────────────────────────────────────────────────────────
          Phone frames + gallery
       ──────────────────────────────────────────────────────────── */
       main {
@@ -600,6 +666,17 @@
         <button class="tab" data-target="day">Calendar day</button>
         <button class="tab" data-target="booking">Booking flow</button>
         <button class="tab" data-target="components">Components</button>
+      </div>
+      <div class="themes" id="themes">
+        <span class="themes-label">PALETTE</span>
+        <button class="theme-swatch" data-theme="forest" style="--swatch: #2E6644">Forest</button>
+        <button class="theme-swatch" data-theme="teal" style="--swatch: #1F9B90">Teal</button>
+        <button class="theme-swatch" data-theme="eucalyptus" style="--swatch: #2A957F">Eucalyptus</button>
+        <button class="theme-swatch" data-theme="lagoon" style="--swatch: #056773">Lagoon</button>
+        <button class="theme-swatch" data-theme="slate" style="--swatch: #254D4C">Slate</button>
+        <button class="theme-swatch" data-theme="sage" style="--swatch: #5C7E31">Sage</button>
+        <button class="theme-swatch" data-theme="moss" style="--swatch: #2D6E3B">Moss</button>
+        <button class="theme-reset" id="theme-reset">Reset</button>
       </div>
     </header>
 
@@ -1474,11 +1551,11 @@
           <h2>Forest green. Muted signals. Never alarming.</h2>
           <p>The palette mirrors <code>constants/colors.ts</code> 1-to-1. Status colors are intentionally desaturated so urgent never reads as panic.</p>
           <div class="swatches">
-            <div class="swatch"><div class="chip" style="background:#0D2018"></div><div class="meta"><div class="name">g900</div><div class="hex">#0D2018</div></div></div>
-            <div class="swatch"><div class="chip" style="background:#193828"></div><div class="meta"><div class="name">g700</div><div class="hex">#193828</div></div></div>
-            <div class="swatch"><div class="chip" style="background:#2E6644"></div><div class="meta"><div class="name">g500</div><div class="hex">#2E6644</div></div></div>
-            <div class="swatch"><div class="chip" style="background:#62A87A"></div><div class="meta"><div class="name">g300</div><div class="hex">#62A87A</div></div></div>
-            <div class="swatch"><div class="chip" style="background:#EDF7F2"></div><div class="meta"><div class="name">g50</div><div class="hex">#EDF7F2</div></div></div>
+            <div class="swatch"><div class="chip" data-token="g900" style="background:#0D2018"></div><div class="meta"><div class="name">g900</div><div class="hex">#0D2018</div></div></div>
+            <div class="swatch"><div class="chip" data-token="g700" style="background:#193828"></div><div class="meta"><div class="name">g700</div><div class="hex">#193828</div></div></div>
+            <div class="swatch"><div class="chip" data-token="g500" style="background:#2E6644"></div><div class="meta"><div class="name">g500</div><div class="hex">#2E6644</div></div></div>
+            <div class="swatch"><div class="chip" data-token="g300" style="background:#62A87A"></div><div class="meta"><div class="name">g300</div><div class="hex">#62A87A</div></div></div>
+            <div class="swatch"><div class="chip" data-token="g50" style="background:#EDF7F2"></div><div class="meta"><div class="name">g50</div><div class="hex">#EDF7F2</div></div></div>
             <div class="swatch"><div class="chip" style="background:#F3F5F3"></div><div class="meta"><div class="name">bg</div><div class="hex">#F3F5F3</div></div></div>
             <div class="swatch"><div class="chip" style="background:#FFFFFF; border-bottom:1px solid var(--border)"></div><div class="meta"><div class="name">surface</div><div class="hex">#FFFFFF</div></div></div>
             <div class="swatch"><div class="chip" style="background:#4CAF73"></div><div class="meta"><div class="name">ok-dot</div><div class="hex">#4CAF73</div></div></div>
@@ -1595,6 +1672,80 @@
           if (el) el.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" });
         });
       });
+
+      // ──────────────────────────────────────────────────────────
+      // Theme picker — swap the brand ramp in place
+      // ──────────────────────────────────────────────────────────
+      const THEMES = {
+        forest: {
+          g50: "#EDF7F2", g100: "#D4EDE0", g200: "#9ECFB0", g300: "#62A87A",
+          g400: "#3E8258", g500: "#2E6644", g600: "#224D35", g700: "#193828",
+          g800: "#122A20", g900: "#0D2018",
+        },
+        teal: {
+          g50: "#E6F5F4", g100: "#C8E8E5", g200: "#98D2C9", g300: "#60B9AC",
+          g400: "#2EA293", g500: "#1F9B90", g600: "#178379", g700: "#126963",
+          g800: "#0E4F4B", g900: "#0A3431",
+        },
+        eucalyptus: {
+          g50: "#ECFBF6", g100: "#D6EFE1", g200: "#95CDBA", g300: "#5CC0A4",
+          g400: "#36B399", g500: "#2A957F", g600: "#207A66", g700: "#18604F",
+          g800: "#114836", g900: "#0B2F23",
+        },
+        lagoon: {
+          g50: "#E8F2F4", g100: "#CADFE0", g200: "#7ABBBE", g300: "#4F9DA1",
+          g400: "#1A8590", g500: "#056773", g600: "#0A535C", g700: "#0C3F46",
+          g800: "#0B2C32", g900: "#08191D",
+        },
+        slate: {
+          g50: "#E9EEEE", g100: "#C8D5D4", g200: "#8DBEB0", g300: "#5DB3AE",
+          g400: "#3A8784", g500: "#254D4C", g600: "#1E3F3E", g700: "#18302F",
+          g800: "#11201F", g900: "#0B1413",
+        },
+        sage: {
+          g50: "#F0F5EA", g100: "#DBE7C9", g200: "#B7CC92", g300: "#94B065",
+          g400: "#739742", g500: "#5C7E31", g600: "#486323", g700: "#364B19",
+          g800: "#243310", g900: "#131C08",
+        },
+        moss: {
+          g50: "#EBF4E7", g100: "#C8E0BD", g200: "#94C586", g300: "#5DA85B",
+          g400: "#3D8B47", g500: "#2D6E3B", g600: "#225530", g700: "#194025",
+          g800: "#102B19", g900: "#0A1A10",
+        },
+      };
+
+      function applyTheme(name) {
+        const t = THEMES[name];
+        if (!t) return;
+        const root = document.documentElement;
+        for (const [k, v] of Object.entries(t)) {
+          root.style.setProperty("--" + k, v);
+        }
+        document.querySelectorAll(".theme-swatch").forEach((b) => {
+          b.classList.toggle("active", b.dataset.theme === name);
+        });
+        // Refresh the palette swatches in the component gallery so the
+        // hex labels reflect the active theme.
+        document.querySelectorAll("[data-token]").forEach((el) => {
+          const key = el.dataset.token;
+          if (t[key]) {
+            el.style.background = t[key];
+            const hex = el.parentElement?.querySelector(".hex");
+            if (hex) hex.textContent = t[key].toUpperCase();
+          }
+        });
+        try { localStorage.setItem("hopon-theme", name); } catch (e) {}
+      }
+
+      document.querySelectorAll(".theme-swatch").forEach((b) => {
+        b.addEventListener("click", () => applyTheme(b.dataset.theme));
+      });
+      document.getElementById("theme-reset")?.addEventListener("click", () => applyTheme("forest"));
+
+      // Apply persisted choice or default to Forest on load
+      let initial = "forest";
+      try { initial = localStorage.getItem("hopon-theme") || "forest"; } catch (e) {}
+      applyTheme(initial);
     </script>
   </body>
 </html>
