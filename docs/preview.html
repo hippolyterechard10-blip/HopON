@@ -674,6 +674,7 @@
         <button class="tab" data-target="fab">FAB menu</button>
         <button class="tab" data-target="horse-activity">Horse · Activity</button>
         <button class="tab" data-target="horse-health">Horse · Health</button>
+        <button class="tab" data-target="news-compose">Post composer</button>
         <button class="tab" data-target="components">Components</button>
       </div>
       <div class="themes" id="themes">
@@ -1999,6 +2000,76 @@
                     <button class="btn primary md fw">Choose file</button>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- POST COMPOSER -->
+          <div class="screen-wrap" id="screen-news-compose">
+            <div class="screen-label">Day 3 · <span>news/new.tsx</span></div>
+            <div class="phone">
+              <div class="notch"></div>
+              <div class="statusbar"><span>9:41</span><span class="right">●●● ●</span></div>
+              <div class="body">
+                <div class="screen-body">
+                  <div>
+                    <div class="t-eyebrow">NEW POST</div>
+                    <div class="t-display" style="margin-top:4px">Post to the barn.</div>
+                  </div>
+
+                  <div style="display:flex; flex-direction:column; gap:8px;">
+                    <span class="t-label c-ink2" style="letter-spacing:0.2px;">HEADLINE</span>
+                    <div style="background:var(--surface); border:1px solid var(--g500); border-radius:12px; padding:12px 16px;">
+                      <span class="t-body">Wellington show registration closes Friday</span>
+                    </div>
+                  </div>
+
+                  <div style="display:flex; flex-direction:column; gap:8px;">
+                    <span class="t-label c-ink2" style="letter-spacing:0.2px;">DETAILS (OPTIONAL)</span>
+                    <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px 16px; min-height:64px;">
+                      <span class="t-caption c-ink3">Reminder for everyone competing this weekend…</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <span class="t-label c-ink2" style="letter-spacing:0.2px;">AUDIENCE</span>
+                    <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;">
+                      <div style="padding:6px 12px; border-radius:999px; background:var(--g50); border:1px solid var(--g100);">
+                        <span class="t-label c-g600">@all</span>
+                      </div>
+                      <div style="padding:6px 12px; border-radius:999px; background:var(--g500); border:1px solid var(--g500);">
+                        <span class="t-label c-white">@team</span>
+                      </div>
+                      <div style="padding:6px 12px; border-radius:999px; background:var(--g50); border:1px solid var(--g100);">
+                        <span class="t-label c-g600">@owners</span>
+                      </div>
+                      <div style="padding:6px 12px; border-radius:999px; background:var(--g500); border:1px solid var(--g500);">
+                        <span class="t-label c-white">@Competition</span>
+                      </div>
+                      <div style="padding:6px 12px; border-radius:999px; background:var(--g50); border:1px solid var(--g100);">
+                        <span class="t-label c-g600">@Beginners</span>
+                      </div>
+                      <div style="padding:6px 12px; border-radius:999px; background:var(--g50); border:1px solid var(--g100);">
+                        <span class="t-label c-g600">@Boarders</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="card pad-md">
+                    <div class="t-eyebrow">CUSTOM GROUPS</div>
+                    <div class="t-caption c-ink2" style="margin-top:4px">Create a tag like "Competition" or "Beginners" so posts can target a subset.</div>
+                    <div style="display:flex; gap:8px; margin-top:10px; align-items:flex-end;">
+                      <div style="flex:1; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:10px 14px;">
+                        <span class="t-caption c-ink3">Junior riders</span>
+                      </div>
+                      <button class="btn secondary md">Add</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div style="padding:16px 20px; background:var(--surface); border-top:1px solid var(--border); display:flex; flex-direction:column; gap:4px;">
+                <button class="btn primary lg fw">Post</button>
+                <button class="btn ghost md fw">Cancel</button>
               </div>
             </div>
           </div>

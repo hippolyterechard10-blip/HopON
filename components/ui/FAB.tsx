@@ -25,7 +25,7 @@ const PETALS: Petal[] = [
   { id: "lesson", label: "Lesson", emoji: "🎯", path: "/(app)/booking" },
   { id: "event", label: "Event", emoji: "📅" },
   { id: "todo", label: "To-Do", emoji: "✅", path: "/(app)/tasks/new" },
-  { id: "post", label: "Post", emoji: "📝" },
+  { id: "post", label: "Post", emoji: "📝", path: "/(app)/news/new" },
 ];
 
 const FAB_SIZE = 56;
