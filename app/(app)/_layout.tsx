@@ -1,8 +1,28 @@
 import { Tabs } from "expo-router";
-import { Calendar, Home as HomeIcon, ListChecks, MoreHorizontal, NotebookText } from "lucide-react-native";
+import {
+  BarChart3,
+  Calendar,
+  ClipboardList,
+  Home as HomeIcon,
+  Warehouse,
+} from "lucide-react-native";
 
 import { colors } from "@/constants/colors";
 
+/**
+ * Day 3 navigation architecture (sprint May 13, 2026):
+ *
+ *   Home · Calendar · Whiteboard · MyStable · Dashboard
+ *
+ * Whiteboard replaces the old "Tasks" tab — same data, different framing
+ * (operational columns by person/horse instead of a flat list).
+ * MyStable consolidates the old Horses + Team + Clients + Partners tabs
+ * into a single screen with a segmented control.
+ *
+ * Anything outside the 5 tabs (booking, lessons, settings, notifications,
+ * legacy /horses route, /tasks/* deep links, /invoices) stays reachable
+ * via router.push but is hidden from the tab bar with `href: null`.
+ */
 export default function AppLayout() {
   return (
     <Tabs
@@ -35,34 +55,36 @@ export default function AppLayout() {
         }}
       />
       <Tabs.Screen
-        name="horses"
+        name="whiteboard"
         options={{
-          title: "Horses",
-          tabBarIcon: ({ color, size }) => <NotebookText color={color} size={size - 4} />,
+          title: "Whiteboard",
+          tabBarIcon: ({ color, size }) => <ClipboardList color={color} size={size - 4} />,
         }}
       />
       <Tabs.Screen
-        name="tasks"
+        name="mystable"
         options={{
-          title: "Tasks",
-          tabBarIcon: ({ color, size }) => <ListChecks color={color} size={size - 4} />,
+          title: "My Stable",
+          tabBarIcon: ({ color, size }) => <Warehouse color={color} size={size - 4} />,
         }}
       />
       <Tabs.Screen
-        name="more"
+        name="dashboard"
         options={{
-          title: "More",
-          tabBarIcon: ({ color, size }) => <MoreHorizontal color={color} size={size - 4} />,
+          title: "Dashboard",
+          tabBarIcon: ({ color, size }) => <BarChart3 color={color} size={size - 4} />,
         }}
       />
-      {/* Hidden from the tab bar but reachable via router.push */}
+
+      {/* Reachable via router.push, hidden from the tab bar */}
       <Tabs.Screen name="booking" options={{ href: null }} />
-      <Tabs.Screen name="team" options={{ href: null }} />
-      <Tabs.Screen name="notifications" options={{ href: null }} />
-      <Tabs.Screen name="settings" options={{ href: null }} />
-      <Tabs.Screen name="dashboard" options={{ href: null }} />
+      <Tabs.Screen name="horses" options={{ href: null }} />
       <Tabs.Screen name="lessons" options={{ href: null }} />
       <Tabs.Screen name="invoices" options={{ href: null }} />
+      <Tabs.Screen name="notifications" options={{ href: null }} />
+      <Tabs.Screen name="settings" options={{ href: null }} />
+      <Tabs.Screen name="tasks" options={{ href: null }} />
+      <Tabs.Screen name="team" options={{ href: null }} />
     </Tabs>
   );
 }

@@ -315,6 +315,9 @@
       .tab-horse { mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M4 4h16v16H4z M4 9h16 M9 4v16'/%3E%3C/svg%3E"); }
       .tab-team { mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Ccircle cx='9' cy='8' r='3'/%3E%3Cpath d='M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2'/%3E%3Cpath d='M17 11a3 3 0 1 0-2-5'/%3E%3C/svg%3E"); }
       .tab-more { mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Ccircle cx='5' cy='12' r='1.4'/%3E%3Ccircle cx='12' cy='12' r='1.4'/%3E%3Ccircle cx='19' cy='12' r='1.4'/%3E%3C/svg%3E"); }
+      .tab-board { mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Crect x='8' y='2' width='8' height='4' rx='1'/%3E%3Cpath d='M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2'/%3E%3Cpath d='M9 12h6M9 16h6'/%3E%3C/svg%3E"); }
+      .tab-stable { mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M22 8.35V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8.35'/%3E%3Cpath d='M22 8.35 12 2 2 8.35'/%3E%3Cpath d='M6 18v-6h12v6'/%3E%3C/svg%3E"); }
+      .tab-dash { mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M3 3v18h18'/%3E%3Cpath d='M7 14l4-4 4 4 4-6'/%3E%3C/svg%3E"); }
 
       /* ────────────────────────────────────────────────────────────
          Text helpers — match RN textVariants
@@ -666,6 +669,8 @@
         <button class="tab" data-target="horse">Horse detail</button>
         <button class="tab" data-target="day">Calendar day</button>
         <button class="tab" data-target="booking">Booking flow</button>
+        <button class="tab" data-target="whiteboard">Whiteboard</button>
+        <button class="tab" data-target="mystable">My Stable</button>
         <button class="tab" data-target="components">Components</button>
       </div>
       <div class="themes" id="themes">
@@ -907,9 +912,9 @@
               <div class="tabbar">
                 <div class="tab-item active"><div class="tab-icon tab-home"></div>Home</div>
                 <div class="tab-item"><div class="tab-icon tab-cal"></div>Calendar</div>
-                <div class="tab-item"><div class="tab-icon tab-horse"></div>Horses</div>
-                <div class="tab-item"><div class="tab-icon tab-team"></div>Team</div>
-                <div class="tab-item"><div class="tab-icon tab-more"></div>More</div>
+                <div class="tab-item"><div class="tab-icon tab-board"></div>Whiteboard</div>
+                <div class="tab-item"><div class="tab-icon tab-stable"></div>My Stable</div>
+                <div class="tab-item"><div class="tab-icon tab-dash"></div>Dashboard</div>
               </div>
             </div>
           </div>
@@ -1024,9 +1029,9 @@
               <div class="tabbar">
                 <div class="tab-item active"><div class="tab-icon tab-home"></div>Home</div>
                 <div class="tab-item"><div class="tab-icon tab-cal"></div>Calendar</div>
-                <div class="tab-item"><div class="tab-icon tab-horse"></div>Horses</div>
-                <div class="tab-item"><div class="tab-icon tab-team"></div>Clients</div>
-                <div class="tab-item"><div class="tab-icon tab-more"></div>More</div>
+                <div class="tab-item"><div class="tab-icon tab-board"></div>Whiteboard</div>
+                <div class="tab-item"><div class="tab-icon tab-stable"></div>My Stable</div>
+                <div class="tab-item"><div class="tab-icon tab-dash"></div>Dashboard</div>
               </div>
             </div>
           </div>
@@ -1126,10 +1131,10 @@
               <div class="tabbar">
                 <div class="tab-item active"><div class="tab-icon tab-home"></div>Home</div>
                 <div class="tab-item"><div class="tab-icon tab-cal"></div>Calendar</div>
-                <div class="tab-item"><div class="tab-icon tab-horse"></div>Horses</div>
-                <div class="tab-item"><div class="tab-icon tab-team"></div>Clients</div>
+                <div class="tab-item"><div class="tab-icon tab-board"></div>Whiteboard</div>
+                <div class="tab-item"><div class="tab-icon tab-stable"></div>My Stable</div>
                 <div class="tab-item">
-                  <div class="tab-icon tab-more"></div>
+                  <div class="tab-icon tab-dash"></div>
                   Dashboard
                 </div>
               </div>
@@ -1218,10 +1223,10 @@
               </div>
               <div class="tabbar">
                 <div class="tab-item active"><div class="tab-icon tab-home"></div>Home</div>
-                <div class="tab-item"><div class="tab-icon tab-cal"></div>Tasks</div>
-                <div class="tab-item"><div class="tab-icon tab-horse"></div>Horses</div>
-                <div class="tab-item"><div class="tab-icon tab-team"></div>Messages</div>
-                <div class="tab-item"><div class="tab-icon tab-more"></div>More</div>
+                <div class="tab-item"><div class="tab-icon tab-cal"></div>Calendar</div>
+                <div class="tab-item"><div class="tab-icon tab-board"></div>Whiteboard</div>
+                <div class="tab-item"><div class="tab-icon tab-stable"></div>My Stable</div>
+                <div class="tab-item"><div class="tab-icon tab-dash"></div>Dashboard</div>
               </div>
             </div>
           </div>
@@ -1333,10 +1338,10 @@
               </div>
               <div class="tabbar">
                 <div class="tab-item active"><div class="tab-icon tab-home"></div>Home</div>
-                <div class="tab-item"><div class="tab-icon tab-horse"></div>My Horse</div>
-                <div class="tab-item"><div class="tab-icon tab-cal"></div>Book</div>
-                <div class="tab-item"><div class="tab-icon tab-team"></div>Messages</div>
-                <div class="tab-item"><div class="tab-icon tab-more"></div>More</div>
+                <div class="tab-item"><div class="tab-icon tab-cal"></div>Calendar</div>
+                <div class="tab-item"><div class="tab-icon tab-board"></div>Whiteboard</div>
+                <div class="tab-item"><div class="tab-icon tab-stable"></div>My Stable</div>
+                <div class="tab-item"><div class="tab-icon tab-dash"></div>Dashboard</div>
               </div>
             </div>
           </div>
@@ -1466,9 +1471,9 @@
               <div class="tabbar">
                 <div class="tab-item"><div class="tab-icon tab-home"></div>Home</div>
                 <div class="tab-item active"><div class="tab-icon tab-cal"></div>Calendar</div>
-                <div class="tab-item"><div class="tab-icon tab-horse"></div>Horses</div>
-                <div class="tab-item"><div class="tab-icon tab-team"></div>Team</div>
-                <div class="tab-item"><div class="tab-icon tab-more"></div>More</div>
+                <div class="tab-item"><div class="tab-icon tab-board"></div>Whiteboard</div>
+                <div class="tab-item"><div class="tab-icon tab-stable"></div>My Stable</div>
+                <div class="tab-item"><div class="tab-icon tab-dash"></div>Dashboard</div>
               </div>
             </div>
           </div>
@@ -1559,6 +1564,196 @@
                   <span class="t-h2">$120</span>
                 </div>
                 <button class="btn primary lg fw">Confirm booking</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- WHITEBOARD -->
+          <div class="screen-wrap" id="screen-whiteboard">
+            <div class="screen-label">Day 3 · <span>whiteboard.tsx</span></div>
+            <div class="phone">
+              <div class="notch"></div>
+              <div class="statusbar"><span>9:41</span><span class="right">●●● ●</span></div>
+              <div class="body" style="padding:0">
+                <div style="padding:20px 20px 14px; background:var(--surface); border-bottom:1px solid var(--border); display:flex; flex-direction:column; gap:14px;">
+                  <div>
+                    <div class="t-eyebrow">THURSDAY · MAY 13</div>
+                    <div class="t-display" style="margin-top:4px">Whiteboard.</div>
+                  </div>
+                  <div style="display:flex; background:var(--n100); border-radius:999px; padding:3px; gap:2px;">
+                    <div style="flex:1; padding:8px 12px; border-radius:999px; background:var(--g500); text-align:center;">
+                      <span class="t-label c-white">By person</span>
+                    </div>
+                    <div style="flex:1; padding:8px 12px; border-radius:999px; text-align:center;">
+                      <span class="t-label c-ink2">By horse</span>
+                    </div>
+                  </div>
+                </div>
+                <div style="display:flex; gap:8px; overflow-x:auto; padding:18px;">
+                  <!-- Column: Jess -->
+                  <div style="flex:0 0 220px; display:flex; flex-direction:column; gap:8px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding:0 4px;">
+                      <span class="t-body-medium">Jess (Groom)</span>
+                      <span class="t-caption c-warn">2/4 · 1!</span>
+                    </div>
+                    <div class="card" style="padding:0;">
+                      <div style="display:flex; align-items:center; gap:8px; padding:8px 12px; border-bottom:1px solid var(--border);">
+                        <div class="checkbox done">✓</div>
+                        <span class="t-compressed c-ink3" style="text-decoration:line-through; opacity:0.5; flex:1">ATLAS · MEDS</span>
+                      </div>
+                      <div style="display:flex; align-items:center; gap:8px; padding:8px 12px; border-bottom:1px solid var(--border);">
+                        <div class="checkbox done">✓</div>
+                        <span class="t-compressed c-ink3" style="text-decoration:line-through; opacity:0.5; flex:1">BELLA · TURNOUT</span>
+                      </div>
+                      <div style="background:var(--warn-bg); display:flex; align-items:center; gap:8px; padding:8px 12px; border-bottom:1px solid var(--border); position:relative;">
+                        <div style="position:absolute; left:0; top:0; bottom:0; width:2.5px; background:var(--alert-dot);"></div>
+                        <div class="checkbox"></div>
+                        <span class="t-compressed" style="flex:1">! STORM · TACK UP</span>
+                      </div>
+                      <div style="display:flex; align-items:center; gap:8px; padding:8px 12px;">
+                        <div class="checkbox"></div>
+                        <span class="t-compressed" style="flex:1">INDIGO · FEED</span>
+                      </div>
+                      <div style="border-top:1px dashed var(--n200); padding:8px 12px; text-align:center;">
+                        <span class="t-caption c-ink3">+ Add</span>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Column: Mateo -->
+                  <div style="flex:0 0 220px; display:flex; flex-direction:column; gap:8px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding:0 4px;">
+                      <span class="t-body-medium">Mateo (Trainer)</span>
+                      <span class="t-caption c-ink3">1/3 · 0!</span>
+                    </div>
+                    <div class="card" style="padding:0;">
+                      <div style="display:flex; align-items:center; gap:8px; padding:8px 12px; border-bottom:1px solid var(--border);">
+                        <div class="checkbox done">✓</div>
+                        <span class="t-compressed c-ink3" style="text-decoration:line-through; opacity:0.5; flex:1">JUNO · WALK OUT</span>
+                      </div>
+                      <div style="display:flex; align-items:center; gap:8px; padding:8px 12px; border-bottom:1px solid var(--border);">
+                        <div class="checkbox"></div>
+                        <span class="t-compressed" style="flex:1">BELLA · LUNGE 20MIN</span>
+                      </div>
+                      <div style="display:flex; align-items:center; gap:8px; padding:8px 12px;">
+                        <div class="checkbox"></div>
+                        <span class="t-compressed" style="flex:1">STORM · FLATWORK</span>
+                      </div>
+                      <div style="border-top:1px dashed var(--n200); padding:8px 12px; text-align:center;">
+                        <span class="t-caption c-ink3">+ Add</span>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Column: Unassigned -->
+                  <div style="flex:0 0 220px; display:flex; flex-direction:column; gap:8px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding:0 4px;">
+                      <span class="t-body-medium">Unassigned</span>
+                      <span class="t-caption c-ink3">0/1 · 0!</span>
+                    </div>
+                    <div class="card" style="padding:0;">
+                      <div style="display:flex; align-items:center; gap:8px; padding:8px 12px;">
+                        <div class="checkbox"></div>
+                        <span class="t-compressed" style="flex:1">BARN · EVENING FEED</span>
+                      </div>
+                      <div style="border-top:1px dashed var(--n200); padding:8px 12px; text-align:center;">
+                        <span class="t-caption c-ink3">+ Add</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tabbar">
+                <div class="tab-item"><div class="tab-icon tab-home"></div>Home</div>
+                <div class="tab-item"><div class="tab-icon tab-cal"></div>Calendar</div>
+                <div class="tab-item active"><div class="tab-icon tab-board"></div>Whiteboard</div>
+                <div class="tab-item"><div class="tab-icon tab-stable"></div>My Stable</div>
+                <div class="tab-item"><div class="tab-icon tab-dash"></div>Dashboard</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- MY STABLE -->
+          <div class="screen-wrap" id="screen-mystable">
+            <div class="screen-label">Day 3 · <span>mystable.tsx</span></div>
+            <div class="phone">
+              <div class="notch"></div>
+              <div class="statusbar"><span>9:41</span><span class="right">●●● ●</span></div>
+              <div class="body" style="padding:0">
+                <div style="padding:20px 20px 14px; background:var(--surface); border-bottom:1px solid var(--border); display:flex; flex-direction:column; gap:14px;">
+                  <div style="display:flex; align-items:flex-end; gap:10px;">
+                    <div style="flex:1;">
+                      <div class="t-eyebrow">WELLINGTON PARK</div>
+                      <div class="t-display" style="margin-top:4px">My Stable.</div>
+                    </div>
+                    <div style="width:36px; height:36px; border-radius:18px; background:var(--n50); display:grid; place-items:center;">⚙️</div>
+                  </div>
+                  <div style="display:flex; background:var(--n100); border-radius:999px; padding:3px; gap:2px;">
+                    <div style="flex:1; padding:8px 12px; border-radius:999px; background:var(--g500); text-align:center;">
+                      <span class="t-label c-white">Horses</span>
+                    </div>
+                    <div style="flex:1; padding:8px 12px; border-radius:999px; text-align:center;">
+                      <span class="t-label c-ink2">Clients</span>
+                    </div>
+                    <div style="flex:1; padding:8px 12px; border-radius:999px; text-align:center;">
+                      <span class="t-label c-ink2">Team</span>
+                    </div>
+                    <div style="flex:1; padding:8px 12px; border-radius:999px; text-align:center;">
+                      <span class="t-label c-ink2">Partners</span>
+                    </div>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:8px; background:var(--n50); border-radius:999px; padding:8px 14px;">
+                    <span style="color:var(--ink3); font-size:14px;">🔍</span>
+                    <span class="t-caption c-ink3">Search…</span>
+                  </div>
+                </div>
+                <div class="screen-body">
+                  <div class="card pad-md row" style="gap:10px">
+                    <div class="avatar" style="background:var(--g100); color:var(--g700)">B</div>
+                    <div class="flex-1">
+                      <div class="t-body-medium">Bella</div>
+                      <div class="t-caption c-ink3">Hanoverian · 9y · Stall #12</div>
+                    </div>
+                    <div class="dot ok lg"></div>
+                  </div>
+                  <div class="card pad-md row" style="gap:10px">
+                    <div class="avatar" style="background:var(--g100); color:var(--g700)">S</div>
+                    <div class="flex-1">
+                      <div class="t-body-medium">Storm</div>
+                      <div class="t-caption c-ink3">Warmblood · 11y · Stall #07</div>
+                    </div>
+                    <div class="dot warn lg"></div>
+                  </div>
+                  <div class="card pad-md row" style="gap:10px">
+                    <div class="avatar" style="background:var(--g100); color:var(--g700)">I</div>
+                    <div class="flex-1">
+                      <div class="t-body-medium">Indigo</div>
+                      <div class="t-caption c-ink3">Dutch Warmblood · 7y · Stall #03</div>
+                    </div>
+                    <div class="dot ok lg"></div>
+                  </div>
+                  <div class="card pad-md row" style="gap:10px">
+                    <div class="avatar" style="background:var(--g100); color:var(--g700)">A</div>
+                    <div class="flex-1">
+                      <div class="t-body-medium">Atlas</div>
+                      <div class="t-caption c-ink3">Oldenburg · 14y · Stall #18</div>
+                    </div>
+                    <div class="dot alert lg"></div>
+                  </div>
+                  <div class="card pad-md row" style="gap:10px">
+                    <div class="avatar" style="background:var(--g100); color:var(--g700)">J</div>
+                    <div class="flex-1">
+                      <div class="t-body-medium">Juno</div>
+                      <div class="t-caption c-ink3">Selle Français · 6y · Stall #21</div>
+                    </div>
+                    <div class="dot ok lg"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="tabbar">
+                <div class="tab-item"><div class="tab-icon tab-home"></div>Home</div>
+                <div class="tab-item"><div class="tab-icon tab-cal"></div>Calendar</div>
+                <div class="tab-item"><div class="tab-icon tab-board"></div>Whiteboard</div>
+                <div class="tab-item active"><div class="tab-icon tab-stable"></div>My Stable</div>
+                <div class="tab-item"><div class="tab-icon tab-dash"></div>Dashboard</div>
               </div>
             </div>
           </div>
