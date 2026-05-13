@@ -8,6 +8,7 @@ import { Skeleton, SkeletonRow } from "@/components/ui/Skeleton";
 import { StatusDot } from "@/components/ui/StatusDot";
 import { Text } from "@/components/ui/Text";
 import { NextDueStrip } from "./NextDueStrip";
+import { OnboardingChecklist } from "./OnboardingChecklist";
 import { colors } from "@/constants/colors";
 import { spacing } from "@/constants/spacing";
 import { useBarnMetrics } from "@/hooks/useBarnMetrics";
@@ -67,6 +68,8 @@ export function OwnerHome() {
           </>
         )}
       </View>
+
+      <OnboardingChecklist />
 
       <NextDueStrip />
 
