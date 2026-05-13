@@ -1,0 +1,1460 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
+    />
+    <meta name="theme-color" content="#0B2F23" />
+    <title>HopOn · Interactive demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@1&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --g900: #0b2f23;
+        --g800: #114836;
+        --g700: #18604f;
+        --g600: #207a66;
+        --g500: #2a957f;
+        --g400: #36b399;
+        --g300: #5cc0a4;
+        --g200: #95cdba;
+        --g100: #d6efe1;
+        --g50: #ecfbf6;
+
+        --bg: #f3f5f3;
+        --surface: #ffffff;
+        --border: #e5e8e5;
+
+        --ink1: #181d18;
+        --ink2: #454a45;
+        --ink3: #8a908a;
+
+        --ok: #2e7a4f;
+        --ok-bg: #edf7f2;
+        --ok-dot: #4caf73;
+        --warn: #7a5f28;
+        --warn-bg: #faf4e8;
+        --warn-dot: #c49540;
+        --alert: #8a3d2e;
+        --alert-bg: #faf0ed;
+        --alert-dot: #b86050;
+
+        --n50: #f5f6f5;
+        --n100: #eceeed;
+        --n200: #dadddA;
+        --n400: #ababab;
+
+        --sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+        --serif: "DM Serif Display", ui-serif, Georgia, serif;
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body {
+        font-family: var(--sans);
+        color: var(--ink1);
+        background: radial-gradient(circle at 30% 0%, #d6efe1, #ededec 60%);
+        min-height: 100vh;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+      }
+
+      /* Role switcher pinned at the top */
+      .role-bar {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 8px 12px;
+        background: rgba(255, 255, 255, 0.75);
+        backdrop-filter: blur(10px);
+        border-radius: 999px;
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        box-shadow: 0 4px 12px rgba(11, 47, 35, 0.06);
+      }
+      .role-bar .lbl {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 1.4px;
+        text-transform: uppercase;
+        color: var(--ink3);
+        margin-right: 4px;
+      }
+      .role-chip {
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--ink2);
+        background: transparent;
+        border: 1px solid transparent;
+        cursor: pointer;
+        font-family: var(--sans);
+      }
+      .role-chip.active {
+        background: var(--g500);
+        color: white;
+      }
+
+      /* Phone frame */
+      .phone {
+        width: min(390px, calc(100vw - 24px));
+        height: min(844px, calc(100vh - 96px));
+        background: var(--bg);
+        border-radius: 44px;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        box-shadow:
+          0 32px 72px -20px rgba(11, 47, 35, 0.32),
+          0 6px 14px rgba(11, 47, 35, 0.08);
+        overflow: hidden;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+      }
+      @media (max-width: 420px) {
+        .phone {
+          border-radius: 32px;
+        }
+      }
+      .notch {
+        position: absolute;
+        top: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 110px;
+        height: 24px;
+        border-radius: 14px;
+        background: rgba(0, 0, 0, 0.86);
+        z-index: 30;
+      }
+      .statusbar {
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 24px 0 20px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--ink1);
+        position: relative;
+        z-index: 5;
+        flex-shrink: 0;
+      }
+      .phone.dark .statusbar { color: white; }
+      .stage {
+        flex: 1;
+        position: relative;
+        overflow: hidden;
+      }
+      .screen {
+        position: absolute;
+        inset: 0;
+        display: none;
+        flex-direction: column;
+      }
+      .screen.active { display: flex; }
+      .body {
+        flex: 1;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .body::-webkit-scrollbar { width: 0; }
+
+      /* Tab bar */
+      .tabbar {
+        height: 64px;
+        background: var(--surface);
+        border-top: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        padding: 0 4px 8px;
+        flex-shrink: 0;
+      }
+      .tab-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        color: var(--ink3);
+        font-size: 9px;
+        font-weight: 500;
+        padding: 4px 6px;
+        border: 0;
+        background: transparent;
+        cursor: pointer;
+        font-family: var(--sans);
+      }
+      .tab-item.active { color: var(--g600); }
+      .tab-icon {
+        width: 18px;
+        height: 18px;
+        background: currentColor;
+        mask-position: center;
+        mask-repeat: no-repeat;
+        mask-size: contain;
+      }
+      .ic-home { mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z'/%3E%3C/svg%3E"); }
+      .ic-cal { mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Crect x='3' y='4' width='18' height='17' rx='2'/%3E%3Cpath d='M3 9h18M8 2v4M16 2v4'/%3E%3C/svg%3E"); }
+      .ic-board { mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Crect x='8' y='2' width='8' height='4' rx='1'/%3E%3Cpath d='M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2'/%3E%3Cpath d='M9 12h6M9 16h6'/%3E%3C/svg%3E"); }
+      .ic-stable { mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M22 8.35V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8.35'/%3E%3Cpath d='M22 8.35 12 2 2 8.35'/%3E%3Cpath d='M6 18v-6h12v6'/%3E%3C/svg%3E"); }
+      .ic-dash { mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M3 3v18h18'/%3E%3Cpath d='M7 14l4-4 4 4 4-6'/%3E%3C/svg%3E"); }
+
+      /* Typography */
+      .t-hero { font-family: var(--serif); font-style: italic; font-size: 40px; line-height: 44px; letter-spacing: -0.5px; color: var(--ink1); }
+      .t-display { font-family: var(--serif); font-style: italic; font-size: 30px; line-height: 34px; letter-spacing: -0.4px; color: var(--ink1); }
+      .t-h1 { font-weight: 600; font-size: 22px; line-height: 26px; letter-spacing: -0.3px; }
+      .t-h2 { font-weight: 600; font-size: 18px; line-height: 24px; }
+      .t-h3 { font-weight: 500; font-size: 16px; line-height: 22px; }
+      .t-body { font-size: 14px; line-height: 20px; color: var(--ink1); }
+      .t-body-m { font-weight: 500; font-size: 14px; line-height: 20px; }
+      .t-caption { font-size: 12px; line-height: 16px; color: var(--ink2); }
+      .t-label { font-weight: 500; font-size: 11px; line-height: 14px; letter-spacing: 0.2px; color: var(--ink2); }
+      .t-eyebrow { font-weight: 500; font-size: 10px; line-height: 12px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ink3); }
+      .t-compressed { font-weight: 500; font-size: 14px; line-height: 18px; letter-spacing: 0.4px; color: var(--ink1); }
+      .c-white { color: white; }
+      .c-g200 { color: var(--g200); }
+      .c-g600 { color: var(--g600); }
+      .c-ink2 { color: var(--ink2); }
+      .c-ink3 { color: var(--ink3); }
+      .c-ok { color: var(--ok); }
+      .c-warn { color: var(--warn); }
+      .c-alert { color: var(--alert); }
+
+      /* Components */
+      .card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; }
+      .card.dark { background: var(--g700); border-color: var(--g700); color: white; }
+      .card.elevated { box-shadow: 0 8px 24px rgba(11, 47, 35, 0.06); border-color: transparent; }
+      .pad-s { padding: 10px; }
+      .pad-m { padding: 14px; }
+      .pad-l { padding: 18px; }
+      .row { display: flex; align-items: center; gap: 10px; }
+      .col { display: flex; flex-direction: column; }
+      .flex1 { flex: 1; }
+      .gap-4 { gap: 4px; } .gap-6 { gap: 6px; } .gap-8 { gap: 8px; } .gap-12 { gap: 12px; } .gap-16 { gap: 16px; }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        border-radius: 999px;
+        cursor: pointer;
+        border: 0;
+        font-family: var(--sans);
+        font-weight: 500;
+        font-size: 14px;
+      }
+      .btn.primary { background: var(--g500); color: white; }
+      .btn.secondary { background: var(--surface); color: var(--ink1); border: 1px solid var(--border); }
+      .btn.dark-secondary { background: rgba(255,255,255,0.12); color: white; }
+      .btn.ghost { background: transparent; color: var(--ink2); }
+      .btn.dest { background: var(--alert); color: white; }
+      .btn.sm { padding: 8px 14px; font-size: 12px; }
+      .btn.md { padding: 11px 20px; }
+      .btn.lg { padding: 14px 22px; font-size: 15px; }
+      .btn.fw { width: 100%; }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 3px 8px;
+        border-radius: 6px;
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+      }
+      .pill.brand { background: var(--g50); color: var(--g600); }
+      .pill.ok { background: var(--ok-bg); color: var(--ok); }
+      .pill.warn { background: var(--warn-bg); color: var(--warn); }
+      .pill.alert { background: var(--alert-bg); color: var(--alert); }
+      .pill.neutral { background: var(--n100); color: var(--ink2); }
+
+      .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--n400); flex-shrink: 0; }
+      .dot.ok { background: var(--ok-dot); }
+      .dot.warn { background: var(--warn-dot); }
+      .dot.alert { background: var(--alert-dot); }
+      .dot.lg { width: 8px; height: 8px; }
+
+      .avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--g100);
+        color: var(--g700);
+        display: grid;
+        place-items: center;
+        font-weight: 600;
+        font-size: 13px;
+        flex-shrink: 0;
+      }
+
+      .alert-bar { display: flex; align-items: stretch; border-radius: 10px; overflow: hidden; }
+      .alert-bar .bar { width: 2px; }
+      .alert-bar .content { flex: 1; padding: 10px 14px; }
+      .alert-bar.alert { background: var(--alert-bg); }
+      .alert-bar.alert .bar { background: var(--alert-dot); }
+      .alert-bar.warn { background: var(--warn-bg); }
+      .alert-bar.warn .bar { background: var(--warn-dot); }
+
+      .segmented {
+        display: flex;
+        background: var(--n100);
+        border-radius: 999px;
+        padding: 3px;
+        gap: 2px;
+      }
+      .segmented .seg {
+        flex: 1;
+        padding: 8px 12px;
+        border-radius: 999px;
+        text-align: center;
+        cursor: pointer;
+        background: transparent;
+        border: 0;
+        font-family: var(--sans);
+      }
+      .segmented .seg.active { background: var(--g500); }
+      .segmented .seg.active span { color: white !important; }
+
+      /* Welcome screen */
+      .welcome {
+        flex: 1;
+        background: var(--g900);
+        color: white;
+        padding: 40px 28px 28px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .welcome .brand { display: flex; align-items: center; gap: 10px; }
+      .welcome .mark {
+        width: 44px; height: 44px; border-radius: 12px; background: var(--g500);
+        display: grid; place-items: center;
+        font-family: var(--serif); font-style: italic; font-size: 22px; color: white;
+      }
+      .welcome .word {
+        font-family: var(--serif); font-style: italic;
+        font-size: 32px; letter-spacing: -0.5px;
+      }
+      .welcome .word span { color: var(--g200); }
+      .welcome .hero {
+        font-family: var(--serif); font-style: italic;
+        font-size: 44px; line-height: 48px; letter-spacing: -0.6px;
+      }
+      .welcome .sub { color: var(--g200); font-size: 15px; line-height: 22px; margin-top: 14px; max-width: 300px; }
+
+      /* Screen-specific layout */
+      .screen-body {
+        padding: 18px 20px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+      .metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+      .metric { padding: 12px; }
+      .metric .label { font-size: 11px; color: var(--ink3); font-weight: 500; letter-spacing: 0.2px; }
+      .metric .value { font-size: 22px; font-weight: 600; line-height: 26px; margin-top: 2px; letter-spacing: -0.3px; }
+      .metric .delta { font-size: 12px; color: var(--ok); }
+      .metric .value.warn { color: var(--warn); }
+
+      .event-row { display: flex; align-items: center; gap: 12px; padding: 12px 14px; }
+      .event-row + .event-row { border-top: 1px solid var(--border); }
+      .event-row .meta { font-size: 12px; color: var(--ink3); }
+
+      .news-row { display: flex; gap: 10px; padding: 12px 14px; }
+      .news-row + .news-row { border-top: 1px solid var(--border); }
+      .news-row .date { width: 52px; font-size: 12px; color: var(--ink3); }
+
+      /* Owner / Trainer hero */
+      .trainer-hero { background: var(--g700); color: white; border-radius: 16px; padding: 18px; }
+      .trainer-hero .time {
+        font-family: var(--serif); font-style: italic;
+        font-size: 52px; line-height: 56px; letter-spacing: -1px; margin-top: 4px;
+      }
+
+      /* Groom header */
+      .groom-header {
+        background: var(--g800); color: white;
+        padding: 18px 20px 18px;
+      }
+      .groom-stats { display: flex; gap: 28px; margin-top: 10px; }
+      .groom-stats .stat .label { color: var(--g200); font-size: 10px; font-weight: 500; letter-spacing: 1.2px; text-transform: uppercase; }
+      .groom-stats .stat .value {
+        font-family: var(--serif); font-style: italic;
+        font-size: 30px; line-height: 34px; letter-spacing: -0.5px; color: white;
+      }
+      .groom-stats .stat .value.ok { color: var(--g200); }
+      .groom-stats .stat .value.warn { color: var(--warn-dot); }
+
+      .task-row {
+        display: flex; align-items: center; gap: 10px;
+        padding: 12px 14px; position: relative;
+      }
+      .task-row + .task-row { border-top: 1px solid var(--border); }
+      .task-row.urgent { background: var(--warn-bg); padding-left: 16px; }
+      .task-row.urgent::before {
+        content: ""; position: absolute; left: 0; top: 0; bottom: 0;
+        width: 2.5px; background: var(--alert-dot);
+      }
+      .task-row.done .text { text-decoration: line-through; color: var(--ink3); opacity: 0.55; }
+      .checkbox {
+        width: 18px; height: 18px; border-radius: 4px;
+        border: 1.5px solid var(--n200); flex-shrink: 0;
+        display: grid; place-items: center; color: white; font-size: 10px;
+      }
+      .checkbox.done { background: var(--ok); border-color: var(--ok); }
+
+      /* Client hero photo */
+      .client-hero {
+        height: 200px;
+        background: linear-gradient(180deg, rgba(11,47,35,0.05), rgba(11,47,35,0.55)),
+                    radial-gradient(circle at 70% 30%, var(--g300), var(--g600));
+        position: relative;
+      }
+      .client-hero .overlay { position: absolute; left: 0; right: 0; bottom: 0; padding: 18px; color: white; }
+      .client-hero .horse-name {
+        font-family: var(--serif); font-style: italic;
+        font-size: 40px; line-height: 44px; letter-spacing: -0.5px;
+      }
+      .client-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+      .client-stat { padding: 12px; }
+      .client-stat .label { font-size: 11px; color: var(--ink3); }
+      .client-stat .value { font-size: 16px; font-weight: 500; margin-top: 2px; }
+
+      /* Whiteboard column board */
+      .board {
+        display: flex; gap: 8px; overflow-x: auto;
+        padding: 18px 20px 24px;
+      }
+      .column { flex: 0 0 220px; display: flex; flex-direction: column; gap: 8px; }
+      .column-head {
+        display: flex; justify-content: space-between; align-items: center; padding: 0 4px;
+      }
+      .column-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; }
+      .column-row {
+        display: flex; align-items: center; gap: 8px;
+        padding: 8px 12px; border-bottom: 1px solid var(--border);
+        position: relative;
+      }
+      .column-row:last-child { border-bottom: 0; }
+      .column-row.add { border-top: 1px dashed var(--n200); justify-content: center; }
+      .column-row.urgent { background: var(--warn-bg); }
+      .column-row.urgent::before {
+        content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2.5px; background: var(--alert-dot);
+      }
+
+      /* MyStable */
+      .stable-row {
+        display: flex; align-items: center; gap: 10px;
+        padding: 14px; background: var(--surface);
+        border: 1px solid var(--border); border-radius: 16px;
+      }
+      .stable-row + .stable-row { margin-top: 8px; }
+      .search-pill {
+        display: flex; align-items: center; gap: 8px;
+        padding: 10px 14px;
+        background: var(--n50); border-radius: 999px;
+      }
+      .search-pill input {
+        border: 0; background: transparent; font-size: 14px;
+        color: var(--ink1); flex: 1; outline: none; font-family: var(--sans);
+      }
+
+      /* Horse detail */
+      .horse-hero {
+        height: 200px;
+        background: radial-gradient(circle at 65% 35%, var(--g300), var(--g700));
+        position: relative;
+      }
+      .horse-hero .overlay { position: absolute; left: 0; right: 0; bottom: 0; padding: 18px; color: white; }
+      .horse-hero .name {
+        font-family: var(--serif); font-style: italic;
+        font-size: 40px; line-height: 44px; letter-spacing: -0.5px;
+      }
+      .h-tabs {
+        display: flex;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+      }
+      .h-tab { flex: 1; padding: 14px; text-align: center; cursor: pointer; position: relative; }
+      .h-tab span { color: var(--ink3); font-weight: 500; font-size: 14px; }
+      .h-tab.active span { color: var(--ink1); }
+      .h-tab.active::after {
+        content: ""; position: absolute; bottom: 0; left: 25%; right: 25%;
+        height: 2px; background: var(--g500);
+      }
+
+      .week-row { display: flex; gap: 4px; }
+      .week-cell {
+        flex: 1; min-height: 92px;
+        background: var(--surface); border: 1px solid var(--border);
+        border-radius: 12px; padding: 8px 4px;
+        display: flex; flex-direction: column; align-items: center; gap: 3px;
+      }
+      .week-cell.today { background: var(--g50); border-color: var(--g500); }
+      .session-chip {
+        align-self: stretch; padding: 3px 4px;
+        border-radius: 8px; text-align: center;
+      }
+      .session-chip.flat { background: var(--g100); color: var(--g600); }
+      .session-chip.jump { background: var(--g50); color: var(--g600); }
+      .session-chip.lunge { background: var(--g100); color: var(--g600); }
+      .session-chip.rest { background: var(--n50); color: var(--ink3); }
+      .session-chip.show { background: var(--alert-bg); color: var(--alert); }
+
+      .health-icon-row { display: flex; gap: 8px; justify-content: space-between; }
+      .health-ico { flex: 1; align-items: center; display: flex; flex-direction: column; }
+      .health-circle {
+        width: 52px; height: 52px; border-radius: 26px; background: white;
+        border: 2px solid var(--n200); display: grid; place-items: center; font-size: 22px;
+      }
+      .health-circle.ok { border-color: var(--ok-dot); }
+      .health-circle.warn { border-color: var(--warn-dot); }
+      .health-circle.alert { border-color: var(--alert-dot); }
+
+      /* FAB */
+      .fab {
+        position: absolute; right: 18px; bottom: 80px;
+        width: 56px; height: 56px; border-radius: 28px;
+        background: var(--g500); color: white;
+        display: grid; place-items: center;
+        font-size: 32px; font-weight: 300; line-height: 32px;
+        border: 0; cursor: pointer;
+        box-shadow: 0 8px 22px rgba(11, 47, 35, 0.45);
+        z-index: 25;
+        transition: transform 0.25s cubic-bezier(.5,2,.6,1);
+      }
+      .fab.open { transform: rotate(45deg); }
+      .fab .plus { transform: translateY(-2px); display: block; }
+      .backdrop {
+        position: absolute; inset: 0;
+        background: rgba(11, 47, 35, 0.55);
+        opacity: 0; pointer-events: none;
+        transition: opacity 0.2s ease;
+        z-index: 20;
+      }
+      .backdrop.open { opacity: 1; pointer-events: auto; }
+      .petals {
+        position: absolute; right: 32px; bottom: 96px;
+        z-index: 24; pointer-events: none;
+      }
+      .petal {
+        position: absolute;
+        display: flex; flex-direction: column; align-items: center; gap: 6px;
+        opacity: 0; transform: translate(0, 0) scale(0.6);
+        transition: transform 0.3s cubic-bezier(.5,2,.6,1), opacity 0.2s ease;
+        pointer-events: none;
+        width: 64px;
+        margin-left: -8px;
+      }
+      .petals.open .petal { opacity: 1; pointer-events: auto; }
+      .petal-btn {
+        width: 48px; height: 48px; border-radius: 24px;
+        background: white; display: grid; place-items: center;
+        font-size: 22px; cursor: pointer; border: 0;
+        box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+      }
+      .petal-label {
+        padding: 2px 10px; border-radius: 999px; background: rgba(11,47,35,0.85);
+        color: white; font-size: 11px; font-weight: 500; letter-spacing: 0.2px;
+      }
+      .petals.open .petal[data-i="0"] { transform: translate(0, -120px) scale(1); transition-delay: 0s; }
+      .petals.open .petal[data-i="1"] { transform: translate(-60px, -104px) scale(1); transition-delay: 0.04s; }
+      .petals.open .petal[data-i="2"] { transform: translate(-104px, -60px) scale(1); transition-delay: 0.08s; }
+      .petals.open .petal[data-i="3"] { transform: translate(-120px, 0) scale(1); transition-delay: 0.12s; }
+
+      /* Generic stat rows */
+      .stat-stack { gap: 6px; padding: 12px; }
+      .stat-stack .label { font-size: 11px; color: var(--ink3); font-weight: 500; }
+      .stat-stack .value {
+        font-family: var(--serif); font-style: italic;
+        font-size: 36px; line-height: 40px; letter-spacing: -0.5px; color: var(--ink1);
+      }
+      .stat-stack .delta { color: var(--ok); font-size: 12px; }
+
+      .back-row {
+        display: flex; align-items: center; gap: 10px;
+        padding: 12px 16px;
+        background: var(--surface); border-bottom: 1px solid var(--border);
+      }
+      .back-btn {
+        width: 32px; height: 32px; border-radius: 16px;
+        background: var(--n50); border: 0; display: grid; place-items: center;
+        font-size: 18px; cursor: pointer; color: var(--ink2); line-height: 1;
+      }
+
+      /* Onboarding role grid */
+      .role-grid {
+        display: grid; grid-template-columns: 1fr 1fr;
+        gap: 10px; margin-top: 20px;
+      }
+      .role-card {
+        background: var(--surface); border: 1px solid var(--border);
+        border-radius: 14px; padding: 14px;
+        display: flex; flex-direction: column; gap: 4px;
+        min-height: 110px;
+        cursor: pointer;
+      }
+      .role-card.selected { background: var(--g500); border-color: var(--g500); color: white; }
+      .role-card .role-emoji { font-size: 22px; }
+      .role-card .role-name { font-weight: 500; font-size: 14px; }
+      .role-card .role-desc { font-size: 12px; color: var(--ink3); }
+      .role-card.selected .role-desc { color: var(--g100); }
+
+      .progress { display: flex; gap: 6px; margin-bottom: 20px; }
+      .progress .step { flex: 1; height: 3px; border-radius: 2px; background: var(--n200); }
+      .progress .step.active { background: var(--g500); }
+
+      /* 0/4 checklist on home */
+      .checklist {
+        background: var(--g50); border: 1px solid var(--g100);
+        border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 8px;
+      }
+      .checklist .head { display: flex; justify-content: space-between; align-items: center; }
+      .checklist .bar { height: 4px; background: var(--g100); border-radius: 2px; overflow: hidden; }
+      .checklist .bar .fill { height: 100%; background: var(--g500); width: 50%; }
+      .checklist .item { display: flex; align-items: center; gap: 8px; padding: 4px 0; }
+      .checklist .bullet { width: 18px; height: 18px; border-radius: 9px; border: 1.5px solid var(--g300); display: grid; place-items: center; }
+      .checklist .bullet.done { background: var(--g500); border-color: var(--g500); color: white; font-size: 10px; }
+      .checklist .text.done { text-decoration: line-through; color: var(--ink3); }
+
+      /* Next Due chip */
+      .nextdue-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; }
+      .nd-chip {
+        display: flex; align-items: center; gap: 10px;
+        padding: 10px 12px; border-radius: 12px;
+        border: 1px solid var(--border); background: var(--surface);
+        min-width: 200px;
+      }
+      .nd-chip.warn { background: var(--warn-bg); border-color: var(--warn-dot); }
+      .nd-chip.alert { background: var(--alert-bg); border-color: var(--alert-dot); }
+
+      /* Booking */
+      .lt-card {
+        display: flex; align-items: center; gap: 12px;
+        padding: 14px; border: 1px solid var(--border);
+        border-radius: 14px; background: var(--surface);
+        cursor: pointer;
+      }
+      .lt-card.selected { background: var(--g500); border-color: var(--g500); color: white; }
+      .slots-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+      .slot {
+        flex: 1 1 22%; padding: 8px; border-radius: 12px;
+        border: 1px solid var(--border); background: var(--surface);
+        text-align: center; cursor: pointer;
+      }
+      .slot.selected { background: var(--g500); border-color: var(--g500); }
+      .slot.selected * { color: white !important; }
+      .slot.disabled { background: var(--n50); border-color: var(--n100); opacity: 0.5; }
+
+      /* Help banner */
+      .help {
+        text-align: center; font-size: 11px; color: var(--ink3);
+        max-width: 380px;
+      }
+
+      .hidden { display: none !important; }
+    </style>
+  </head>
+  <body>
+    <div class="role-bar" id="roleBar">
+      <span class="lbl">Preview as</span>
+      <button class="role-chip active" data-role="owner">Owner</button>
+      <button class="role-chip" data-role="trainer">Trainer</button>
+      <button class="role-chip" data-role="groom">Groom</button>
+      <button class="role-chip" data-role="client">Client</button>
+    </div>
+
+    <div class="phone" id="phone">
+      <div class="notch"></div>
+
+      <!-- ── WELCOME ─────────────────────────────────────────── -->
+      <div class="screen active" data-screen="welcome">
+        <div class="statusbar" style="color:white"><span>9:41</span><span>●●● ●</span></div>
+        <div class="stage" style="background:var(--g900)">
+          <div class="welcome">
+            <div class="brand">
+              <div class="mark">H</div>
+              <div class="word">Hop<span>O</span>n</div>
+            </div>
+            <div>
+              <div class="hero">Your barn.<br/>Calmer.</div>
+              <div class="sub">The operating system for riding barns. Bookings, payments, and the team — on the same page.</div>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:10px;">
+              <button class="btn primary lg fw" data-go="onboarding">Get started ›</button>
+              <button class="btn ghost md fw" data-go="home" style="color:var(--g200);">I already have an account</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ONBOARDING ROLE SELECT ──────────────────────────── -->
+      <div class="screen" data-screen="onboarding">
+        <div class="statusbar"><span>9:41</span><span>●●● ●</span></div>
+        <div class="stage">
+          <div class="body" style="padding:20px;">
+            <div class="progress">
+              <div class="step active"></div><div class="step"></div><div class="step"></div><div class="step"></div>
+            </div>
+            <div class="t-eyebrow">STEP 1 OF 4</div>
+            <div class="t-hero" style="margin-top:4px">Who are you<br/>at the barn?</div>
+            <div class="t-body c-ink2" style="margin-top:6px">Pick everything that applies. You can adjust this later.</div>
+            <div class="role-grid">
+              <div class="role-card selected"><span class="role-emoji">🏇</span><div class="role-name">Barn Owner</div><div class="role-desc">I own or manage a barn.</div></div>
+              <div class="role-card"><span class="role-emoji">🎯</span><div class="role-name">Trainer</div><div class="role-desc">I teach lessons.</div></div>
+              <div class="role-card"><span class="role-emoji">🧤</span><div class="role-name">Groom</div><div class="role-desc">I care for the horses.</div></div>
+              <div class="role-card"><span class="role-emoji">🏆</span><div class="role-name">Pro Rider</div><div class="role-desc">I ride professionally.</div></div>
+              <div class="role-card"><span class="role-emoji">👤</span><div class="role-name">Client</div><div class="role-desc">I take lessons or board.</div></div>
+              <div class="role-card"><span class="role-emoji">👨‍👩‍👧</span><div class="role-name">Parent</div><div class="role-desc">I book for my child.</div></div>
+            </div>
+          </div>
+          <div style="padding:16px 20px; border-top:1px solid var(--border); background:var(--surface);">
+            <button class="btn primary lg fw" data-go="home">Continue ›</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── HOME (4 role variants in one screen) ─────────────── -->
+      <div class="screen" data-screen="home">
+        <div class="statusbar" id="homeStatusbar"><span>9:41</span><span>●●● ●</span></div>
+        <div class="stage" id="homeStage">
+
+          <!-- OWNER home -->
+          <div class="role-home" data-role-home="owner">
+            <div class="body">
+              <div class="screen-body">
+                <div>
+                  <div class="t-eyebrow">WELLINGTON PARK EQUESTRIAN</div>
+                  <div class="t-display" style="margin-top:4px">Your barn is<br/>running well today.</div>
+                </div>
+
+                <!-- 0/4 checklist -->
+                <div class="checklist">
+                  <div class="head">
+                    <span class="t-eyebrow c-g600">GET YOUR BARN UP · 2/4</span>
+                    <span class="t-caption c-ink3">Don't show again</span>
+                  </div>
+                  <div class="bar"><div class="fill"></div></div>
+                  <div>
+                    <div class="item"><div class="bullet done">✓</div><span class="t-body text done">Add your first team member</span></div>
+                    <div class="item"><div class="bullet done">✓</div><span class="t-body text done">Add your first horse</span></div>
+                    <div class="item"><div class="bullet"></div><span class="t-body text">Add your first client</span><span style="flex:1; text-align:right;" class="t-caption c-g600">›</span></div>
+                    <div class="item"><div class="bullet"></div><span class="t-body text">Edit your lesson type</span><span style="flex:1; text-align:right;" class="t-caption c-g600">›</span></div>
+                  </div>
+                </div>
+
+                <div class="metric-grid">
+                  <div class="card metric" data-go="dashboard"><div class="label">REVENUE MTD</div><div class="value">$3,600</div><div class="delta">+18%</div></div>
+                  <div class="card metric"><div class="label">OPEN ALERTS</div><div class="value warn">2</div></div>
+                  <div class="card metric"><div class="label">TASKS</div><div class="value">42</div></div>
+                  <div class="card metric"><div class="label">LESSONS</div><div class="value">12</div><div class="delta">+3.8%</div></div>
+                </div>
+
+                <div>
+                  <div class="t-eyebrow" style="margin-bottom:8px">NEXT DUE</div>
+                  <div class="nextdue-row">
+                    <div class="nd-chip alert"><span style="font-size:20px;">💉</span><div><div class="t-label c-alert">ATLAS · VACCINE</div><div class="t-caption c-alert">Due tomorrow</div></div></div>
+                    <div class="nd-chip warn"><span style="font-size:20px;">🐴</span><div><div class="t-label c-warn">BELLA · FARRIER</div><div class="t-caption c-warn">In 9 days</div></div></div>
+                    <div class="nd-chip"><span style="font-size:20px;">💊</span><div><div class="t-label c-ink2">STORM · VERMIFUGE</div><div class="t-caption c-ink2">In 19 days</div></div></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="t-eyebrow" style="margin-bottom:8px">ALERTS</div>
+                  <div class="col gap-8">
+                    <div class="alert-bar alert"><div class="bar"></div><div class="content"><div class="t-body-m">! Atlas — vet visit at 14:00</div><div class="t-caption c-alert">Dr. Torres confirmed · Stall 18</div></div></div>
+                    <div class="alert-bar warn"><div class="bar"></div><div class="content"><div class="t-body-m">Storm not feeling 100%</div><div class="t-caption c-warn">Light work today</div></div></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="t-eyebrow" style="margin-bottom:8px">NEXT UP · TODAY</div>
+                  <div class="card">
+                    <div class="event-row" data-go="horse"><div class="dot ok"></div><div class="flex1"><div class="t-body-m">Emma Carter · Bella</div><div class="meta">Outdoor Arena · Jump</div></div><div class="t-body-m c-ink2">09:00</div></div>
+                    <div class="event-row"><div class="dot ok"></div><div class="flex1"><div class="t-body-m">Sofia Reyes · Storm</div><div class="meta">Indoor · Flat</div></div><div class="t-body-m c-ink2">10:30</div></div>
+                    <div class="event-row"><div class="dot warn"></div><div class="flex1"><div class="t-body-m">Mateo Bell · Indigo</div><div class="meta">Outdoor · Jump</div></div><div class="t-body-m c-ink2">12:00</div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TRAINER home -->
+          <div class="role-home hidden" data-role-home="trainer">
+            <div class="body">
+              <div class="screen-body">
+                <div>
+                  <div class="t-eyebrow">THURSDAY · MAY 13</div>
+                  <div class="t-display" style="margin-top:4px">Good morning, Sam.</div>
+                  <div class="t-body-m c-ink2" style="margin-top:4px">5 lessons booked today · 4 paid</div>
+                </div>
+
+                <div class="trainer-hero">
+                  <div class="t-eyebrow c-g200">NEXT LESSON</div>
+                  <div class="time">09:00</div>
+                  <div class="row" style="gap:10px; margin-top:8px;">
+                    <div class="avatar" style="background:var(--g200);color:var(--g700);font-size:14px;">B</div>
+                    <div class="flex1">
+                      <div class="t-body-m c-white">Emma Carter · Bella</div>
+                      <div class="t-caption c-g200">Outdoor Arena</div>
+                    </div>
+                  </div>
+                  <div style="display:flex; gap:6px; margin-top:12px; flex-wrap:wrap;">
+                    <span class="pill brand">LEVEL 4</span>
+                    <span class="pill brand">JUMP</span>
+                    <span class="pill ok">PAID</span>
+                  </div>
+                  <div class="row gap-8" style="margin-top:14px;">
+                    <button class="btn primary md fw">Start lesson</button>
+                    <button class="btn dark-secondary md fw">Running late</button>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="t-eyebrow" style="margin-bottom:8px">TODAY'S SCHEDULE</div>
+                  <div class="card">
+                    <div class="event-row"><div class="dot ok"></div><div class="flex1"><div class="t-body-m">Sofia Reyes · Storm</div><div class="meta">Indoor · Flat</div></div><div class="t-body-m c-ink2">10:30</div></div>
+                    <div class="event-row"><div class="dot warn"></div><div class="flex1"><div class="t-body-m">Mateo Bell · Indigo</div><div class="meta">Outdoor · Jump</div></div><div class="t-body-m c-ink2">12:00</div></div>
+                    <div class="event-row"><div class="dot ok"></div><div class="flex1"><div class="t-body-m">Liv Andersen · Juno</div><div class="meta">Outdoor · Flat</div></div><div class="t-body-m c-ink2">14:00</div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- GROOM home -->
+          <div class="role-home hidden" data-role-home="groom">
+            <div class="body" style="padding:0">
+              <div class="groom-header">
+                <div class="t-eyebrow c-g200">GOOD MORNING, JESS</div>
+                <div class="groom-stats">
+                  <div class="stat"><div class="label">TASKS</div><div class="value">5</div></div>
+                  <div class="stat"><div class="label">URGENT</div><div class="value warn">1</div></div>
+                  <div class="stat"><div class="label">DONE</div><div class="value ok">2</div></div>
+                </div>
+              </div>
+              <div class="screen-body" style="padding-top:14px">
+                <div class="t-eyebrow">MY TASKS TODAY</div>
+                <div class="card">
+                  <div class="task-row done"><div class="checkbox done">✓</div><div class="t-compressed text flex1">ATLAS · MEDS · 07:30</div></div>
+                  <div class="task-row done"><div class="checkbox done">✓</div><div class="t-compressed text flex1">BELLA · TURNOUT · 08:00</div></div>
+                  <div class="task-row urgent"><div class="checkbox"></div><div class="t-compressed text flex1">! STORM · TACK UP · 10:15</div></div>
+                  <div class="task-row"><div class="checkbox"></div><div class="t-compressed text flex1">INDIGO · FEED · 12:00</div></div>
+                  <div class="task-row"><div class="checkbox"></div><div class="t-compressed text flex1">JUNO · GROOM · 13:30</div></div>
+                  <div class="task-row"><div class="checkbox"></div><div class="t-compressed text flex1">BELLA · EVENING FEED · 17:30</div></div>
+                </div>
+
+                <div class="row gap-6">
+                  <button class="btn primary sm flex1">Done</button>
+                  <button class="btn secondary sm flex1">Delayed</button>
+                  <button class="btn dest sm flex1">Issue</button>
+                  <button class="btn ghost sm flex1">Photo</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CLIENT home -->
+          <div class="role-home hidden" data-role-home="client">
+            <div class="body" style="padding:0">
+              <div class="client-hero">
+                <div class="overlay">
+                  <div class="t-eyebrow c-g200">MY HORSE</div>
+                  <div class="horse-name">Bella</div>
+                  <div class="t-caption c-g200">9 years, Hanoverian · Stall #12</div>
+                </div>
+              </div>
+              <div class="screen-body" style="padding-top:16px">
+                <div class="client-stats">
+                  <div class="card client-stat"><div class="label">HEALTH</div><div class="value c-ok">Good</div></div>
+                  <div class="card client-stat"><div class="label">LESSONS</div><div class="value">8 this mo.</div></div>
+                  <div class="card client-stat"><div class="label">NEXT RIDE</div><div class="value">Today</div></div>
+                </div>
+
+                <div class="card dark pad-l row" style="gap:12px;" data-go="booking">
+                  <div class="flex1">
+                    <div class="t-eyebrow c-g200">BOOK A LESSON</div>
+                    <div class="t-h2 c-white" style="margin-top:2px">Your next ride is one tap away.</div>
+                    <div class="t-caption c-g200" style="margin-top:6px">Lessons, jump sessions, or a farrier visit.</div>
+                  </div>
+                  <button class="btn secondary md">Book</button>
+                </div>
+
+                <div>
+                  <div class="t-eyebrow" style="margin-bottom:8px">UPCOMING</div>
+                  <div class="card">
+                    <div class="event-row"><div style="width:52px;"><div class="t-eyebrow">TODAY</div><div class="t-body-m">09:00</div></div><div class="flex1"><div class="t-body-m">Lesson with Sam</div><div class="meta">Confirmed</div></div><span class="pill ok">CONFIRMED</span></div>
+                    <div class="event-row"><div style="width:52px;"><div class="t-eyebrow">FRI</div><div class="t-body-m">11:00</div></div><div class="flex1"><div class="t-body-m">Farrier visit</div><div class="meta">Scheduled</div></div><span class="pill neutral">SCHEDULED</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tabbar">
+          <button class="tab-item active" data-tab="home"><span class="tab-icon ic-home"></span>Home</button>
+          <button class="tab-item" data-tab="calendar"><span class="tab-icon ic-cal"></span>Calendar</button>
+          <button class="tab-item" data-tab="whiteboard"><span class="tab-icon ic-board"></span>Whiteboard</button>
+          <button class="tab-item" data-tab="mystable"><span class="tab-icon ic-stable"></span>My Stable</button>
+          <button class="tab-item" data-tab="dashboard"><span class="tab-icon ic-dash"></span>Dashboard</button>
+        </div>
+      </div>
+
+      <!-- ── CALENDAR ────────────────────────────────────────── -->
+      <div class="screen" data-screen="calendar">
+        <div class="statusbar"><span>9:41</span><span>●●● ●</span></div>
+        <div class="stage">
+          <div class="body" style="padding:0">
+            <div style="padding:18px 20px 14px; background:var(--surface); border-bottom:1px solid var(--border); display:flex; flex-direction:column; gap:12px;">
+              <div>
+                <div class="t-eyebrow">THURSDAY · MAY 13</div>
+                <div class="t-display" style="margin-top:4px">Today.</div>
+              </div>
+              <div style="display:flex; gap:4px;">
+                <div style="flex:1; padding:8px; border-radius:12px; background:var(--n50); text-align:center;"><div class="t-caption c-ink3">Wed</div><div class="t-body-m">12</div></div>
+                <div style="flex:1; padding:8px; border-radius:12px; background:var(--g500); text-align:center;"><div class="t-caption c-white" style="opacity:0.9">Thu</div><div class="t-body-m c-white">13</div></div>
+                <div style="flex:1; padding:8px; border-radius:12px; background:var(--n50); text-align:center;"><div class="t-caption c-ink3">Fri</div><div class="t-body-m">14</div></div>
+                <div style="flex:1; padding:8px; border-radius:12px; background:var(--n50); text-align:center;"><div class="t-caption c-ink3">Sat</div><div class="t-body-m">15</div></div>
+                <div style="flex:1; padding:8px; border-radius:12px; background:var(--n50); text-align:center;"><div class="t-caption c-ink3">Sun</div><div class="t-body-m">16</div></div>
+              </div>
+            </div>
+            <div style="padding:18px 20px;">
+              <div style="display:flex; align-items:flex-start; min-height:54px; position:relative;">
+                <div class="t-caption c-ink3" style="width:44px; padding-top:2px;">08:00</div>
+                <div style="position:absolute; top:8px; left:56px; right:0; height:1px; background:var(--border);"></div>
+              </div>
+              <div style="display:flex; align-items:flex-start; min-height:68px; position:relative;">
+                <div class="t-caption c-ink3" style="width:44px; padding-top:2px;">09:00</div>
+                <div style="position:absolute; top:8px; left:56px; right:0; height:1px; background:var(--border);"></div>
+                <div style="margin-left:60px; margin-top:4px; flex:1; background:var(--g50); border-left:3px solid var(--g500); border-radius:10px; padding:10px;">
+                  <div class="t-label c-g600">JUMP</div>
+                  <div class="t-body-m" style="margin-top:2px">Emma Carter · Bella</div>
+                  <div class="t-caption c-ink3">Outdoor Arena · 09:00</div>
+                </div>
+              </div>
+              <div style="display:flex; align-items:flex-start; min-height:68px; position:relative;">
+                <div class="t-caption c-ink3" style="width:44px; padding-top:2px;">10:00</div>
+                <div style="position:absolute; top:8px; left:56px; right:0; height:1px; background:var(--border);"></div>
+                <div style="margin-left:60px; margin-top:4px; flex:1; background:var(--g50); border-left:3px solid var(--g500); border-radius:10px; padding:10px;">
+                  <div class="t-label c-g600">FLAT</div>
+                  <div class="t-body-m" style="margin-top:2px">Sofia Reyes · Storm</div>
+                  <div class="t-caption c-ink3">Indoor Arena · 10:30</div>
+                </div>
+              </div>
+              <div style="display:flex; align-items:flex-start; min-height:68px; position:relative;">
+                <div class="t-caption c-ink3" style="width:44px; padding-top:2px;">12:00</div>
+                <div style="position:absolute; top:8px; left:56px; right:0; height:1px; background:var(--border);"></div>
+                <div style="margin-left:60px; margin-top:4px; flex:1; background:var(--warn-bg); border-left:3px solid var(--warn-dot); border-radius:10px; padding:10px;">
+                  <div class="t-label c-warn">JUMP · UNPAID</div>
+                  <div class="t-body-m" style="margin-top:2px">Mateo Bell · Indigo</div>
+                  <div class="t-caption c-ink3">Outdoor · 12:00</div>
+                </div>
+              </div>
+              <div style="display:flex; align-items:flex-start; min-height:68px; position:relative;">
+                <div class="t-caption c-ink3" style="width:44px; padding-top:2px;">14:00</div>
+                <div style="position:absolute; top:8px; left:56px; right:0; height:1px; background:var(--border);"></div>
+                <div style="margin-left:60px; margin-top:4px; flex:1; background:var(--g50); border-left:3px solid var(--g500); border-radius:10px; padding:10px;">
+                  <div class="t-label c-g600">FLAT</div>
+                  <div class="t-body-m" style="margin-top:2px">Liv Andersen · Juno</div>
+                  <div class="t-caption c-ink3">Outdoor · 14:00</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tabbar">
+          <button class="tab-item" data-tab="home"><span class="tab-icon ic-home"></span>Home</button>
+          <button class="tab-item active" data-tab="calendar"><span class="tab-icon ic-cal"></span>Calendar</button>
+          <button class="tab-item" data-tab="whiteboard"><span class="tab-icon ic-board"></span>Whiteboard</button>
+          <button class="tab-item" data-tab="mystable"><span class="tab-icon ic-stable"></span>My Stable</button>
+          <button class="tab-item" data-tab="dashboard"><span class="tab-icon ic-dash"></span>Dashboard</button>
+        </div>
+      </div>
+
+      <!-- ── WHITEBOARD ──────────────────────────────────────── -->
+      <div class="screen" data-screen="whiteboard">
+        <div class="statusbar"><span>9:41</span><span>●●● ●</span></div>
+        <div class="stage">
+          <div class="body" style="padding:0">
+            <div style="padding:20px 20px 14px; background:var(--surface); border-bottom:1px solid var(--border); display:flex; flex-direction:column; gap:12px;">
+              <div>
+                <div class="t-eyebrow">THURSDAY · MAY 13</div>
+                <div class="t-display" style="margin-top:4px">Whiteboard.</div>
+              </div>
+              <div class="segmented" id="wbSeg">
+                <button class="seg active" data-wb="person"><span class="t-label">By person</span></button>
+                <button class="seg" data-wb="horse"><span class="t-label">By horse</span></button>
+              </div>
+            </div>
+
+            <!-- By person -->
+            <div class="board" data-wb-pane="person">
+              <div class="column">
+                <div class="column-head"><span class="t-body-m">Jess (Groom)</span><span class="t-caption c-warn">2/4 · 1!</span></div>
+                <div class="column-card">
+                  <div class="column-row"><div class="checkbox done">✓</div><span class="t-compressed c-ink3" style="text-decoration:line-through; opacity:0.5;">ATLAS · MEDS</span></div>
+                  <div class="column-row"><div class="checkbox done">✓</div><span class="t-compressed c-ink3" style="text-decoration:line-through; opacity:0.5;">BELLA · TURNOUT</span></div>
+                  <div class="column-row urgent"><div class="checkbox"></div><span class="t-compressed">! STORM · TACK UP</span></div>
+                  <div class="column-row"><div class="checkbox"></div><span class="t-compressed">INDIGO · FEED</span></div>
+                  <div class="column-row add"><span class="t-caption c-ink3">+ Add</span></div>
+                </div>
+              </div>
+              <div class="column">
+                <div class="column-head"><span class="t-body-m">Mateo (Trainer)</span><span class="t-caption c-ink3">1/3 · 0!</span></div>
+                <div class="column-card">
+                  <div class="column-row"><div class="checkbox done">✓</div><span class="t-compressed c-ink3" style="text-decoration:line-through; opacity:0.5;">JUNO · WALK OUT</span></div>
+                  <div class="column-row"><div class="checkbox"></div><span class="t-compressed">BELLA · LUNGE 20MIN</span></div>
+                  <div class="column-row"><div class="checkbox"></div><span class="t-compressed">STORM · FLATWORK</span></div>
+                  <div class="column-row add"><span class="t-caption c-ink3">+ Add</span></div>
+                </div>
+              </div>
+              <div class="column">
+                <div class="column-head"><span class="t-body-m">Unassigned</span><span class="t-caption c-ink3">0/1 · 0!</span></div>
+                <div class="column-card">
+                  <div class="column-row"><div class="checkbox"></div><span class="t-compressed">BARN · EVENING FEED</span></div>
+                  <div class="column-row add"><span class="t-caption c-ink3">+ Add</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- By horse -->
+            <div class="board hidden" data-wb-pane="horse">
+              <div class="column">
+                <div class="column-head"><span class="t-body-m">Bella</span><span class="t-caption c-ink3">1/3 · 0!</span></div>
+                <div class="column-card">
+                  <div class="column-row"><div class="checkbox done">✓</div><span class="t-compressed c-ink3" style="text-decoration:line-through; opacity:0.5;">TURNOUT</span></div>
+                  <div class="column-row"><div class="checkbox"></div><span class="t-compressed">LUNGE 20MIN</span></div>
+                  <div class="column-row"><div class="checkbox"></div><span class="t-compressed">EVENING FEED · 17:30</span></div>
+                  <div class="column-row add"><span class="t-caption c-ink3">+ Add</span></div>
+                </div>
+              </div>
+              <div class="column">
+                <div class="column-head"><span class="t-body-m">Storm</span><span class="t-caption c-warn">0/2 · 1!</span></div>
+                <div class="column-card">
+                  <div class="column-row urgent"><div class="checkbox"></div><span class="t-compressed">! TACK UP · 10:15</span></div>
+                  <div class="column-row"><div class="checkbox"></div><span class="t-compressed">FLATWORK</span></div>
+                  <div class="column-row add"><span class="t-caption c-ink3">+ Add</span></div>
+                </div>
+              </div>
+              <div class="column">
+                <div class="column-head"><span class="t-body-m">Atlas</span><span class="t-caption c-ok">1/1 · 0!</span></div>
+                <div class="column-card">
+                  <div class="column-row"><div class="checkbox done">✓</div><span class="t-compressed c-ink3" style="text-decoration:line-through; opacity:0.5;">MEDS · 07:30</span></div>
+                  <div class="column-row add"><span class="t-caption c-ink3">+ Add</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tabbar">
+          <button class="tab-item" data-tab="home"><span class="tab-icon ic-home"></span>Home</button>
+          <button class="tab-item" data-tab="calendar"><span class="tab-icon ic-cal"></span>Calendar</button>
+          <button class="tab-item active" data-tab="whiteboard"><span class="tab-icon ic-board"></span>Whiteboard</button>
+          <button class="tab-item" data-tab="mystable"><span class="tab-icon ic-stable"></span>My Stable</button>
+          <button class="tab-item" data-tab="dashboard"><span class="tab-icon ic-dash"></span>Dashboard</button>
+        </div>
+      </div>
+
+      <!-- ── MY STABLE (4 sub-tabs) ──────────────────────────── -->
+      <div class="screen" data-screen="mystable">
+        <div class="statusbar"><span>9:41</span><span>●●● ●</span></div>
+        <div class="stage">
+          <div class="body" style="padding:0">
+            <div style="padding:20px 20px 14px; background:var(--surface); border-bottom:1px solid var(--border); display:flex; flex-direction:column; gap:12px;">
+              <div style="display:flex; align-items:flex-end; gap:10px;">
+                <div style="flex:1;">
+                  <div class="t-eyebrow">WELLINGTON PARK</div>
+                  <div class="t-display" style="margin-top:4px">My Stable.</div>
+                </div>
+                <div style="width:36px; height:36px; border-radius:18px; background:var(--n50); display:grid; place-items:center;">⚙️</div>
+              </div>
+              <div class="segmented" id="msSeg">
+                <button class="seg active" data-ms="horses"><span class="t-label">Horses</span></button>
+                <button class="seg" data-ms="clients"><span class="t-label">Clients</span></button>
+                <button class="seg" data-ms="team"><span class="t-label">Team</span></button>
+                <button class="seg" data-ms="partners"><span class="t-label">Partners</span></button>
+              </div>
+              <div class="search-pill">
+                <span style="color:var(--ink3); font-size:14px;">🔍</span>
+                <input placeholder="Search…" />
+              </div>
+            </div>
+            <div class="screen-body">
+              <div data-ms-pane="horses">
+                <div class="stable-row" data-go="horse"><div class="avatar">B</div><div class="flex1"><div class="t-body-m">Bella</div><div class="t-caption c-ink3">Hanoverian · 9y · Stall #12</div></div><div class="dot ok lg"></div></div>
+                <div class="stable-row"><div class="avatar">S</div><div class="flex1"><div class="t-body-m">Storm</div><div class="t-caption c-ink3">Warmblood · 11y · Stall #07</div></div><div class="dot warn lg"></div></div>
+                <div class="stable-row"><div class="avatar">I</div><div class="flex1"><div class="t-body-m">Indigo</div><div class="t-caption c-ink3">Dutch WB · 7y · Stall #03</div></div><div class="dot ok lg"></div></div>
+                <div class="stable-row"><div class="avatar">A</div><div class="flex1"><div class="t-body-m">Atlas</div><div class="t-caption c-ink3">Oldenburg · 14y · Stall #18</div></div><div class="dot alert lg"></div></div>
+                <div class="stable-row"><div class="avatar">J</div><div class="flex1"><div class="t-body-m">Juno</div><div class="t-caption c-ink3">Selle Français · 6y · Stall #21</div></div><div class="dot ok lg"></div></div>
+              </div>
+              <div data-ms-pane="clients" class="hidden">
+                <div class="stable-row"><div class="avatar">E</div><div class="flex1"><div class="t-body-m">Emma Carter</div><div style="display:flex; gap:4px; margin-top:4px;"><span class="pill brand">CLIENT</span></div></div></div>
+                <div class="stable-row"><div class="avatar">S</div><div class="flex1"><div class="t-body-m">Sofia Reyes</div><div style="display:flex; gap:4px; margin-top:4px;"><span class="pill brand">CLIENT</span></div></div></div>
+                <div class="stable-row"><div class="avatar">M</div><div class="flex1"><div class="t-body-m">Mateo Bell</div><div style="display:flex; gap:4px; margin-top:4px;"><span class="pill brand">CLIENT</span><span class="pill warn">DUE</span></div></div></div>
+                <div class="stable-row"><div class="avatar">L</div><div class="flex1"><div class="t-body-m">Liv Andersen</div><div style="display:flex; gap:4px; margin-top:4px;"><span class="pill brand">CLIENT</span><span class="pill brand">PARENT</span></div></div></div>
+              </div>
+              <div data-ms-pane="team" class="hidden">
+                <div class="stable-row"><div class="avatar">H</div><div class="flex1"><div class="t-body-m">Hippolyte R.</div><div style="display:flex; gap:4px; margin-top:4px;"><span class="pill brand">BARN OWNER</span><span class="pill brand">TRAINER</span></div></div></div>
+                <div class="stable-row"><div class="avatar">S</div><div class="flex1"><div class="t-body-m">Sam Donovan</div><div style="display:flex; gap:4px; margin-top:4px;"><span class="pill brand">TRAINER</span></div></div></div>
+                <div class="stable-row"><div class="avatar">J</div><div class="flex1"><div class="t-body-m">Jess Bell</div><div style="display:flex; gap:4px; margin-top:4px;"><span class="pill brand">GROOM</span></div></div></div>
+                <div class="stable-row"><div class="avatar">B</div><div class="flex1"><div class="t-body-m">Barbara M.</div><div style="display:flex; gap:4px; margin-top:4px;"><span class="pill brand">SECRETARY</span></div></div></div>
+              </div>
+              <div data-ms-pane="partners" class="hidden">
+                <div style="display:flex; align-items:center; gap:10px; padding:14px; border-radius:16px; background:var(--g50); border:1px solid var(--g100);" data-go="services">
+                  <span style="font-size:22px;">🤝</span>
+                  <div style="flex:1"><div class="t-body-m c-g600">Service requests</div><div class="t-caption c-g600">Ask a partner — farrier, vet, dentist…</div></div>
+                  <span class="t-h3 c-g600">›</span>
+                </div>
+                <div style="height:8px;"></div>
+                <div class="stable-row"><div class="avatar" style="background:var(--alert-bg);">💉</div><div class="flex1"><div class="t-body-m">Dr. Torres</div><div class="t-caption c-ink3">Veterinarian · 12 horses · (561) 555-0124</div></div><button style="width:40px; height:40px; border-radius:20px; background:var(--alert); color:white; border:0; cursor:pointer;">📞</button></div>
+                <div class="stable-row"><div class="avatar" style="background:var(--g50);">🐴</div><div class="flex1"><div class="t-body-m">Mike Garcia</div><div class="t-caption c-ink3">Farrier · 8 horses · (561) 555-0177</div></div><button style="width:40px; height:40px; border-radius:20px; background:var(--alert); color:white; border:0; cursor:pointer;">📞</button></div>
+                <div class="stable-row"><div class="avatar" style="background:var(--g50);">🦷</div><div class="flex1"><div class="t-body-m">Dr. Chen</div><div class="t-caption c-ink3">Equine dentist · 4 horses</div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tabbar">
+          <button class="tab-item" data-tab="home"><span class="tab-icon ic-home"></span>Home</button>
+          <button class="tab-item" data-tab="calendar"><span class="tab-icon ic-cal"></span>Calendar</button>
+          <button class="tab-item" data-tab="whiteboard"><span class="tab-icon ic-board"></span>Whiteboard</button>
+          <button class="tab-item active" data-tab="mystable"><span class="tab-icon ic-stable"></span>My Stable</button>
+          <button class="tab-item" data-tab="dashboard"><span class="tab-icon ic-dash"></span>Dashboard</button>
+        </div>
+      </div>
+
+      <!-- ── DASHBOARD ───────────────────────────────────────── -->
+      <div class="screen" data-screen="dashboard">
+        <div class="statusbar"><span>9:41</span><span>●●● ●</span></div>
+        <div class="stage">
+          <div class="body">
+            <div class="screen-body">
+              <div>
+                <div class="t-eyebrow">WELLINGTON PARK · DASHBOARD</div>
+                <div class="t-display" style="margin-top:4px">This month.</div>
+              </div>
+
+              <div style="background:var(--g700); border-radius:20px; padding:18px; display:flex; flex-direction:column; gap:10px;">
+                <div class="t-eyebrow c-g200">REVENUE MTD</div>
+                <div style="font-family:var(--serif);font-style:italic;font-size:56px;line-height:60px;letter-spacing:-1px;color:white;">$3,600</div>
+                <div style="display:flex; justify-content:space-around; margin-top:6px;">
+                  <div style="text-align:center;"><div class="t-eyebrow c-g200">LESSONS</div><div style="font-family:var(--serif);font-style:italic;font-size:26px;color:white;letter-spacing:-0.5px;">12</div></div>
+                  <div style="text-align:center;"><div class="t-eyebrow c-g200">TASKS</div><div style="font-family:var(--serif);font-style:italic;font-size:26px;color:white;letter-spacing:-0.5px;">42</div></div>
+                  <div style="text-align:center;"><div class="t-eyebrow c-g200">ALERTS</div><div style="font-family:var(--serif);font-style:italic;font-size:26px;color:var(--warn-dot);letter-spacing:-0.5px;">2</div></div>
+                </div>
+              </div>
+
+              <div class="metric-grid">
+                <div class="card metric"><div class="label">SUCCEEDED PAYMENTS</div><div class="value">14</div></div>
+                <div class="card metric"><div class="label">PENDING</div><div class="value warn">3</div></div>
+              </div>
+
+              <div>
+                <div class="t-eyebrow" style="margin-bottom:8px">RECENT PAYMENTS</div>
+                <div class="card">
+                  <div class="event-row"><div class="dot ok"></div><div class="flex1"><div class="t-body-m">Emma Carter · Bella</div><div class="meta">Today 09:01</div></div><div class="t-body-m">$120</div><span class="pill ok">SUCCEEDED</span></div>
+                  <div class="event-row"><div class="dot ok"></div><div class="flex1"><div class="t-body-m">Sofia Reyes · Storm</div><div class="meta">Today 08:14</div></div><div class="t-body-m">$120</div><span class="pill ok">SUCCEEDED</span></div>
+                  <div class="event-row"><div class="dot warn"></div><div class="flex1"><div class="t-body-m">Mateo Bell · Indigo</div><div class="meta">Yesterday</div></div><div class="t-body-m">$120</div><span class="pill warn">PENDING</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tabbar">
+          <button class="tab-item" data-tab="home"><span class="tab-icon ic-home"></span>Home</button>
+          <button class="tab-item" data-tab="calendar"><span class="tab-icon ic-cal"></span>Calendar</button>
+          <button class="tab-item" data-tab="whiteboard"><span class="tab-icon ic-board"></span>Whiteboard</button>
+          <button class="tab-item" data-tab="mystable"><span class="tab-icon ic-stable"></span>My Stable</button>
+          <button class="tab-item active" data-tab="dashboard"><span class="tab-icon ic-dash"></span>Dashboard</button>
+        </div>
+      </div>
+
+      <!-- ── HORSE DETAIL (4 sub-tabs) ───────────────────────── -->
+      <div class="screen" data-screen="horse">
+        <div class="statusbar" style="color:white"><span>9:41</span><span>●●● ●</span></div>
+        <div class="stage">
+          <div class="body" style="padding:0; position:relative;">
+            <div class="horse-hero">
+              <div class="overlay">
+                <div class="t-eyebrow c-g200">STALL #12</div>
+                <div class="name">Bella</div>
+                <div class="t-caption c-g200">9 years, Hanoverian</div>
+              </div>
+              <button class="back-btn" data-go="mystable" style="position:absolute; top:14px; left:14px; background:rgba(11,47,35,0.55); color:white;">‹</button>
+            </div>
+
+            <div class="h-tabs" id="horseTabs">
+              <div class="h-tab active" data-htab="info"><span>Info</span></div>
+              <div class="h-tab" data-htab="activity"><span>Activity</span></div>
+              <div class="h-tab" data-htab="health"><span>Health</span></div>
+              <div class="h-tab" data-htab="feed"><span>Feed</span></div>
+            </div>
+
+            <div class="screen-body" data-htab-pane="info">
+              <div class="card pad-m"><div class="t-eyebrow">STALL</div><div class="t-body" style="margin-top:4px">#12</div></div>
+              <div class="card pad-m"><div class="t-eyebrow">BREED</div><div class="t-body" style="margin-top:4px">Hanoverian</div></div>
+              <div class="card pad-m"><div class="t-eyebrow">FEEDING</div><div class="t-body" style="margin-top:4px">Morning + evening hay, beet pulp PM.</div></div>
+              <div class="card pad-m"><div class="t-eyebrow">VET</div><div class="t-body" style="margin-top:4px">Dr. Torres · (561) 555-0124</div></div>
+              <div class="card pad-m"><div class="t-eyebrow">FARRIER</div><div class="t-body" style="margin-top:4px">Mike Garcia · (561) 555-0177</div></div>
+            </div>
+
+            <div class="screen-body hidden" data-htab-pane="activity">
+              <div class="week-row">
+                <div class="week-cell"><span class="t-eyebrow">MON</span><span class="t-body-m c-ink2">12</span><div class="session-chip flat"><span class="t-label c-g600">flat</span></div></div>
+                <div class="week-cell"><span class="t-eyebrow">TUE</span><span class="t-body-m c-ink2">13</span><div class="session-chip jump"><span class="t-label c-g600">jump</span></div></div>
+                <div class="week-cell today"><span class="t-eyebrow c-g600">WED</span><span class="t-body-m">14</span><div class="session-chip flat"><span class="t-label c-g600">flat</span></div></div>
+                <div class="week-cell"><span class="t-eyebrow">THU</span><span class="t-body-m c-ink2">15</span><div class="session-chip lunge"><span class="t-label c-g600">lunge</span></div></div>
+                <div class="week-cell"><span class="t-eyebrow">FRI</span><span class="t-body-m c-ink2">16</span><div class="session-chip rest"><span class="t-label c-ink3">rest</span></div></div>
+                <div class="week-cell"><span class="t-eyebrow">SAT</span><span class="t-body-m c-ink2">17</span><div class="session-chip show"><span class="t-label c-alert">show</span></div></div>
+                <div class="week-cell"><span class="t-eyebrow">SUN</span><span class="t-body-m c-ink2">18</span><div class="session-chip rest"><span class="t-label c-ink3">rest</span></div></div>
+              </div>
+              <div class="t-eyebrow" style="margin-top:8px">LEGEND</div>
+              <div style="display:flex; flex-wrap:wrap; gap:14px;">
+                <div class="row gap-6"><div class="dot lg" style="background:var(--g300);"></div><span class="t-caption">lunge</span></div>
+                <div class="row gap-6"><div class="dot lg" style="background:var(--g500);"></div><span class="t-caption">flat</span></div>
+                <div class="row gap-6"><div class="dot lg" style="background:var(--g700);"></div><span class="t-caption">jump</span></div>
+                <div class="row gap-6"><div class="dot lg" style="background:var(--n200);"></div><span class="t-caption">rest</span></div>
+                <div class="row gap-6"><div class="dot lg" style="background:var(--alert-dot);"></div><span class="t-caption">show</span></div>
+              </div>
+            </div>
+
+            <div class="screen-body hidden" data-htab-pane="health">
+              <div class="health-icon-row">
+                <div class="health-ico"><div class="health-circle">🐴</div><div class="t-label" style="margin-top:4px">Farrier</div><div class="t-caption c-ink3">6 weeks</div></div>
+                <div class="health-ico"><div class="health-circle ok">💉</div><div class="t-label" style="margin-top:4px">Vaccine</div><div class="t-caption c-ink3">3 months</div></div>
+                <div class="health-ico"><div class="health-circle warn">💊</div><div class="t-label" style="margin-top:4px">Vermifuge</div><div class="t-caption c-warn">2 weeks</div></div>
+                <div class="health-ico"><div class="health-circle">🦷</div><div class="t-label" style="margin-top:4px">Dentist</div><div class="t-caption c-ink3">—</div></div>
+              </div>
+              <div class="card pad-m"><div class="t-eyebrow">DAILY MEDICATIONS</div><div class="t-body" style="margin-top:4px">Equibiom AM + PM. Biotin daily.</div></div>
+              <div>
+                <div class="t-eyebrow" style="margin-bottom:8px">TREATMENTS</div>
+                <div class="card pad-m" style="text-align:center;">
+                  <div style="font-size:24px;">📋</div>
+                  <div class="t-body-m" style="margin-top:6px">No treatments yet.</div>
+                </div>
+              </div>
+              <div class="card pad-m">
+                <div class="t-eyebrow">UPLOAD PRESCRIPTION</div>
+                <div class="t-caption c-ink2" style="margin-top:6px; margin-bottom:10px">PDF or photo. Archive on the horse indefinitely.</div>
+                <button class="btn primary md fw">Choose file</button>
+              </div>
+            </div>
+
+            <div class="screen-body hidden" data-htab-pane="feed">
+              <div class="card pad-m"><div class="t-eyebrow">1H AGO · JESS</div><div class="t-body" style="margin-top:6px">Bella had a calm hack — went well.</div></div>
+              <div class="card pad-m"><div class="t-eyebrow">YESTERDAY · DR. TORRES</div><div class="t-body" style="margin-top:6px">Routine checkup — all good.</div></div>
+              <div class="card pad-m"><div class="t-eyebrow">MAY 10 · MIKE</div><div class="t-body" style="margin-top:6px">New shoes on front. Next visit June 7.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── BOOKING ────────────────────────────────────────── -->
+      <div class="screen" data-screen="booking">
+        <div class="statusbar"><span>9:41</span><span>●●● ●</span></div>
+        <div class="stage">
+          <div class="back-row">
+            <button class="back-btn" data-go="home">‹</button>
+            <div class="flex1"><div class="t-eyebrow">BOOK A LESSON</div><div class="t-h2">Pick a slot.</div></div>
+          </div>
+          <div class="body">
+            <div class="screen-body">
+              <div class="col gap-8">
+                <div class="lt-card selected"><div class="flex1"><div class="t-body-m c-white">Private lesson</div><div class="t-caption" style="color:var(--g100)">60 min</div></div><div class="t-h2 c-white">$120</div></div>
+                <div class="lt-card"><div class="flex1"><div class="t-body-m">Group lesson</div><div class="t-caption c-ink3">60 min</div></div><div class="t-h2">$75</div></div>
+                <div class="lt-card"><div class="flex1"><div class="t-body-m">Jump training</div><div class="t-caption c-ink3">90 min</div></div><div class="t-h2">$180</div></div>
+              </div>
+              <div>
+                <div class="t-eyebrow" style="margin-bottom:8px">AVAILABLE SLOTS</div>
+                <div class="slots-grid">
+                  <div class="slot"><div class="t-eyebrow">TODAY</div><div class="t-body-m">09:00</div></div>
+                  <div class="slot disabled"><div class="t-eyebrow c-ink3">TODAY</div><div class="t-body-m c-ink3">10:30</div></div>
+                  <div class="slot selected"><div class="t-eyebrow">TODAY</div><div class="t-body-m">14:00</div></div>
+                  <div class="slot"><div class="t-eyebrow">TODAY</div><div class="t-body-m">16:30</div></div>
+                  <div class="slot"><div class="t-eyebrow">FRI</div><div class="t-body-m">09:00</div></div>
+                  <div class="slot"><div class="t-eyebrow">FRI</div><div class="t-body-m">10:30</div></div>
+                  <div class="slot disabled"><div class="t-eyebrow c-ink3">FRI</div><div class="t-body-m c-ink3">14:00</div></div>
+                  <div class="slot"><div class="t-eyebrow">SAT</div><div class="t-body-m">08:30</div></div>
+                </div>
+              </div>
+              <div class="card pad-m">
+                <div class="t-eyebrow">YOUR HORSE</div>
+                <div class="row" style="margin-top:8px; gap:10px;">
+                  <div class="avatar">B</div>
+                  <div class="flex1"><div class="t-body-m">Bella</div><div class="t-caption c-ink3">Hanoverian · Stall #12</div></div>
+                  <span class="pill neutral">DEFAULT</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="padding:16px 20px; background:var(--surface); border-top:1px solid var(--border);">
+            <div style="display:flex; align-items:baseline; justify-content:space-between; margin-bottom:10px;"><span class="t-caption c-ink3">Prepay with Apple Pay</span><span class="t-h2">$120</span></div>
+            <button class="btn primary lg fw" data-go="home">Confirm booking</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SERVICES ────────────────────────────────────────── -->
+      <div class="screen" data-screen="services">
+        <div class="statusbar"><span>9:41</span><span>●●● ●</span></div>
+        <div class="stage">
+          <div class="back-row">
+            <button class="back-btn" data-go="mystable">‹</button>
+            <div class="flex1"><div class="t-eyebrow">SERVICE REQUESTS</div><div class="t-h2">Partners.</div></div>
+            <button class="btn primary sm">+ Request</button>
+          </div>
+          <div class="body">
+            <div class="screen-body">
+              <div class="card pad-m row" style="gap:12px;">
+                <div class="avatar" style="background:var(--g50);">🐴</div>
+                <div class="flex1"><div class="t-body-m">Atlas · Farrier</div><div class="t-caption c-ink3">Right hind has been padded for 2 days.</div><div style="display:flex; gap:4px; margin-top:4px;"><span class="pill warn">PENDING</span><span class="pill neutral">$200</span></div></div>
+                <button class="btn primary sm">Confirm</button>
+              </div>
+              <div class="card pad-m row" style="gap:12px;">
+                <div class="avatar" style="background:var(--alert-bg);">💉</div>
+                <div class="flex1"><div class="t-body-m">Bella · Vet visit</div><div class="t-caption c-ink3">Annual checkup + vaccines.</div><div style="display:flex; gap:4px; margin-top:4px;"><span class="pill brand">CONFIRMED</span></div></div>
+                <button class="btn primary sm" style="background:var(--ok);">Done</button>
+              </div>
+              <div class="card pad-m row" style="gap:12px;">
+                <div class="avatar" style="background:var(--g50);">🦷</div>
+                <div class="flex1"><div class="t-body-m">Storm · Dentist</div><div class="t-caption c-ink3">Routine float.</div><div style="display:flex; gap:4px; margin-top:4px;"><span class="pill ok">COMPLETED</span><span class="pill neutral">$180</span></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── FAB (visible on app screens) ────────────────────── -->
+      <div class="backdrop" id="backdrop"></div>
+      <div class="petals" id="petals">
+        <div class="petal" data-i="0"><button class="petal-btn" data-go="booking">🎯</button><div class="petal-label">Lesson</div></div>
+        <div class="petal" data-i="1"><button class="petal-btn">📅</button><div class="petal-label">Event</div></div>
+        <div class="petal" data-i="2"><button class="petal-btn">✅</button><div class="petal-label">To-Do</div></div>
+        <div class="petal" data-i="3"><button class="petal-btn">📝</button><div class="petal-label">Post</div></div>
+      </div>
+      <button class="fab" id="fab" aria-label="New"><span class="plus">+</span></button>
+    </div>
+
+    <div class="help">
+      Tap the tabs · open the FAB · switch MyStable sub-tabs · open Bella's profile from Horses · scroll inside the phone. Static design preview at
+      <a href="preview.html" style="color:var(--g600);">/preview.html</a>.
+    </div>
+
+    <script>
+      // ── Navigation ─────────────────────────────────────────
+      const screens = document.querySelectorAll("[data-screen]");
+      const tabbars = document.querySelectorAll(".tabbar");
+      const fab = document.getElementById("fab");
+      const backdrop = document.getElementById("backdrop");
+      const petals = document.getElementById("petals");
+
+      const NO_FAB = ["welcome", "onboarding"];
+
+      function show(name) {
+        screens.forEach((s) => s.classList.toggle("active", s.dataset.screen === name));
+        // Update tab bar active state per screen (each screen has its own tabbar markup)
+        // Hide FAB on welcome/onboarding
+        const hideFab = NO_FAB.includes(name);
+        fab.style.display = hideFab ? "none" : "grid";
+        // Close FAB on navigation
+        closeFab();
+        // Scroll bodies to top on switch
+        document.querySelectorAll(".body").forEach((b) => (b.scrollTop = 0));
+      }
+
+      function closeFab() {
+        fab.classList.remove("open");
+        backdrop.classList.remove("open");
+        petals.classList.remove("open");
+      }
+
+      function toggleFab() {
+        const open = !fab.classList.contains("open");
+        fab.classList.toggle("open", open);
+        backdrop.classList.toggle("open", open);
+        petals.classList.toggle("open", open);
+      }
+
+      fab.addEventListener("click", (e) => {
+        e.stopPropagation();
+        toggleFab();
+      });
+      backdrop.addEventListener("click", closeFab);
+
+      // Tabs + buttons that navigate
+      document.addEventListener("click", (e) => {
+        const tab = e.target.closest("[data-tab]");
+        if (tab) {
+          show(tab.dataset.tab);
+          return;
+        }
+        const go = e.target.closest("[data-go]");
+        if (go) {
+          e.preventDefault();
+          show(go.dataset.go);
+        }
+      });
+
+      // ── MyStable sub-tabs ──────────────────────────────────
+      document.querySelectorAll("[data-ms]").forEach((seg) => {
+        seg.addEventListener("click", () => {
+          const ms = seg.dataset.ms;
+          document.querySelectorAll("[data-ms]").forEach((b) => b.classList.toggle("active", b === seg));
+          document.querySelectorAll("[data-ms-pane]").forEach((p) =>
+            p.classList.toggle("hidden", p.dataset.msPane !== ms),
+          );
+        });
+      });
+
+      // ── Whiteboard segmented ───────────────────────────────
+      document.querySelectorAll("[data-wb]").forEach((seg) => {
+        seg.addEventListener("click", () => {
+          const wb = seg.dataset.wb;
+          document.querySelectorAll("[data-wb]").forEach((b) => b.classList.toggle("active", b === seg));
+          document.querySelectorAll("[data-wb-pane]").forEach((p) =>
+            p.classList.toggle("hidden", p.dataset.wbPane !== wb),
+          );
+        });
+      });
+
+      // ── Horse detail sub-tabs ──────────────────────────────
+      document.querySelectorAll("[data-htab]").forEach((tab) => {
+        tab.addEventListener("click", () => {
+          const v = tab.dataset.htab;
+          document.querySelectorAll("[data-htab]").forEach((t) => t.classList.toggle("active", t === tab));
+          document.querySelectorAll("[data-htab-pane]").forEach((p) =>
+            p.classList.toggle("hidden", p.dataset.htabPane !== v),
+          );
+        });
+      });
+
+      // ── Role switcher (changes the Home variant rendered) ──
+      document.querySelectorAll("[data-role]").forEach((chip) => {
+        chip.addEventListener("click", () => {
+          const role = chip.dataset.role;
+          document.querySelectorAll("[data-role]").forEach((c) => c.classList.toggle("active", c === chip));
+          document.querySelectorAll("[data-role-home]").forEach((h) =>
+            h.classList.toggle("hidden", h.dataset.roleHome !== role),
+          );
+          // Jump to home so the user sees the swap
+          show("home");
+        });
+      });
+
+      // Hide FAB on initial welcome screen
+      fab.style.display = "none";
+    </script>
+  </body>
+</html>
