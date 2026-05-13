@@ -12,6 +12,8 @@ import { Text } from "@/components/ui/Text";
 import { colors } from "@/constants/colors";
 import { radii, spacing } from "@/constants/spacing";
 import { useHorseFeed } from "@/hooks/useHorseFeed";
+import { useHorseMedications } from "@/hooks/useHorseMedications";
+import { useHorseTreatments } from "@/hooks/useHorseTreatments";
 import {
   useHorseWeeklyActivity,
   type ActivityItem,
@@ -247,6 +249,10 @@ function SessionChip({ item }: { item: ActivityItem }) {
 
 function HealthTab({ horse, onChanged }: { horse: Horse; onChanged: () => Promise<unknown> }) {
   const [busy, setBusy] = useState(false);
+  const medsQ = useHorseMedications(horse.id);
+  const treatmentsQ = useHorseTreatments(horse.id);
+  const meds = medsQ.data ?? [];
+  const treatments = treatmentsQ.data ?? [];
 
   const onUploadPrescription = async () => {
     setBusy(true);
@@ -290,17 +296,91 @@ function HealthTab({ horse, onChanged }: { horse: Horse; onChanged: () => Promis
         <HealthIcon emoji="🦷" label="Dentist" subLabel="—" tone="neutral" />
       </View>
 
-      <Field label="Medications" value={horse.medication_notes ?? "No daily medications recorded."} />
+      <View style={{ gap: spacing.s }}>
+        <Text variant="eyebrow" color="ink3">
+          DAILY MEDICATIONS
+        </Text>
+        {meds.length === 0 ? (
+          <Card padding="md">
+            <Text variant="body" color="ink2">
+              {horse.medication_notes ?? "No daily medications recorded."}
+            </Text>
+          </Card>
+        ) : (
+          <Card padding="none">
+            {meds.map((m, i) => (
+              <View
+                key={m.id}
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: spacing.s,
+                  padding: spacing.md,
+                  borderTopWidth: i === 0 ? 0 : 1,
+                  borderTopColor: colors.border,
+                }}
+              >
+                <Text style={styles.healthEmoji}>💊</Text>
+                <View style={{ flex: 1 }}>
+                  <Text variant="bodyMedium">{m.name}</Text>
+                  <Text variant="caption" color="ink3">
+                    {[m.dosage, `${m.times_per_day}× / day`].filter(Boolean).join(" · ")}
+                  </Text>
+                </View>
+              </View>
+            ))}
+          </Card>
+        )}
+      </View>
 
       <View style={{ gap: spacing.s }}>
         <Text variant="eyebrow" color="ink3">
           TREATMENTS
         </Text>
-        <EmptyState
-          emoji="📋"
-          title="No treatments yet."
-          subtitle="Upload a prescription to auto-create one — coming with the Day 3 schema migration."
-        />
+        {treatments.length === 0 ? (
+          <EmptyState
+            emoji="📋"
+            title="No treatments yet."
+            subtitle="Owners request, the barn manager validates, the team executes — all from one prescription upload."
+          />
+        ) : (
+          <Card padding="none">
+            {treatments.map((t, i) => {
+              const tone =
+                t.status === "completed"
+                  ? "ok"
+                  : t.status === "rejected" || t.status === "cancelled"
+                    ? "alert"
+                    : t.status === "validated" || t.status === "in_progress"
+                      ? "brand"
+                      : "warn";
+              return (
+                <View
+                  key={t.id}
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: spacing.s,
+                    padding: spacing.md,
+                    borderTopWidth: i === 0 ? 0 : 1,
+                    borderTopColor: colors.border,
+                  }}
+                >
+                  <View style={{ flex: 1 }}>
+                    <Text variant="bodyMedium">{t.title}</Text>
+                    {t.starts_on ? (
+                      <Text variant="caption" color="ink3">
+                        From {new Date(t.starts_on).toLocaleDateString()}
+                        {t.ends_on ? ` → ${new Date(t.ends_on).toLocaleDateString()}` : ""}
+                      </Text>
+                    ) : null}
+                  </View>
+                  <Tag label={t.status.replace("_", " ")} tone={tone} />
+                </View>
+              );
+            })}
+          </Card>
+        )}
       </View>
 
       <Card padding="md">
