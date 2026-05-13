@@ -7,6 +7,7 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { Skeleton, SkeletonRow } from "@/components/ui/Skeleton";
 import { StatusDot } from "@/components/ui/StatusDot";
 import { Text } from "@/components/ui/Text";
+import { NextDueStrip } from "./NextDueStrip";
 import { colors } from "@/constants/colors";
 import { spacing } from "@/constants/spacing";
 import { useBarnMetrics } from "@/hooks/useBarnMetrics";
@@ -66,6 +67,8 @@ export function OwnerHome() {
           </>
         )}
       </View>
+
+      <NextDueStrip />
 
       {alerts.length > 0 ? (
         <Section title="Alerts">

@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/Card";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Tag } from "@/components/ui/Tag";
 import { Text } from "@/components/ui/Text";
+import { NextDueStrip } from "./NextDueStrip";
 import { colors } from "@/constants/colors";
 import { radii, spacing } from "@/constants/spacing";
 import { useBarnNews } from "@/hooks/useBarnNews";
@@ -56,6 +57,8 @@ export function ClientHome() {
           value={next ? formatDayLabel(next.starts_at) : "—"}
         />
       </View>
+
+      <NextDueStrip />
 
       <Pressable onPress={() => router.push("/(app)/booking")}>
         <Card variant="dark" padding="lg" style={styles.bookCard}>
