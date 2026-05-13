@@ -672,6 +672,8 @@
         <button class="tab" data-target="whiteboard">Whiteboard</button>
         <button class="tab" data-target="mystable">My Stable</button>
         <button class="tab" data-target="fab">FAB menu</button>
+        <button class="tab" data-target="horse-activity">Horse · Activity</button>
+        <button class="tab" data-target="horse-health">Horse · Health</button>
         <button class="tab" data-target="components">Components</button>
       </div>
       <div class="themes" id="themes">
@@ -1364,10 +1366,11 @@
                 <div style="display:flex; background:var(--surface); border-bottom:1px solid var(--border);">
                   <div style="flex:1; padding:14px; text-align:center; position:relative;">
                     <span class="t-body-medium">Info</span>
-                    <div style="position:absolute; bottom:0; left:30%; right:30%; height:2px; background:var(--g500);"></div>
+                    <div style="position:absolute; bottom:0; left:25%; right:25%; height:2px; background:var(--g500);"></div>
                   </div>
+                  <div style="flex:1; padding:14px; text-align:center;"><span class="t-body-medium c-ink3">Activity</span></div>
+                  <div style="flex:1; padding:14px; text-align:center;"><span class="t-body-medium c-ink3">Health</span></div>
                   <div style="flex:1; padding:14px; text-align:center;"><span class="t-body-medium c-ink3">Feed</span></div>
-                  <div style="flex:1; padding:14px; text-align:center;"><span class="t-body-medium c-ink3">Planning</span></div>
                 </div>
                 <div class="screen-body">
                   <div class="card pad-md"><div class="t-eyebrow">STALL</div><div class="t-body" style="margin-top:4px">#12</div></div>
@@ -1821,6 +1824,154 @@
                 <div class="tab-item"><div class="tab-icon tab-board"></div>Whiteboard</div>
                 <div class="tab-item"><div class="tab-icon tab-stable"></div>My Stable</div>
                 <div class="tab-item"><div class="tab-icon tab-dash"></div>Dashboard</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- HORSE · ACTIVITY TAB -->
+          <div class="screen-wrap" id="screen-horse-activity">
+            <div class="screen-label">Day 3 · <span>horse [id] · Activity</span></div>
+            <div class="phone">
+              <div class="notch"></div>
+              <div class="statusbar" style="color:white"><span>9:41</span><span class="right">●●● ●</span></div>
+              <div class="body" style="padding:0">
+                <div style="height:220px; background: radial-gradient(circle at 65% 35%, var(--g300), var(--g700)); position:relative;">
+                  <div style="position:absolute; left:0; right:0; bottom:0; padding:18px;">
+                    <div class="t-eyebrow c-g200">STALL #12</div>
+                    <div style="font-family:var(--serif);font-style:italic;font-size:44px;line-height:48px;letter-spacing:-0.6px;color:white;">Bella</div>
+                    <div class="t-caption c-g200">9 years, Hanoverian</div>
+                  </div>
+                </div>
+                <div style="display:flex; background:var(--surface); border-bottom:1px solid var(--border);">
+                  <div style="flex:1; padding:14px; text-align:center;"><span class="t-body-medium c-ink3">Info</span></div>
+                  <div style="flex:1; padding:14px; text-align:center; position:relative;">
+                    <span class="t-body-medium">Activity</span>
+                    <div style="position:absolute; bottom:0; left:25%; right:25%; height:2px; background:var(--g500);"></div>
+                  </div>
+                  <div style="flex:1; padding:14px; text-align:center;"><span class="t-body-medium c-ink3">Health</span></div>
+                  <div style="flex:1; padding:14px; text-align:center;"><span class="t-body-medium c-ink3">Feed</span></div>
+                </div>
+                <div class="screen-body">
+                  <!-- Week grid Mon-Sun -->
+                  <div style="display:flex; gap:4px;">
+                    <div style="flex:1; min-height:96px; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:8px 4px; display:flex; flex-direction:column; align-items:center; gap:4px;">
+                      <span class="t-eyebrow">MON</span>
+                      <span class="t-body-medium c-ink2">12</span>
+                      <div style="background:var(--g100); border-radius:8px; padding:3px 4px; align-self:stretch; align-items:center;"><span class="t-label c-g600" style="display:block; text-align:center;">flat</span></div>
+                    </div>
+                    <div style="flex:1; min-height:96px; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:8px 4px; display:flex; flex-direction:column; align-items:center; gap:4px;">
+                      <span class="t-eyebrow">TUE</span>
+                      <span class="t-body-medium c-ink2">13</span>
+                      <div style="background:var(--g50); border-radius:8px; padding:3px 4px; align-self:stretch;"><span class="t-label c-g600" style="display:block; text-align:center;">jump</span></div>
+                    </div>
+                    <div style="flex:1; min-height:96px; background:var(--g50); border:1px solid var(--g500); border-radius:12px; padding:8px 4px; display:flex; flex-direction:column; align-items:center; gap:4px;">
+                      <span class="t-eyebrow c-g600">WED</span>
+                      <span class="t-body-medium">14</span>
+                      <div style="background:var(--g100); border-radius:8px; padding:3px 4px; align-self:stretch;"><span class="t-label c-g600" style="display:block; text-align:center;">flat</span></div>
+                    </div>
+                    <div style="flex:1; min-height:96px; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:8px 4px; display:flex; flex-direction:column; align-items:center; gap:4px;">
+                      <span class="t-eyebrow">THU</span>
+                      <span class="t-body-medium c-ink2">15</span>
+                      <div style="background:var(--g100); border-radius:8px; padding:3px 4px; align-self:stretch;"><span class="t-label c-g600" style="display:block; text-align:center;">lunge</span></div>
+                    </div>
+                    <div style="flex:1; min-height:96px; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:8px 4px; display:flex; flex-direction:column; align-items:center; gap:4px;">
+                      <span class="t-eyebrow">FRI</span>
+                      <span class="t-body-medium c-ink2">16</span>
+                      <div style="background:var(--n50); border-radius:8px; padding:3px 4px; align-self:stretch;"><span class="t-label c-ink3" style="display:block; text-align:center;">rest</span></div>
+                    </div>
+                    <div style="flex:1; min-height:96px; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:8px 4px; display:flex; flex-direction:column; align-items:center; gap:4px;">
+                      <span class="t-eyebrow">SAT</span>
+                      <span class="t-body-medium c-ink2">17</span>
+                      <div style="background:var(--alert-bg); border-radius:8px; padding:3px 4px; align-self:stretch;"><span class="t-label c-alert" style="display:block; text-align:center;">show</span></div>
+                    </div>
+                    <div style="flex:1; min-height:96px; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:8px 4px; display:flex; flex-direction:column; align-items:center; gap:4px;">
+                      <span class="t-eyebrow">SUN</span>
+                      <span class="t-body-medium c-ink2">18</span>
+                      <div style="background:var(--n50); border-radius:8px; padding:3px 4px; align-self:stretch;"><span class="t-label c-ink3" style="display:block; text-align:center;">rest</span></div>
+                    </div>
+                  </div>
+
+                  <div class="t-eyebrow" style="margin-top:8px">LEGEND</div>
+                  <div style="display:flex; flex-wrap:wrap; gap:14px;">
+                    <div style="display:flex; align-items:center; gap:6px;"><div style="width:10px; height:10px; border-radius:5px; background:var(--g300);"></div><span class="t-caption c-ink2">lunge</span></div>
+                    <div style="display:flex; align-items:center; gap:6px;"><div style="width:10px; height:10px; border-radius:5px; background:var(--g500);"></div><span class="t-caption c-ink2">flat</span></div>
+                    <div style="display:flex; align-items:center; gap:6px;"><div style="width:10px; height:10px; border-radius:5px; background:var(--g700);"></div><span class="t-caption c-ink2">jump</span></div>
+                    <div style="display:flex; align-items:center; gap:6px;"><div style="width:10px; height:10px; border-radius:5px; background:var(--n200);"></div><span class="t-caption c-ink2">rest</span></div>
+                    <div style="display:flex; align-items:center; gap:6px;"><div style="width:10px; height:10px; border-radius:5px; background:var(--alert-dot);"></div><span class="t-caption c-ink2">show</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- HORSE · HEALTH TAB -->
+          <div class="screen-wrap" id="screen-horse-health">
+            <div class="screen-label">Day 3 · <span>horse [id] · Health</span></div>
+            <div class="phone">
+              <div class="notch"></div>
+              <div class="statusbar" style="color:white"><span>9:41</span><span class="right">●●● ●</span></div>
+              <div class="body" style="padding:0">
+                <div style="height:220px; background: radial-gradient(circle at 65% 35%, var(--g300), var(--g700)); position:relative;">
+                  <div style="position:absolute; left:0; right:0; bottom:0; padding:18px;">
+                    <div class="t-eyebrow c-g200">STALL #12</div>
+                    <div style="font-family:var(--serif);font-style:italic;font-size:44px;line-height:48px;letter-spacing:-0.6px;color:white;">Bella</div>
+                    <div class="t-caption c-g200">9 years, Hanoverian</div>
+                  </div>
+                </div>
+                <div style="display:flex; background:var(--surface); border-bottom:1px solid var(--border);">
+                  <div style="flex:1; padding:14px; text-align:center;"><span class="t-body-medium c-ink3">Info</span></div>
+                  <div style="flex:1; padding:14px; text-align:center;"><span class="t-body-medium c-ink3">Activity</span></div>
+                  <div style="flex:1; padding:14px; text-align:center; position:relative;">
+                    <span class="t-body-medium">Health</span>
+                    <div style="position:absolute; bottom:0; left:25%; right:25%; height:2px; background:var(--g500);"></div>
+                  </div>
+                  <div style="flex:1; padding:14px; text-align:center;"><span class="t-body-medium c-ink3">Feed</span></div>
+                </div>
+                <div class="screen-body">
+                  <!-- Health icons row -->
+                  <div style="display:flex; gap:8px; justify-content:space-between;">
+                    <div style="flex:1; align-items:center; display:flex; flex-direction:column;">
+                      <div style="width:52px; height:52px; border-radius:26px; background:white; border:2px solid var(--n200); display:grid; place-items:center; font-size:24px;">🐴</div>
+                      <span class="t-label" style="margin-top:4px;">Farrier</span>
+                      <span class="t-caption c-ink3">6 weeks</span>
+                    </div>
+                    <div style="flex:1; align-items:center; display:flex; flex-direction:column;">
+                      <div style="width:52px; height:52px; border-radius:26px; background:white; border:2px solid var(--ok-dot); display:grid; place-items:center; font-size:24px;">💉</div>
+                      <span class="t-label" style="margin-top:4px;">Vaccine</span>
+                      <span class="t-caption c-ink3">3 months</span>
+                    </div>
+                    <div style="flex:1; align-items:center; display:flex; flex-direction:column;">
+                      <div style="width:52px; height:52px; border-radius:26px; background:white; border:2px solid var(--warn-dot); display:grid; place-items:center; font-size:24px;">💊</div>
+                      <span class="t-label" style="margin-top:4px;">Vermifuge</span>
+                      <span class="t-caption c-warn">2 weeks</span>
+                    </div>
+                    <div style="flex:1; align-items:center; display:flex; flex-direction:column;">
+                      <div style="width:52px; height:52px; border-radius:26px; background:white; border:2px solid var(--n200); display:grid; place-items:center; font-size:24px;">🦷</div>
+                      <span class="t-label" style="margin-top:4px;">Dentist</span>
+                      <span class="t-caption c-ink3">—</span>
+                    </div>
+                  </div>
+
+                  <div class="card pad-md">
+                    <div class="t-eyebrow">MEDICATIONS</div>
+                    <div class="t-body" style="margin-top:4px">Equibiom AM + PM. Biotin daily.</div>
+                  </div>
+
+                  <div>
+                    <div class="t-eyebrow" style="margin-bottom:8px">TREATMENTS</div>
+                    <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:24px; align-items:center; display:flex; flex-direction:column; gap:8px;">
+                      <span style="font-size:28px;">📋</span>
+                      <span class="t-body-medium">No treatments yet.</span>
+                      <span class="t-caption c-ink3" style="text-align:center; max-width:260px;">Upload a prescription to auto-create one — coming with the Day 3 schema migration.</span>
+                    </div>
+                  </div>
+
+                  <div class="card pad-md">
+                    <div class="t-eyebrow">UPLOAD PRESCRIPTION</div>
+                    <div class="t-caption c-ink2" style="margin-top:6px; margin-bottom:10px">PDF or photo. Archive on the horse indefinitely. Owner gets notified when a related task is completed.</div>
+                    <button class="btn primary md fw">Choose file</button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
