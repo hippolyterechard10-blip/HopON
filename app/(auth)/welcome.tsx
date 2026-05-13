@@ -27,8 +27,8 @@ export default function Welcome() {
           Your barn. Calmer.
         </Text>
         <Text variant="body" color="g200" style={styles.subtitle}>
-          The operating system for high-performance equestrian businesses. Lessons, payments, and
-          the team — on the same page.
+          The operating system for riding barns. Bookings, payments, and the team — on the same
+          page.
         </Text>
       </View>
 

@@ -1,8 +1,8 @@
 # HopOn
 
-> The operating system for high-performance equestrian businesses.
+> The operating system for riding barns.
 
-Mobile-first React Native app for professional US barns. Replaces the WhatsApp + spreadsheet chaos with a calm, role-aware coordination layer. US-first (Ocala + Wellington), targeting the **January 2027** show season.
+Mobile-first React Native app for US riding barns of every level — local riding clubs through to professional show barns. Replaces the WhatsApp + spreadsheet chaos with a calm, role-aware coordination layer. US-first (Ocala + Wellington as the beachhead), targeting the **January 2027** show season.
 
 **North Star:** 90% retention of target barns at 6 months.
 

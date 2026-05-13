@@ -2,7 +2,7 @@
   "name": "hopon",
   "version": "0.1.0",
   "private": true,
-  "description": "HopOn — operating system for high-performance equestrian barns.",
+  "description": "HopOn — operating system for riding barns.",
   "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",

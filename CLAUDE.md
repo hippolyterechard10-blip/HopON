@@ -7,12 +7,13 @@
 
 ## 0. CONTEXT
 
-HopOn is a **mobile-first equestrian barn management app** targeting high-performance US equestrian businesses (barns, trainers, grooms, clients). The app replaces WhatsApp chaos and spreadsheets with a calm, operational coordination layer.
+HopOn is a **mobile-first equestrian barn management app** for US riding barns of every level — from local riding clubs to professional show barns, plus the trainers, grooms, and clients who run them day-to-day. The app replaces WhatsApp chaos and spreadsheets with a calm, operational coordination layer.
 
-- **Positioning** — "The operating system for high-performance equestrian businesses."
+- **Positioning** — "The operating system for riding barns."
+- **Audience breadth** — Built for every barn that gives lessons. Not premium-only (the BMW lane), not bargain (the Dacia lane) — the Volkswagen of barn software: well-built, dependable, broadly accessible.
 - **North Star** — 90% retention of target barns at 6 months.
-- **Target market** — Ocala + Wellington, FL · US show season starting January 2027.
-- **Design benchmarks** — Airbnb, Linear, Strava. Premium, calm, modern. Not gimmicky.
+- **Go-to-market** — Ocala + Wellington, FL · winter show season starting January 2027. Cluster from there into the broader US riding-club market.
+- **Design benchmarks** — Airbnb, Linear, Strava. Premium feel, calm, modern. Not gimmicky.
 
 ---
 
