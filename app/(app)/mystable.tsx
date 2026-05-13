@@ -252,6 +252,7 @@ type Partner = {
 };
 
 function PartnersPanel({ query }: { query: string }) {
+  const router = useRouter();
   const barnId = useBarnStore((s) => s.currentBarnId);
   const { data, isLoading } = useHorses(barnId);
 
@@ -312,6 +313,33 @@ function PartnersPanel({ query }: { query: string }) {
   }
   return (
     <View style={{ gap: spacing.s }}>
+      <Pressable
+        onPress={() => router.push("/(app)/services")}
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          gap: spacing.s,
+          padding: spacing.md,
+          borderRadius: 16,
+          backgroundColor: colors.g50,
+          borderWidth: 1,
+          borderColor: colors.g100,
+        }}
+      >
+        <Text style={{ fontSize: 22 }}>🤝</Text>
+        <View style={{ flex: 1 }}>
+          <Text variant="bodyMedium" color="g700">
+            Service requests
+          </Text>
+          <Text variant="caption" color="g600">
+            Ask a partner — farrier, vet, dentist…
+          </Text>
+        </View>
+        <Text variant="h3" color="g600">
+          ›
+        </Text>
+      </Pressable>
+
       {partners.map((p) => (
         <Card key={p.id} padding="md" style={styles.row}>
           <View style={styles.avatar}>
