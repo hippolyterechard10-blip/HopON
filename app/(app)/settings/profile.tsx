@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { LanguagePicker } from "@/components/ui/LanguagePicker";
 import { Text } from "@/components/ui/Text";
 import { colors } from "@/constants/colors";
 import { spacing } from "@/constants/spacing";
@@ -96,6 +97,10 @@ export default function ProfileSettings() {
               onChangeText={(v) => setForm((f) => ({ ...f, phone: v }))}
               keyboardType="phone-pad"
             />
+
+            <View style={{ marginTop: spacing.md }}>
+              <LanguagePicker />
+            </View>
 
             <Text variant="eyebrow" color="ink3" style={{ marginTop: spacing.md }}>
               QUIET HOURS

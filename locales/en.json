@@ -1,0 +1,56 @@
+{
+  "welcome.title": "Your barn. Calmer.",
+  "welcome.subtitle": "The operating system for riding barns. Bookings, payments, and the team — on the same page.",
+  "welcome.getStarted": "Get started",
+  "welcome.haveAccount": "I already have an account",
+
+  "tabs.home": "Home",
+  "tabs.calendar": "Calendar",
+  "tabs.whiteboard": "Whiteboard",
+  "tabs.mystable": "My Stable",
+  "tabs.dashboard": "Dashboard",
+
+  "common.continue": "Continue",
+  "common.save": "Save",
+  "common.cancel": "Cancel",
+  "common.signOut": "Sign out",
+  "common.search": "Search…",
+  "common.add": "+ Add",
+  "common.done": "Done",
+  "common.urgent": "Urgent",
+  "common.tasks": "Tasks",
+
+  "role.barn_owner": "Barn Owner",
+  "role.trainer": "Trainer",
+  "role.pro_rider": "Pro Rider",
+  "role.groom": "Groom",
+  "role.barn_manager": "Barn Manager",
+  "role.secretary": "Secretary",
+  "role.client": "Client",
+  "role.parent": "Parent",
+
+  "onboarding.step": "STEP {{n}} OF 4",
+  "onboarding.role.title": "Who are you at the barn?",
+  "onboarding.role.subtitle": "Pick everything that applies. You can adjust this later.",
+
+  "mystable.title": "My Stable.",
+  "mystable.horses": "Horses",
+  "mystable.clients": "Clients",
+  "mystable.team": "Team",
+  "mystable.partners": "Partners",
+
+  "whiteboard.byPerson": "By person",
+  "whiteboard.byHorse": "By horse",
+
+  "checklist.eyebrow": "GET YOUR BARN UP",
+  "checklist.dontShow": "Don't show again",
+  "checklist.step.team": "Add your first team member",
+  "checklist.step.horse": "Add your first horse",
+  "checklist.step.client": "Add your first client",
+  "checklist.step.lessonType": "Edit your lesson type",
+
+  "settings.language": "Language",
+  "settings.language.en": "English",
+  "settings.language.fr": "Français",
+  "settings.language.es": "Español"
+}

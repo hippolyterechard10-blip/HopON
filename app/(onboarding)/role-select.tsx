@@ -7,8 +7,9 @@ import { Button } from "@/components/ui/Button";
 import { Text } from "@/components/ui/Text";
 import { colors } from "@/constants/colors";
 import { radii, spacing } from "@/constants/spacing";
+import { useT } from "@/lib/i18n";
 import { useOnboardingStore } from "@/stores/onboardingStore";
-import { ROLE_LABELS, type BarnRole } from "@/types/roles";
+import { type BarnRole } from "@/types/roles";
 
 import { Progress } from "./_progress";
 
@@ -29,6 +30,7 @@ const OPTIONS: RoleOption[] = [
 
 export default function RoleSelect() {
   const router = useRouter();
+  const t = useT();
   const setRoles = useOnboardingStore((s) => s.setRoles);
   const saved = useOnboardingStore((s) => s.roles);
   const [selected, setSelected] = useState<Set<BarnRole>>(new Set(saved));
@@ -50,13 +52,13 @@ export default function RoleSelect() {
       <ScrollView contentContainerStyle={styles.content}>
         <Progress step={1} />
         <Text variant="eyebrow" color="ink3">
-          STEP 1 OF 4
+          {t("onboarding.step", { n: 1 })}
         </Text>
         <Text variant="hero" color="ink1" style={styles.title}>
-          Who are you at the barn?
+          {t("onboarding.role.title")}
         </Text>
         <Text variant="body" color="ink2" style={{ marginTop: spacing.xs }}>
-          Pick everything that applies. You can adjust this later.
+          {t("onboarding.role.subtitle")}
         </Text>
 
         <View style={styles.grid}>
@@ -70,7 +72,7 @@ export default function RoleSelect() {
               >
                 <Text style={styles.emoji}>{o.emoji}</Text>
                 <Text variant="bodyMedium" color={isSelected ? "white" : "ink1"}>
-                  {ROLE_LABELS[o.role]}
+                  {t(`role.${o.role}`)}
                 </Text>
                 <Text variant="caption" color={isSelected ? "g100" : "ink3"}>
                   {o.description}
@@ -83,7 +85,7 @@ export default function RoleSelect() {
 
       <View style={styles.footer}>
         <Button
-          label="Continue"
+          label={t("common.continue")}
           variant="primary"
           size="lg"
           fullWidth

@@ -1,0 +1,56 @@
+{
+  "welcome.title": "Tu cuadra. Más tranquila.",
+  "welcome.subtitle": "El sistema operativo para cuadras de equitación. Reservas, pagos y el equipo — en una sola página.",
+  "welcome.getStarted": "Empezar",
+  "welcome.haveAccount": "Ya tengo una cuenta",
+
+  "tabs.home": "Inicio",
+  "tabs.calendar": "Calendario",
+  "tabs.whiteboard": "Pizarra",
+  "tabs.mystable": "Mi Cuadra",
+  "tabs.dashboard": "Panel",
+
+  "common.continue": "Continuar",
+  "common.save": "Guardar",
+  "common.cancel": "Cancelar",
+  "common.signOut": "Cerrar sesión",
+  "common.search": "Buscar…",
+  "common.add": "+ Añadir",
+  "common.done": "Hecho",
+  "common.urgent": "Urgente",
+  "common.tasks": "Tareas",
+
+  "role.barn_owner": "Propietario",
+  "role.trainer": "Entrenador",
+  "role.pro_rider": "Jinete profesional",
+  "role.groom": "Mozo de cuadra",
+  "role.barn_manager": "Gerente",
+  "role.secretary": "Secretario",
+  "role.client": "Cliente",
+  "role.parent": "Padre/Madre",
+
+  "onboarding.step": "PASO {{n}} DE 4",
+  "onboarding.role.title": "¿Cuál es tu rol en la cuadra?",
+  "onboarding.role.subtitle": "Marca todo lo que aplique. Puedes ajustarlo más tarde.",
+
+  "mystable.title": "Mi Cuadra.",
+  "mystable.horses": "Caballos",
+  "mystable.clients": "Clientes",
+  "mystable.team": "Equipo",
+  "mystable.partners": "Proveedores",
+
+  "whiteboard.byPerson": "Por persona",
+  "whiteboard.byHorse": "Por caballo",
+
+  "checklist.eyebrow": "PON EN MARCHA TU CUADRA",
+  "checklist.dontShow": "No mostrar de nuevo",
+  "checklist.step.team": "Añade tu primer miembro",
+  "checklist.step.horse": "Añade tu primer caballo",
+  "checklist.step.client": "Añade tu primer cliente",
+  "checklist.step.lessonType": "Edita tu tipo de clase",
+
+  "settings.language": "Idioma",
+  "settings.language.en": "English",
+  "settings.language.fr": "Français",
+  "settings.language.es": "Español"
+}

@@ -9,6 +9,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { useAuth, useAuthBootstrap } from "@/hooks/useAuth";
 import { useMemberships } from "@/hooks/useMemberships";
+import { useI18nStore } from "@/lib/i18n";
 import { usePushRegistration } from "@/lib/notifications";
 import { queryClient } from "@/lib/queryClient";
 import { MERCHANT_IDENTIFIER, STRIPE_PUBLISHABLE_KEY } from "@/lib/stripe";
@@ -40,12 +41,18 @@ export default function RootLayout() {
 function RootNavigation() {
   useAuthBootstrap();
   usePushRegistration();
+  const hydrateI18n = useI18nStore((s) => s.hydrate);
+  const i18nHydrated = useI18nStore((s) => s.hydrated);
   const { user, isSignedIn, isLoading } = useAuth();
   const memberships = useMemberships(user?.id);
   const setBarn = useBarnStore((s) => s.setBarn);
 
   const segments = useSegments();
   const router = useRouter();
+
+  useEffect(() => {
+    if (!i18nHydrated) hydrateI18n();
+  }, [i18nHydrated, hydrateI18n]);
 
   useEffect(() => {
     if (isLoading) return;

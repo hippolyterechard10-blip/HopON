@@ -6,9 +6,11 @@ import { Button } from "@/components/ui/Button";
 import { Text } from "@/components/ui/Text";
 import { colors } from "@/constants/colors";
 import { spacing } from "@/constants/spacing";
+import { useT } from "@/lib/i18n";
 
 export default function Welcome() {
   const router = useRouter();
+  const t = useT();
   return (
     <SafeAreaView style={styles.container} edges={["top", "bottom"]}>
       <View style={styles.brand}>
@@ -24,24 +26,23 @@ export default function Welcome() {
 
       <View style={styles.copy}>
         <Text variant="hero" color="white">
-          Your barn. Calmer.
+          {t("welcome.title")}
         </Text>
         <Text variant="body" color="g200" style={styles.subtitle}>
-          The operating system for riding barns. Bookings, payments, and the team — on the same
-          page.
+          {t("welcome.subtitle")}
         </Text>
       </View>
 
       <View style={styles.actions}>
         <Button
-          label="Get started"
+          label={t("welcome.getStarted")}
           variant="primary"
           size="lg"
           fullWidth
           onPress={() => router.push("/(auth)/sign-up")}
         />
         <Button
-          label="I already have an account"
+          label={t("welcome.haveAccount")}
           variant="ghost"
           size="md"
           fullWidth

@@ -1,0 +1,56 @@
+{
+  "welcome.title": "Votre écurie. Plus calme.",
+  "welcome.subtitle": "L'OS des centres équestres. Réservations, paiements et l'équipe — sur la même page.",
+  "welcome.getStarted": "Commencer",
+  "welcome.haveAccount": "J'ai déjà un compte",
+
+  "tabs.home": "Accueil",
+  "tabs.calendar": "Calendrier",
+  "tabs.whiteboard": "Tableau",
+  "tabs.mystable": "Mon Écurie",
+  "tabs.dashboard": "Tableau de bord",
+
+  "common.continue": "Continuer",
+  "common.save": "Enregistrer",
+  "common.cancel": "Annuler",
+  "common.signOut": "Se déconnecter",
+  "common.search": "Rechercher…",
+  "common.add": "+ Ajouter",
+  "common.done": "Fait",
+  "common.urgent": "Urgent",
+  "common.tasks": "Tâches",
+
+  "role.barn_owner": "Propriétaire d'écurie",
+  "role.trainer": "Coach",
+  "role.pro_rider": "Cavalier pro",
+  "role.groom": "Palefrenier·ère",
+  "role.barn_manager": "Manager d'écurie",
+  "role.secretary": "Secrétaire",
+  "role.client": "Client·e",
+  "role.parent": "Parent",
+
+  "onboarding.step": "ÉTAPE {{n}} SUR 4",
+  "onboarding.role.title": "Quel est votre rôle à l'écurie ?",
+  "onboarding.role.subtitle": "Cochez tout ce qui s'applique. Vous pourrez modifier plus tard.",
+
+  "mystable.title": "Mon Écurie.",
+  "mystable.horses": "Chevaux",
+  "mystable.clients": "Clients",
+  "mystable.team": "Équipe",
+  "mystable.partners": "Intervenants",
+
+  "whiteboard.byPerson": "Par personne",
+  "whiteboard.byHorse": "Par cheval",
+
+  "checklist.eyebrow": "DÉMARREZ VOTRE ÉCURIE",
+  "checklist.dontShow": "Ne plus afficher",
+  "checklist.step.team": "Ajoutez votre premier membre",
+  "checklist.step.horse": "Ajoutez votre premier cheval",
+  "checklist.step.client": "Ajoutez votre premier client",
+  "checklist.step.lessonType": "Modifiez votre type de cours",
+
+  "settings.language": "Langue",
+  "settings.language.en": "English",
+  "settings.language.fr": "Français",
+  "settings.language.es": "Español"
+}

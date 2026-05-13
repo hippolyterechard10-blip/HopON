@@ -10,6 +10,7 @@ import { View } from "react-native";
 
 import { FAB } from "@/components/ui/FAB";
 import { colors } from "@/constants/colors";
+import { useT } from "@/lib/i18n";
 
 /**
  * Day 3 navigation architecture (sprint May 13, 2026):
@@ -28,6 +29,7 @@ import { colors } from "@/constants/colors";
  * via router.push but is hidden from the tab bar with `href: null`.
  */
 export default function AppLayout() {
+  const t = useT();
   return (
     <View style={{ flex: 1, backgroundColor: colors.bg }}>
       <Tabs
@@ -48,35 +50,35 @@ export default function AppLayout() {
         <Tabs.Screen
           name="index"
           options={{
-            title: "Home",
+            title: t("tabs.home"),
             tabBarIcon: ({ color, size }) => <HomeIcon color={color} size={size - 4} />,
           }}
         />
         <Tabs.Screen
           name="calendar"
           options={{
-            title: "Calendar",
+            title: t("tabs.calendar"),
             tabBarIcon: ({ color, size }) => <Calendar color={color} size={size - 4} />,
           }}
         />
         <Tabs.Screen
           name="whiteboard"
           options={{
-            title: "Whiteboard",
+            title: t("tabs.whiteboard"),
             tabBarIcon: ({ color, size }) => <ClipboardList color={color} size={size - 4} />,
           }}
         />
         <Tabs.Screen
           name="mystable"
           options={{
-            title: "My Stable",
+            title: t("tabs.mystable"),
             tabBarIcon: ({ color, size }) => <Warehouse color={color} size={size - 4} />,
           }}
         />
         <Tabs.Screen
           name="dashboard"
           options={{
-            title: "Dashboard",
+            title: t("tabs.dashboard"),
             tabBarIcon: ({ color, size }) => <BarChart3 color={color} size={size - 4} />,
           }}
         />
