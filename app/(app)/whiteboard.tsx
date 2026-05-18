@@ -13,7 +13,6 @@ import { radii, spacing } from "@/constants/spacing";
 import { useBarnMembers } from "@/hooks/useBarnMembers";
 import { useHorses } from "@/hooks/useHorses";
 import { useTodayTasks, useUpdateTaskStatus, type TodayTask } from "@/hooks/useTodayTasks";
-import { formatTime } from "@/lib/dateRange";
 import { useBarnStore } from "@/stores/barnStore";
 
 type GroupBy = "person" | "horse";
@@ -236,11 +235,6 @@ function TaskRow({
           {isUrgent ? "! " : ""}
           {(task.horse?.name?.toUpperCase() ?? "BARN") + " · " + task.title.toUpperCase()}
         </Text>
-        {task.due_at ? (
-          <Text variant="caption" color="ink3">
-            {formatTime(task.due_at)}
-          </Text>
-        ) : null}
       </View>
     </Pressable>
   );

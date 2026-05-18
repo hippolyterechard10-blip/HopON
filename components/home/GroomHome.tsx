@@ -10,7 +10,6 @@ import { colors } from "@/constants/colors";
 import { spacing } from "@/constants/spacing";
 import { useHorses } from "@/hooks/useHorses";
 import { useTodayTasks, useUpdateTaskStatus, type TodayTask } from "@/hooks/useTodayTasks";
-import { formatTime } from "@/lib/dateRange";
 import { useBarnStore } from "@/stores/barnStore";
 
 export function GroomHome() {
@@ -126,7 +125,6 @@ function TaskRow({
   const compressed = [
     task.horse?.name?.toUpperCase() ?? "BARN",
     task.title.toUpperCase(),
-    task.due_at ? formatTime(task.due_at) : "",
   ]
     .filter(Boolean)
     .join(" · ");

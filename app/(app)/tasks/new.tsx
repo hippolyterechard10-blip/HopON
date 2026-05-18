@@ -38,7 +38,6 @@ export default function NewTask() {
   const [horseId, setHorseId] = useState<string | null>(null);
   const [assignee, setAssignee] = useState<string | null>(null);
   const [priority, setPriority] = useState<TaskPriority>("normal");
-  const [hour, setHour] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
 
   const submit = async () => {
@@ -50,15 +49,9 @@ export default function NewTask() {
     }
     setError(null);
 
-    let dueAt: string | null = null;
-    if (hour) {
-      const [h, m] = hour.split(":").map((x) => Number(x));
-      if (Number.isFinite(h)) {
-        const d = new Date();
-        d.setHours(h ?? 0, m ?? 0, 0, 0);
-        dueAt = d.toISOString();
-      }
-    }
+    // Tasks are day-scoped without a specific time (per Day 3 refinement).
+    // If a precise time is required, create a Calendar event instead.
+    const dueAt: string | null = null;
 
     try {
       await create.mutateAsync({
@@ -148,13 +141,12 @@ export default function NewTask() {
               </View>
             </View>
 
-            <Input
-              label="Due time (HH:MM, optional)"
-              value={hour}
-              onChangeText={setHour}
-              placeholder="14:30"
-              keyboardType="numbers-and-punctuation"
-            />
+            <View style={{ padding: spacing.s, backgroundColor: colors.g50, borderRadius: 8 }}>
+              <Text variant="caption" color="g600">
+                Tasks are daily — no time needed. If something must happen at a precise hour,
+                create it as a Calendar event instead.
+              </Text>
+            </View>
 
             {error ? (
               <Text variant="caption" color="alert">

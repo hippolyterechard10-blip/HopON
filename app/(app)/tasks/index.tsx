@@ -11,7 +11,6 @@ import { Text } from "@/components/ui/Text";
 import { colors } from "@/constants/colors";
 import { spacing } from "@/constants/spacing";
 import { useTodayTasks, useUpdateTaskStatus } from "@/hooks/useTodayTasks";
-import { formatTime } from "@/lib/dateRange";
 import { useBarnStore } from "@/stores/barnStore";
 
 export default function Tasks() {
@@ -79,11 +78,6 @@ export default function Tasks() {
                     >
                       {(t.horse?.name ?? "Barn") + " · " + t.title}
                     </Text>
-                    {t.due_at ? (
-                      <Text variant="caption" color="ink3">
-                        Due {formatTime(t.due_at)}
-                      </Text>
-                    ) : null}
                   </View>
                   <StatusDot status={isUrgent ? "alert" : isDone ? "ok" : "neutral"} />
                 </Pressable>

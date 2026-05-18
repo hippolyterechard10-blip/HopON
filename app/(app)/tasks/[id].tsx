@@ -12,7 +12,6 @@ import { Text } from "@/components/ui/Text";
 import { colors } from "@/constants/colors";
 import { radii, spacing } from "@/constants/spacing";
 import { useAddTaskUpdate, useTask, useTaskUpdates } from "@/hooks/useTask";
-import { formatTime } from "@/lib/dateRange";
 import { uploadImage } from "@/lib/storage";
 import type { TaskStatus } from "@/types/app.types";
 
@@ -77,7 +76,6 @@ export default function TaskDetail() {
         <Text variant="display">{task.title}</Text>
         <View style={styles.tagRow}>
           <Tag label={task.status} tone={task.status === "done" ? "ok" : task.status === "issue" ? "alert" : "neutral"} />
-          {task.due_at ? <Tag label={`Due ${formatTime(task.due_at)}`} tone="brand" /> : null}
         </View>
 
         {task.notes ? (

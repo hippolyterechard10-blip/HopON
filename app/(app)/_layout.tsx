@@ -2,8 +2,8 @@ import { Tabs } from "expo-router";
 import {
   BarChart3,
   Calendar,
-  ClipboardList,
   Home as HomeIcon,
+  MessageSquare,
   Warehouse,
 } from "lucide-react-native";
 import { View } from "react-native";
@@ -13,20 +13,15 @@ import { colors } from "@/constants/colors";
 import { useT } from "@/lib/i18n";
 
 /**
- * Day 3 navigation architecture (sprint May 13, 2026):
+ * Day 3 navigation — revised after the post-sprint design pass:
  *
- *   Home · Calendar · Whiteboard · MyStable · Dashboard
+ *   Home · Calendar · Feed · MyStable · Dashboard
  *
- * Whiteboard replaces the old "Tasks" tab — same data, different framing
- * (operational columns by person/horse instead of a flat list).
- * MyStable consolidates the old Horses + Team + Clients + Partners tabs
- * into a single screen with a segmented control.
+ * Feed (the barn-wide chat with @-tagging) takes the third slot.
+ * Whiteboard moves out of the tab bar — still reachable via deep link
+ * from the Home "Team view" section and from the Tasks screen.
  *
  * The FAB sits at the (app) layer so it persists across tabs.
- *
- * Anything outside the 5 tabs (booking, lessons, settings, notifications,
- * legacy /horses route, /tasks/* deep links, /invoices) stays reachable
- * via router.push but is hidden from the tab bar with `href: null`.
  */
 export default function AppLayout() {
   const t = useT();
@@ -62,10 +57,10 @@ export default function AppLayout() {
           }}
         />
         <Tabs.Screen
-          name="whiteboard"
+          name="feed"
           options={{
-            title: t("tabs.whiteboard"),
-            tabBarIcon: ({ color, size }) => <ClipboardList color={color} size={size - 4} />,
+            title: t("tabs.feed"),
+            tabBarIcon: ({ color, size }) => <MessageSquare color={color} size={size - 4} />,
           }}
         />
         <Tabs.Screen
@@ -84,6 +79,7 @@ export default function AppLayout() {
         />
 
         {/* Reachable via router.push, hidden from the tab bar */}
+        <Tabs.Screen name="whiteboard" options={{ href: null }} />
         <Tabs.Screen name="booking" options={{ href: null }} />
         <Tabs.Screen name="horses" options={{ href: null }} />
         <Tabs.Screen name="news" options={{ href: null }} />

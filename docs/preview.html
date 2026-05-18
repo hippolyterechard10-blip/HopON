@@ -316,6 +316,7 @@
       .tab-team { mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Ccircle cx='9' cy='8' r='3'/%3E%3Cpath d='M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2'/%3E%3Cpath d='M17 11a3 3 0 1 0-2-5'/%3E%3C/svg%3E"); }
       .tab-more { mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Ccircle cx='5' cy='12' r='1.4'/%3E%3Ccircle cx='12' cy='12' r='1.4'/%3E%3Ccircle cx='19' cy='12' r='1.4'/%3E%3C/svg%3E"); }
       .tab-board { mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Crect x='8' y='2' width='8' height='4' rx='1'/%3E%3Cpath d='M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2'/%3E%3Cpath d='M9 12h6M9 16h6'/%3E%3C/svg%3E"); }
+      .tab-feed { mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'/%3E%3C/svg%3E"); }
       .tab-stable { mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M22 8.35V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8.35'/%3E%3Cpath d='M22 8.35 12 2 2 8.35'/%3E%3Cpath d='M6 18v-6h12v6'/%3E%3C/svg%3E"); }
       .tab-dash { mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M3 3v18h18'/%3E%3Cpath d='M7 14l4-4 4 4 4-6'/%3E%3C/svg%3E"); }
 
@@ -978,7 +979,7 @@
               <div class="tabbar">
                 <div class="tab-item active"><div class="tab-icon tab-home"></div>Home</div>
                 <div class="tab-item"><div class="tab-icon tab-cal"></div>Calendar</div>
-                <div class="tab-item"><div class="tab-icon tab-board"></div>Whiteboard</div>
+                <div class="tab-item"><div class="tab-icon tab-feed"></div>Feed</div>
                 <div class="tab-item"><div class="tab-icon tab-stable"></div>My Stable</div>
                 <div class="tab-item"><div class="tab-icon tab-dash"></div>Dashboard</div>
               </div>
@@ -1095,7 +1096,7 @@
               <div class="tabbar">
                 <div class="tab-item active"><div class="tab-icon tab-home"></div>Home</div>
                 <div class="tab-item"><div class="tab-icon tab-cal"></div>Calendar</div>
-                <div class="tab-item"><div class="tab-icon tab-board"></div>Whiteboard</div>
+                <div class="tab-item"><div class="tab-icon tab-feed"></div>Feed</div>
                 <div class="tab-item"><div class="tab-icon tab-stable"></div>My Stable</div>
                 <div class="tab-item"><div class="tab-icon tab-dash"></div>Dashboard</div>
               </div>
@@ -1197,12 +1198,10 @@
               <div class="tabbar">
                 <div class="tab-item active"><div class="tab-icon tab-home"></div>Home</div>
                 <div class="tab-item"><div class="tab-icon tab-cal"></div>Calendar</div>
-                <div class="tab-item"><div class="tab-icon tab-board"></div>Whiteboard</div>
+                <div class="tab-item"><div class="tab-icon tab-feed"></div>Feed</div>
                 <div class="tab-item"><div class="tab-icon tab-stable"></div>My Stable</div>
-                <div class="tab-item">
-                  <div class="tab-icon tab-dash"></div>
-                  Dashboard
-                </div>
+                <div class="tab-item"><div class="tab-icon tab-dash"></div>Dashboard</div>
+              </div>
               </div>
             </div>
           </div>
@@ -1228,27 +1227,27 @@
                   <div class="card">
                     <div class="task-row done">
                       <div class="checkbox done">✓</div>
-                      <div class="t-compressed text flex-1">ATLAS · MEDS · 07:30</div>
+                      <div class="t-compressed text flex-1">ATLAS · MEDS</div>
                     </div>
                     <div class="task-row done">
                       <div class="checkbox done">✓</div>
-                      <div class="t-compressed text flex-1">BELLA · TURNOUT · 08:00</div>
+                      <div class="t-compressed text flex-1">BELLA · TURNOUT</div>
                     </div>
                     <div class="task-row urgent">
                       <div class="checkbox"></div>
-                      <div class="t-compressed text flex-1">! STORM · TACK UP · 10:15</div>
+                      <div class="t-compressed text flex-1">! STORM · TACK UP</div>
                     </div>
                     <div class="task-row">
                       <div class="checkbox"></div>
-                      <div class="t-compressed text flex-1">INDIGO · FEED · 12:00</div>
+                      <div class="t-compressed text flex-1">INDIGO · FEED</div>
                     </div>
                     <div class="task-row">
                       <div class="checkbox"></div>
-                      <div class="t-compressed text flex-1">JUNO · GROOM · 13:30</div>
+                      <div class="t-compressed text flex-1">JUNO · GROOM</div>
                     </div>
                     <div class="task-row">
                       <div class="checkbox"></div>
-                      <div class="t-compressed text flex-1">BELLA · EVENING FEED · 17:30</div>
+                      <div class="t-compressed text flex-1">BELLA · EVENING FEED</div>
                     </div>
                     <div class="task-row add">
                       <div class="text t-caption">+ Add quick task</div>
@@ -1290,7 +1289,7 @@
               <div class="tabbar">
                 <div class="tab-item active"><div class="tab-icon tab-home"></div>Home</div>
                 <div class="tab-item"><div class="tab-icon tab-cal"></div>Calendar</div>
-                <div class="tab-item"><div class="tab-icon tab-board"></div>Whiteboard</div>
+                <div class="tab-item"><div class="tab-icon tab-feed"></div>Feed</div>
                 <div class="tab-item"><div class="tab-icon tab-stable"></div>My Stable</div>
                 <div class="tab-item"><div class="tab-icon tab-dash"></div>Dashboard</div>
               </div>
@@ -1405,7 +1404,7 @@
               <div class="tabbar">
                 <div class="tab-item active"><div class="tab-icon tab-home"></div>Home</div>
                 <div class="tab-item"><div class="tab-icon tab-cal"></div>Calendar</div>
-                <div class="tab-item"><div class="tab-icon tab-board"></div>Whiteboard</div>
+                <div class="tab-item"><div class="tab-icon tab-feed"></div>Feed</div>
                 <div class="tab-item"><div class="tab-icon tab-stable"></div>My Stable</div>
                 <div class="tab-item"><div class="tab-icon tab-dash"></div>Dashboard</div>
               </div>
@@ -1538,7 +1537,7 @@
               <div class="tabbar">
                 <div class="tab-item"><div class="tab-icon tab-home"></div>Home</div>
                 <div class="tab-item active"><div class="tab-icon tab-cal"></div>Calendar</div>
-                <div class="tab-item"><div class="tab-icon tab-board"></div>Whiteboard</div>
+                <div class="tab-item"><div class="tab-icon tab-feed"></div>Feed</div>
                 <div class="tab-item"><div class="tab-icon tab-stable"></div>My Stable</div>
                 <div class="tab-item"><div class="tab-icon tab-dash"></div>Dashboard</div>
               </div>
@@ -1731,7 +1730,7 @@
               <div class="tabbar">
                 <div class="tab-item"><div class="tab-icon tab-home"></div>Home</div>
                 <div class="tab-item"><div class="tab-icon tab-cal"></div>Calendar</div>
-                <div class="tab-item active"><div class="tab-icon tab-board"></div>Whiteboard</div>
+                <div class="tab-item active"><div class="tab-icon tab-feed"></div>Feed</div>
                 <div class="tab-item"><div class="tab-icon tab-stable"></div>My Stable</div>
                 <div class="tab-item"><div class="tab-icon tab-dash"></div>Dashboard</div>
               </div>
@@ -1818,7 +1817,7 @@
               <div class="tabbar">
                 <div class="tab-item"><div class="tab-icon tab-home"></div>Home</div>
                 <div class="tab-item"><div class="tab-icon tab-cal"></div>Calendar</div>
-                <div class="tab-item"><div class="tab-icon tab-board"></div>Whiteboard</div>
+                <div class="tab-item"><div class="tab-icon tab-feed"></div>Feed</div>
                 <div class="tab-item active"><div class="tab-icon tab-stable"></div>My Stable</div>
                 <div class="tab-item"><div class="tab-icon tab-dash"></div>Dashboard</div>
               </div>
@@ -1884,7 +1883,7 @@
               <div class="tabbar">
                 <div class="tab-item active"><div class="tab-icon tab-home"></div>Home</div>
                 <div class="tab-item"><div class="tab-icon tab-cal"></div>Calendar</div>
-                <div class="tab-item"><div class="tab-icon tab-board"></div>Whiteboard</div>
+                <div class="tab-item"><div class="tab-icon tab-feed"></div>Feed</div>
                 <div class="tab-item"><div class="tab-icon tab-stable"></div>My Stable</div>
                 <div class="tab-item"><div class="tab-icon tab-dash"></div>Dashboard</div>
               </div>
@@ -2196,7 +2195,7 @@
                 <div class="t-h1">Section H1</div>
                 <div class="t-h2">Subsection H2</div>
                 <div class="t-body">Body copy at 14px.</div>
-                <div class="t-compressed">BELLA · MEDS · 12:00</div>
+                <div class="t-compressed">BELLA · MEDS</div>
                 <div class="t-caption">Caption / supporting</div>
                 <div class="t-eyebrow">Eyebrow tag</div>
               </div>
