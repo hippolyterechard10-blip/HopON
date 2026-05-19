@@ -434,27 +434,103 @@
       .client-stat .label { font-size: 11px; color: var(--ink3); }
       .client-stat .value { font-size: 16px; font-weight: 500; margin-top: 2px; }
 
-      /* Whiteboard column board */
+      /* Compact client hero (photo left + 3×2 grid right) */
+      .client-hero-compact {
+        display: flex; gap: 14px; align-items: center;
+        padding: 4px 0 6px;
+      }
+      .ch-photo {
+        width: 96px; height: 96px; border-radius: 48px;
+        background: var(--g100); color: var(--g700);
+        display: grid; place-items: center;
+        font-size: 52px;
+        flex: 0 0 96px;
+      }
+      .ch-grid {
+        flex: 1; display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 6px;
+      }
+      .ch-cell {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 8px 4px;
+        display: flex; flex-direction: column; align-items: center; gap: 2px;
+      }
+      .ch-cell.urgent { background: var(--warn-bg); border-color: var(--warn-bg); }
+      .ch-cell .ic { font-size: 16px; }
+      .ch-cell .sub { font-size: 9px; font-weight: 700; color: var(--ink2); }
+      .ch-cell.urgent .sub { color: var(--warn); }
+      .ch-name {
+        font-size: 12px; color: var(--ink2); margin-bottom: 6px;
+      }
+      .ch-name strong { color: var(--ink1); font-weight: 700; }
+      .pad-s { padding: 10px 12px; }
+
+      /* Whiteboard — vertical team rows */
       .board {
-        display: flex; gap: 8px; overflow-x: auto;
-        padding: 18px 20px 24px;
+        display: flex; flex-direction: column; gap: 10px;
+        padding: 12px 16px 100px;
       }
-      .column { flex: 0 0 220px; display: flex; flex-direction: column; gap: 8px; }
-      .column-head {
-        display: flex; justify-content: space-between; align-items: center; padding: 0 4px;
+      .wb-row {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 10px 14px 12px;
+        display: flex; flex-direction: column; gap: 8px;
       }
-      .column-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; }
-      .column-row {
-        display: flex; align-items: center; gap: 8px;
-        padding: 8px 12px; border-bottom: 1px solid var(--border);
-        position: relative;
+      .wb-row-head {
+        display: flex; justify-content: space-between; align-items: center; gap: 10px;
       }
-      .column-row:last-child { border-bottom: 0; }
-      .column-row.add { border-top: 1px dashed var(--n200); justify-content: center; }
-      .column-row.urgent { background: var(--warn-bg); }
-      .column-row.urgent::before {
-        content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2.5px; background: var(--alert-dot);
+      .wb-id { display: flex; align-items: center; gap: 8px; }
+      .wb-av {
+        width: 26px; height: 26px; border-radius: 13px;
+        background: var(--g200); color: var(--g800);
+        display: grid; place-items: center;
+        font-size: 10px; font-weight: 700;
       }
+      .wb-name { display: flex; flex-direction: column; line-height: 1; }
+      .wb-name .n { font-size: 14px; font-weight: 700; color: var(--ink1); }
+      .wb-name .r { font-size: 9px; font-weight: 700; letter-spacing: 0.6px; color: var(--ink3); margin-top: 4px; }
+      .wb-stats { display: flex; gap: 6px; align-items: center; font-size: 12px; font-weight: 600; }
+      .wb-stats .pct { color: var(--ink1); }
+      .wb-stats .urg {
+        padding: 2px 6px; border-radius: 6px;
+        background: var(--warn-bg); color: var(--warn);
+        font-size: 10px; font-weight: 700;
+      }
+      .wb-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+      .wb-chip {
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 4px 8px; border-radius: 8px;
+        background: var(--bg);
+        font-size: 10px; font-weight: 600; color: var(--ink1);
+        letter-spacing: 0.3px;
+      }
+      .wb-chip.done { background: var(--g50); color: var(--ink3); text-decoration: line-through; }
+      .wb-chip.urgent { background: var(--warn-bg); color: var(--warn); }
+      .wb-chip .box {
+        width: 12px; height: 12px; border-radius: 3px;
+        border: 1px solid var(--n200); background: white;
+        display: grid; place-items: center;
+        font-size: 8px; line-height: 1;
+      }
+      .wb-chip.done .box { background: var(--g500); border-color: var(--g500); color: white; }
+      .wb-chip .time { font-weight: 500; color: var(--ink2); }
+      .wb-chip.done .time { color: var(--ink3); }
+      .wb-chip.urgent .time { color: var(--warn); }
+      /* Whiteboard date pills */
+      .wb-dates { display: flex; gap: 6px; padding: 8px 16px 0; }
+      .wb-date {
+        flex: 1; background: var(--surface); border: 1px solid var(--border);
+        border-radius: 12px; padding: 6px 4px;
+        display: flex; flex-direction: column; align-items: center; gap: 2px;
+      }
+      .wb-date.today { background: var(--g500); border-color: var(--g500); color: white; }
+      .wb-date .dow { font-size: 9px; font-weight: 700; letter-spacing: 0.6px; color: var(--ink2); }
+      .wb-date .n { font-size: 14px; font-weight: 700; color: var(--ink1); }
+      .wb-date.today .dow, .wb-date.today .n { color: white; }
 
       /* MyStable */
       .stable-row {
@@ -571,10 +647,11 @@
         padding: 2px 10px; border-radius: 999px; background: rgba(11,47,35,0.85);
         color: white; font-size: 11px; font-weight: 500; letter-spacing: 0.2px;
       }
-      .petals.open .petal[data-i="0"] { transform: translate(0, -120px) scale(1); transition-delay: 0s; }
-      .petals.open .petal[data-i="1"] { transform: translate(-60px, -104px) scale(1); transition-delay: 0.04s; }
-      .petals.open .petal[data-i="2"] { transform: translate(-104px, -60px) scale(1); transition-delay: 0.08s; }
-      .petals.open .petal[data-i="3"] { transform: translate(-120px, 0) scale(1); transition-delay: 0.12s; }
+      .petals.open .petal[data-i="0"] { transform: translate(0, -125px) scale(1); transition-delay: 0s; }
+      .petals.open .petal[data-i="1"] { transform: translate(-48px, -115px) scale(1); transition-delay: 0.04s; }
+      .petals.open .petal[data-i="2"] { transform: translate(-88px, -88px) scale(1); transition-delay: 0.08s; }
+      .petals.open .petal[data-i="3"] { transform: translate(-115px, -48px) scale(1); transition-delay: 0.12s; }
+      .petals.open .petal[data-i="4"] { transform: translate(-125px, 0) scale(1); transition-delay: 0.16s; }
 
       /* Generic stat rows */
       .stat-stack { gap: 6px; padding: 12px; }
@@ -871,34 +948,61 @@
           <!-- CLIENT home -->
           <div class="role-home hidden" data-role-home="client">
             <div class="body" style="padding:0">
-              <div class="client-hero">
-                <div class="overlay">
-                  <div class="t-eyebrow c-g200">MY HORSE</div>
-                  <div class="horse-name">Bella</div>
-                  <div class="t-caption c-g200">9 years, Hanoverian · Stall #12</div>
-                </div>
-              </div>
-              <div class="screen-body" style="padding-top:16px">
-                <div class="client-stats">
-                  <div class="card client-stat"><div class="label">HEALTH</div><div class="value c-ok">Good</div></div>
-                  <div class="card client-stat"><div class="label">LESSONS</div><div class="value">8 this mo.</div></div>
-                  <div class="card client-stat"><div class="label">NEXT RIDE</div><div class="value">Today</div></div>
-                </div>
-
-                <div class="card dark pad-l row" style="gap:12px;" data-go="booking">
-                  <div class="flex1">
-                    <div class="t-eyebrow c-g200">BOOK A LESSON</div>
-                    <div class="t-h2 c-white" style="margin-top:2px">Your next ride is one tap away.</div>
-                    <div class="t-caption c-g200" style="margin-top:6px">Lessons, jump sessions, or a farrier visit.</div>
+              <div class="screen-body" style="padding-top:12px">
+                <div class="client-hero-compact">
+                  <div class="ch-photo">🐴</div>
+                  <div class="ch-grid">
+                    <div class="ch-cell urgent"><div class="ic">🔨</div><div class="sub">3 days</div></div>
+                    <div class="ch-cell"><div class="ic">💉</div><div class="sub">2 weeks</div></div>
+                    <div class="ch-cell"><div class="ic">💊</div><div class="sub">6 mo.</div></div>
+                    <div class="ch-cell"><div class="ic">🦴</div><div class="sub">8 mo.</div></div>
+                    <div class="ch-cell"><div class="ic">🦷</div><div class="sub">2 weeks</div></div>
+                    <div class="ch-cell"><div class="ic">🏆</div><div class="sub">3 days</div></div>
                   </div>
-                  <button class="btn secondary md">Book</button>
+                </div>
+                <div class="ch-name"><strong>Bella</strong> · 9 yrs · KWPN · Stall #12</div>
+
+                <button class="btn primary md fw" data-go="booking" style="font-size:15px; padding:14px;">Book a lesson →</button>
+
+                <div class="card pad-m row" style="gap:8px; align-items:center;">
+                  <div class="flex1"><div class="t-eyebrow">NEXT LESSON</div><div class="t-body-m" style="margin-top:2px">Thu 4:00 pm · Maddy</div></div>
+                  <span class="t-caption c-g600">Open →</span>
+                </div>
+                <div class="card pad-m row" style="gap:8px; align-items:center;">
+                  <div class="flex1"><div class="t-eyebrow">NEXT SHOW</div><div class="t-body-m c-ink3" style="margin-top:2px">No show booked</div></div>
+                  <span class="t-caption c-g600">add →</span>
                 </div>
 
-                <div>
-                  <div class="t-eyebrow" style="margin-bottom:8px">UPCOMING</div>
-                  <div class="card">
-                    <div class="event-row"><div style="width:52px;"><div class="t-eyebrow">TODAY</div><div class="t-body-m">09:00</div></div><div class="flex1"><div class="t-body-m">Lesson with Sam</div><div class="meta">Confirmed</div></div><span class="pill ok">CONFIRMED</span></div>
-                    <div class="event-row"><div style="width:52px;"><div class="t-eyebrow">FRI</div><div class="t-body-m">11:00</div></div><div class="flex1"><div class="t-body-m">Farrier visit</div><div class="meta">Scheduled</div></div><span class="pill neutral">SCHEDULED</span></div>
+                <div class="card pad-m row" style="gap:12px; align-items:center; background:var(--g50); border-color:var(--g100);">
+                  <div class="flex1">
+                    <div class="t-body-m">Farrier visit · Mon Jun 2</div>
+                    <div class="t-caption" style="color:var(--g700); margin-top:2px">Ask for extras (stretch, supplement…)</div>
+                  </div>
+                  <button class="btn primary sm">Ask</button>
+                </div>
+
+                <div class="row" style="justify-content:space-between; align-items:center;">
+                  <div class="t-body-m">My feed</div>
+                  <span class="t-caption c-ink2">All →</span>
+                </div>
+                <div style="display:flex; gap:10px; overflow-x:auto; padding-bottom:10px;">
+                  <div class="card pad-s" style="flex:0 0 150px; display:flex; flex-direction:column; gap:6px;">
+                    <span class="pill" style="background:var(--g50); color:var(--g700); font-size:9px; padding:2px 6px; align-self:flex-start;">@owners</span>
+                    <div style="height:44px; background:var(--g100); border-radius:8px;"></div>
+                    <div class="t-body-m" style="font-size:12px;">Bella ground work</div>
+                    <div class="t-caption c-ink3" style="font-size:10px;">Maddy K. · 1h</div>
+                  </div>
+                  <div class="card pad-s" style="flex:0 0 150px; display:flex; flex-direction:column; gap:6px;">
+                    <span class="pill" style="background:var(--g50); color:var(--g700); font-size:9px; padding:2px 6px; align-self:flex-start;">@all</span>
+                    <div style="height:44px; background:var(--g100); border-radius:8px;"></div>
+                    <div class="t-body-m" style="font-size:12px;">Show this Sunday</div>
+                    <div class="t-caption c-ink3" style="font-size:10px;">Sarah · 3h</div>
+                  </div>
+                  <div class="card pad-s" style="flex:0 0 150px; display:flex; flex-direction:column; gap:6px;">
+                    <span class="pill" style="background:var(--g50); color:var(--g700); font-size:9px; padding:2px 6px; align-self:flex-start;">@all</span>
+                    <div style="height:44px; background:var(--g100); border-radius:8px;"></div>
+                    <div class="t-body-m" style="font-size:12px;">New farrier intro</div>
+                    <div class="t-caption c-ink3" style="font-size:10px;">Tom · y'day</div>
                   </div>
                 </div>
               </div>
@@ -907,10 +1011,10 @@
         </div>
         <div class="tabbar">
           <button class="tab-item active" data-tab="home"><span class="tab-icon ic-home"></span>Home</button>
-          <button class="tab-item" data-tab="calendar"><span class="tab-icon ic-cal"></span>Calendar</button>
-          <button class="tab-item" data-tab="feed"><span class="tab-icon ic-feed"></span>Feed</button>
           <button class="tab-item" data-tab="mystable"><span class="tab-icon ic-stable"></span>My Stable</button>
-          <button class="tab-item" data-tab="dashboard"><span class="tab-icon ic-dash"></span>Dashboard</button>
+          <button class="tab-item" data-tab="calendar"><span class="tab-icon ic-cal"></span>Calendar</button>
+          <button class="tab-item" data-tab="whiteboard"><span class="tab-icon ic-board"></span>Whiteboard</button>
+          <button class="tab-item" data-tab="feed"><span class="tab-icon ic-feed"></span>Feed</button>
         </div>
       </div>
 
@@ -978,83 +1082,150 @@
         </div>
         <div class="tabbar">
           <button class="tab-item" data-tab="home"><span class="tab-icon ic-home"></span>Home</button>
-          <button class="tab-item active" data-tab="calendar"><span class="tab-icon ic-cal"></span>Calendar</button>
-          <button class="tab-item" data-tab="feed"><span class="tab-icon ic-feed"></span>Feed</button>
           <button class="tab-item" data-tab="mystable"><span class="tab-icon ic-stable"></span>My Stable</button>
-          <button class="tab-item" data-tab="dashboard"><span class="tab-icon ic-dash"></span>Dashboard</button>
+          <button class="tab-item active" data-tab="calendar"><span class="tab-icon ic-cal"></span>Calendar</button>
+          <button class="tab-item" data-tab="whiteboard"><span class="tab-icon ic-board"></span>Whiteboard</button>
+          <button class="tab-item" data-tab="feed"><span class="tab-icon ic-feed"></span>Feed</button>
         </div>
       </div>
 
-      <!-- ── WHITEBOARD ──────────────────────────────────────── -->
+      <!-- ── WHITEBOARD V2 — vertical team rows ──────────────── -->
       <div class="screen" data-screen="whiteboard">
         <div class="statusbar"><span>9:41</span><span>●●● ●</span></div>
         <div class="stage">
           <div class="body" style="padding:0">
-            <div style="padding:20px 20px 14px; background:var(--surface); border-bottom:1px solid var(--border); display:flex; flex-direction:column; gap:12px;">
-              <div>
-                <div class="t-eyebrow">THURSDAY · MAY 13</div>
-                <div class="t-display" style="margin-top:4px">Whiteboard.</div>
+            <div style="padding:14px 16px 8px; background:var(--bg); display:flex; flex-direction:column; gap:10px;">
+              <div class="wb-dates">
+                <div class="wb-date"><span class="dow">TUE</span><span class="n">13</span></div>
+                <div class="wb-date today"><span class="dow">WED</span><span class="n">14</span></div>
+                <div class="wb-date"><span class="dow">THU</span><span class="n">15</span></div>
+                <div class="wb-date"><span class="dow">FRI</span><span class="n">16</span></div>
+                <div class="wb-date"><span class="dow">SAT</span><span class="n">17</span></div>
+                <div class="wb-date"><span class="dow">SUN</span><span class="n">18</span></div>
               </div>
-              <div class="segmented" id="wbSeg">
-                <button class="seg active" data-wb="person"><span class="t-label">By person</span></button>
-                <button class="seg" data-wb="horse"><span class="t-label">By horse</span></button>
+              <div class="segmented" id="wbSeg" style="margin-top:4px">
+                <button class="seg active" data-wb="person"><span class="t-label">Per team member</span></button>
+                <button class="seg" data-wb="horse"><span class="t-label">Per horse</span></button>
               </div>
             </div>
 
-            <!-- By person -->
+            <!-- Per team member — vertical stack of 4 rows -->
             <div class="board" data-wb-pane="person">
-              <div class="column">
-                <div class="column-head"><span class="t-body-m">Jess (Groom)</span><span class="t-caption c-warn">2/4 · 1!</span></div>
-                <div class="column-card">
-                  <div class="column-row"><div class="checkbox done">✓</div><span class="t-compressed c-ink3" style="text-decoration:line-through; opacity:0.5;">ATLAS · MEDS</span></div>
-                  <div class="column-row"><div class="checkbox done">✓</div><span class="t-compressed c-ink3" style="text-decoration:line-through; opacity:0.5;">BELLA · TURNOUT</span></div>
-                  <div class="column-row urgent"><div class="checkbox"></div><span class="t-compressed">! STORM · TACK UP</span></div>
-                  <div class="column-row"><div class="checkbox"></div><span class="t-compressed">INDIGO · FEED</span></div>
-                  <div class="column-row add"><span class="t-caption c-ink3">+ Add</span></div>
+              <div class="wb-row">
+                <div class="wb-row-head">
+                  <div class="wb-id">
+                    <div class="wb-av">SM</div>
+                    <div class="wb-name"><span class="n">Sam</span><span class="r">TRAINER</span></div>
+                  </div>
+                  <div class="wb-stats"><span class="pct">2/4</span></div>
+                </div>
+                <div class="wb-chips">
+                  <span class="wb-chip done"><span class="box">✓</span>BELLA · LUNGE <span class="time">· 8am</span></span>
+                  <span class="wb-chip done"><span class="box">✓</span>EXTRAS · STRETCH <span class="time">· 9:30</span></span>
+                  <span class="wb-chip"><span class="box"></span>CHOOSE TACK ATLAS</span>
                 </div>
               </div>
-              <div class="column">
-                <div class="column-head"><span class="t-body-m">Mateo (Trainer)</span><span class="t-caption c-ink3">1/3 · 0!</span></div>
-                <div class="column-card">
-                  <div class="column-row"><div class="checkbox done">✓</div><span class="t-compressed c-ink3" style="text-decoration:line-through; opacity:0.5;">JUNO · WALK OUT</span></div>
-                  <div class="column-row"><div class="checkbox"></div><span class="t-compressed">BELLA · LUNGE 20MIN</span></div>
-                  <div class="column-row"><div class="checkbox"></div><span class="t-compressed">STORM · FLATWORK</span></div>
-                  <div class="column-row add"><span class="t-caption c-ink3">+ Add</span></div>
+
+              <div class="wb-row">
+                <div class="wb-row-head">
+                  <div class="wb-id">
+                    <div class="wb-av">JD</div>
+                    <div class="wb-name"><span class="n">Jodie</span><span class="r">TRAINER</span></div>
+                  </div>
+                  <div class="wb-stats"><span class="pct">1/3</span><span class="urg">1!</span></div>
+                </div>
+                <div class="wb-chips">
+                  <span class="wb-chip done"><span class="box">✓</span>COACH · PILO <span class="time">· 7am</span></span>
+                  <span class="wb-chip"><span class="box"></span>CARRIER FORM</span>
+                  <span class="wb-chip urgent"><span class="box"></span>! CALL VET · BELLA</span>
                 </div>
               </div>
-              <div class="column">
-                <div class="column-head"><span class="t-body-m">Unassigned</span><span class="t-caption c-ink3">0/1 · 0!</span></div>
-                <div class="column-card">
-                  <div class="column-row"><div class="checkbox"></div><span class="t-compressed">BARN · EVENING FEED</span></div>
-                  <div class="column-row add"><span class="t-caption c-ink3">+ Add</span></div>
+
+              <div class="wb-row">
+                <div class="wb-row-head">
+                  <div class="wb-id">
+                    <div class="wb-av">JS</div>
+                    <div class="wb-name"><span class="n">Jess</span><span class="r">GROOM</span></div>
+                  </div>
+                  <div class="wb-stats"><span class="pct">3/5</span></div>
+                </div>
+                <div class="wb-chips">
+                  <span class="wb-chip done"><span class="box">✓</span>STALLS 1–6</span>
+                  <span class="wb-chip done"><span class="box">✓</span>TURNOUT AM</span>
+                  <span class="wb-chip"><span class="box"></span>FEED PM <span class="time">· 5pm</span></span>
+                </div>
+              </div>
+
+              <div class="wb-row">
+                <div class="wb-row-head">
+                  <div class="wb-id">
+                    <div class="wb-av">MC</div>
+                    <div class="wb-name"><span class="n">Marc</span><span class="r">GROOM</span></div>
+                  </div>
+                  <div class="wb-stats"><span class="pct">0/2</span></div>
+                </div>
+                <div class="wb-chips">
+                  <span class="wb-chip"><span class="box"></span>MUCK 7–12</span>
+                  <span class="wb-chip"><span class="box"></span>HAY DELIVERY <span class="time">· 2pm</span></span>
                 </div>
               </div>
             </div>
 
-            <!-- By horse -->
+            <!-- Per horse — same vertical row pattern but grouped by horse -->
             <div class="board hidden" data-wb-pane="horse">
-              <div class="column">
-                <div class="column-head"><span class="t-body-m">Bella</span><span class="t-caption c-ink3">1/3 · 0!</span></div>
-                <div class="column-card">
-                  <div class="column-row"><div class="checkbox done">✓</div><span class="t-compressed c-ink3" style="text-decoration:line-through; opacity:0.5;">TURNOUT</span></div>
-                  <div class="column-row"><div class="checkbox"></div><span class="t-compressed">LUNGE 20MIN</span></div>
-                  <div class="column-row"><div class="checkbox"></div><span class="t-compressed">EVENING FEED</span></div>
-                  <div class="column-row add"><span class="t-caption c-ink3">+ Add</span></div>
+              <div class="wb-row">
+                <div class="wb-row-head">
+                  <div class="wb-id">
+                    <div class="wb-av" style="background:var(--g100); color:var(--g700)">🐴</div>
+                    <div class="wb-name"><span class="n">Bella</span><span class="r">STALL 12 · KWPN</span></div>
+                  </div>
+                  <div class="wb-stats"><span class="pct">2/4</span></div>
+                </div>
+                <div class="wb-chips">
+                  <span class="wb-chip done"><span class="box">✓</span>LUNGE · Sam <span class="time">· 8am</span></span>
+                  <span class="wb-chip done"><span class="box">✓</span>STRETCH · Sam <span class="time">· 9:30</span></span>
+                  <span class="wb-chip"><span class="box"></span>EVENING FEED · Jess <span class="time">· 5pm</span></span>
                 </div>
               </div>
-              <div class="column">
-                <div class="column-head"><span class="t-body-m">Storm</span><span class="t-caption c-warn">0/2 · 1!</span></div>
-                <div class="column-card">
-                  <div class="column-row urgent"><div class="checkbox"></div><span class="t-compressed">! TACK UP</span></div>
-                  <div class="column-row"><div class="checkbox"></div><span class="t-compressed">FLATWORK</span></div>
-                  <div class="column-row add"><span class="t-caption c-ink3">+ Add</span></div>
+
+              <div class="wb-row">
+                <div class="wb-row-head">
+                  <div class="wb-id">
+                    <div class="wb-av" style="background:var(--g100); color:var(--g700)">🐴</div>
+                    <div class="wb-name"><span class="n">Storm</span><span class="r">STALL 7 · WARMBLOOD</span></div>
+                  </div>
+                  <div class="wb-stats"><span class="pct">0/2</span><span class="urg">1!</span></div>
+                </div>
+                <div class="wb-chips">
+                  <span class="wb-chip urgent"><span class="box"></span>! CALL VET</span>
+                  <span class="wb-chip"><span class="box"></span>FLATWORK · Jodie</span>
                 </div>
               </div>
-              <div class="column">
-                <div class="column-head"><span class="t-body-m">Atlas</span><span class="t-caption c-ok">1/1 · 0!</span></div>
-                <div class="column-card">
-                  <div class="column-row"><div class="checkbox done">✓</div><span class="t-compressed c-ink3" style="text-decoration:line-through; opacity:0.5;">MEDS</span></div>
-                  <div class="column-row add"><span class="t-caption c-ink3">+ Add</span></div>
+
+              <div class="wb-row">
+                <div class="wb-row-head">
+                  <div class="wb-id">
+                    <div class="wb-av" style="background:var(--g100); color:var(--g700)">🐴</div>
+                    <div class="wb-name"><span class="n">Atlas</span><span class="r">STALL 18 · OLDENBURG</span></div>
+                  </div>
+                  <div class="wb-stats"><span class="pct">1/2</span></div>
+                </div>
+                <div class="wb-chips">
+                  <span class="wb-chip done"><span class="box">✓</span>MEDS · Jess</span>
+                  <span class="wb-chip"><span class="box"></span>CHOOSE TACK · Sam</span>
+                </div>
+              </div>
+
+              <div class="wb-row">
+                <div class="wb-row-head">
+                  <div class="wb-id">
+                    <div class="wb-av" style="background:var(--g100); color:var(--g700)">🐴</div>
+                    <div class="wb-name"><span class="n">Indigo</span><span class="r">STALL 3 · DUTCH WB</span></div>
+                  </div>
+                  <div class="wb-stats"><span class="pct">0/1</span></div>
+                </div>
+                <div class="wb-chips">
+                  <span class="wb-chip"><span class="box"></span>FEED · Jess</span>
                 </div>
               </div>
             </div>
@@ -1062,10 +1233,10 @@
         </div>
         <div class="tabbar">
           <button class="tab-item" data-tab="home"><span class="tab-icon ic-home"></span>Home</button>
-          <button class="tab-item" data-tab="calendar"><span class="tab-icon ic-cal"></span>Calendar</button>
-          <button class="tab-item active" data-tab="feed"><span class="tab-icon ic-feed"></span>Feed</button>
           <button class="tab-item" data-tab="mystable"><span class="tab-icon ic-stable"></span>My Stable</button>
-          <button class="tab-item" data-tab="dashboard"><span class="tab-icon ic-dash"></span>Dashboard</button>
+          <button class="tab-item" data-tab="calendar"><span class="tab-icon ic-cal"></span>Calendar</button>
+          <button class="tab-item active" data-tab="whiteboard"><span class="tab-icon ic-board"></span>Whiteboard</button>
+          <button class="tab-item" data-tab="feed"><span class="tab-icon ic-feed"></span>Feed</button>
         </div>
       </div>
 
@@ -1129,10 +1300,10 @@
         </div>
         <div class="tabbar">
           <button class="tab-item" data-tab="home"><span class="tab-icon ic-home"></span>Home</button>
-          <button class="tab-item" data-tab="calendar"><span class="tab-icon ic-cal"></span>Calendar</button>
-          <button class="tab-item" data-tab="feed"><span class="tab-icon ic-feed"></span>Feed</button>
           <button class="tab-item active" data-tab="mystable"><span class="tab-icon ic-stable"></span>My Stable</button>
-          <button class="tab-item" data-tab="dashboard"><span class="tab-icon ic-dash"></span>Dashboard</button>
+          <button class="tab-item" data-tab="calendar"><span class="tab-icon ic-cal"></span>Calendar</button>
+          <button class="tab-item" data-tab="whiteboard"><span class="tab-icon ic-board"></span>Whiteboard</button>
+          <button class="tab-item" data-tab="feed"><span class="tab-icon ic-feed"></span>Feed</button>
         </div>
       </div>
 
@@ -1197,10 +1368,10 @@
         </div>
         <div class="tabbar">
           <button class="tab-item" data-tab="home"><span class="tab-icon ic-home"></span>Home</button>
-          <button class="tab-item" data-tab="calendar"><span class="tab-icon ic-cal"></span>Calendar</button>
-          <button class="tab-item active" data-tab="feed"><span class="tab-icon ic-feed"></span>Feed</button>
           <button class="tab-item" data-tab="mystable"><span class="tab-icon ic-stable"></span>My Stable</button>
-          <button class="tab-item" data-tab="dashboard"><span class="tab-icon ic-dash"></span>Dashboard</button>
+          <button class="tab-item" data-tab="calendar"><span class="tab-icon ic-cal"></span>Calendar</button>
+          <button class="tab-item" data-tab="whiteboard"><span class="tab-icon ic-board"></span>Whiteboard</button>
+          <button class="tab-item active" data-tab="feed"><span class="tab-icon ic-feed"></span>Feed</button>
         </div>
       </div>
 
@@ -1243,10 +1414,10 @@
         </div>
         <div class="tabbar">
           <button class="tab-item" data-tab="home"><span class="tab-icon ic-home"></span>Home</button>
-          <button class="tab-item" data-tab="calendar"><span class="tab-icon ic-cal"></span>Calendar</button>
-          <button class="tab-item" data-tab="feed"><span class="tab-icon ic-feed"></span>Feed</button>
           <button class="tab-item" data-tab="mystable"><span class="tab-icon ic-stable"></span>My Stable</button>
-          <button class="tab-item active" data-tab="dashboard"><span class="tab-icon ic-dash"></span>Dashboard</button>
+          <button class="tab-item" data-tab="calendar"><span class="tab-icon ic-cal"></span>Calendar</button>
+          <button class="tab-item" data-tab="whiteboard"><span class="tab-icon ic-board"></span>Whiteboard</button>
+          <button class="tab-item" data-tab="feed"><span class="tab-icon ic-feed"></span>Feed</button>
         </div>
       </div>
 
@@ -1265,21 +1436,15 @@
             </div>
 
             <div class="h-tabs" id="horseTabs">
-              <div class="h-tab active" data-htab="info"><span>Info</span></div>
-              <div class="h-tab" data-htab="activity"><span>Activity</span></div>
+              <div class="h-tab active" data-htab="activity"><span>Activity</span></div>
               <div class="h-tab" data-htab="health"><span>Health</span></div>
-              <div class="h-tab" data-htab="feed"><span>Feed</span></div>
+              <div class="h-tab" data-htab="food"><span>Food</span></div>
+              <div class="h-tab" data-htab="tack"><span>Tack</span></div>
+              <div class="h-tab" data-htab="docs"><span>Docs</span></div>
             </div>
 
-            <div class="screen-body" data-htab-pane="info">
-              <div class="card pad-m"><div class="t-eyebrow">STALL</div><div class="t-body" style="margin-top:4px">#12</div></div>
-              <div class="card pad-m"><div class="t-eyebrow">BREED</div><div class="t-body" style="margin-top:4px">Hanoverian</div></div>
-              <div class="card pad-m"><div class="t-eyebrow">FEEDING</div><div class="t-body" style="margin-top:4px">Morning + evening hay, beet pulp PM.</div></div>
-              <div class="card pad-m"><div class="t-eyebrow">VET</div><div class="t-body" style="margin-top:4px">Dr. Torres · (561) 555-0124</div></div>
-              <div class="card pad-m"><div class="t-eyebrow">FARRIER</div><div class="t-body" style="margin-top:4px">Mike Garcia · (561) 555-0177</div></div>
-            </div>
-
-            <div class="screen-body hidden" data-htab-pane="activity">
+            <div class="screen-body" data-htab-pane="activity">
+              <div class="t-eyebrow">THIS WEEK</div>
               <div class="week-row">
                 <div class="week-cell"><span class="t-eyebrow">MON</span><span class="t-body-m c-ink2">12</span><div class="session-chip flat"><span class="t-label c-g600">flat</span></div></div>
                 <div class="week-cell"><span class="t-eyebrow">TUE</span><span class="t-body-m c-ink2">13</span><div class="session-chip jump"><span class="t-label c-g600">jump</span></div></div>
@@ -1289,22 +1454,29 @@
                 <div class="week-cell"><span class="t-eyebrow">SAT</span><span class="t-body-m c-ink2">17</span><div class="session-chip show"><span class="t-label c-alert">show</span></div></div>
                 <div class="week-cell"><span class="t-eyebrow">SUN</span><span class="t-body-m c-ink2">18</span><div class="session-chip rest"><span class="t-label c-ink3">rest</span></div></div>
               </div>
-              <div class="t-eyebrow" style="margin-top:8px">LEGEND</div>
-              <div style="display:flex; flex-wrap:wrap; gap:14px;">
-                <div class="row gap-6"><div class="dot lg" style="background:var(--g300);"></div><span class="t-caption">lunge</span></div>
-                <div class="row gap-6"><div class="dot lg" style="background:var(--g500);"></div><span class="t-caption">flat</span></div>
-                <div class="row gap-6"><div class="dot lg" style="background:var(--g700);"></div><span class="t-caption">jump</span></div>
-                <div class="row gap-6"><div class="dot lg" style="background:var(--n200);"></div><span class="t-caption">rest</span></div>
-                <div class="row gap-6"><div class="dot lg" style="background:var(--alert-dot);"></div><span class="t-caption">show</span></div>
+              <div class="card pad-m">
+                <div class="t-body-m" style="margin-bottom:8px">To-do · coming up for Bella</div>
+                <div style="display:flex; flex-direction:column; gap:6px;">
+                  <div class="row gap-8 align-c"><span class="pill" style="background:var(--g50); color:var(--g700); font-size:9px; padding:2px 6px;">TODAY</span><span class="t-compressed">LUNGE 8 AM · Sam</span></div>
+                  <div class="row gap-8 align-c"><span class="pill" style="background:var(--g50); color:var(--g700); font-size:9px; padding:2px 6px;">WED</span><span class="t-compressed">FLAT 4 PM · Maddy lesson</span></div>
+                  <div class="row gap-8 align-c"><span class="pill" style="background:var(--warn-bg); color:var(--warn); font-size:9px; padding:2px 6px;">THU</span><span class="t-compressed c-warn">FARRIER · stall side</span></div>
+                  <div class="row gap-8 align-c"><span class="pill" style="background:var(--g50); color:var(--g700); font-size:9px; padding:2px 6px;">SAT</span><span class="t-compressed">SHOW · Wellington · 1m20</span></div>
+                </div>
+              </div>
+              <div class="t-eyebrow">RECENT POSTS · PHOTOS · VIDEOS</div>
+              <div class="row gap-8">
+                <div class="card" style="flex:1; height:120px; background:var(--g100); border:none; display:grid; place-items:center;"><span style="font-size:24px">▶</span></div>
+                <div class="card" style="flex:1; height:120px; background:var(--g100); border:none; display:grid; place-items:center;"><span style="font-size:24px">▶</span></div>
               </div>
             </div>
 
             <div class="screen-body hidden" data-htab-pane="health">
               <div class="health-icon-row">
-                <div class="health-ico"><div class="health-circle">🐴</div><div class="t-label" style="margin-top:4px">Farrier</div><div class="t-caption c-ink3">6 weeks</div></div>
+                <div class="health-ico"><div class="health-circle warn">🔨</div><div class="t-label" style="margin-top:4px">Farrier</div><div class="t-caption c-warn">3 days</div></div>
                 <div class="health-ico"><div class="health-circle ok">💉</div><div class="t-label" style="margin-top:4px">Vaccine</div><div class="t-caption c-ink3">3 months</div></div>
-                <div class="health-ico"><div class="health-circle warn">💊</div><div class="t-label" style="margin-top:4px">Vermifuge</div><div class="t-caption c-warn">2 weeks</div></div>
-                <div class="health-ico"><div class="health-circle">🦷</div><div class="t-label" style="margin-top:4px">Dentist</div><div class="t-caption c-ink3">—</div></div>
+                <div class="health-ico"><div class="health-circle">💊</div><div class="t-label" style="margin-top:4px">Vermifuge</div><div class="t-caption c-ink3">6 months</div></div>
+                <div class="health-ico"><div class="health-circle">🦴</div><div class="t-label" style="margin-top:4px">Physio</div><div class="t-caption c-ink3">8 months</div></div>
+                <div class="health-ico"><div class="health-circle">🦷</div><div class="t-label" style="margin-top:4px">Dentist</div><div class="t-caption c-ink3">2 weeks</div></div>
               </div>
               <div class="card pad-m"><div class="t-eyebrow">DAILY MEDICATIONS</div><div class="t-body" style="margin-top:4px">Equibiom AM + PM. Biotin daily.</div></div>
               <div>
@@ -1314,17 +1486,43 @@
                   <div class="t-body-m" style="margin-top:6px">No treatments yet.</div>
                 </div>
               </div>
-              <div class="card pad-m">
-                <div class="t-eyebrow">UPLOAD PRESCRIPTION</div>
-                <div class="t-caption c-ink2" style="margin-top:6px; margin-bottom:10px">PDF or photo. Archive on the horse indefinitely.</div>
-                <button class="btn primary md fw">Choose file</button>
-              </div>
             </div>
 
-            <div class="screen-body hidden" data-htab-pane="feed">
-              <div class="card pad-m"><div class="t-eyebrow">1H AGO · JESS</div><div class="t-body" style="margin-top:6px">Bella had a calm hack — went well.</div></div>
-              <div class="card pad-m"><div class="t-eyebrow">YESTERDAY · DR. TORRES</div><div class="t-body" style="margin-top:6px">Routine checkup — all good.</div></div>
-              <div class="card pad-m"><div class="t-eyebrow">MAY 10 · MIKE</div><div class="t-body" style="margin-top:6px">New shoes on front. Next visit June 7.</div></div>
+            <div class="screen-body hidden" data-htab-pane="food">
+              <div class="card pad-m"><div class="t-eyebrow">MORNING</div><div class="t-body" style="margin-top:4px">Hay 4kg · grain 1.5kg</div></div>
+              <div class="card pad-m"><div class="t-eyebrow">EVENING</div><div class="t-body" style="margin-top:4px">Hay 4kg · beet pulp 1kg</div></div>
+              <div class="card pad-m"><div class="t-eyebrow">SUPPLEMENTS</div><div class="t-body" style="margin-top:4px">Equibiom AM + PM. Biotin daily.</div></div>
+              <div class="card pad-m"><div class="t-eyebrow">NOTES</div><div class="t-body" style="margin-top:4px">No alfalfa. Soak hay 20 min.</div></div>
+            </div>
+
+            <div class="screen-body hidden" data-htab-pane="tack">
+              <div class="card pad-m"><div class="t-eyebrow">SADDLE</div><div class="t-body" style="margin-top:4px">CWD SE02 · 17.5"</div></div>
+              <div class="card pad-m"><div class="t-eyebrow">BRIDLE</div><div class="t-body" style="margin-top:4px">Antarès figure-8 · flash noseband</div></div>
+              <div class="card pad-m"><div class="t-eyebrow">BIT</div><div class="t-body" style="margin-top:4px">D-ring loose-ring · 14mm</div></div>
+              <div class="card pad-m"><div class="t-eyebrow">BOOTS / WRAPS</div><div class="t-body" style="margin-top:4px">Open-front jump boots · fleece polos for flat.</div></div>
+            </div>
+
+            <div class="screen-body hidden" data-htab-pane="docs">
+              <div class="card pad-m row" style="gap:10px; align-items:center;">
+                <div style="font-size:22px">📄</div>
+                <div class="flex1"><div class="t-body-m">Vaccin annuel.pdf</div><div class="t-caption c-ink3">Uploaded Mar 12</div></div>
+                <span class="t-caption c-g600">View →</span>
+              </div>
+              <div class="card pad-m row" style="gap:10px; align-items:center;">
+                <div style="font-size:22px">📷</div>
+                <div class="flex1"><div class="t-body-m">Coggins.jpg</div><div class="t-caption c-ink3">Uploaded Feb 28</div></div>
+                <span class="t-caption c-g600">View →</span>
+              </div>
+              <div class="card pad-m row" style="gap:10px; align-items:center;">
+                <div style="font-size:22px">📄</div>
+                <div class="flex1"><div class="t-body-m">Boarding contract.pdf</div><div class="t-caption c-ink3">Signed Jan 04</div></div>
+                <span class="t-caption c-g600">View →</span>
+              </div>
+              <div class="card pad-m">
+                <div class="t-eyebrow">UPLOAD NEW</div>
+                <div class="t-caption c-ink2" style="margin-top:6px; margin-bottom:10px">PDF or photo. Archived on the horse indefinitely.</div>
+                <button class="btn primary md fw">Choose file</button>
+              </div>
             </div>
           </div>
         </div>
@@ -1408,10 +1606,11 @@
       <!-- ── FAB (visible on app screens) ────────────────────── -->
       <div class="backdrop" id="backdrop"></div>
       <div class="petals" id="petals">
-        <div class="petal" data-i="0"><button class="petal-btn" data-go="booking">🎯</button><div class="petal-label">Lesson</div></div>
-        <div class="petal" data-i="1"><button class="petal-btn">📅</button><div class="petal-label">Event</div></div>
-        <div class="petal" data-i="2"><button class="petal-btn">✅</button><div class="petal-label">To-Do</div></div>
-        <div class="petal" data-i="3"><button class="petal-btn">📝</button><div class="petal-label">Post</div></div>
+        <div class="petal" data-i="0"><button class="petal-btn" data-go="booking">📚</button><div class="petal-label">Lesson</div></div>
+        <div class="petal" data-i="1"><button class="petal-btn">📅</button><div class="petal-label">Calendar event</div></div>
+        <div class="petal" data-i="2"><button class="petal-btn">✅</button><div class="petal-label">To-do</div></div>
+        <div class="petal" data-i="3"><button class="petal-btn">💬</button><div class="petal-label">Post</div></div>
+        <div class="petal" data-i="4"><button class="petal-btn">✨</button><div class="petal-label">Extras</div></div>
       </div>
       <button class="fab" id="fab" aria-label="New"><span class="plus">+</span></button>
     </div>
