@@ -55,8 +55,9 @@
       p.lede {
         font-size: 17px; line-height: 1.55; color: var(--ink2); max-width: 560px;
       }
-      .cards { display: grid; gap: 16px; margin-top: 40px; grid-template-columns: 1fr 1fr 1fr; }
+      .cards { display: grid; gap: 16px; margin-top: 40px; grid-template-columns: 1fr 1fr; }
       @media (max-width: 760px) { .cards { grid-template-columns: 1fr; } }
+      .cards .card.primary { grid-column: 1 / -1; }
       .card {
         background: var(--surface);
         border: 1px solid var(--border);
@@ -104,30 +105,40 @@
           <span class="eyebrow">▶ Baseline</span>
           <span class="title">v1 — Interactive demo</span>
           <span class="desc">
-            Post-sprint-day-3 prototype. Switch role, navigate the five tabs, open the FAB,
-            browse MyStable, dive into Bella's profile.
+            Post-sprint-day-3 prototype. Five tabs, FAB petals, MyStable, Bella's profile.
           </span>
           <span class="cta">Open v1 ›</span>
         </a>
 
-        <a class="card primary" href="demo-v2.html">
-          <span class="eyebrow">▶ Experiment</span>
+        <a class="card" href="demo-v2.html">
+          <span class="eyebrow">Iteration</span>
           <span class="title">v2 — Behaviors, not screens</span>
           <span class="desc">
-            Iteration after design feedback from Gemini & ChatGPT. One dominant thing per screen,
-            live barn pulse as hero moment, groom→owner reward loop, shareable end-of-lesson card.
+            Stories format · swipe-right groom tasks · Spotify-Wrapped share card · Zenly-style
+            riders-here stack.
           </span>
           <span class="cta">Open v2 ›</span>
+        </a>
+
+        <a class="card primary" href="demo-v3.html">
+          <span class="eyebrow">▶ Latest</span>
+          <span class="title">v3 — Role-surgical UI</span>
+          <span class="desc">
+            20/80 architecture · shared barn-pulse header · 4 deeply different homes
+            (BeReal Groom · Dynamic-Island Trainer · Strava Client · God-Mode Owner) · per-role
+            bottom nav · Owner broadcast FAB.
+          </span>
+          <span class="cta">Open v3 ›</span>
         </a>
 
         <a class="card" href="preview.html">
           <span class="eyebrow">Gallery</span>
           <span class="title">Static screens</span>
           <span class="desc">
-            Every v1 screen laid out side-by-side as iPhone frames, plus a palette switcher and the
-            component reference. Useful for design review.
+            Every v1 screen laid out as iPhone frames, plus palette switcher and component
+            reference.
           </span>
-          <span class="cta">Open the gallery ›</span>
+          <span class="cta">Open ›</span>
         </a>
       </div>
 
