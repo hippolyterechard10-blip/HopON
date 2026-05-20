@@ -1,0 +1,1694 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+    <meta name="theme-color" content="#0B2F23" />
+    <title>HopOn · v2 — Behaviors over screens</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@1&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --g900: #0b2f23; --g800: #114836; --g700: #18604f; --g600: #207a66;
+        --g500: #2a957f; --g400: #36b399; --g300: #5cc0a4; --g200: #95cdba;
+        --g100: #d6efe1; --g50: #ecfbf6;
+        --bg: #f3f5f3; --surface: #ffffff; --border: #e7eae7;
+        --ink1: #181d18; --ink2: #454a45; --ink3: #8a908a;
+        --ok: #2e7a4f; --ok-bg: #edf7f2;
+        --warn: #7a5f28; --warn-bg: #faf4e8; --warn-dot: #c49540;
+        --alert: #8a3d2e; --alert-bg: #faf0ed; --alert-dot: #b86050;
+        --n50: #f5f6f5; --n100: #eceeed; --n200: #dadddA;
+        --sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+        --serif: "DM Serif Display", ui-serif, Georgia, serif;
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body {
+        font-family: var(--sans); color: var(--ink1);
+        background: radial-gradient(circle at 30% 0%, #d6efe1, #ededec 60%);
+        min-height: 100vh;
+      }
+      body { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 12px; }
+
+      /* Role switcher */
+      .role-bar {
+        display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: center;
+        padding: 8px 12px; background: rgba(255,255,255,0.78); backdrop-filter: blur(10px);
+        border-radius: 999px; border: 1px solid rgba(0,0,0,0.06);
+        box-shadow: 0 4px 12px rgba(11,47,35,0.06);
+      }
+      .role-bar .lbl { font-size: 10px; font-weight: 600; letter-spacing: 1.4px;
+        text-transform: uppercase; color: var(--ink3); margin-right: 4px; }
+      .role-chip {
+        padding: 6px 12px; border-radius: 999px;
+        font-size: 12px; font-weight: 500; color: var(--ink2);
+        background: transparent; border: 1px solid transparent; cursor: pointer;
+      }
+      .role-chip.active { background: var(--g500); color: white; }
+      .help {
+        font-size: 12px; color: var(--ink3); text-align: center; max-width: 540px;
+        margin-top: 6px;
+      }
+
+      /* Phone */
+      .phone {
+        width: 390px; height: 844px; max-height: 92vh;
+        background: var(--surface); border-radius: 44px;
+        box-shadow: 0 24px 64px rgba(11,47,35,0.18), inset 0 0 0 1px rgba(0,0,0,0.06);
+        position: relative; overflow: hidden;
+        display: flex; flex-direction: column;
+      }
+      .statusbar {
+        height: 44px; flex: 0 0 44px; padding: 14px 26px 0;
+        display: flex; align-items: flex-start; justify-content: space-between;
+        font-size: 13px; font-weight: 500; color: var(--ink1);
+        background: var(--bg);
+      }
+      .screen { display: none; flex-direction: column; flex: 1; min-height: 0; position: relative; }
+      .screen.active { display: flex; }
+      .stage { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+      .body {
+        flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
+        padding: 16px 16px 110px;
+        background: var(--bg);
+      }
+      .screen-body { display: flex; flex-direction: column; gap: 12px; }
+
+      /* Header */
+      .barn-header {
+        display: flex; align-items: center; gap: 12px;
+        padding: 8px 4px 8px;
+        justify-content: space-between;
+      }
+      .barn-id { display: flex; align-items: center; gap: 8px; }
+      .burger { width: 26px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; }
+      .burger span { display: block; height: 2px; background: var(--ink1); border-radius: 1px; }
+      .barn-name { font-size: 16px; font-weight: 700; color: var(--ink1); }
+      .barn-name .caret { font-size: 11px; color: var(--ink3); margin-left: 4px; }
+      .header-right { display: flex; align-items: center; gap: 10px; }
+      .bell { font-size: 18px; }
+      .avatar {
+        width: 28px; height: 28px; border-radius: 14px; background: var(--g500);
+        color: white; font-size: 10px; font-weight: 700;
+        display: grid; place-items: center;
+      }
+
+      /* Tab bar */
+      .tabbar {
+        position: absolute; bottom: 0; left: 0; right: 0;
+        height: 76px; padding: 10px 6px 12px;
+        background: var(--surface); border-top: 1px solid var(--border);
+        display: flex; justify-content: space-between; align-items: center;
+      }
+      .tab-item {
+        flex: 1; background: transparent; border: 0;
+        display: flex; flex-direction: column; align-items: center; gap: 3px;
+        font-size: 8px; font-weight: 700; letter-spacing: 0.4px;
+        color: var(--ink3); cursor: pointer;
+      }
+      .tab-item.active { color: var(--g600); }
+      .tab-icon { width: 18px; height: 18px; background: currentColor;
+        mask-position: center; mask-repeat: no-repeat; mask-size: contain; }
+      .ic-home { mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z'/%3E%3C/svg%3E"); }
+      .ic-stable { mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M22 8.35V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8.35'/%3E%3Cpath d='M22 8.35 12 2 2 8.35'/%3E%3Cpath d='M6 18v-6h12v6'/%3E%3C/svg%3E"); }
+      .ic-cal { mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Crect x='3' y='4' width='18' height='17' rx='2'/%3E%3Cpath d='M3 9h18M8 2v4M16 2v4'/%3E%3C/svg%3E"); }
+      .ic-board { mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Crect x='8' y='2' width='8' height='4' rx='1'/%3E%3Cpath d='M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2'/%3E%3Cpath d='M9 12h6M9 16h6'/%3E%3C/svg%3E"); }
+      .ic-feed { mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'/%3E%3C/svg%3E"); }
+
+      /* Typography */
+      .t-hero { font-family: var(--serif); font-style: italic; font-size: 38px; line-height: 42px; letter-spacing: -0.5px; }
+      .t-display { font-family: var(--serif); font-style: italic; font-size: 26px; line-height: 30px; letter-spacing: -0.3px; }
+      .t-h1 { font-weight: 700; font-size: 22px; line-height: 26px; letter-spacing: -0.3px; }
+      .t-h2 { font-weight: 700; font-size: 18px; line-height: 22px; }
+      .t-body { font-size: 14px; line-height: 20px; color: var(--ink1); }
+      .t-body-m { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--ink1); }
+      .t-caption { font-size: 12px; line-height: 16px; color: var(--ink2); }
+      .t-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 1.4px;
+        text-transform: uppercase; color: var(--ink3); }
+      .t-compressed { font-size: 11px; font-weight: 700; letter-spacing: 0.4px;
+        text-transform: uppercase; color: var(--ink1); }
+      .c-white { color: white; } .c-g100 { color: var(--g100); } .c-g200 { color: var(--g200); }
+      .c-g600 { color: var(--g600); } .c-g700 { color: var(--g700); }
+      .c-ink2 { color: var(--ink2); } .c-ink3 { color: var(--ink3); }
+      .c-warn { color: var(--warn); } .c-ok { color: var(--ok); }
+
+      /* Cards */
+      .card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 14px; }
+      .card.tight { padding: 10px 12px; }
+      .card.dark { background: var(--g800); color: white; border-color: var(--g800); }
+      .card.brand-tint { background: var(--g50); border-color: var(--g100); }
+      .card.warn-tint { background: var(--warn-bg); border-color: var(--warn-bg); }
+      .row { display: flex; align-items: center; gap: 10px; }
+      .col { display: flex; flex-direction: column; }
+      .flex1 { flex: 1; min-width: 0; }
+      .gap-6 { gap: 6px; } .gap-8 { gap: 8px; } .gap-10 { gap: 10px; } .gap-12 { gap: 12px; }
+      .pad-m { padding: 14px; } .pad-l { padding: 18px; }
+      .hidden { display: none !important; }
+
+      /* Buttons */
+      .btn {
+        display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+        font-family: var(--sans); font-weight: 600; cursor: pointer;
+        border-radius: 12px; border: 1px solid transparent;
+      }
+      .btn.primary { background: var(--g600); color: white; }
+      .btn.primary:hover { background: var(--g700); }
+      .btn.secondary { background: var(--surface); color: var(--ink1); border-color: var(--border); }
+      .btn.ghost { background: transparent; color: var(--g600); }
+      .btn.sm { padding: 8px 12px; font-size: 12px; }
+      .btn.md { padding: 12px 16px; font-size: 14px; }
+      .btn.lg { padding: 14px 20px; font-size: 15px; }
+      .btn.fw { width: 100%; }
+
+      /* Pills / tags */
+      .pill {
+        display: inline-flex; align-items: center; gap: 4px;
+        padding: 3px 8px; border-radius: 8px;
+        font-size: 10px; font-weight: 700; letter-spacing: 0.4px;
+        background: var(--n100); color: var(--ink2);
+      }
+      .pill.brand { background: var(--g50); color: var(--g700); }
+      .pill.warn { background: var(--warn-bg); color: var(--warn); }
+      .pill.ok { background: var(--ok-bg); color: var(--ok); }
+      .pill.alert { background: var(--alert-bg); color: var(--alert); }
+
+      /* ── HERO TILE — "one dominant thing" per home ───────── */
+      .hero-tile {
+        position: relative; overflow: hidden;
+        padding: 18px 18px 18px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, var(--g700), var(--g500));
+        color: white;
+        display: flex; flex-direction: column; gap: 6px;
+      }
+      .hero-tile.dark { background: linear-gradient(160deg, var(--g900), var(--g700)); }
+      .hero-tile.pale { background: var(--surface); color: var(--ink1); border: 1px solid var(--border); }
+      .hero-tile .eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; opacity: 0.78; }
+      .hero-tile .headline { font-family: var(--serif); font-style: italic; font-size: 24px; line-height: 28px; letter-spacing: -0.3px; }
+      .hero-tile .sub { font-size: 13px; line-height: 18px; opacity: 0.85; }
+      .hero-tile .live-dot {
+        display: inline-flex; align-items: center; gap: 6px;
+        font-size: 10px; font-weight: 700; letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+      .hero-tile .live-dot::before {
+        content: ""; width: 6px; height: 6px; border-radius: 3px;
+        background: #ff4444; box-shadow: 0 0 0 4px rgba(255,68,68,0.22);
+        animation: livepulse 1.5s ease-in-out infinite;
+      }
+      @keyframes livepulse {
+        0%, 100% { box-shadow: 0 0 0 4px rgba(255,68,68,0.22); }
+        50% { box-shadow: 0 0 0 8px rgba(255,68,68,0.10); }
+      }
+
+      /* Owner secondary strips */
+      .strip {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 12px 14px; background: var(--surface);
+        border: 1px solid var(--border); border-radius: 14px;
+        cursor: pointer;
+      }
+      .strip .l { display: flex; flex-direction: column; gap: 1px; }
+      .strip .l .label { font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ink3); }
+      .strip .l .v { font-size: 16px; font-weight: 700; color: var(--ink1); }
+      .strip .delta { font-size: 11px; font-weight: 600; color: var(--g600); }
+      .strip.warn { background: var(--warn-bg); border-color: var(--warn-bg); }
+      .strip.warn .l .label { color: var(--warn); }
+
+      /* Trainer next-up */
+      .next-up {
+        background: linear-gradient(135deg, var(--g700), var(--g500));
+        color: white; border-radius: 20px; padding: 18px;
+        display: flex; gap: 14px; align-items: center;
+      }
+      .next-up .photo {
+        width: 84px; height: 84px; border-radius: 42px;
+        background: rgba(255,255,255,0.15);
+        display: grid; place-items: center;
+        font-size: 44px; flex: 0 0 84px;
+      }
+      .next-up .info { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+      .next-up .eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 1.2px;
+        text-transform: uppercase; opacity: 0.8; }
+      .next-up .h { font-family: var(--serif); font-style: italic; font-size: 22px; line-height: 26px; }
+      .next-up .meta { font-size: 12px; opacity: 0.85; }
+
+      /* Trainer day schedule */
+      .lesson-row {
+        display: flex; align-items: center; gap: 12px;
+        padding: 10px 12px;
+        background: var(--surface); border: 1px solid var(--border);
+        border-radius: 12px;
+      }
+      .lesson-row.now { background: var(--g50); border-color: var(--g200); }
+      .lesson-row .time { font-family: var(--serif); font-style: italic; font-size: 18px; flex: 0 0 56px; }
+      .lesson-row .who { flex: 1; }
+      .lesson-row .who .n { font-size: 13px; font-weight: 700; }
+      .lesson-row .who .m { font-size: 11px; color: var(--ink3); }
+      .lesson-row .horse { font-size: 11px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; color: var(--g600); }
+
+      /* Groom ring */
+      .ring-tile {
+        background: var(--g900); color: white;
+        border-radius: 20px; padding: 24px;
+        display: flex; flex-direction: column; align-items: center; gap: 12px;
+        position: relative; overflow: hidden;
+      }
+      .ring-tile::before {
+        content: ""; position: absolute; inset: -40px;
+        background: radial-gradient(circle at 30% 20%, rgba(42,149,127,0.40), transparent 50%);
+      }
+      .ring-tile > * { position: relative; z-index: 1; }
+      .ring-svg { width: 180px; height: 180px; }
+      .ring-bg { fill: none; stroke: rgba(255,255,255,0.12); stroke-width: 14; }
+      .ring-fg { fill: none; stroke: var(--g300); stroke-width: 14; stroke-linecap: round;
+        transform: rotate(-90deg); transform-origin: 90px 90px;
+        transition: stroke-dashoffset 600ms cubic-bezier(0.4, 0, 0.2, 1); }
+      .ring-num {
+        position: absolute; inset: 0;
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        gap: 2px;
+      }
+      .ring-num .big { font-family: var(--serif); font-style: italic;
+        font-size: 56px; line-height: 1; }
+      .ring-num .small { font-size: 11px; opacity: 0.7; letter-spacing: 0.6px; text-transform: uppercase; }
+      .ring-wrap { position: relative; width: 180px; height: 180px; }
+
+      /* Groom tasks */
+      .task-row {
+        display: flex; align-items: center; gap: 10px;
+        padding: 10px 12px;
+        background: var(--surface); border: 1px solid var(--border);
+        border-radius: 12px;
+        cursor: pointer; user-select: none;
+        transition: background 200ms, transform 100ms;
+      }
+      .task-row:active { transform: scale(0.99); }
+      .task-row.done { opacity: 0.5; }
+      .task-row.done .text { text-decoration: line-through; color: var(--ink3); }
+      .task-row.urgent { background: var(--warn-bg); border-color: var(--warn-bg); }
+      .checkbox {
+        width: 22px; height: 22px; border-radius: 6px;
+        border: 1.5px solid var(--n200); background: white;
+        display: grid; place-items: center;
+        font-size: 12px; color: white;
+        flex: 0 0 22px;
+      }
+      .task-row.done .checkbox { background: var(--g500); border-color: var(--g500); }
+      .task-row.done .checkbox::after { content: "✓"; }
+      .task-row .text { flex: 1; font-size: 13px; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; }
+      .task-row.urgent .text { color: var(--warn); }
+
+      /* Client hero - the BIG Bella */
+      .bella-hero {
+        position: relative; border-radius: 22px;
+        height: 340px;
+        background: linear-gradient(180deg, #b8d8c4 0%, #88b89a 60%, #6a9a7e 100%);
+        overflow: hidden; color: white;
+        display: flex; flex-direction: column; justify-content: flex-end;
+        padding: 18px;
+      }
+      .bella-hero .horse-illu {
+        position: absolute; inset: 0;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 240px; opacity: 0.92;
+        filter: drop-shadow(0 12px 24px rgba(11,47,35,0.30));
+      }
+      .bella-hero .overlay-bg {
+        position: absolute; left: 0; right: 0; bottom: 0; height: 60%;
+        background: linear-gradient(180deg, transparent, rgba(11,47,35,0.55));
+      }
+      .bella-hero .live-strip {
+        position: absolute; top: 14px; left: 14px;
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 4px 10px; border-radius: 14px;
+        background: rgba(11,47,35,0.55); backdrop-filter: blur(8px);
+        font-size: 10px; font-weight: 700; letter-spacing: 0.4px;
+      }
+      .bella-hero .live-strip::before {
+        content: ""; width: 6px; height: 6px; border-radius: 3px;
+        background: #6cf28b;
+      }
+      .bella-hero .name-block { position: relative; z-index: 2; }
+      .bella-hero .name {
+        font-family: var(--serif); font-style: italic;
+        font-size: 44px; line-height: 1; letter-spacing: -0.5px;
+      }
+      .bella-hero .meta { font-size: 12px; opacity: 0.92; margin-top: 6px; }
+      .bella-hero .pulse {
+        font-size: 13px; margin-top: 10px;
+        background: rgba(255,255,255,0.18); backdrop-filter: blur(6px);
+        padding: 8px 12px; border-radius: 12px; display: inline-block;
+      }
+
+      /* Client compact info rows */
+      .info-row {
+        display: flex; align-items: center; gap: 10px;
+        background: var(--surface); border: 1px solid var(--border);
+        border-radius: 12px; padding: 12px 14px;
+      }
+      .info-row .ic { font-size: 18px; flex: 0 0 28px; text-align: center; }
+      .info-row .l { flex: 1; display: flex; flex-direction: column; }
+      .info-row .l .lbl { font-size: 10px; font-weight: 700; letter-spacing: 1px;
+        text-transform: uppercase; color: var(--ink3); }
+      .info-row .l .v { font-size: 13px; font-weight: 600; color: var(--ink1); margin-top: 1px; }
+      .info-row .cta { font-size: 11px; font-weight: 700; color: var(--g600); }
+
+      /* ── WHITEBOARD LIVE — the hero moment ───────────── */
+      .barn-pulse {
+        background: var(--g900); color: white;
+        padding: 16px 18px; border-radius: 0;
+        border-bottom: 1px solid rgba(255,255,255,0.04);
+      }
+      .barn-pulse .top {
+        display: flex; justify-content: space-between; align-items: center;
+        margin-bottom: 10px;
+      }
+      .barn-pulse .live-dot {
+        display: inline-flex; align-items: center; gap: 6px;
+        font-size: 10px; font-weight: 700; letter-spacing: 1px;
+        text-transform: uppercase; opacity: 0.95;
+      }
+      .barn-pulse .live-dot::before {
+        content: ""; width: 6px; height: 6px; border-radius: 3px;
+        background: #6cf28b; box-shadow: 0 0 0 4px rgba(108, 242, 139, 0.22);
+        animation: livepulse 1.5s ease-in-out infinite;
+      }
+      .barn-pulse .date { font-size: 11px; opacity: 0.7; }
+      .barn-pulse .pct {
+        font-family: var(--serif); font-style: italic;
+        font-size: 34px; line-height: 1;
+      }
+      .barn-pulse .label { font-size: 12px; opacity: 0.85; margin-top: 4px; }
+      .barn-pulse .progress {
+        position: relative; height: 6px; background: rgba(255,255,255,0.12);
+        border-radius: 3px; margin-top: 14px; overflow: hidden;
+      }
+      .barn-pulse .progress .fill {
+        position: absolute; top: 0; bottom: 0; left: 0; width: 57%;
+        background: linear-gradient(90deg, var(--g300), #6cf28b);
+        border-radius: 3px;
+      }
+      .barn-pulse .splits {
+        display: flex; gap: 16px; margin-top: 14px;
+      }
+      .barn-pulse .split { display: flex; flex-direction: column; gap: 2px; }
+      .barn-pulse .split .n { font-size: 16px; font-weight: 700; }
+      .barn-pulse .split .l { font-size: 9px; letter-spacing: 0.8px; text-transform: uppercase; opacity: 0.72; }
+
+      .wb-dates { display: flex; gap: 6px; padding: 12px 16px 8px; }
+      .wb-date {
+        flex: 1; background: var(--surface); border: 1px solid var(--border);
+        border-radius: 12px; padding: 8px 4px;
+        display: flex; flex-direction: column; align-items: center; gap: 2px;
+      }
+      .wb-date.today { background: var(--g500); border-color: var(--g500); color: white; }
+      .wb-date .dow { font-size: 9px; font-weight: 700; letter-spacing: 0.6px; color: var(--ink2); }
+      .wb-date .n { font-size: 14px; font-weight: 700; color: var(--ink1); }
+      .wb-date.today .dow, .wb-date.today .n { color: white; }
+
+      .live-feed {
+        background: var(--surface); border-bottom: 1px solid var(--border);
+        padding: 10px 16px;
+        font-size: 11px; color: var(--ink2);
+        display: flex; align-items: center; gap: 8px;
+      }
+      .live-feed .ping {
+        width: 6px; height: 6px; border-radius: 3px;
+        background: var(--g500);
+        animation: livepulse 2s ease-in-out infinite;
+      }
+      .live-feed strong { color: var(--ink1); font-weight: 700; }
+
+      .wb-rows {
+        display: flex; flex-direction: column; gap: 10px;
+        padding: 12px 16px 110px;
+      }
+      .wb-row {
+        background: var(--surface); border: 1px solid var(--border);
+        border-radius: 14px; padding: 10px 12px 12px;
+        display: flex; flex-direction: column; gap: 8px;
+      }
+      .wb-row.has-urgent { border-color: var(--warn-bg); }
+      .wb-row .head {
+        display: flex; justify-content: space-between; align-items: center; gap: 10px;
+      }
+      .wb-row .who { display: flex; align-items: center; gap: 8px; }
+      .wb-av {
+        width: 28px; height: 28px; border-radius: 14px;
+        background: var(--g200); color: var(--g800);
+        display: grid; place-items: center;
+        font-size: 11px; font-weight: 700;
+        position: relative;
+      }
+      .wb-av .live {
+        position: absolute; bottom: -2px; right: -2px;
+        width: 8px; height: 8px; border-radius: 4px;
+        background: var(--g500); border: 2px solid var(--surface);
+      }
+      .wb-row .who .n { font-size: 14px; font-weight: 700; color: var(--ink1); line-height: 1.15; }
+      .wb-row .who .r { font-size: 9px; font-weight: 700; letter-spacing: 0.6px; color: var(--ink3); }
+      .wb-row .stats { display: flex; gap: 6px; align-items: center; }
+      .wb-row .pct { font-size: 13px; font-weight: 700; color: var(--ink1); }
+      .wb-row .urg {
+        padding: 2px 6px; border-radius: 6px;
+        background: var(--warn-bg); color: var(--warn);
+        font-size: 10px; font-weight: 700;
+      }
+      .wb-progress {
+        height: 4px; background: var(--bg); border-radius: 2px;
+        overflow: hidden;
+      }
+      .wb-progress .fill {
+        height: 100%; background: var(--g500); border-radius: 2px;
+        transition: width 400ms;
+      }
+      .wb-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+      .wb-chip {
+        display: inline-flex; align-items: center; gap: 5px;
+        padding: 4px 8px; border-radius: 8px;
+        background: var(--bg);
+        font-size: 10px; font-weight: 600; color: var(--ink1);
+        letter-spacing: 0.3px;
+      }
+      .wb-chip.done { background: var(--g50); color: var(--ink3); text-decoration: line-through; }
+      .wb-chip.urgent { background: var(--warn-bg); color: var(--warn); }
+      .wb-chip .box {
+        width: 12px; height: 12px; border-radius: 3px;
+        border: 1px solid var(--n200); background: white;
+        display: grid; place-items: center; font-size: 8px; line-height: 1; color: white;
+      }
+      .wb-chip.done .box { background: var(--g500); border-color: var(--g500); }
+      .wb-chip.done .box::after { content: "✓"; }
+      .wb-chip .time { font-weight: 500; color: var(--ink2); }
+      .wb-chip.done .time { color: var(--ink3); }
+      .wb-chip.urgent .time { color: var(--warn); }
+
+      /* ── HORSE PASSPORT ──────────────────────────────── */
+      .horse-passport {
+        position: relative; height: 320px;
+        background: linear-gradient(180deg, #c2dcd0 0%, #6fa48a 60%, #2a5f47 100%);
+        overflow: hidden;
+        display: flex; flex-direction: column; justify-content: flex-end;
+        padding: 18px;
+        color: white;
+      }
+      .horse-passport .illu {
+        position: absolute; inset: 0;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 220px; opacity: 0.96;
+        filter: drop-shadow(0 18px 28px rgba(11,47,35,0.34));
+      }
+      .horse-passport .grad {
+        position: absolute; left: 0; right: 0; bottom: 0; height: 70%;
+        background: linear-gradient(180deg, transparent, rgba(11,47,35,0.65));
+      }
+      .horse-passport .back {
+        position: absolute; top: 14px; left: 14px;
+        width: 34px; height: 34px; border-radius: 17px;
+        background: rgba(255,255,255,0.20); backdrop-filter: blur(6px);
+        display: grid; place-items: center;
+        color: white; font-size: 18px; cursor: pointer;
+      }
+      .horse-passport .actions {
+        position: absolute; top: 14px; right: 14px;
+        display: flex; gap: 8px;
+      }
+      .horse-passport .actions .ic {
+        width: 34px; height: 34px; border-radius: 17px;
+        background: rgba(255,255,255,0.20); backdrop-filter: blur(6px);
+        display: grid; place-items: center;
+        color: white; font-size: 14px; cursor: pointer;
+      }
+      .horse-passport .id-row {
+        position: relative; z-index: 2;
+        display: flex; justify-content: space-between; align-items: flex-end; gap: 12px;
+      }
+      .horse-passport .name {
+        font-family: var(--serif); font-style: italic;
+        font-size: 44px; line-height: 1; letter-spacing: -0.5px;
+      }
+      .horse-passport .meta { font-size: 12px; opacity: 0.92; margin-top: 6px; }
+      .horse-passport .owners {
+        display: flex; align-items: center; gap: 6px;
+      }
+      .horse-passport .owners .stack { display: flex; }
+      .horse-passport .owners .stack .dot {
+        width: 24px; height: 24px; border-radius: 12px;
+        background: var(--g500); color: white;
+        font-size: 8px; font-weight: 700;
+        display: grid; place-items: center;
+        border: 2px solid white;
+        margin-left: -8px;
+      }
+      .horse-passport .owners .stack .dot:first-child { margin-left: 0; }
+      .horse-passport .owners .lbl { font-size: 10px; opacity: 0.78; letter-spacing: 0.5px; text-transform: uppercase; }
+
+      .h-tabs {
+        display: flex; gap: 16px; padding: 10px 18px;
+        border-bottom: 1px solid var(--border); background: var(--surface);
+        overflow-x: auto;
+      }
+      .h-tab { font-size: 12px; font-weight: 600; color: var(--ink3);
+        padding: 4px 0; cursor: pointer; white-space: nowrap;
+        border-bottom: 2px solid transparent; }
+      .h-tab.active { color: var(--g600); border-bottom-color: var(--g500); }
+
+      /* Horse timeline */
+      .timeline {
+        display: flex; flex-direction: column; gap: 0;
+        position: relative;
+      }
+      .timeline::before {
+        content: ""; position: absolute; top: 8px; bottom: 8px; left: 13px;
+        width: 1px; background: var(--border);
+      }
+      .tl-item {
+        display: flex; gap: 14px; padding: 10px 0;
+      }
+      .tl-dot {
+        width: 28px; height: 28px; border-radius: 14px;
+        background: var(--surface); border: 2px solid var(--g500);
+        display: grid; place-items: center;
+        font-size: 12px; z-index: 1; flex: 0 0 28px;
+      }
+      .tl-dot.show { border-color: var(--alert-dot); background: var(--alert-bg); }
+      .tl-dot.med { border-color: var(--warn-dot); background: var(--warn-bg); }
+      .tl-dot.lesson { border-color: var(--g500); background: var(--g50); }
+      .tl-content { flex: 1; padding-top: 2px; }
+      .tl-content .when { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); }
+      .tl-content .what { font-size: 14px; font-weight: 600; color: var(--ink1); margin-top: 1px; }
+      .tl-content .by { font-size: 11px; color: var(--ink2); margin-top: 2px; }
+      .tl-content .thumb {
+        margin-top: 8px; height: 92px; border-radius: 10px;
+        background: linear-gradient(135deg, var(--g100), var(--g200));
+        display: grid; place-items: center; font-size: 32px;
+        position: relative;
+      }
+      .tl-content .thumb .play {
+        position: absolute; bottom: 8px; right: 8px;
+        background: rgba(11,47,35,0.55); color: white;
+        padding: 2px 8px; border-radius: 8px;
+        font-size: 9px; font-weight: 700; letter-spacing: 0.4px;
+        backdrop-filter: blur(4px);
+      }
+
+      .horse-stats {
+        display: grid; grid-template-columns: 1fr 1fr 1fr;
+        gap: 8px; padding: 14px 16px; background: var(--surface);
+        border-bottom: 1px solid var(--border);
+      }
+      .horse-stat { display: flex; flex-direction: column; gap: 2px; }
+      .horse-stat .lbl { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); }
+      .horse-stat .v {
+        font-family: var(--serif); font-style: italic;
+        font-size: 22px; line-height: 1.1; color: var(--ink1);
+      }
+      .horse-stat .v.warn { color: var(--warn); }
+
+      /* ── FEED ────────────────────────────────────────── */
+      .feed-list { display: flex; flex-direction: column; gap: 10px; }
+      .post {
+        background: var(--surface); border: 1px solid var(--border);
+        border-radius: 16px; padding: 14px;
+      }
+      .post .head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+      .post .avatar-sm {
+        width: 32px; height: 32px; border-radius: 16px;
+        background: var(--g200); color: var(--g800);
+        font-size: 10px; font-weight: 700;
+        display: grid; place-items: center;
+      }
+      .post .who { flex: 1; }
+      .post .who .n { font-size: 13px; font-weight: 700; }
+      .post .who .when { font-size: 10px; color: var(--ink3); margin-top: 1px; }
+      .post.auto { background: var(--g50); border-color: var(--g100); }
+      .post.auto .head::before {
+        content: "✨"; font-size: 14px; margin-right: 4px;
+      }
+      .post .body-text { font-size: 14px; line-height: 20px; color: var(--ink1); }
+      .post .media {
+        margin-top: 10px; height: 180px; border-radius: 12px;
+        background: linear-gradient(135deg, var(--g100), var(--g200));
+        display: grid; place-items: center; font-size: 50px;
+        position: relative;
+      }
+      .post .media .play {
+        position: absolute; bottom: 10px; right: 10px;
+        background: rgba(11,47,35,0.55); color: white;
+        padding: 4px 10px; border-radius: 10px;
+        font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
+        backdrop-filter: blur(4px);
+      }
+      .post .reactions {
+        display: flex; align-items: center; gap: 12px;
+        margin-top: 10px; font-size: 12px; color: var(--ink3);
+      }
+      .post .reactions .rx { display: flex; align-items: center; gap: 4px; cursor: pointer; }
+      .post .reactions .rx.active { color: var(--g600); font-weight: 700; }
+
+      /* ── SHARE CARD (End of Lesson) ──────────────────── */
+      .share-screen {
+        background: var(--g900); color: white;
+        padding: 24px 20px;
+        flex: 1; display: flex; flex-direction: column; gap: 16px;
+        overflow-y: auto;
+      }
+      .share-screen .head {
+        display: flex; align-items: center; gap: 12px;
+        margin-bottom: 8px;
+      }
+      .share-screen .head .back-btn {
+        width: 36px; height: 36px; border-radius: 18px;
+        background: rgba(255,255,255,0.10);
+        display: grid; place-items: center;
+        cursor: pointer; color: white; font-size: 18px;
+      }
+      .share-screen .head .title { font-size: 14px; font-weight: 600; opacity: 0.85; }
+
+      .share-card {
+        background: linear-gradient(160deg, var(--g700), var(--g500));
+        border-radius: 24px; padding: 22px;
+        display: flex; flex-direction: column; gap: 18px;
+        position: relative; overflow: hidden;
+      }
+      .share-card::before {
+        content: ""; position: absolute; top: -60px; right: -60px;
+        width: 200px; height: 200px; border-radius: 100px;
+        background: rgba(255,255,255,0.08);
+      }
+      .share-card .brand {
+        font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase;
+        font-weight: 700; opacity: 0.9;
+      }
+      .share-card .horse-name {
+        font-family: var(--serif); font-style: italic;
+        font-size: 48px; line-height: 1; letter-spacing: -0.6px;
+      }
+      .share-card .horse-photo {
+        height: 180px; border-radius: 16px;
+        background: rgba(255,255,255,0.12);
+        display: grid; place-items: center;
+        font-size: 130px;
+        backdrop-filter: blur(4px);
+        filter: drop-shadow(0 8px 16px rgba(11,47,35,0.3));
+      }
+      .share-card .stats {
+        display: grid; grid-template-columns: 1fr 1fr 1fr;
+        gap: 10px;
+      }
+      .share-card .stat {
+        display: flex; flex-direction: column; gap: 2px;
+      }
+      .share-card .stat .lbl {
+        font-size: 9px; letter-spacing: 0.8px; text-transform: uppercase;
+        opacity: 0.78; font-weight: 700;
+      }
+      .share-card .stat .v {
+        font-family: var(--serif); font-style: italic;
+        font-size: 22px; line-height: 1.1;
+      }
+      .share-card .coach {
+        display: flex; align-items: center; gap: 10px;
+        padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.16);
+      }
+      .share-card .coach .av {
+        width: 32px; height: 32px; border-radius: 16px;
+        background: rgba(255,255,255,0.2);
+        display: grid; place-items: center; font-size: 11px; font-weight: 700;
+      }
+      .share-card .coach .who { font-size: 12px; }
+      .share-card .coach .who .n { font-weight: 700; }
+      .share-card .coach .who .r { opacity: 0.78; font-size: 10px; margin-top: 1px; }
+
+      .share-actions {
+        display: grid; grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .share-actions .btn {
+        background: rgba(255,255,255,0.10); color: white;
+        padding: 14px; border-radius: 14px; border: 0;
+        font-size: 13px; font-weight: 700;
+        cursor: pointer;
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+      }
+      .share-actions .btn.primary { background: white; color: var(--g900); }
+
+      /* ── Welcome ─────────────────────────────────────── */
+      .welcome {
+        flex: 1; padding: 40px 24px;
+        background: linear-gradient(180deg, var(--g900) 0%, var(--g700) 100%);
+        color: white;
+        display: flex; flex-direction: column; justify-content: space-between;
+      }
+      .welcome .brand-top { display: flex; align-items: center; gap: 10px; }
+      .welcome .mark {
+        width: 32px; height: 32px; border-radius: 10px; background: var(--g500);
+        display: grid; place-items: center;
+        font-family: var(--serif); font-style: italic; color: white; font-size: 16px;
+      }
+      .welcome .word { font-family: var(--serif); font-style: italic; font-size: 22px; }
+      .welcome .word span { color: var(--g300); }
+      .welcome .hero-text {
+        font-family: var(--serif); font-style: italic;
+        font-size: 42px; line-height: 1.05; letter-spacing: -0.6px;
+      }
+      .welcome .lede { font-size: 14px; opacity: 0.88; margin-top: 12px; line-height: 1.5; }
+      .welcome .persona-line { font-size: 11px; opacity: 0.7; margin-top: 16px;
+        letter-spacing: 0.4px; }
+      .welcome .actions { display: flex; flex-direction: column; gap: 8px; }
+      .welcome .actions .btn { padding: 14px 16px; }
+      .welcome .actions .btn.primary { background: var(--g300); color: var(--g900); border: 0; }
+      .welcome .actions .btn.ghost { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.25); }
+
+      /* ── FAB + petals ────────────────────────────────── */
+      .fab {
+        position: absolute; bottom: 92px; right: 16px;
+        width: 56px; height: 56px; border-radius: 28px;
+        background: var(--g600); color: white;
+        border: 0; box-shadow: 0 10px 22px rgba(11,47,35,0.30);
+        display: grid; place-items: center;
+        font-size: 26px; font-weight: 300;
+        cursor: pointer; z-index: 5;
+        transition: transform 200ms;
+      }
+      .fab.open { transform: rotate(45deg); background: var(--g700); }
+
+      .backdrop {
+        position: absolute; inset: 0; background: rgba(11,47,35,0.55);
+        opacity: 0; pointer-events: none;
+        transition: opacity 250ms; z-index: 4;
+        backdrop-filter: blur(6px);
+      }
+      .backdrop.open { opacity: 1; pointer-events: auto; }
+
+      .petals {
+        position: absolute; bottom: 92px; right: 16px;
+        width: 56px; height: 56px; z-index: 4;
+        pointer-events: none;
+      }
+      .petal {
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        opacity: 0; pointer-events: none;
+        transform: translate(0, 0) scale(0.6);
+        transition: transform 280ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 200ms;
+        display: flex; flex-direction: column; align-items: center; gap: 6px;
+      }
+      .petals.open .petal { opacity: 1; pointer-events: auto; }
+      .petal-btn {
+        width: 56px; height: 56px; border-radius: 28px;
+        background: white; box-shadow: 0 8px 18px rgba(11,47,35,0.20);
+        border: 0; font-size: 22px;
+        display: grid; place-items: center;
+        cursor: pointer;
+      }
+      .petal-label {
+        font-size: 10px; font-weight: 700; color: white;
+        background: var(--ink1); padding: 3px 8px; border-radius: 8px;
+        white-space: nowrap;
+      }
+      .petals.open .petal[data-i="0"] { transform: translate(0, -125px) scale(1); transition-delay: 0s; }
+      .petals.open .petal[data-i="1"] { transform: translate(-48px, -115px) scale(1); transition-delay: 0.04s; }
+      .petals.open .petal[data-i="2"] { transform: translate(-88px, -88px) scale(1); transition-delay: 0.08s; }
+      .petals.open .petal[data-i="3"] { transform: translate(-115px, -48px) scale(1); transition-delay: 0.12s; }
+      .petals.open .petal[data-i="4"] { transform: translate(-125px, 0) scale(1); transition-delay: 0.16s; }
+
+      /* ── Toast notification ──────────────────────────── */
+      .toast {
+        position: absolute; bottom: 100px; left: 16px; right: 16px;
+        background: var(--ink1); color: white;
+        padding: 12px 14px; border-radius: 14px;
+        display: flex; align-items: center; gap: 12px;
+        box-shadow: 0 14px 32px rgba(11,47,35,0.30);
+        transform: translateY(120px); opacity: 0;
+        transition: transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 200ms;
+        z-index: 6;
+      }
+      .toast.show { transform: translateY(0); opacity: 1; }
+      .toast .icon {
+        width: 32px; height: 32px; border-radius: 16px;
+        background: var(--g500);
+        display: grid; place-items: center; font-size: 16px;
+        flex: 0 0 32px;
+      }
+      .toast .msg { flex: 1; font-size: 12px; line-height: 1.4; }
+      .toast .msg strong { display: block; font-weight: 700; margin-bottom: 2px; }
+      .toast .msg span { opacity: 0.75; }
+
+      /* Booking */
+      .slot {
+        padding: 12px 14px; background: var(--surface);
+        border: 1px solid var(--border); border-radius: 12px;
+        display: flex; justify-content: space-between; align-items: center;
+        cursor: pointer;
+      }
+      .slot.selected { border-color: var(--g500); background: var(--g50); }
+      .slot .time { font-family: var(--serif); font-style: italic; font-size: 20px; }
+      .slot .meta { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+      .slot .price { font-weight: 700; font-size: 14px; color: var(--g700); }
+    </style>
+  </head>
+  <body>
+    <div class="role-bar">
+      <span class="lbl">View as</span>
+      <button class="role-chip active" data-role="owner">Owner</button>
+      <button class="role-chip" data-role="trainer">Trainer</button>
+      <button class="role-chip" data-role="groom">Groom</button>
+      <button class="role-chip" data-role="client">Client</button>
+    </div>
+    <div class="help">
+      v2 experiment · <strong>one dominant thing per screen</strong> · tap roles · open
+      Whiteboard for the live barn pulse · check Bella's passport · try a groom task to feel the
+      owner notification toast.
+    </div>
+
+    <div class="phone" id="phone">
+      <!-- ── WELCOME ─────────────────────────────────────── -->
+      <div class="screen active" data-screen="welcome">
+        <div class="statusbar" style="color:white; background:transparent;"><span>9:41</span><span>●●● ●</span></div>
+        <div class="welcome">
+          <div>
+            <div class="brand-top">
+              <div class="mark">H</div>
+              <div class="word">Hop<span>O</span>n</div>
+            </div>
+            <div class="hero-text" style="margin-top: 56px">Your barn.<br />Calmer.</div>
+            <div class="lede">The operating system for riding barns. Bookings, payments, and the team — on the same page.</div>
+            <div class="persona-line">For owners · trainers · grooms · riders</div>
+          </div>
+          <div class="actions">
+            <button class="btn primary fw" data-go="home">Get started</button>
+            <button class="btn ghost fw" data-go="home">I already have an account</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── HOME — 4 role variants, ONE dominant thing each ─ -->
+      <div class="screen" data-screen="home">
+        <div class="statusbar"><span>9:41</span><span>●●● ●</span></div>
+        <div class="stage">
+          <div class="body">
+            <div class="barn-header">
+              <div class="barn-id">
+                <div class="burger"><span></span><span></span><span></span></div>
+                <div class="barn-name">Wellington Park <span class="caret">▼</span></div>
+              </div>
+              <div class="header-right">
+                <span class="bell">🔔</span>
+                <div class="avatar" id="avatar">HB</div>
+              </div>
+            </div>
+
+            <!-- OWNER home — barn pulse is the dominant thing, money is secondary -->
+            <div class="role-home" data-role-home="owner">
+              <div class="t-eyebrow" style="padding: 4px 4px 0">TUE · MAY 19 · 7:41</div>
+              <div class="hero-tile" data-go="whiteboard">
+                <div class="live-dot">Barn pulse · live</div>
+                <div class="headline">All horses fed. 3 vet visits today.</div>
+                <div class="sub">14 lessons booked · 2 to-dos waiting on you</div>
+                <div style="display:flex; gap: 14px; margin-top:10px;">
+                  <div style="display:flex; flex-direction:column; gap:2px;">
+                    <span style="font-size:22px; font-weight:700; font-family:var(--serif); font-style:italic;">8/14</span>
+                    <span style="font-size:9px; letter-spacing:0.6px; text-transform:uppercase; opacity:0.78;">Tasks done</span>
+                  </div>
+                  <div style="display:flex; flex-direction:column; gap:2px;">
+                    <span style="font-size:22px; font-weight:700; font-family:var(--serif); font-style:italic;">4</span>
+                    <span style="font-size:9px; letter-spacing:0.6px; text-transform:uppercase; opacity:0.78;">Riders here</span>
+                  </div>
+                  <div style="display:flex; flex-direction:column; gap:2px;">
+                    <span style="font-size:22px; font-weight:700; font-family:var(--serif); font-style:italic;">1</span>
+                    <span style="font-size:9px; letter-spacing:0.6px; text-transform:uppercase; opacity:0.78; color:#ffd699;">Needs you</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="strip warn">
+                <div class="l">
+                  <span class="label">Awaiting payments · 6</span>
+                  <span class="v">$540 outstanding · oldest 9 days</span>
+                </div>
+                <span class="t-caption c-warn">Relancer ›</span>
+              </div>
+
+              <div class="strip" data-go="dashboard">
+                <div class="l">
+                  <span class="label">Revenue · May</span>
+                  <span class="v">$3,600</span>
+                </div>
+                <span class="delta">+18% vs last month</span>
+              </div>
+
+              <div class="strip" data-go="whiteboard">
+                <div class="l">
+                  <span class="label">Team on duty</span>
+                  <span class="v">3 grooms · 2 trainers</span>
+                </div>
+                <span class="t-caption c-g600">View board ›</span>
+              </div>
+
+              <div class="card brand-tint">
+                <div class="row" style="align-items:flex-start;">
+                  <div style="flex: 0 0 32px; font-size: 18px;">✨</div>
+                  <div class="flex1">
+                    <div class="t-eyebrow c-g700">From the feed</div>
+                    <div class="t-body" style="margin-top: 4px;">Megan posted in @team — Arena 1 is still wet, switching 10am+ lessons to indoor.</div>
+                    <div class="t-caption c-ink3" style="margin-top: 6px;">5 min ago · 3 reactions</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- TRAINER home — next-up lesson is the dominant thing -->
+            <div class="role-home hidden" data-role-home="trainer">
+              <div class="t-eyebrow" style="padding: 4px 4px 0">TUE · MAY 19 · UP NEXT IN 25 MIN</div>
+              <div class="next-up">
+                <div class="photo">🐎</div>
+                <div class="info">
+                  <span class="eyebrow">9:00 → 9:45 · Indoor</span>
+                  <span class="h">Bella with Maddy K.</span>
+                  <span class="meta">First lesson back after farrier visit · go gentle</span>
+                </div>
+              </div>
+
+              <div class="t-eyebrow" style="margin-top: 4px;">YOUR DAY · 6 SESSIONS</div>
+              <div class="screen-body" style="gap: 8px;">
+                <div class="lesson-row now">
+                  <span class="time">9:00</span>
+                  <div class="who"><div class="n">Maddy K.</div><div class="m">Indoor · Flat</div></div>
+                  <span class="horse">Bella</span>
+                </div>
+                <div class="lesson-row">
+                  <span class="time">10:30</span>
+                  <div class="who"><div class="n">Sofia Reyes</div><div class="m">Indoor · Flat</div></div>
+                  <span class="horse">Storm</span>
+                </div>
+                <div class="lesson-row">
+                  <span class="time">12:00</span>
+                  <div class="who"><div class="n">Mateo Bell</div><div class="m">Outdoor · Jump</div></div>
+                  <span class="horse">Indigo</span>
+                </div>
+                <div class="lesson-row">
+                  <span class="time">14:00</span>
+                  <div class="who"><div class="n">Liv Andersen</div><div class="m">Outdoor · Flat</div></div>
+                  <span class="horse">Juno</span>
+                </div>
+                <div class="lesson-row">
+                  <span class="time">15:30</span>
+                  <div class="who"><div class="n">Emma Carter</div><div class="m">Outdoor · Jump</div></div>
+                  <span class="horse">Bella</span>
+                </div>
+                <div class="lesson-row">
+                  <span class="time">17:00</span>
+                  <div class="who"><div class="n">Group · 4 riders</div><div class="m">Outdoor · Beginner</div></div>
+                  <span class="horse">Mix</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- GROOM home — ring of progress is the dominant thing -->
+            <div class="role-home hidden" data-role-home="groom">
+              <div class="ring-tile">
+                <div class="live-dot" style="font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; display: inline-flex; align-items: center; gap: 6px; align-self: center; opacity: 0.85;">
+                  <span style="width:6px; height:6px; border-radius:3px; background:#6cf28b; box-shadow: 0 0 0 4px rgba(108, 242, 139, 0.18); animation: livepulse 1.5s ease-in-out infinite;"></span>
+                  Tuesday · live
+                </div>
+                <div class="ring-wrap">
+                  <svg class="ring-svg" viewBox="0 0 180 180">
+                    <circle class="ring-bg" cx="90" cy="90" r="80" />
+                    <circle id="ring-fill" class="ring-fg" cx="90" cy="90" r="80"
+                            stroke-dasharray="502.4" stroke-dashoffset="215.3" />
+                  </svg>
+                  <div class="ring-num">
+                    <span class="big" id="ring-num">3/7</span>
+                    <span class="small">Tasks done today</span>
+                  </div>
+                </div>
+                <div style="display:flex; gap:20px; font-size:11px; opacity:0.78; letter-spacing:0.5px; text-transform:uppercase; font-weight:700;">
+                  <span><span style="color:var(--g300)">●</span> 3 Done</span>
+                  <span><span style="color:#ffd699">●</span> 1 Urgent</span>
+                  <span><span style="opacity:0.5">●</span> 3 To go</span>
+                </div>
+              </div>
+
+              <div class="t-eyebrow" style="margin-top: 6px;">CARE TODAY</div>
+              <div class="screen-body" style="gap: 6px;">
+                <div class="task-row done" data-task><div class="checkbox"></div><div class="text">Atlas · meds</div></div>
+                <div class="task-row done" data-task><div class="checkbox"></div><div class="text">Bella · turnout</div></div>
+                <div class="task-row done" data-task><div class="checkbox"></div><div class="text">Stalls 1–6</div></div>
+                <div class="task-row urgent" data-task><div class="checkbox"></div><div class="text">! Storm · tack up · 9:00</div></div>
+                <div class="task-row" data-task><div class="checkbox"></div><div class="text">Indigo · feed PM</div></div>
+                <div class="task-row" data-task><div class="checkbox"></div><div class="text">Juno · groom + photo</div></div>
+                <div class="task-row" data-task><div class="checkbox"></div><div class="text">Bella · evening feed</div></div>
+              </div>
+            </div>
+
+            <!-- CLIENT home — Bella photo is the dominant thing -->
+            <div class="role-home hidden" data-role-home="client">
+              <div class="bella-hero" data-go="horse">
+                <div class="horse-illu">🐴</div>
+                <div class="overlay-bg"></div>
+                <div class="live-strip">At the barn · calm morning</div>
+                <div class="name-block">
+                  <div class="name">Bella</div>
+                  <div class="meta">9 yrs · KWPN · Stall #12</div>
+                  <div class="pulse">Groomed at 7:45 by Jess ✨ · ready for your 4 pm</div>
+                </div>
+              </div>
+
+              <button class="btn primary fw lg" data-go="booking" style="margin-top: 4px;">Book a lesson →</button>
+
+              <div class="info-row" data-go="booking">
+                <span class="ic">📅</span>
+                <div class="l"><span class="lbl">Next lesson</span><span class="v">Thu 4:00 pm · Maddy K. · Indoor</span></div>
+                <span class="cta">Open →</span>
+              </div>
+              <div class="info-row">
+                <span class="ic">🏆</span>
+                <div class="l"><span class="lbl">Next show</span><span class="v" style="color: var(--ink3); font-weight: 500;">No show booked</span></div>
+                <span class="cta">Add →</span>
+              </div>
+
+              <div class="card brand-tint row" style="gap: 12px; align-items: center;">
+                <div class="flex1">
+                  <div class="t-body-m">Farrier visit · Mon Jun 2</div>
+                  <div class="t-caption c-g700" style="margin-top: 2px;">Add a stretch session? Free or $40 add-on.</div>
+                </div>
+                <button class="btn primary sm">Ask</button>
+              </div>
+
+              <div class="t-eyebrow" style="margin-top: 2px;">FRESH FROM YOUR BARN</div>
+              <div style="display:flex; gap: 10px; overflow-x: auto; margin-right: -16px;">
+                <div class="card tight" style="flex: 0 0 160px; display:flex; flex-direction:column; gap: 6px;">
+                  <span class="pill brand" style="align-self: flex-start;">@owners</span>
+                  <div style="height: 84px; border-radius: 8px; background: linear-gradient(135deg, var(--g100), var(--g200));"></div>
+                  <div class="t-body-m" style="font-size: 12px;">Bella ground work</div>
+                  <div class="t-caption c-ink3" style="font-size: 10px;">Maddy K. · 1h</div>
+                </div>
+                <div class="card tight" style="flex: 0 0 160px; display:flex; flex-direction:column; gap: 6px;">
+                  <span class="pill brand" style="align-self: flex-start;">@all</span>
+                  <div style="height: 84px; border-radius: 8px; background: linear-gradient(135deg, var(--g100), var(--g200));"></div>
+                  <div class="t-body-m" style="font-size: 12px;">Show this Sunday</div>
+                  <div class="t-caption c-ink3" style="font-size: 10px;">Sarah · 3h</div>
+                </div>
+                <div class="card tight" style="flex: 0 0 160px; display:flex; flex-direction:column; gap: 6px;">
+                  <span class="pill brand" style="align-self: flex-start;">@all</span>
+                  <div style="height: 84px; border-radius: 8px; background: linear-gradient(135deg, var(--g100), var(--g200));"></div>
+                  <div class="t-body-m" style="font-size: 12px;">New farrier intro</div>
+                  <div class="t-caption c-ink3" style="font-size: 10px;">Tom · y'day</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tabbar">
+          <button class="tab-item active" data-tab="home"><span class="tab-icon ic-home"></span>Home</button>
+          <button class="tab-item" data-tab="mystable"><span class="tab-icon ic-stable"></span>My Stable</button>
+          <button class="tab-item" data-tab="calendar"><span class="tab-icon ic-cal"></span>Calendar</button>
+          <button class="tab-item" data-tab="whiteboard"><span class="tab-icon ic-board"></span>Whiteboard</button>
+          <button class="tab-item" data-tab="feed"><span class="tab-icon ic-feed"></span>Feed</button>
+        </div>
+      </div>
+
+      <!-- ── WHITEBOARD LIVE — the hero moment ──────────── -->
+      <div class="screen" data-screen="whiteboard">
+        <div class="statusbar" style="background: var(--g900); color: white;"><span>9:41</span><span>●●● ●</span></div>
+        <div class="stage">
+          <div class="body" style="padding: 0;">
+            <div class="barn-pulse">
+              <div class="top">
+                <span class="live-dot">Barn pulse · live</span>
+                <span class="date">Tue · May 19</span>
+              </div>
+              <div class="pct">8 <span style="opacity:0.5; font-style:normal; font-family:var(--sans); font-weight:400;">/ 14 done</span></div>
+              <div class="label">Wellington Park · day 57% complete</div>
+              <div class="progress"><div class="fill"></div></div>
+              <div class="splits">
+                <div class="split"><span class="n">4</span><span class="l">Riders here</span></div>
+                <div class="split"><span class="n">3</span><span class="l">Lessons now</span></div>
+                <div class="split"><span class="n">1</span><span class="l c-warn" style="color:#ffd699">! Urgent</span></div>
+                <div class="split"><span class="n">6</span><span class="l">To go</span></div>
+              </div>
+            </div>
+
+            <div class="live-feed">
+              <span class="ping"></span>
+              <span><strong>Jess</strong> · just finished Bella's turnout · <strong>Sofia notified</strong></span>
+            </div>
+
+            <div class="wb-dates">
+              <div class="wb-date"><span class="dow">SUN</span><span class="n">17</span></div>
+              <div class="wb-date"><span class="dow">MON</span><span class="n">18</span></div>
+              <div class="wb-date today"><span class="dow">TUE</span><span class="n">19</span></div>
+              <div class="wb-date"><span class="dow">WED</span><span class="n">20</span></div>
+              <div class="wb-date"><span class="dow">THU</span><span class="n">21</span></div>
+              <div class="wb-date"><span class="dow">FRI</span><span class="n">22</span></div>
+            </div>
+
+            <div class="wb-rows">
+              <div class="wb-row">
+                <div class="head">
+                  <div class="who">
+                    <div class="wb-av">SM<span class="live"></span></div>
+                    <div><div class="n">Sam</div><div class="r">TRAINER · ARENA 1</div></div>
+                  </div>
+                  <div class="stats"><span class="pct">2/4</span></div>
+                </div>
+                <div class="wb-progress"><div class="fill" style="width: 50%;"></div></div>
+                <div class="wb-chips">
+                  <span class="wb-chip done"><span class="box"></span>BELLA · LUNGE <span class="time">· 8am</span></span>
+                  <span class="wb-chip done"><span class="box"></span>STRETCH · EXTRAS <span class="time">· 9:30</span></span>
+                  <span class="wb-chip"><span class="box"></span>CHOOSE TACK ATLAS</span>
+                </div>
+              </div>
+
+              <div class="wb-row has-urgent">
+                <div class="head">
+                  <div class="who">
+                    <div class="wb-av">JD<span class="live"></span></div>
+                    <div><div class="n">Jodie</div><div class="r">TRAINER · OUTDOOR</div></div>
+                  </div>
+                  <div class="stats"><span class="pct">1/3</span><span class="urg">1!</span></div>
+                </div>
+                <div class="wb-progress"><div class="fill" style="width: 33%;"></div></div>
+                <div class="wb-chips">
+                  <span class="wb-chip done"><span class="box"></span>COACH · PILO <span class="time">· 7am</span></span>
+                  <span class="wb-chip"><span class="box"></span>CARRIER FORM</span>
+                  <span class="wb-chip urgent"><span class="box"></span>! CALL VET · BELLA</span>
+                </div>
+              </div>
+
+              <div class="wb-row">
+                <div class="head">
+                  <div class="who">
+                    <div class="wb-av">JS<span class="live"></span></div>
+                    <div><div class="n">Jess</div><div class="r">GROOM · STALLS</div></div>
+                  </div>
+                  <div class="stats"><span class="pct">3/5</span></div>
+                </div>
+                <div class="wb-progress"><div class="fill" style="width: 60%;"></div></div>
+                <div class="wb-chips">
+                  <span class="wb-chip done"><span class="box"></span>STALLS 1–6</span>
+                  <span class="wb-chip done"><span class="box"></span>TURNOUT AM</span>
+                  <span class="wb-chip done"><span class="box"></span>BELLA · GROOM ✨</span>
+                  <span class="wb-chip"><span class="box"></span>FEED PM <span class="time">· 5pm</span></span>
+                  <span class="wb-chip"><span class="box"></span>BLANKETS</span>
+                </div>
+              </div>
+
+              <div class="wb-row">
+                <div class="head">
+                  <div class="who">
+                    <div class="wb-av">MC</div>
+                    <div><div class="n">Marc</div><div class="r">GROOM · OFFSITE</div></div>
+                  </div>
+                  <div class="stats"><span class="pct">0/2</span></div>
+                </div>
+                <div class="wb-progress"><div class="fill" style="width: 0%;"></div></div>
+                <div class="wb-chips">
+                  <span class="wb-chip"><span class="box"></span>MUCK 7–12</span>
+                  <span class="wb-chip"><span class="box"></span>HAY DELIVERY <span class="time">· 2pm</span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tabbar">
+          <button class="tab-item" data-tab="home"><span class="tab-icon ic-home"></span>Home</button>
+          <button class="tab-item" data-tab="mystable"><span class="tab-icon ic-stable"></span>My Stable</button>
+          <button class="tab-item" data-tab="calendar"><span class="tab-icon ic-cal"></span>Calendar</button>
+          <button class="tab-item active" data-tab="whiteboard"><span class="tab-icon ic-board"></span>Whiteboard</button>
+          <button class="tab-item" data-tab="feed"><span class="tab-icon ic-feed"></span>Feed</button>
+        </div>
+      </div>
+
+      <!-- ── HORSE PASSPORT (Bella) ────────────────────── -->
+      <div class="screen" data-screen="horse">
+        <div class="statusbar" style="background: transparent; color: white;"><span>9:41</span><span>●●● ●</span></div>
+        <div class="stage">
+          <div class="body" style="padding: 0;">
+            <div class="horse-passport">
+              <div class="back" data-go="home">‹</div>
+              <div class="actions">
+                <div class="ic">↗</div>
+                <div class="ic">⋯</div>
+              </div>
+              <div class="illu">🐴</div>
+              <div class="grad"></div>
+              <div class="id-row">
+                <div>
+                  <div class="name">Bella</div>
+                  <div class="meta">9 yrs · KWPN · Stall #12</div>
+                </div>
+                <div class="owners">
+                  <span class="lbl">Owners</span>
+                  <div class="stack">
+                    <div class="dot" style="background:var(--g500);">SC</div>
+                    <div class="dot" style="background:var(--g300); color:var(--g900);">MK</div>
+                    <div class="dot" style="background:var(--g700);">TR</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="horse-stats">
+              <div class="horse-stat"><span class="lbl">Lessons MTD</span><span class="v">12</span></div>
+              <div class="horse-stat"><span class="lbl">Last show</span><span class="v">1m20</span></div>
+              <div class="horse-stat"><span class="lbl">Farrier</span><span class="v warn">3 days</span></div>
+            </div>
+
+            <div class="h-tabs">
+              <div class="h-tab active" data-htab="timeline"><span>Timeline</span></div>
+              <div class="h-tab" data-htab="health"><span>Health</span></div>
+              <div class="h-tab" data-htab="food"><span>Food</span></div>
+              <div class="h-tab" data-htab="tack"><span>Tack</span></div>
+              <div class="h-tab" data-htab="docs"><span>Docs</span></div>
+            </div>
+
+            <div class="screen-body" data-htab-pane="timeline" style="padding: 14px 16px 110px;">
+              <div class="timeline">
+                <div class="tl-item">
+                  <div class="tl-dot lesson">✨</div>
+                  <div class="tl-content">
+                    <div class="when">25 min ago · live</div>
+                    <div class="what">Jess groomed Bella for her 9 am</div>
+                    <div class="by">Sofia notified · ready for indoor flat with Maddy</div>
+                  </div>
+                </div>
+                <div class="tl-item">
+                  <div class="tl-dot lesson">🏇</div>
+                  <div class="tl-content">
+                    <div class="when">Yesterday · 4 pm</div>
+                    <div class="what">Flat lesson with Sam</div>
+                    <div class="by">45 min · indoor · "very forward today"</div>
+                    <div class="thumb">▶<span class="play">▶ video</span></div>
+                  </div>
+                </div>
+                <div class="tl-item">
+                  <div class="tl-dot med">🔨</div>
+                  <div class="tl-content">
+                    <div class="when">May 12 · 10 am</div>
+                    <div class="what">Farrier visit · new shoes front</div>
+                    <div class="by">Mike Garcia · next visit Jun 9</div>
+                  </div>
+                </div>
+                <div class="tl-item">
+                  <div class="tl-dot show">🏆</div>
+                  <div class="tl-content">
+                    <div class="when">May 5 · Sunday</div>
+                    <div class="what">Wellington 1m20 · 4th place</div>
+                    <div class="by">Maddy K. · double clear</div>
+                    <div class="thumb">🏆<span class="play">▶ video</span></div>
+                  </div>
+                </div>
+                <div class="tl-item">
+                  <div class="tl-dot med">💉</div>
+                  <div class="tl-content">
+                    <div class="when">Apr 28</div>
+                    <div class="what">Vaccine · annual booster</div>
+                    <div class="by">Dr. Torres · next due Apr 2027</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="screen-body hidden" data-htab-pane="health" style="padding: 14px 16px 110px;">
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+                <div class="card tight" style="background: var(--warn-bg); border-color: var(--warn-bg); text-align: center;">
+                  <div style="font-size: 22px;">🔨</div>
+                  <div class="t-eyebrow c-warn" style="margin-top: 4px;">Farrier</div>
+                  <div class="t-caption c-warn" style="font-weight:700;">3 days</div>
+                </div>
+                <div class="card tight" style="text-align: center;">
+                  <div style="font-size: 22px;">💉</div>
+                  <div class="t-eyebrow" style="margin-top: 4px;">Vaccin</div>
+                  <div class="t-caption">2 wks</div>
+                </div>
+                <div class="card tight" style="text-align: center;">
+                  <div style="font-size: 22px;">💊</div>
+                  <div class="t-eyebrow" style="margin-top: 4px;">Worm</div>
+                  <div class="t-caption">6 mo.</div>
+                </div>
+                <div class="card tight" style="text-align: center;">
+                  <div style="font-size: 22px;">🦴</div>
+                  <div class="t-eyebrow" style="margin-top: 4px;">Physio</div>
+                  <div class="t-caption">8 mo.</div>
+                </div>
+                <div class="card tight" style="text-align: center;">
+                  <div style="font-size: 22px;">🦷</div>
+                  <div class="t-eyebrow" style="margin-top: 4px;">Dentist</div>
+                  <div class="t-caption">2 wks</div>
+                </div>
+                <div class="card tight" style="text-align: center;">
+                  <div style="font-size: 22px;">🏆</div>
+                  <div class="t-eyebrow" style="margin-top: 4px;">Show</div>
+                  <div class="t-caption">3 days</div>
+                </div>
+              </div>
+              <div class="card pad-m"><div class="t-eyebrow">DAILY MEDS</div><div class="t-body" style="margin-top: 4px;">Equibiom AM + PM. Biotin daily.</div></div>
+              <div class="card pad-m"><div class="t-eyebrow">UPLOAD PRESCRIPTION</div><div class="t-caption c-ink2" style="margin-top: 6px; margin-bottom: 10px;">PDF or photo, archived indefinitely.</div><button class="btn primary md fw">Choose file</button></div>
+            </div>
+
+            <div class="screen-body hidden" data-htab-pane="food" style="padding: 14px 16px 110px;">
+              <div class="card pad-m"><div class="t-eyebrow">MORNING</div><div class="t-body" style="margin-top:4px;">Hay 4 kg · grain 1.5 kg</div></div>
+              <div class="card pad-m"><div class="t-eyebrow">EVENING</div><div class="t-body" style="margin-top:4px;">Hay 4 kg · beet pulp 1 kg</div></div>
+              <div class="card pad-m"><div class="t-eyebrow">SUPPLEMENTS</div><div class="t-body" style="margin-top:4px;">Equibiom AM + PM · Biotin daily</div></div>
+              <div class="card pad-m"><div class="t-eyebrow">NOTES</div><div class="t-body" style="margin-top:4px;">No alfalfa. Soak hay 20 min.</div></div>
+            </div>
+
+            <div class="screen-body hidden" data-htab-pane="tack" style="padding: 14px 16px 110px;">
+              <div class="card pad-m"><div class="t-eyebrow">SADDLE</div><div class="t-body" style="margin-top:4px;">CWD SE02 · 17.5"</div></div>
+              <div class="card pad-m"><div class="t-eyebrow">BRIDLE</div><div class="t-body" style="margin-top:4px;">Antarès · figure-8 · flash noseband</div></div>
+              <div class="card pad-m"><div class="t-eyebrow">BIT</div><div class="t-body" style="margin-top:4px;">D-ring loose-ring · 14mm</div></div>
+              <div class="card pad-m"><div class="t-eyebrow">BOOTS</div><div class="t-body" style="margin-top:4px;">Open-front jump boots · fleece polos flat.</div></div>
+            </div>
+
+            <div class="screen-body hidden" data-htab-pane="docs" style="padding: 14px 16px 110px;">
+              <div class="card pad-m row" style="gap: 10px;"><div style="font-size:22px;">📄</div><div class="flex1"><div class="t-body-m">Vaccin annuel.pdf</div><div class="t-caption c-ink3">Uploaded Mar 12</div></div><span class="t-caption c-g600">View →</span></div>
+              <div class="card pad-m row" style="gap: 10px;"><div style="font-size:22px;">📷</div><div class="flex1"><div class="t-body-m">Coggins.jpg</div><div class="t-caption c-ink3">Uploaded Feb 28</div></div><span class="t-caption c-g600">View →</span></div>
+              <div class="card pad-m row" style="gap: 10px;"><div style="font-size:22px;">📄</div><div class="flex1"><div class="t-body-m">Boarding contract.pdf</div><div class="t-caption c-ink3">Signed Jan 04</div></div><span class="t-caption c-g600">View →</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="tabbar">
+          <button class="tab-item" data-tab="home"><span class="tab-icon ic-home"></span>Home</button>
+          <button class="tab-item active" data-tab="mystable"><span class="tab-icon ic-stable"></span>My Stable</button>
+          <button class="tab-item" data-tab="calendar"><span class="tab-icon ic-cal"></span>Calendar</button>
+          <button class="tab-item" data-tab="whiteboard"><span class="tab-icon ic-board"></span>Whiteboard</button>
+          <button class="tab-item" data-tab="feed"><span class="tab-icon ic-feed"></span>Feed</button>
+        </div>
+      </div>
+
+      <!-- ── FEED (auto + manual, with reactions) ─────── -->
+      <div class="screen" data-screen="feed">
+        <div class="statusbar"><span>9:41</span><span>●●● ●</span></div>
+        <div class="stage">
+          <div class="body">
+            <div class="barn-header">
+              <div class="barn-id">
+                <div class="t-display">Hop News.</div>
+              </div>
+              <div class="header-right">
+                <span class="pill brand">@all</span>
+              </div>
+            </div>
+
+            <div class="feed-list">
+              <div class="post auto">
+                <div class="head">
+                  <div class="avatar-sm" style="background:var(--g500); color:white;">SM</div>
+                  <div class="who">
+                    <div class="n">Sam · auto-post</div>
+                    <div class="when">12 min ago · jump session</div>
+                  </div>
+                  <span class="pill brand">@owners</span>
+                </div>
+                <div class="body-text"><strong>Bella</strong> just finished a jump lesson with Sam — 45 min, indoor, clean.</div>
+                <div class="media">🐎<span class="play">▶ 0:42</span></div>
+                <div class="reactions">
+                  <span class="rx active">❤️ 8</span>
+                  <span class="rx">👏 3</span>
+                  <span class="rx">💬 2</span>
+                  <span style="margin-left:auto; font-size: 11px;">3 viewed today</span>
+                </div>
+              </div>
+
+              <div class="post">
+                <div class="head">
+                  <div class="avatar-sm" style="background:var(--g200); color:var(--g800);">MS</div>
+                  <div class="who">
+                    <div class="n">Megan S.</div>
+                    <div class="when">@team · 1 h ago</div>
+                  </div>
+                </div>
+                <div class="body-text">Arena 1 is still wet after the rain — switching 10 am+ lessons to indoor today. Coaches please confirm.</div>
+                <div class="reactions">
+                  <span class="rx">👍 5</span>
+                  <span class="rx">💬 2</span>
+                </div>
+              </div>
+
+              <div class="post auto">
+                <div class="head">
+                  <div class="avatar-sm" style="background:var(--g500); color:white;">JS</div>
+                  <div class="who">
+                    <div class="n">Jess · auto-post</div>
+                    <div class="when">3 h ago · care</div>
+                  </div>
+                  <span class="pill brand">@owners</span>
+                </div>
+                <div class="body-text">Bella has been groomed for her 4 pm ✨</div>
+                <div class="media" style="height:140px;">✨<span class="play">📷 photo</span></div>
+                <div class="reactions">
+                  <span class="rx">❤️ 4</span>
+                  <span class="rx">💬 1</span>
+                </div>
+              </div>
+
+              <div class="post">
+                <div class="head">
+                  <div class="avatar-sm" style="background:var(--g700); color:white;">HB</div>
+                  <div class="who">
+                    <div class="n">Hippolyte (you)</div>
+                    <div class="when">@all · y'day</div>
+                  </div>
+                </div>
+                <div class="body-text">New hay supplier delivers Tuesday. Same quality, $30/bale less. Thanks @Tom for the find.</div>
+                <div class="reactions">
+                  <span class="rx active">❤️ 11</span>
+                  <span class="rx">👏 4</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tabbar">
+          <button class="tab-item" data-tab="home"><span class="tab-icon ic-home"></span>Home</button>
+          <button class="tab-item" data-tab="mystable"><span class="tab-icon ic-stable"></span>My Stable</button>
+          <button class="tab-item" data-tab="calendar"><span class="tab-icon ic-cal"></span>Calendar</button>
+          <button class="tab-item" data-tab="whiteboard"><span class="tab-icon ic-board"></span>Whiteboard</button>
+          <button class="tab-item active" data-tab="feed"><span class="tab-icon ic-feed"></span>Feed</button>
+        </div>
+      </div>
+
+      <!-- ── BOOKING (compact, premium feel) ─────────── -->
+      <div class="screen" data-screen="booking">
+        <div class="statusbar"><span>9:41</span><span>●●● ●</span></div>
+        <div class="stage">
+          <div class="body">
+            <div class="barn-header">
+              <div class="barn-id">
+                <div class="burger" data-go="home" style="font-size: 20px; line-height: 1; cursor:pointer;">‹</div>
+                <div class="t-h1">Book a session</div>
+              </div>
+            </div>
+
+            <div class="card pad-m row" style="gap: 12px; align-items: center; background: var(--g50); border-color: var(--g100);">
+              <div style="width: 50px; height: 50px; border-radius: 25px; background: var(--g200); display: grid; place-items: center; font-size: 28px; flex: 0 0 50px;">🐴</div>
+              <div class="flex1">
+                <div class="t-eyebrow c-g700">Private lesson</div>
+                <div class="t-body-m" style="margin-top: 2px;">Bella with Sam</div>
+                <div class="t-caption c-ink2" style="margin-top: 2px;">45 min · indoor or outdoor</div>
+              </div>
+            </div>
+
+            <div class="t-eyebrow" style="margin-top: 4px;">PICK A SLOT · THURSDAY MAY 21</div>
+            <div class="screen-body" style="gap: 8px;">
+              <div class="slot">
+                <div><div class="time">9:00</div><div class="meta">Indoor · with Sam</div></div>
+                <div class="price">$120</div>
+              </div>
+              <div class="slot selected">
+                <div><div class="time">14:00</div><div class="meta">Indoor · with Sam</div></div>
+                <div class="price">$120</div>
+              </div>
+              <div class="slot">
+                <div><div class="time">16:00</div><div class="meta">Outdoor · with Sam</div></div>
+                <div class="price">$120</div>
+              </div>
+            </div>
+
+            <button class="btn primary fw lg" data-go="sharecard" style="margin-top: 8px;">Confirm & complete</button>
+          </div>
+        </div>
+        <div class="tabbar">
+          <button class="tab-item active" data-tab="home"><span class="tab-icon ic-home"></span>Home</button>
+          <button class="tab-item" data-tab="mystable"><span class="tab-icon ic-stable"></span>My Stable</button>
+          <button class="tab-item" data-tab="calendar"><span class="tab-icon ic-cal"></span>Calendar</button>
+          <button class="tab-item" data-tab="whiteboard"><span class="tab-icon ic-board"></span>Whiteboard</button>
+          <button class="tab-item" data-tab="feed"><span class="tab-icon ic-feed"></span>Feed</button>
+        </div>
+      </div>
+
+      <!-- ── END-OF-LESSON SHARE CARD ────────────────── -->
+      <div class="screen" data-screen="sharecard">
+        <div class="statusbar" style="background: var(--g900); color: white;"><span>9:41</span><span>●●● ●</span></div>
+        <div class="share-screen">
+          <div class="head">
+            <div class="back-btn" data-go="home">‹</div>
+            <div class="title">Lesson complete · share your session</div>
+          </div>
+
+          <div class="share-card">
+            <div class="brand">Hop<span style="color: var(--g300)">O</span>n</div>
+            <div>
+              <div class="brand" style="opacity: 0.7; font-size: 10px; margin-bottom: 4px;">Session of</div>
+              <div class="horse-name">Bella</div>
+            </div>
+            <div class="horse-photo">🐴</div>
+            <div class="stats">
+              <div class="stat"><span class="lbl">Duration</span><span class="v">45 min</span></div>
+              <div class="stat"><span class="lbl">Type</span><span class="v">Jump</span></div>
+              <div class="stat"><span class="lbl">Arena</span><span class="v">Indoor</span></div>
+            </div>
+            <div class="coach">
+              <div class="av">SM</div>
+              <div class="who">
+                <div class="n">Coached by Sam</div>
+                <div class="r">Wellington Park · May 19</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="share-actions">
+            <button class="btn primary">📷 Instagram Story</button>
+            <button class="btn">↗ Share link</button>
+          </div>
+          <button class="btn" style="background: transparent; color: rgba(255,255,255,0.6); padding: 12px;" data-go="home">Skip · go home</button>
+        </div>
+      </div>
+
+      <!-- ── FAB + petals ─────────────────────────────── -->
+      <div class="backdrop" id="backdrop"></div>
+      <div class="petals" id="petals">
+        <div class="petal" data-i="0"><button class="petal-btn" data-go="booking">📚</button><div class="petal-label">Lesson</div></div>
+        <div class="petal" data-i="1"><button class="petal-btn">📅</button><div class="petal-label">Event</div></div>
+        <div class="petal" data-i="2"><button class="petal-btn">✅</button><div class="petal-label">To-do</div></div>
+        <div class="petal" data-i="3"><button class="petal-btn">💬</button><div class="petal-label">Post</div></div>
+        <div class="petal" data-i="4"><button class="petal-btn">✨</button><div class="petal-label">Extras</div></div>
+      </div>
+      <button class="fab" id="fab" aria-label="New">+</button>
+
+      <!-- Toast -->
+      <div class="toast" id="toast">
+        <div class="icon">✨</div>
+        <div class="msg">
+          <strong id="toast-title">Photo sent to Sofia</strong>
+          <span id="toast-sub">Bella's owner just got a push notification.</span>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Nav
+      const screens = document.querySelectorAll("[data-screen]");
+      const fab = document.getElementById("fab");
+      const backdrop = document.getElementById("backdrop");
+      const petals = document.getElementById("petals");
+      const toast = document.getElementById("toast");
+      const toastTitle = document.getElementById("toast-title");
+      const toastSub = document.getElementById("toast-sub");
+
+      const NO_FAB = ["welcome", "sharecard"];
+
+      function show(name) {
+        screens.forEach((s) => s.classList.toggle("active", s.dataset.screen === name));
+        const hideFab = NO_FAB.includes(name);
+        fab.style.display = hideFab ? "none" : "grid";
+        closeFab();
+        document.querySelectorAll(".body").forEach((b) => (b.scrollTop = 0));
+      }
+      function closeFab() {
+        fab.classList.remove("open");
+        backdrop.classList.remove("open");
+        petals.classList.remove("open");
+      }
+      function toggleFab() {
+        const open = !fab.classList.contains("open");
+        fab.classList.toggle("open", open);
+        backdrop.classList.toggle("open", open);
+        petals.classList.toggle("open", open);
+      }
+      fab.addEventListener("click", (e) => { e.stopPropagation(); toggleFab(); });
+      backdrop.addEventListener("click", closeFab);
+
+      document.addEventListener("click", (e) => {
+        const tab = e.target.closest("[data-tab]");
+        if (tab) { show(tab.dataset.tab); return; }
+        const go = e.target.closest("[data-go]");
+        if (go) { e.preventDefault(); show(go.dataset.go); }
+      });
+
+      // Horse passport sub-tabs
+      document.querySelectorAll("[data-htab]").forEach((t) => {
+        t.addEventListener("click", () => {
+          const v = t.dataset.htab;
+          document.querySelectorAll("[data-htab]").forEach((x) => x.classList.toggle("active", x === t));
+          document.querySelectorAll("[data-htab-pane]").forEach((p) =>
+            p.classList.toggle("hidden", p.dataset.htabPane !== v),
+          );
+        });
+      });
+
+      // Role switcher
+      const avatar = document.getElementById("avatar");
+      const ROLE_TO_AVATAR = { owner: "HB", trainer: "SM", groom: "JS", client: "SC" };
+      document.querySelectorAll("[data-role]").forEach((chip) => {
+        chip.addEventListener("click", () => {
+          const role = chip.dataset.role;
+          document.querySelectorAll("[data-role]").forEach((c) => c.classList.toggle("active", c === chip));
+          document.querySelectorAll("[data-role-home]").forEach((h) =>
+            h.classList.toggle("hidden", h.dataset.roleHome !== role),
+          );
+          if (avatar) avatar.textContent = ROLE_TO_AVATAR[role];
+          show("home");
+        });
+      });
+
+      // Groom ring + task tap → toast
+      const ringCircumference = 502.4;
+      const ringFill = document.getElementById("ring-fill");
+      const ringNum = document.getElementById("ring-num");
+      function updateRing() {
+        const tasks = document.querySelectorAll('[data-role-home="groom"] [data-task]');
+        const done = document.querySelectorAll('[data-role-home="groom"] [data-task].done').length;
+        const total = tasks.length;
+        const pct = total === 0 ? 0 : done / total;
+        if (ringFill) ringFill.setAttribute("stroke-dashoffset", ringCircumference * (1 - pct));
+        if (ringNum) ringNum.textContent = `${done}/${total}`;
+      }
+      const TASK_MESSAGES = {
+        "bella · turnout": { t: "Photo sent to Sofia", s: "Bella's owner just got a push notification." },
+        "atlas · meds": { t: "Atlas · meds logged", s: "Owner notified · next dose in 8 h." },
+        "indigo · feed pm": { t: "Indigo fed ✓", s: "Liv notified · 4 kg hay, 1 kg beet pulp." },
+        "juno · groom + photo": { t: "Photo of Juno sent", s: "Mateo got the photo · 'looking sharp!'" },
+        "bella · evening feed": { t: "Bella fed ✓", s: "Sofia notified · ready for tomorrow's 8 am." },
+        "storm · tack up · 9:00": { t: "Storm tacked up", s: "Jodie & rider notified · ready in arena." },
+        "stalls 1–6": { t: "Stalls 1–6 done", s: "Logged on the barn pulse." },
+      };
+      function showToast(taskText) {
+        const key = taskText.toLowerCase().replace(/^!\s*/, "").trim();
+        const msg = TASK_MESSAGES[key] || { t: "Task done ✓", s: "Logged on the barn pulse." };
+        toastTitle.textContent = msg.t;
+        toastSub.textContent = msg.s;
+        toast.classList.add("show");
+        clearTimeout(showToast._t);
+        showToast._t = setTimeout(() => toast.classList.remove("show"), 3200);
+      }
+      document.querySelectorAll('[data-task]').forEach((row) => {
+        row.addEventListener("click", () => {
+          const wasDone = row.classList.contains("done");
+          row.classList.toggle("done");
+          updateRing();
+          if (!wasDone) {
+            const text = row.querySelector(".text").textContent.trim();
+            showToast(text);
+          }
+        });
+      });
+      updateRing();
+
+      // Skip welcome after 2s if user doesn't tap (helps demo flow)
+      // (kept manual to let user see welcome first)
+    </script>
+  </body>
+</html>

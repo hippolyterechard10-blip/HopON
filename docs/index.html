@@ -55,8 +55,8 @@
       p.lede {
         font-size: 17px; line-height: 1.55; color: var(--ink2); max-width: 560px;
       }
-      .cards { display: grid; gap: 16px; margin-top: 40px; grid-template-columns: 1fr 1fr; }
-      @media (max-width: 640px) { .cards { grid-template-columns: 1fr; } }
+      .cards { display: grid; gap: 16px; margin-top: 40px; grid-template-columns: 1fr 1fr 1fr; }
+      @media (max-width: 760px) { .cards { grid-template-columns: 1fr; } }
       .card {
         background: var(--surface);
         border: 1px solid var(--border);
@@ -100,21 +100,31 @@
       </p>
 
       <div class="cards">
-        <a class="card primary" href="demo.html">
-          <span class="eyebrow">▶ Live</span>
-          <span class="title">Interactive demo</span>
+        <a class="card" href="demo.html">
+          <span class="eyebrow">▶ Baseline</span>
+          <span class="title">v1 — Interactive demo</span>
           <span class="desc">
-            One iPhone-sized prototype you can actually tap. Switch role, navigate the five tabs,
-            open the FAB, browse MyStable, dive into Bella's profile.
+            Post-sprint-day-3 prototype. Switch role, navigate the five tabs, open the FAB,
+            browse MyStable, dive into Bella's profile.
           </span>
-          <span class="cta">Open the prototype ›</span>
+          <span class="cta">Open v1 ›</span>
+        </a>
+
+        <a class="card primary" href="demo-v2.html">
+          <span class="eyebrow">▶ Experiment</span>
+          <span class="title">v2 — Behaviors, not screens</span>
+          <span class="desc">
+            Iteration after design feedback from Gemini & ChatGPT. One dominant thing per screen,
+            live barn pulse as hero moment, groom→owner reward loop, shareable end-of-lesson card.
+          </span>
+          <span class="cta">Open v2 ›</span>
         </a>
 
         <a class="card" href="preview.html">
           <span class="eyebrow">Gallery</span>
           <span class="title">Static screens</span>
           <span class="desc">
-            Every screen laid out side-by-side as iPhone frames, plus a palette switcher and the
+            Every v1 screen laid out side-by-side as iPhone frames, plus a palette switcher and the
             component reference. Useful for design review.
           </span>
           <span class="cta">Open the gallery ›</span>
