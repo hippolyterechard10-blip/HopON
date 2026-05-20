@@ -1,0 +1,1351 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+    <meta name="theme-color" content="#0B2F23" />
+    <title>HopOn · Pitch</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@1&display=swap" rel="stylesheet" />
+    <style>
+      /* ════════════════════════════════════════════════════ */
+      /* HopOn · Pitch · Piece 1 — Shell + 4 role homes        */
+      /* ════════════════════════════════════════════════════ */
+
+      /* DEFAULT THEME = EUCALYPTUS LIGHT */
+      :root {
+        /* Canvas */
+        --bg: #f3f5f3;
+        --surface: #ffffff;
+        --border: #e7eae7;
+        /* Ink */
+        --ink1: #181d18;
+        --ink2: #454a45;
+        --ink3: #8a908a;
+        /* Brand · Eucalyptus */
+        --brand-50: #ecfbf6;
+        --brand-100: #d6efe1;
+        --brand-200: #95cdba;
+        --brand-300: #5cc0a4;
+        --brand-500: #2a957f;
+        --brand-600: #207a66;
+        --brand-700: #18604f;
+        --brand-800: #114836;
+        --brand-900: #0b2f23;
+        /* Semantic */
+        --ok: #1e3f33;
+        --ok-bg: #e9eeeb;
+        --warn: #8c5a1d;
+        --warn-bg: #f4ead5;
+        --alert: #d9381e;
+        --alert-bg: #f9e7e2;
+        /* Type */
+        --sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+        --serif: "DM Serif Display", ui-serif, Georgia, serif;
+      }
+      [data-theme="eucalyptus-dark"] {
+        --bg: #0a1410; --surface: #14211c; --border: #1d2e26;
+        --ink1: #ecfbf6; --ink2: #95cdba; --ink3: #5cc0a4;
+        --brand-50: #14211c; --brand-100: #1a2e26; --brand-200: #207a66;
+      }
+      [data-theme="neo"] {
+        --bg: #F8F7F4; --surface: #FFFFFF; --border: #E6E4DC;
+        --ink1: #181715; --ink2: #5d5b54; --ink3: #87847D;
+        --brand-50: #FFF0E5; --brand-100: #ffe1cc; --brand-200: #ffb380;
+        --brand-300: #ff8a40; --brand-500: #FF5A00; --brand-600: #cc4800;
+        --brand-700: #993600; --brand-800: #662400; --brand-900: #181715;
+        --ok: #1e3f33;
+      }
+      [data-theme="neo-dark"] {
+        --bg: #0C0C0C; --surface: #1A1A1A; --border: #2c2c2c;
+        --ink1: #F5F5F5; --ink2: #C8C5BE; --ink3: #A09D96;
+        --brand-50: #2a1408; --brand-100: #3d1e0c; --brand-200: #FF5A00;
+        --brand-500: #FF5A00; --brand-600: #cc4800;
+      }
+
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body {
+        font-family: var(--sans); color: var(--ink1);
+        background: var(--bg);
+        min-height: 100vh;
+        transition: background 280ms cubic-bezier(0.4,0,0.2,1), color 280ms cubic-bezier(0.4,0,0.2,1);
+      }
+      [data-theme="eucalyptus-dark"] body, [data-theme="neo-dark"] body {
+        background: radial-gradient(circle at 20% 0%, #131c19 0%, #060a08 60%);
+      }
+      :root body { background: radial-gradient(circle at 30% 0%, #d6efe1, #ededec 60%); }
+      [data-theme="neo"] body { background: var(--bg); }
+      body { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 10px; }
+
+      .help {
+        font-size: 11px; color: var(--ink3); text-align: center;
+        max-width: 520px; margin-bottom: 2px;
+      }
+      .help strong { color: var(--ink1); }
+
+      /* Phone frame */
+      .phone {
+        width: 390px; height: 844px; max-height: 92vh;
+        background: var(--surface);
+        border-radius: 44px;
+        box-shadow: 0 24px 64px rgba(11,47,35,0.18), inset 0 0 0 1px rgba(0,0,0,0.06);
+        position: relative; overflow: hidden;
+        display: flex; flex-direction: column;
+        transition: background 280ms cubic-bezier(0.4,0,0.2,1);
+      }
+      [data-theme="neo-dark"] .phone, [data-theme="eucalyptus-dark"] .phone {
+        box-shadow: 0 24px 64px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.06);
+      }
+      .statusbar {
+        height: 44px; flex: 0 0 44px;
+        padding: 14px 26px 0;
+        display: flex; align-items: flex-start; justify-content: space-between;
+        font-size: 13px; font-weight: 500; color: var(--ink1);
+        background: var(--bg);
+        z-index: 5;
+      }
+      .screen {
+        display: none; flex: 1; min-height: 0; position: relative;
+        flex-direction: column;
+      }
+      .screen.active { display: flex; }
+      .stage { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+
+      /* ── WELCOME ─────────────────────────────────────── */
+      .welcome {
+        flex: 1; padding: 40px 24px;
+        background: linear-gradient(180deg, var(--brand-900) 0%, var(--brand-700) 100%);
+        color: white;
+        display: flex; flex-direction: column; justify-content: space-between;
+      }
+      .welcome .brand-top { display: flex; align-items: center; gap: 10px; }
+      .welcome .mark {
+        width: 36px; height: 36px; border-radius: 11px;
+        background: var(--brand-500);
+        display: grid; place-items: center;
+        font-family: var(--serif); font-style: italic;
+        font-size: 18px; color: white;
+      }
+      .welcome .word {
+        font-family: var(--serif); font-style: italic;
+        font-size: 22px;
+      }
+      .welcome .word span { color: var(--brand-300); }
+      .welcome .hero-text {
+        font-family: var(--serif); font-style: italic;
+        font-size: 44px; line-height: 1.04; letter-spacing: -0.6px;
+        margin-top: 60px;
+      }
+      .welcome .lede {
+        font-size: 14px; opacity: 0.88; margin-top: 14px; line-height: 1.5;
+        max-width: 280px;
+      }
+      .welcome .persona-line {
+        font-size: 11px; opacity: 0.66; margin-top: 18px;
+        letter-spacing: 0.4px;
+      }
+      .welcome .actions {
+        display: flex; flex-direction: column; gap: 8px;
+      }
+      .welcome .btn {
+        padding: 15px 18px; border-radius: 14px; border: 0;
+        font-family: var(--sans); font-weight: 700; font-size: 14px;
+        cursor: pointer; transition: transform 120ms;
+      }
+      .welcome .btn:active { transform: scale(0.98); }
+      .welcome .btn.primary {
+        background: var(--brand-300); color: var(--brand-900);
+      }
+      .welcome .btn.ghost {
+        background: transparent; color: white;
+        border: 1px solid rgba(255,255,255,0.25);
+      }
+
+      /* ── PULSE HEADER (the 20% campfire) ─────────────── */
+      .pulse-header {
+        background: linear-gradient(160deg, var(--brand-900) 0%, var(--brand-700) 100%);
+        color: white;
+        padding: 12px 16px 16px;
+        flex: 0 0 auto;
+        border-radius: 0 0 22px 22px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.10);
+        transition: background 280ms cubic-bezier(0.4,0,0.2,1);
+      }
+      .pulse-header::before {
+        content: ""; position: absolute; top: -50px; right: -40px;
+        width: 180px; height: 180px; border-radius: 50%;
+        background: radial-gradient(circle, rgba(92,192,164,0.30), transparent 60%);
+      }
+      [data-theme="neo"] .pulse-header::before {
+        background: radial-gradient(circle, rgba(255,90,0,0.20), transparent 60%);
+      }
+      .ph-top {
+        display: flex; justify-content: space-between; align-items: center;
+        position: relative; z-index: 1;
+        margin-bottom: 8px;
+      }
+      .ph-left { display: flex; align-items: center; gap: 10px; }
+      .ph-burger {
+        width: 26px; height: 22px; border: 0; background: transparent;
+        cursor: pointer; padding: 0;
+        display: flex; flex-direction: column; justify-content: center; gap: 4px;
+      }
+      .ph-burger span {
+        display: block; height: 2px; background: white; border-radius: 1px;
+      }
+      .ph-burger span:nth-child(1) { width: 22px; }
+      .ph-burger span:nth-child(2) { width: 16px; }
+      .ph-burger span:nth-child(3) { width: 22px; }
+      .ph-stable {
+        display: flex; align-items: center; gap: 4px;
+        font-size: 13px; font-weight: 700;
+      }
+      .ph-stable .pin { opacity: 0.7; font-size: 11px; }
+      .ph-stable .caret { opacity: 0.6; font-size: 10px; margin-left: 2px; }
+      .ph-actions {
+        display: flex; align-items: center; gap: 10px; position: relative;
+      }
+      .theme-pair {
+        display: flex; gap: 4px;
+        background: rgba(255,255,255,0.10); backdrop-filter: blur(8px);
+        padding: 3px; border-radius: 14px;
+      }
+      .theme-pair .sw {
+        width: 22px; height: 22px; border-radius: 11px;
+        border: 1.5px solid transparent;
+        cursor: pointer; padding: 0;
+        transition: transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      .theme-pair .sw.active {
+        border-color: white;
+        transform: scale(1.08);
+      }
+      .theme-pair .sw:active { transform: scale(0.92); }
+      .theme-pair .sw.eu { background: #2a957f; }
+      .theme-pair .sw.neo { background: #FF5A00; }
+      .ph-dark-toggle {
+        width: 26px; height: 26px; border-radius: 13px;
+        background: rgba(255,255,255,0.12); border: 0;
+        color: white; cursor: pointer;
+        display: grid; place-items: center;
+        font-size: 13px;
+      }
+      .ph-pulse-line {
+        position: relative; z-index: 1;
+        font-family: var(--serif); font-style: italic;
+        font-size: 19px; line-height: 24px;
+        letter-spacing: -0.2px;
+        margin-bottom: 6px;
+      }
+      .ph-meta {
+        position: relative; z-index: 1;
+        display: flex; gap: 14px; flex-wrap: wrap;
+        font-size: 11px; font-weight: 600;
+        opacity: 0.88; letter-spacing: 0.2px;
+      }
+      .ph-meta .item { display: flex; align-items: center; gap: 5px; }
+      .ph-meta .ic { font-size: 13px; opacity: 0.85; }
+      .ph-meta .live-pip {
+        width: 6px; height: 6px; border-radius: 3px;
+        background: #6cf28b;
+        animation: livepulse 1.6s ease-in-out infinite;
+      }
+      [data-theme="neo"] .ph-meta .live-pip { background: #FF5A00; }
+      @keyframes livepulse {
+        0%, 100% { box-shadow: 0 0 0 4px rgba(108,242,139,0.25); }
+        50% { box-shadow: 0 0 0 8px rgba(108,242,139,0.10); }
+      }
+
+      /* ── ROLE SHELL (the 80%) ────────────────────────── */
+      .role-stage {
+        flex: 1; min-height: 0;
+        overflow-y: auto; -webkit-overflow-scrolling: touch;
+        padding: 14px 16px 110px;
+        background: var(--bg);
+      }
+      .role-shell {
+        display: none; flex-direction: column; gap: 12px;
+        animation: shellFade 280ms cubic-bezier(0.4,0,0.2,1);
+      }
+      .role-shell.active { display: flex; }
+      @keyframes shellFade {
+        from { opacity: 0; transform: translateY(8px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+
+      /* Tokens used inside shells */
+      .eyebrow {
+        font-size: 10px; font-weight: 700; letter-spacing: 1.4px;
+        text-transform: uppercase; color: var(--ink3);
+      }
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 14px;
+      }
+      .card.brand {
+        background: var(--brand-50);
+        border-color: var(--brand-100);
+      }
+      .row { display: flex; gap: 10px; align-items: center; }
+      .col { display: flex; flex-direction: column; gap: 4px; }
+      .flex1 { flex: 1; min-width: 0; }
+      .btn {
+        display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+        font-family: var(--sans); font-weight: 700; font-size: 14px;
+        padding: 12px 18px; border-radius: 14px; border: 0;
+        cursor: pointer; transition: transform 120ms;
+      }
+      .btn:active { transform: scale(0.98); }
+      .btn.primary { background: var(--brand-500); color: white; }
+      .btn.dark { background: var(--ink1); color: var(--bg); }
+      .btn.fw { width: 100%; }
+      .btn.lg { padding: 15px 18px; font-size: 15px; }
+      .pill {
+        display: inline-flex; align-items: center; gap: 4px;
+        padding: 3px 8px; border-radius: 8px;
+        font-size: 10px; font-weight: 700; letter-spacing: 0.4px;
+        background: var(--brand-50); color: var(--brand-700);
+      }
+      [data-theme="neo"] .pill { background: var(--brand-50); color: var(--brand-600); }
+      .pill.alert { background: var(--alert-bg); color: var(--alert); }
+      .pill.ok { background: var(--ok-bg); color: var(--ok); }
+
+      /* ── OWNER shell · God Mode ──────────────────────── */
+      .owner-grid {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+      }
+      .owner-tile {
+        background: var(--surface); border: 1px solid var(--border);
+        border-radius: 14px; padding: 14px;
+        cursor: pointer; transition: transform 120ms;
+      }
+      .owner-tile:active { transform: scale(0.98); }
+      .owner-tile.full { grid-column: 1 / -1; }
+      .owner-tile.warn { background: var(--alert-bg); border-color: var(--alert-bg); }
+      .owner-tile.ops {
+        background: linear-gradient(160deg, var(--brand-50), var(--brand-100));
+        border-color: var(--brand-100);
+      }
+      .owner-tile .lbl {
+        font-size: 10px; font-weight: 700; letter-spacing: 1px;
+        text-transform: uppercase; color: var(--ink3);
+      }
+      .owner-tile.warn .lbl { color: var(--alert); }
+      .owner-tile .v {
+        font-family: var(--serif); font-style: italic;
+        font-size: 28px; line-height: 1; margin-top: 8px;
+        color: var(--ink1);
+      }
+      .owner-tile.warn .v { color: var(--alert); font-size: 18px; font-family: var(--sans); font-style: normal; font-weight: 700; }
+      .owner-tile .sub { font-size: 11px; color: var(--ink2); margin-top: 6px; }
+      .section-head {
+        display: flex; justify-content: space-between; align-items: baseline;
+        margin: 6px 0 2px;
+      }
+      .section-head .t {
+        font-family: var(--serif); font-style: italic;
+        font-size: 18px; color: var(--ink1);
+      }
+      .section-head .a { font-size: 11px; font-weight: 700; color: var(--brand-600); }
+      [data-theme="neo"] .section-head .a { color: var(--ink1); }
+
+      .approval-row {
+        display: flex; align-items: center; gap: 10px;
+        padding: 12px 14px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+      }
+      .horse-pill {
+        background: var(--brand-100); color: var(--brand-800);
+        padding: 3px 8px; border-radius: 8px;
+        font-size: 10px; font-weight: 700; letter-spacing: 0.3px;
+      }
+      [data-theme="neo"] .horse-pill { background: var(--ink1); color: var(--bg); }
+      .approval-row .what { flex: 1; }
+      .approval-row .what .n { font-size: 13px; font-weight: 700; color: var(--ink1); }
+      .approval-row .what .by { font-size: 10px; color: var(--ink3); margin-top: 1px; }
+      .approval-row .btn { padding: 6px 12px; font-size: 11px; }
+
+      /* ── TRAINER shell · Dynamic Island ──────────────── */
+      .dyn-island {
+        background: var(--brand-900);
+        color: white;
+        border-radius: 26px;
+        padding: 16px 18px 18px;
+        position: relative; overflow: hidden;
+        display: flex; flex-direction: column; gap: 12px;
+      }
+      [data-theme="neo"] .dyn-island { background: var(--ink1); }
+      .dyn-island::before {
+        content: "";
+        position: absolute; top: -90px; right: -80px;
+        width: 220px; height: 220px; border-radius: 50%;
+        background: radial-gradient(circle, rgba(108,242,139,0.18), transparent 65%);
+      }
+      [data-theme="neo"] .dyn-island::before {
+        background: radial-gradient(circle, rgba(255,90,0,0.20), transparent 60%);
+      }
+      .dyn-island > * { position: relative; z-index: 1; }
+      .di-pill {
+        display: inline-flex; align-items: center; gap: 6px;
+        align-self: flex-start;
+        padding: 5px 12px; border-radius: 14px;
+        background: rgba(255,255,255,0.10);
+        font-size: 10px; font-weight: 700;
+        letter-spacing: 0.6px;
+        backdrop-filter: blur(6px);
+      }
+      .di-pill .pip {
+        width: 6px; height: 6px; border-radius: 3px;
+        background: #6cf28b;
+        animation: livepulse 1.5s ease-in-out infinite;
+      }
+      [data-theme="neo"] .di-pill .pip { background: #FF5A00; }
+      .di-main { display: flex; gap: 14px; align-items: flex-start; }
+      .di-thumb {
+        width: 72px; height: 72px; border-radius: 36px;
+        background: linear-gradient(160deg, #c4dfd0, #6fa48a);
+        display: grid; place-items: center;
+        font-size: 36px;
+        flex: 0 0 72px;
+        box-shadow: 0 8px 18px rgba(0,0,0,0.3);
+      }
+      .di-info { flex: 1; }
+      .di-time {
+        font-family: var(--serif); font-style: italic;
+        font-size: 28px; line-height: 1;
+      }
+      .di-title { font-size: 13px; font-weight: 700; margin-top: 4px; }
+      .di-sub { font-size: 11px; opacity: 0.78; margin-top: 2px; }
+      .di-warn-row {
+        display: flex; align-items: center; gap: 8px;
+        font-size: 11px;
+        padding: 6px 10px;
+        background: rgba(255,255,255,0.08);
+        border-radius: 8px;
+      }
+      .di-warn-row .ic { font-size: 14px; }
+      .di-warn-row.warn { background: rgba(196,149,64,0.18); }
+      .di-warn-row strong { font-weight: 700; }
+      .di-cta {
+        width: 100%; min-height: 50px;
+        background: white; color: var(--ink1);
+        border-radius: 14px; border: 0;
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 0 18px;
+        font-family: var(--sans); font-weight: 700; font-size: 14px;
+        cursor: pointer;
+        transition: transform 120ms;
+      }
+      .di-cta:active { transform: scale(0.98); }
+      .trainer-row {
+        display: flex; align-items: center; gap: 12px;
+        padding: 12px 14px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        cursor: pointer;
+      }
+      .trainer-row:active { background: var(--bg); }
+      .trainer-row .time {
+        font-family: var(--serif); font-style: italic;
+        font-size: 20px; line-height: 1;
+        flex: 0 0 50px;
+      }
+      .trainer-row .who { flex: 1; min-width: 0; }
+      .trainer-row .who .n { font-size: 13px; font-weight: 700; }
+      .trainer-row .who .m { font-size: 11px; color: var(--ink3); margin-top: 1px; }
+
+      /* ── GROOM shell · BeReal ────────────────────────── */
+      .groom-hero {
+        background: linear-gradient(180deg, var(--brand-700) 0%, var(--brand-900) 100%);
+        border-radius: 22px;
+        padding: 20px;
+        color: white;
+        position: relative; overflow: hidden;
+        display: flex; flex-direction: column; gap: 14px;
+      }
+      [data-theme="neo"] .groom-hero { background: linear-gradient(180deg, var(--ink1) 0%, #000 100%); }
+      .groom-hero::before {
+        content: ""; position: absolute; inset: 0;
+        background: radial-gradient(circle at 80% 20%, rgba(108,242,139,0.18), transparent 50%);
+      }
+      [data-theme="neo"] .groom-hero::before {
+        background: radial-gradient(circle at 80% 20%, rgba(255,90,0,0.25), transparent 50%);
+      }
+      .groom-hero > * { position: relative; z-index: 1; }
+      .gh-ctx { display: flex; align-items: center; gap: 12px; }
+      .gh-thumb {
+        width: 52px; height: 52px; border-radius: 26px;
+        background: linear-gradient(160deg, #c4dfd0, #6fa48a);
+        display: grid; place-items: center; font-size: 28px;
+        flex: 0 0 52px;
+        box-shadow: 0 6px 14px rgba(0,0,0,0.3);
+      }
+      .gh-eb {
+        font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase;
+        opacity: 0.78; font-weight: 700;
+      }
+      .gh-task {
+        font-family: var(--serif); font-style: italic;
+        font-size: 20px; line-height: 24px;
+        margin-top: 3px;
+      }
+      .gh-for { font-size: 11px; opacity: 0.82; margin-top: 3px; }
+      .gh-camera {
+        width: 100%; min-height: 60px;
+        background: var(--brand-500); color: white;
+        border-radius: 16px; border: 0;
+        display: flex; align-items: center; justify-content: center; gap: 12px;
+        font-family: var(--sans); font-weight: 700; font-size: 15px;
+        cursor: pointer;
+        transition: transform 120ms;
+        box-shadow: 0 10px 24px rgba(0,0,0,0.25);
+      }
+      [data-theme="neo"] .gh-camera {
+        background: var(--brand-500);
+        box-shadow: 0 10px 24px rgba(255,90,0,0.4);
+      }
+      .gh-camera:active { transform: scale(0.98); }
+      .gh-camera .cam-ic {
+        width: 34px; height: 34px; border-radius: 17px;
+        background: rgba(255,255,255,0.18);
+        display: grid; place-items: center;
+        font-size: 18px;
+      }
+      .gh-skip {
+        font-size: 12px; opacity: 0.7;
+        text-align: center; cursor: pointer; padding: 2px;
+      }
+      .gh-skip::before { content: "→ "; }
+
+      .dopamine {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 14px 16px;
+        display: flex; align-items: center; gap: 12px;
+      }
+      .dopamine .num {
+        font-family: var(--serif); font-style: italic;
+        font-size: 36px; line-height: 1;
+        color: var(--brand-600);
+        flex: 0 0 auto;
+      }
+      [data-theme="neo"] .dopamine .num { color: var(--brand-500); }
+      .dopamine .right { flex: 1; }
+      .dopamine .right .h::before { content: "✨ "; }
+      .dopamine .right .h { font-size: 13px; font-weight: 700; }
+      .dopamine .right .s { font-size: 11px; color: var(--ink2); margin-top: 2px; }
+
+      .task-row {
+        display: flex; align-items: center; gap: 10px;
+        padding: 10px 12px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        cursor: pointer;
+        user-select: none;
+      }
+      .task-row.urgent { background: var(--alert-bg); border-color: var(--alert-bg); }
+      .checkbox {
+        width: 20px; height: 20px; border-radius: 6px;
+        border: 1.5px solid var(--ink3); background: var(--surface);
+        flex: 0 0 20px;
+      }
+      .task-row.done .checkbox { background: var(--ok); border-color: var(--ok); }
+      .task-row.done .checkbox::after {
+        content: "✓"; color: white; font-size: 12px;
+        display: grid; place-items: center; height: 100%;
+      }
+      .task-row .text {
+        flex: 1; font-size: 12px; font-weight: 700;
+        letter-spacing: 0.3px; text-transform: uppercase;
+      }
+      .task-row.done .text { color: var(--ink3); text-decoration: line-through; }
+      .task-row.urgent .text { color: var(--alert); }
+
+      /* ── CLIENT shell · Instagram + Strava ───────────── */
+      .client-cta {
+        width: 100%; padding: 16px;
+        background: var(--brand-500); color: white;
+        border-radius: 16px; border: 0;
+        font-family: var(--sans); font-weight: 700; font-size: 15px;
+        cursor: pointer;
+        display: flex; justify-content: space-between; align-items: center;
+        transition: transform 120ms;
+      }
+      [data-theme="neo"] .client-cta {
+        background: var(--brand-500);
+        box-shadow: 0 10px 24px rgba(255,90,0,0.30);
+      }
+      .client-cta:active { transform: scale(0.98); }
+
+      .strava {
+        background: var(--brand-900); color: white;
+        border-radius: 18px; padding: 18px;
+        position: relative; overflow: hidden;
+      }
+      [data-theme="neo"] .strava { background: var(--ink1); }
+      .strava::before {
+        content: ""; position: absolute; inset: 0;
+        background: radial-gradient(circle at 20% 0%, rgba(92,192,164,0.30), transparent 60%);
+      }
+      [data-theme="neo"] .strava::before {
+        background: radial-gradient(circle at 20% 0%, rgba(255,90,0,0.25), transparent 60%);
+      }
+      .strava > * { position: relative; z-index: 1; }
+      .strava .h {
+        font-family: var(--serif); font-style: italic;
+        font-size: 20px; line-height: 1.1;
+        margin-bottom: 14px;
+      }
+      .strava-grid {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 12px 14px;
+      }
+      .strava-stat .lbl {
+        font-size: 9px; letter-spacing: 1px; text-transform: uppercase;
+        opacity: 0.72; font-weight: 700;
+      }
+      .strava-stat .v {
+        font-family: var(--serif); font-style: italic;
+        font-size: 28px; line-height: 1; margin-top: 4px;
+      }
+      .strava-stat .d { font-size: 11px; font-weight: 600; color: #6cf28b; margin-top: 3px; }
+      [data-theme="neo"] .strava-stat .d { color: #ffa566; }
+
+      .reel {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        overflow: hidden;
+      }
+      .reel .media {
+        height: 260px;
+        background: linear-gradient(160deg, #c2dcd0, #6fa48a);
+        position: relative;
+        display: grid; place-items: center;
+      }
+      [data-theme="neo"] .reel .media { background: linear-gradient(160deg, #e8dac3, #6b4a2c); }
+      .reel .media .scene { font-size: 140px; filter: drop-shadow(0 12px 24px rgba(0,0,0,0.3)); }
+      .reel .media .live-pill {
+        position: absolute; top: 12px; left: 12px;
+        background: rgba(255,255,255,0.92);
+        color: var(--ink1);
+        padding: 4px 10px; border-radius: 12px;
+        font-size: 10px; font-weight: 700; letter-spacing: 0.4px;
+        display: flex; align-items: center; gap: 5px;
+      }
+      .reel .media .live-pill::before {
+        content: ""; width: 6px; height: 6px; border-radius: 3px;
+        background: var(--alert);
+        animation: livepulse 1.5s ease-in-out infinite;
+      }
+      .reel .media .play-pill {
+        position: absolute; bottom: 12px; right: 12px;
+        background: rgba(0,0,0,0.55);
+        color: white;
+        padding: 5px 10px; border-radius: 12px;
+        font-size: 10px; font-weight: 700; letter-spacing: 0.4px;
+        backdrop-filter: blur(6px);
+      }
+      .reel .body { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 6px; }
+      .reel .head { display: flex; align-items: center; gap: 10px; }
+      .reel .av {
+        width: 30px; height: 30px; border-radius: 15px;
+        background: var(--brand-500); color: white;
+        font-size: 10px; font-weight: 700;
+        display: grid; place-items: center;
+      }
+      [data-theme="neo"] .reel .av { background: var(--ink1); color: var(--bg); }
+      .reel .who { flex: 1; }
+      .reel .who .n { font-size: 12px; font-weight: 700; }
+      .reel .who .w { font-size: 10px; color: var(--ink3); margin-top: 1px; }
+      .reel .title {
+        font-family: var(--serif); font-style: italic;
+        font-size: 19px; line-height: 22px;
+      }
+      .reel .body-text { font-size: 12px; line-height: 17px; color: var(--ink2); }
+      .reel .rxn {
+        display: flex; gap: 12px; margin-top: 3px; font-size: 12px;
+      }
+      .reel .rxn .heart { color: var(--alert); }
+
+      /* ── BOTTOM NAV ──────────────────────────────────── */
+      .tabbar {
+        position: absolute; bottom: 0; left: 0; right: 0;
+        height: 76px; padding: 8px 6px 14px;
+        background: var(--surface); border-top: 1px solid var(--border);
+        display: flex; justify-content: space-between; align-items: center;
+        z-index: 4;
+      }
+      .tabitem {
+        flex: 1; background: transparent; border: 0;
+        display: flex; flex-direction: column; align-items: center; gap: 3px;
+        font-size: 8px; font-weight: 700; letter-spacing: 0.4px;
+        color: var(--ink3); cursor: pointer;
+        padding: 6px 0;
+        transition: color 200ms, transform 120ms;
+      }
+      .tabitem:active { transform: scale(0.96); }
+      .tabitem.active { color: var(--brand-600); }
+      [data-theme="neo"] .tabitem.active { color: var(--ink1); }
+      .tabitem .ic {
+        width: 20px; height: 20px;
+        font-size: 18px;
+        display: grid; place-items: center;
+      }
+
+      /* ── DRAWER (hamburger) ──────────────────────────── */
+      .drawer-backdrop {
+        position: absolute; inset: 0;
+        background: rgba(0,0,0,0.45);
+        opacity: 0; pointer-events: none;
+        transition: opacity 250ms; z-index: 10;
+      }
+      .drawer-backdrop.open { opacity: 1; pointer-events: auto; }
+      .drawer {
+        position: absolute; top: 0; left: 0; bottom: 0;
+        width: 78%; max-width: 320px;
+        background: var(--surface);
+        z-index: 11;
+        transform: translateX(-100%);
+        transition: transform 320ms cubic-bezier(0.4,0,0.2,1);
+        display: flex; flex-direction: column;
+        padding: 16px 14px 24px;
+      }
+      .drawer.open { transform: translateX(0); box-shadow: 0 0 60px rgba(0,0,0,0.4); }
+      .drawer .stable-mini {
+        display: flex; align-items: center; gap: 12px;
+        padding: 14px 12px 18px;
+        border-bottom: 1px solid var(--border);
+      }
+      .drawer .stable-mini .mark {
+        width: 40px; height: 40px; border-radius: 12px;
+        background: var(--brand-500);
+        display: grid; place-items: center;
+        font-family: var(--serif); font-style: italic;
+        color: white; font-size: 18px;
+      }
+      [data-theme="neo"] .drawer .stable-mini .mark { background: var(--brand-500); }
+      .drawer .stable-mini .info { flex: 1; }
+      .drawer .stable-mini .info .n {
+        font-family: var(--serif); font-style: italic;
+        font-size: 18px;
+      }
+      .drawer .stable-mini .info .s { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+      .drawer .stable-mini .change {
+        font-size: 11px; font-weight: 700; color: var(--brand-600); cursor: pointer;
+      }
+      [data-theme="neo"] .drawer .stable-mini .change { color: var(--ink1); }
+      .drawer-items {
+        display: flex; flex-direction: column; gap: 4px;
+        padding: 14px 0;
+        flex: 1;
+      }
+      .drawer-item {
+        display: flex; align-items: center; gap: 14px;
+        padding: 12px 12px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 14px; font-weight: 600; color: var(--ink1);
+      }
+      .drawer-item:hover { background: var(--bg); }
+      .drawer-item .ic { font-size: 18px; width: 24px; text-align: center; }
+      .drawer-item .arrow { margin-left: auto; opacity: 0.4; font-size: 14px; }
+      .drawer-item.featured {
+        background: var(--brand-50);
+        color: var(--brand-700);
+      }
+      [data-theme="neo"] .drawer-item.featured {
+        background: var(--brand-50);
+        color: var(--brand-600);
+      }
+      .drawer .role-switch {
+        margin-top: 8px;
+        padding: 14px 0 6px;
+        border-top: 1px solid var(--border);
+      }
+      .drawer .role-switch .lbl {
+        font-size: 10px; letter-spacing: 1.4px; text-transform: uppercase;
+        color: var(--ink3); font-weight: 700;
+        padding: 0 12px 8px;
+      }
+      .drawer .role-chips {
+        display: grid; grid-template-columns: 1fr 1fr;
+        gap: 6px;
+      }
+      .drawer .role-chip {
+        background: var(--bg); border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 10px;
+        font-size: 12px; font-weight: 700; color: var(--ink2);
+        cursor: pointer;
+        text-align: left;
+        display: flex; flex-direction: column; gap: 2px;
+      }
+      .drawer .role-chip.active {
+        background: var(--ink1); color: var(--bg);
+        border-color: var(--ink1);
+      }
+      .drawer .role-chip .sub {
+        font-size: 9px; font-weight: 500; opacity: 0.65;
+        letter-spacing: 0.3px;
+      }
+      .drawer-foot {
+        padding: 14px 12px 0;
+        font-size: 10px; color: var(--ink3);
+        letter-spacing: 0.4px;
+      }
+
+      /* ── PLACEHOLDER TABS (Calendar/Stable/Whiteboard/Feed for piece 1) ── */
+      .placeholder {
+        flex: 1;
+        display: flex; flex-direction: column; align-items: center;
+        justify-content: center; gap: 14px;
+        padding: 40px 30px 110px;
+        text-align: center;
+        background: var(--bg);
+      }
+      .placeholder .icon {
+        width: 72px; height: 72px; border-radius: 36px;
+        background: var(--brand-50);
+        display: grid; place-items: center;
+        font-size: 32px;
+        color: var(--brand-600);
+      }
+      [data-theme="neo"] .placeholder .icon { background: var(--brand-50); color: var(--brand-500); }
+      .placeholder .t {
+        font-family: var(--serif); font-style: italic;
+        font-size: 26px; line-height: 1.1;
+      }
+      .placeholder .s {
+        font-size: 13px; line-height: 1.5; color: var(--ink2); max-width: 240px;
+      }
+      .placeholder .badge {
+        font-size: 10px; font-weight: 700; letter-spacing: 0.6px;
+        padding: 4px 12px; border-radius: 12px;
+        background: var(--brand-50); color: var(--brand-700);
+      }
+      [data-theme="neo"] .placeholder .badge { color: var(--brand-600); }
+    </style>
+  </head>
+  <body>
+    <div class="help">
+      <strong>HopOn · Pitch (piece 1/5)</strong> · tap ☰ to open drawer · switch role from drawer · swap palette via the swatches in the header
+    </div>
+
+    <div class="phone" id="phone">
+      <!-- STATUS BAR -->
+      <div class="statusbar"><span>9:41</span><span>●●● ●</span></div>
+
+      <!-- ════ WELCOME ════ -->
+      <div class="screen active" data-screen="welcome">
+        <div class="welcome">
+          <div>
+            <div class="brand-top">
+              <div class="mark">H</div>
+              <div class="word">Hop<span>O</span>n</div>
+            </div>
+            <div class="hero-text">Your barn.<br />Calmer.</div>
+            <div class="lede">The operating system for riding barns. Bookings, payments, the team — on one calm screen.</div>
+            <div class="persona-line">For owners · trainers · grooms · riders</div>
+          </div>
+          <div class="actions">
+            <button class="btn primary" data-go="home">Get started</button>
+            <button class="btn ghost" data-go="home">I already have an account</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════ HOME (4 role variants morphing) ════ -->
+      <div class="screen" data-screen="home">
+        <!-- 20% · Pulse header -->
+        <div class="pulse-header">
+          <div class="ph-top">
+            <div class="ph-left">
+              <button class="ph-burger" id="open-drawer" aria-label="Menu"><span></span><span></span><span></span></button>
+              <div class="ph-stable">
+                <span class="pin">📍</span>
+                Wellington Park
+                <span class="caret">▼</span>
+              </div>
+            </div>
+            <div class="ph-actions">
+              <div class="theme-pair" id="theme-pair">
+                <button class="sw eu active" data-set-theme="eucalyptus" aria-label="Eucalyptus theme"></button>
+                <button class="sw neo" data-set-theme="neo" aria-label="Neo theme"></button>
+              </div>
+              <button class="ph-dark-toggle" id="dark-toggle" aria-label="Toggle dark mode">☾</button>
+            </div>
+          </div>
+          <div class="ph-pulse-line">14 horses in training today. Rain at 4 PM.</div>
+          <div class="ph-meta">
+            <span class="item"><span class="live-pip"></span>5 riders here</span>
+            <span class="item"><span class="ic">🐎</span>3 lessons now</span>
+            <span class="item" style="color:#ffd699;"><span class="ic">⚠️</span>1 needs you</span>
+          </div>
+        </div>
+
+        <!-- 80% · Role-shells -->
+        <div class="role-stage" id="role-stage">
+          <!-- OWNER -->
+          <div class="role-shell active" data-shell="owner">
+            <div class="eyebrow">Today · Tue · May 19</div>
+            <div class="section-head"><span class="t">Operations</span><span class="a" data-go="whiteboard">View board ›</span></div>
+            <div class="owner-grid">
+              <div class="owner-tile ops" data-go="whiteboard">
+                <span class="lbl">Day progress</span>
+                <span class="v">8 / 14</span>
+                <span class="sub">tasks done · 57% complete</span>
+              </div>
+              <div class="owner-tile ops">
+                <span class="lbl">On duty</span>
+                <span class="v">5</span>
+                <span class="sub">3 grooms · 2 trainers</span>
+              </div>
+              <div class="owner-tile warn full">
+                <span class="lbl">⚠ Needs your approval</span>
+                <span class="v">2 treatments · 1 vet visit</span>
+                <span class="sub">Sofia · Bella physio · 30 min ago</span>
+              </div>
+            </div>
+            <div class="approval-row">
+              <span class="horse-pill">BELLA</span>
+              <div class="what">
+                <div class="n">Physio · Pierre Lacroix</div>
+                <div class="by">Requested by Sofia · 30 min ago</div>
+              </div>
+              <button class="btn dark">OK</button>
+            </div>
+            <div class="approval-row">
+              <span class="horse-pill">ATLAS</span>
+              <div class="what">
+                <div class="n">Joint supplement · $80/mo</div>
+                <div class="by">Requested by Mateo · 2 h ago</div>
+              </div>
+              <button class="btn dark">OK</button>
+            </div>
+
+            <div class="section-head" style="margin-top:8px;">
+              <span class="t">Business</span>
+              <span class="a" data-open-drawer-dashboard>Full dashboard ›</span>
+            </div>
+            <div class="owner-grid">
+              <div class="owner-tile" data-open-drawer-dashboard>
+                <span class="lbl">Revenue · May</span>
+                <span class="v">$3,600</span>
+                <span class="sub" style="color: var(--ok); font-weight:600;">+18% vs April</span>
+              </div>
+              <div class="owner-tile" data-open-drawer-dashboard>
+                <span class="lbl">Awaiting</span>
+                <span class="v">$540</span>
+                <span class="sub">6 invoices · 9 days</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- TRAINER -->
+          <div class="role-shell" data-shell="trainer">
+            <div class="eyebrow">Tue · May 19 · 6 sessions today</div>
+            <div class="dyn-island">
+              <span class="di-pill"><span class="pip"></span>Up next · in 25 min</span>
+              <div class="di-main">
+                <div class="di-thumb">🐎</div>
+                <div class="di-info">
+                  <div class="di-time">10:30 → 11:15</div>
+                  <div class="di-title">Jump · Bella · Indoor</div>
+                  <div class="di-sub">Maddy K. · first lesson back after farrier</div>
+                </div>
+              </div>
+              <div class="di-warn-row warn">
+                <span class="ic">🔨</span>
+                <span><strong>Bella</strong> · farrier in 3 days · go gentle on hard ground</span>
+              </div>
+              <div class="di-warn-row">
+                <span class="ic">✨</span>
+                <span><strong>Jess</strong> just groomed Bella · ready in arena</span>
+              </div>
+              <button class="di-cta">
+                <span>End session &amp; recap</span>
+                <span>→</span>
+              </button>
+            </div>
+            <div class="eyebrow" style="margin-top:6px;">REST OF YOUR DAY</div>
+            <div class="trainer-row"><span class="time">12:00</span><div class="who"><div class="n">Mateo Bell</div><div class="m">Outdoor · Jump · 45 min</div></div><span class="horse-pill">INDIGO</span></div>
+            <div class="trainer-row"><span class="time">14:00</span><div class="who"><div class="n">Liv Andersen</div><div class="m">Outdoor · Flat · 45 min</div></div><span class="horse-pill">JUNO</span></div>
+            <div class="trainer-row"><span class="time">15:30</span><div class="who"><div class="n">Emma Carter</div><div class="m">Outdoor · Jump · 45 min</div></div><span class="horse-pill">BELLA</span></div>
+            <div class="trainer-row"><span class="time">17:00</span><div class="who"><div class="n">Group · 4 riders</div><div class="m">Outdoor · Beginner · 60 min</div></div><span class="horse-pill">MIX</span></div>
+          </div>
+
+          <!-- GROOM -->
+          <div class="role-shell" data-shell="groom">
+            <div class="eyebrow">Up next · in 5 min</div>
+            <div class="groom-hero">
+              <div class="gh-ctx">
+                <div class="gh-thumb">🐎</div>
+                <div class="flex1">
+                  <div class="gh-eb">For Sofia · @owner</div>
+                  <div class="gh-task">Groom Bella for her 9 am</div>
+                  <div class="gh-for">Sofia will see the photo as soon as you send it ✨</div>
+                </div>
+              </div>
+              <button class="gh-camera" id="snap-btn">
+                <span class="cam-ic">📸</span>
+                Snap &amp; send to Sofia
+              </button>
+              <div class="gh-skip">Skip · mark done without photo</div>
+            </div>
+            <div class="dopamine">
+              <span class="num" id="dopamine-num">12</span>
+              <div class="right">
+                <div class="h">photos sent to owners this week</div>
+                <div class="s">Best week yet · Sofia ❤️'d 4 of them</div>
+              </div>
+            </div>
+            <div class="eyebrow" style="margin-top:4px;">REST OF YOUR DAY · 4 LEFT</div>
+            <div class="task-row urgent" data-task><div class="checkbox"></div><div class="text">! Storm · tack up · 9:00</div></div>
+            <div class="task-row" data-task><div class="checkbox"></div><div class="text">Indigo · feed PM</div></div>
+            <div class="task-row" data-task><div class="checkbox"></div><div class="text">Juno · groom + photo</div></div>
+            <div class="task-row" data-task><div class="checkbox"></div><div class="text">Bella · evening feed</div></div>
+          </div>
+
+          <!-- CLIENT -->
+          <div class="role-shell" data-shell="client">
+            <button class="client-cta"><span>Book Bella a lesson</span><span>→</span></button>
+            <div class="strava">
+              <div class="h">Bella · this month</div>
+              <div class="strava-grid">
+                <div class="strava-stat"><span class="lbl">Hours in saddle</span><span class="v">9 h</span><span class="d">+2 h vs April</span></div>
+                <div class="strava-stat"><span class="lbl">Lessons</span><span class="v">12</span><span class="d">100% participation</span></div>
+                <div class="strava-stat"><span class="lbl">Jumps cleared</span><span class="v">47</span><span class="d">3 shows</span></div>
+                <div class="strava-stat"><span class="lbl">Personal best</span><span class="v">1m20</span><span class="d">Wellington · May 5</span></div>
+              </div>
+            </div>
+            <div class="reel">
+              <div class="media">
+                <span class="live-pill">Live · 25 min ago</span>
+                <span class="scene">✨</span>
+                <span class="play-pill">📷 photo</span>
+              </div>
+              <div class="body">
+                <div class="head">
+                  <div class="av">JS</div>
+                  <div class="who"><div class="n">Jess · groom</div><div class="w">For you · @owner</div></div>
+                  <span class="pill">@owners</span>
+                </div>
+                <div class="title">Bella is ready and beautiful.</div>
+                <div class="body-text">Full groom done at 7:45 — mane braided, ready for her 9 am with Maddy.</div>
+                <div class="rxn"><span class="heart">❤️ 4</span><span>👏 2</span><span>💬 1</span></div>
+              </div>
+            </div>
+            <div class="reel">
+              <div class="media">
+                <span class="scene">🏇</span>
+                <span class="play-pill">▶ 0:42</span>
+              </div>
+              <div class="body">
+                <div class="head">
+                  <div class="av">SM</div>
+                  <div class="who"><div class="n">Sam · trainer</div><div class="w">Yesterday · 4 pm</div></div>
+                  <span class="pill">@owners</span>
+                </div>
+                <div class="title">Forward today · clean round.</div>
+                <div class="body-text">Bella nailed the 1m10 grid · best session this week.</div>
+                <div class="rxn"><span class="heart">❤️ 8</span><span>👏 3</span><span>💬 2</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom nav -->
+        <div class="tabbar">
+          <button class="tabitem active" data-tab="home"><span class="ic">⌂</span><span>Home</span></button>
+          <button class="tabitem" data-tab="stable"><span class="ic">🐴</span><span>Stable</span></button>
+          <button class="tabitem" data-tab="calendar"><span class="ic">📅</span><span>Calendar</span></button>
+          <button class="tabitem" data-tab="whiteboard"><span class="ic">📋</span><span>Whiteboard</span></button>
+          <button class="tabitem" data-tab="feed"><span class="ic">💬</span><span>Feed</span></button>
+        </div>
+      </div>
+
+      <!-- PLACEHOLDERS for upcoming pieces -->
+      <div class="screen" data-screen="stable">
+        <div class="pulse-header">
+          <div class="ph-top">
+            <div class="ph-left">
+              <button class="ph-burger" data-open-drawer><span></span><span></span><span></span></button>
+              <div class="ph-stable"><span class="pin">📍</span>Wellington Park</div>
+            </div>
+            <div class="ph-actions"><div class="theme-pair"></div></div>
+          </div>
+          <div class="ph-pulse-line">My Stable.</div>
+        </div>
+        <div class="placeholder">
+          <div class="icon">🐴</div>
+          <div class="t">Stable</div>
+          <div class="s">Horses · Clients · Team · Partners — coming in piece 3.</div>
+          <div class="badge">PIECE 3 / 5</div>
+        </div>
+        <div class="tabbar">
+          <button class="tabitem" data-tab="home"><span class="ic">⌂</span><span>Home</span></button>
+          <button class="tabitem active" data-tab="stable"><span class="ic">🐴</span><span>Stable</span></button>
+          <button class="tabitem" data-tab="calendar"><span class="ic">📅</span><span>Calendar</span></button>
+          <button class="tabitem" data-tab="whiteboard"><span class="ic">📋</span><span>Whiteboard</span></button>
+          <button class="tabitem" data-tab="feed"><span class="ic">💬</span><span>Feed</span></button>
+        </div>
+      </div>
+      <div class="screen" data-screen="calendar">
+        <div class="pulse-header">
+          <div class="ph-top">
+            <div class="ph-left">
+              <button class="ph-burger" data-open-drawer><span></span><span></span><span></span></button>
+              <div class="ph-stable"><span class="pin">📍</span>Wellington Park</div>
+            </div>
+          </div>
+          <div class="ph-pulse-line">March 2026.</div>
+        </div>
+        <div class="placeholder">
+          <div class="icon">📅</div>
+          <div class="t">Calendar</div>
+          <div class="s">Day · Week · Month with filters by lesson type and trainer — coming in piece 2.</div>
+          <div class="badge">PIECE 2 / 5</div>
+        </div>
+        <div class="tabbar">
+          <button class="tabitem" data-tab="home"><span class="ic">⌂</span><span>Home</span></button>
+          <button class="tabitem" data-tab="stable"><span class="ic">🐴</span><span>Stable</span></button>
+          <button class="tabitem active" data-tab="calendar"><span class="ic">📅</span><span>Calendar</span></button>
+          <button class="tabitem" data-tab="whiteboard"><span class="ic">📋</span><span>Whiteboard</span></button>
+          <button class="tabitem" data-tab="feed"><span class="ic">💬</span><span>Feed</span></button>
+        </div>
+      </div>
+      <div class="screen" data-screen="whiteboard">
+        <div class="pulse-header">
+          <div class="ph-top">
+            <div class="ph-left">
+              <button class="ph-burger" data-open-drawer><span></span><span></span><span></span></button>
+              <div class="ph-stable"><span class="pin">📍</span>Wellington Park</div>
+            </div>
+          </div>
+          <div class="ph-pulse-line">Whiteboard · live.</div>
+        </div>
+        <div class="placeholder">
+          <div class="icon">📋</div>
+          <div class="t">Whiteboard</div>
+          <div class="s">Barn pulse banner + 4 vertical team rows with live progress — coming in piece 3.</div>
+          <div class="badge">PIECE 3 / 5</div>
+        </div>
+        <div class="tabbar">
+          <button class="tabitem" data-tab="home"><span class="ic">⌂</span><span>Home</span></button>
+          <button class="tabitem" data-tab="stable"><span class="ic">🐴</span><span>Stable</span></button>
+          <button class="tabitem" data-tab="calendar"><span class="ic">📅</span><span>Calendar</span></button>
+          <button class="tabitem active" data-tab="whiteboard"><span class="ic">📋</span><span>Whiteboard</span></button>
+          <button class="tabitem" data-tab="feed"><span class="ic">💬</span><span>Feed</span></button>
+        </div>
+      </div>
+      <div class="screen" data-screen="feed">
+        <div class="pulse-header">
+          <div class="ph-top">
+            <div class="ph-left">
+              <button class="ph-burger" data-open-drawer><span></span><span></span><span></span></button>
+              <div class="ph-stable"><span class="pin">📍</span>Wellington Park</div>
+            </div>
+          </div>
+          <div class="ph-pulse-line">Hop News.</div>
+        </div>
+        <div class="placeholder">
+          <div class="icon">💬</div>
+          <div class="t">Feed</div>
+          <div class="s">Stories row + auto-posts + manual posts with reactions — coming in piece 3.</div>
+          <div class="badge">PIECE 3 / 5</div>
+        </div>
+        <div class="tabbar">
+          <button class="tabitem" data-tab="home"><span class="ic">⌂</span><span>Home</span></button>
+          <button class="tabitem" data-tab="stable"><span class="ic">🐴</span><span>Stable</span></button>
+          <button class="tabitem" data-tab="calendar"><span class="ic">📅</span><span>Calendar</span></button>
+          <button class="tabitem" data-tab="whiteboard"><span class="ic">📋</span><span>Whiteboard</span></button>
+          <button class="tabitem active" data-tab="feed"><span class="ic">💬</span><span>Feed</span></button>
+        </div>
+      </div>
+      <div class="screen" data-screen="dashboard">
+        <div class="pulse-header">
+          <div class="ph-top">
+            <div class="ph-left">
+              <button class="ph-burger" data-open-drawer><span></span><span></span><span></span></button>
+              <div class="ph-stable"><span class="pin">📊</span>Dashboard</div>
+            </div>
+          </div>
+          <div class="ph-pulse-line">Revenue · Costs · Payments.</div>
+        </div>
+        <div class="placeholder">
+          <div class="icon">📊</div>
+          <div class="t">Dashboard</div>
+          <div class="s">Overview · Revenue · Costs · ROI · Payments (Barnly-style) — coming in piece 4.</div>
+          <div class="badge">PIECE 4 / 5</div>
+        </div>
+      </div>
+
+      <!-- DRAWER -->
+      <div class="drawer-backdrop" id="drawer-backdrop"></div>
+      <div class="drawer" id="drawer">
+        <div class="stable-mini">
+          <div class="mark">H</div>
+          <div class="info">
+            <div class="n">Wellington Park</div>
+            <div class="s">Wellington, FL · 24 horses</div>
+          </div>
+          <div class="change">Change ›</div>
+        </div>
+        <div class="drawer-items">
+          <div class="drawer-item featured" data-go="dashboard">
+            <span class="ic">📊</span>
+            <span>Dashboard</span>
+            <span class="arrow">›</span>
+          </div>
+          <div class="drawer-item">
+            <span class="ic">⚙️</span>
+            <span>Settings</span>
+            <span class="arrow">›</span>
+          </div>
+          <div class="drawer-item">
+            <span class="ic">📚</span>
+            <span>Help &amp; docs</span>
+            <span class="arrow">›</span>
+          </div>
+          <div class="drawer-item">
+            <span class="ic">↻</span>
+            <span>Switch barn</span>
+            <span class="arrow">›</span>
+          </div>
+          <div class="role-switch">
+            <div class="lbl">View as</div>
+            <div class="role-chips">
+              <button class="role-chip active" data-role="owner">
+                <span>Owner</span>
+                <span class="sub">money · approvals · pulse</span>
+              </button>
+              <button class="role-chip" data-role="trainer">
+                <span>Trainer</span>
+                <span class="sub">next session · day</span>
+              </button>
+              <button class="role-chip" data-role="groom">
+                <span>Groom</span>
+                <span class="sub">camera · care · dopamine</span>
+              </button>
+              <button class="role-chip" data-role="client">
+                <span>Client</span>
+                <span class="sub">Bella feed · book</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="drawer-foot">HopOn · pitch · piece 1/5 · brand locked</div>
+      </div>
+    </div>
+
+    <script>
+      // ── Navigation ─────────────────────────────────────────
+      const screens = document.querySelectorAll("[data-screen]");
+      function show(name) {
+        screens.forEach(s => s.classList.toggle("active", s.dataset.screen === name));
+        closeDrawer();
+      }
+      document.addEventListener("click", (e) => {
+        const go = e.target.closest("[data-go]");
+        if (go) { e.preventDefault(); show(go.dataset.go); return; }
+        const tab = e.target.closest("[data-tab]");
+        if (tab) { show(tab.dataset.tab); return; }
+        const dashLink = e.target.closest("[data-open-drawer-dashboard]");
+        if (dashLink) { e.preventDefault(); show("dashboard"); return; }
+      });
+
+      // ── Drawer ─────────────────────────────────────────────
+      const drawer = document.getElementById("drawer");
+      const drawerBackdrop = document.getElementById("drawer-backdrop");
+      function openDrawer() {
+        drawer.classList.add("open");
+        drawerBackdrop.classList.add("open");
+      }
+      function closeDrawer() {
+        drawer.classList.remove("open");
+        drawerBackdrop.classList.remove("open");
+      }
+      document.addEventListener("click", (e) => {
+        if (e.target.closest("#open-drawer, [data-open-drawer]")) { openDrawer(); }
+        else if (e.target === drawerBackdrop) { closeDrawer(); }
+      });
+
+      // ── Role switching (via drawer) ────────────────────────
+      function applyRole(role) {
+        document.querySelectorAll("[data-role]").forEach(c => c.classList.toggle("active", c.dataset.role === role));
+        document.querySelectorAll("[data-shell]").forEach(s => s.classList.toggle("active", s.dataset.shell === role));
+      }
+      document.querySelectorAll(".drawer [data-role]").forEach(chip => {
+        chip.addEventListener("click", () => {
+          applyRole(chip.dataset.role);
+          show("home");
+        });
+      });
+
+      // ── Theme toggle (4 modes: eucalyptus/eucalyptus-dark/neo/neo-dark) ──
+      let currentPalette = "eucalyptus";   // eucalyptus | neo
+      let isDark = false;
+      function persistTheme() {
+        try { localStorage.setItem("hopon-pitch-theme", JSON.stringify({ p: currentPalette, d: isDark })); } catch (e) {}
+      }
+      function loadTheme() {
+        try {
+          const s = localStorage.getItem("hopon-pitch-theme");
+          if (s) {
+            const o = JSON.parse(s);
+            currentPalette = o.p || "eucalyptus";
+            isDark = !!o.d;
+          } else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+            isDark = true;
+          }
+        } catch (e) {}
+      }
+      function applyTheme() {
+        const t = currentPalette === "neo"
+          ? (isDark ? "neo-dark" : "neo")
+          : (isDark ? "eucalyptus-dark" : "eucalyptus");
+        if (t === "eucalyptus") document.documentElement.removeAttribute("data-theme");
+        else document.documentElement.setAttribute("data-theme", t);
+        // Sync swatches in all instances of theme-pair
+        document.querySelectorAll(".theme-pair .sw").forEach(sw => {
+          sw.classList.toggle("active", sw.dataset.setTheme === currentPalette);
+        });
+        // Dark toggle icon
+        const dt = document.getElementById("dark-toggle");
+        if (dt) dt.textContent = isDark ? "☀" : "☾";
+      }
+      document.addEventListener("click", (e) => {
+        const sw = e.target.closest("[data-set-theme]");
+        if (sw) { currentPalette = sw.dataset.setTheme; applyTheme(); persistTheme(); }
+        if (e.target.closest("#dark-toggle")) { isDark = !isDark; applyTheme(); persistTheme(); }
+      });
+      loadTheme(); applyTheme();
+
+      // ── Groom task interactions ────────────────────────────
+      const dopamineNum = document.getElementById("dopamine-num");
+      document.querySelectorAll("[data-task]").forEach(row => {
+        row.addEventListener("click", () => row.classList.toggle("done"));
+      });
+      document.getElementById("snap-btn")?.addEventListener("click", () => {
+        if (dopamineNum) dopamineNum.textContent = String(parseInt(dopamineNum.textContent || "0", 10) + 1);
+        // For piece 1: just give a simple feedback via opacity
+        const btn = document.getElementById("snap-btn");
+        if (btn) {
+          const orig = btn.innerHTML;
+          btn.innerHTML = "<span class='cam-ic'>✓</span> Photo sent to Sofia";
+          setTimeout(() => { btn.innerHTML = orig; }, 1600);
+        }
+      });
+    </script>
+  </body>
+</html>
