@@ -834,6 +834,412 @@
         background: var(--brand-50); color: var(--brand-700);
       }
       [data-theme="neo"] .placeholder .badge { color: var(--brand-600); }
+
+      /* ════════════════════════════════════════════════════ */
+      /* PIECE 2 · CALENDAR (Day / Week / Month + filters)    */
+      /* ════════════════════════════════════════════════════ */
+
+      .cal-screen { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+
+      /* Sub-header: month + view toggle + add */
+      .cal-subheader {
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        padding: 10px 14px 8px;
+        flex-shrink: 0;
+        display: flex; flex-direction: column; gap: 8px;
+      }
+      .cal-month-row {
+        display: flex; align-items: center; gap: 8px;
+      }
+      .cal-month-name {
+        flex: 1;
+        font-family: var(--serif); font-style: italic;
+        font-size: 18px; color: var(--ink1);
+        display: flex; align-items: center; gap: 6px;
+      }
+      .cal-nav-arrow {
+        width: 28px; height: 28px; border-radius: 14px;
+        background: transparent; border: 0;
+        cursor: pointer; color: var(--ink2); font-size: 14px;
+        display: grid; place-items: center;
+      }
+      .cal-nav-arrow:hover { background: var(--bg); }
+      .cal-view-toggle {
+        display: flex; background: var(--bg);
+        border-radius: 8px; padding: 2px;
+      }
+      .cal-vbtn {
+        padding: 5px 10px; font-size: 11px; font-weight: 700;
+        border: 0; background: transparent; cursor: pointer;
+        color: var(--ink3); border-radius: 6px;
+        transition: background 200ms, color 200ms;
+      }
+      .cal-vbtn.on { background: var(--ink1); color: var(--bg); }
+      .cal-add-btn {
+        width: 30px; height: 30px; border-radius: 9px;
+        background: var(--brand-500); color: white;
+        display: grid; place-items: center;
+        font-size: 18px; border: 0; cursor: pointer;
+        font-weight: 300;
+      }
+
+      /* Filter row */
+      .cal-filters {
+        display: flex; align-items: center; gap: 6px;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+      .cal-filters::-webkit-scrollbar { display: none; }
+      .cal-fchip {
+        padding: 5px 11px; border-radius: 20px;
+        font-size: 11px; font-weight: 700;
+        background: var(--surface); color: var(--ink3);
+        border: 1px solid var(--border);
+        cursor: pointer;
+        flex-shrink: 0;
+        white-space: nowrap;
+        transition: background 200ms, color 200ms, border-color 200ms;
+      }
+      .cal-fchip.on {
+        background: var(--ink1); color: var(--bg);
+        border-color: var(--ink1);
+      }
+      .cal-fchip.on[data-type="rides"] { background: #6B5B95; border-color: #6B5B95; }
+      .cal-fchip.on[data-type="paddocks"] { background: var(--ok); border-color: var(--ok); }
+      .cal-fchip.on[data-type="vet"] { background: var(--warn); border-color: var(--warn); }
+      .cal-fchip.on[data-type="shows"] { background: var(--alert); border-color: var(--alert); }
+
+      .cal-fsep { width: 1px; height: 16px; background: var(--border); flex-shrink: 0; margin: 0 2px; }
+
+      .cal-tchip {
+        display: inline-flex; align-items: center; gap: 5px;
+        padding: 4px 10px; border-radius: 20px;
+        font-size: 11px; font-weight: 600;
+        background: var(--surface); color: var(--ink2);
+        border: 1px solid var(--border);
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+      .cal-tchip.off { opacity: 0.45; }
+      .cal-tchip .dot { width: 8px; height: 8px; border-radius: 4px; }
+
+      /* Trainer colors (used everywhere) */
+      .tr-maddy { background: #3D6B8C; }   /* blue */
+      .tr-sam   { background: #B85C38; }   /* rust */
+      .tr-jodie { background: #6B5B95; }   /* purple */
+      .tr-mike  { background: var(--warn-dot); }  /* gold (farrier) */
+      .tr-vet   { background: var(--alert); }
+
+      /* Calendar body container */
+      .cal-body { flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; background: var(--bg); }
+
+      /* ── DAY view ─────────────────────────────────────── */
+      .day-strip {
+        display: flex;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        flex-shrink: 0;
+      }
+      .day-cell {
+        flex: 1;
+        display: flex; flex-direction: column; align-items: center; gap: 4px;
+        padding: 6px 0 8px;
+        border-bottom: 2px solid transparent;
+        cursor: pointer;
+      }
+      .day-cell .dow {
+        font-size: 9px; font-weight: 700; letter-spacing: 0.6px;
+        color: var(--ink3);
+      }
+      .day-cell .n {
+        font-size: 13px; font-weight: 700; color: var(--ink1);
+      }
+      .day-cell.today { border-bottom-color: var(--brand-500); }
+      .day-cell.today .n {
+        width: 24px; height: 24px; border-radius: 12px;
+        background: var(--brand-500); color: white;
+        display: grid; place-items: center; font-size: 12px;
+      }
+      [data-theme="neo"] .day-cell.today { border-bottom-color: var(--brand-500); }
+      [data-theme="neo"] .day-cell.today .n { background: var(--brand-500); color: white; }
+
+      .day-body {
+        flex: 1; overflow-y: auto;
+        padding: 10px 14px 110px;
+        display: flex; flex-direction: column; gap: 8px;
+      }
+      .day-event {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-left: 4px solid var(--ink2);
+        border-radius: 12px;
+        padding: 12px 14px;
+        display: flex; gap: 12px;
+        cursor: pointer;
+        transition: transform 120ms;
+      }
+      .day-event:active { transform: scale(0.99); }
+      .day-event.maddy { border-left-color: #3D6B8C; }
+      .day-event.sam   { border-left-color: #B85C38; }
+      .day-event.jodie { border-left-color: #6B5B95; }
+      .day-event.vet   { border-left-color: var(--alert); }
+      .day-event.show  { border-left-color: var(--alert); background: var(--alert-bg); }
+      .day-event.paddock { border-left-color: var(--ok); background: var(--ok-bg); }
+      .day-event .time-col {
+        display: flex; flex-direction: column; gap: 2px;
+        flex: 0 0 50px;
+      }
+      .day-event .time-col .start {
+        font-family: var(--serif); font-style: italic;
+        font-size: 18px; line-height: 1; color: var(--ink1);
+      }
+      .day-event .time-col .end { font-size: 10px; color: var(--ink3); }
+      .day-event .ev-body { flex: 1; min-width: 0; }
+      .day-event .ev-title { font-size: 13px; font-weight: 700; color: var(--ink1); }
+      .day-event .ev-meta { font-size: 11px; color: var(--ink2); margin-top: 2px; }
+      .day-event .ev-status {
+        display: inline-flex; gap: 4px; align-items: center;
+        font-size: 10px; font-weight: 700; letter-spacing: 0.4px;
+        margin-top: 6px;
+        color: var(--ink3);
+      }
+      .day-event .ev-status .dot {
+        width: 6px; height: 6px; border-radius: 3px;
+        background: var(--ok); display: inline-block;
+      }
+      .day-event .ev-status.paid .dot { background: var(--ok); }
+      .day-event .ev-status.unpaid .dot { background: var(--alert); }
+      .day-event .ev-status.unpaid { color: var(--alert); }
+      .day-empty {
+        text-align: center; padding: 40px 20px;
+        color: var(--ink3); font-size: 13px;
+      }
+
+      /* ── WEEK view ────────────────────────────────────── */
+      .week-header {
+        display: flex;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        flex-shrink: 0;
+        padding-left: 38px;
+      }
+      .week-header .wh-cell {
+        flex: 1;
+        display: flex; flex-direction: column; align-items: center;
+        padding: 6px 0 8px;
+        cursor: pointer;
+      }
+      .week-header .wh-cell .dow {
+        font-size: 9px; font-weight: 700; letter-spacing: 0.6px;
+        color: var(--ink3);
+      }
+      .week-header .wh-cell .n {
+        font-size: 13px; font-weight: 700; color: var(--ink1);
+        margin-top: 4px;
+      }
+      .week-header .wh-cell.today .n {
+        width: 22px; height: 22px; border-radius: 11px;
+        background: var(--brand-500); color: white;
+        display: grid; place-items: center; font-size: 11px;
+      }
+
+      .week-grid {
+        flex: 1; overflow-y: auto;
+        position: relative;
+        padding-bottom: 110px;
+      }
+      .week-grid-inner {
+        position: relative;
+        background:
+          repeating-linear-gradient(
+            to bottom,
+            transparent 0,
+            transparent 49px,
+            var(--border) 49px,
+            var(--border) 50px
+          );
+        min-height: 700px;
+        display: grid;
+        grid-template-columns: 38px repeat(7, 1fr);
+      }
+      .week-hour-col {
+        display: flex; flex-direction: column;
+        padding-top: 4px;
+        border-right: 1px solid var(--border);
+        background: var(--surface);
+      }
+      .week-hour {
+        height: 50px;
+        font-size: 9px; font-weight: 600;
+        color: var(--ink3);
+        padding-left: 5px;
+        line-height: 1;
+        padding-top: 1px;
+      }
+      .week-day-col {
+        position: relative;
+        min-height: 700px;
+        border-right: 1px solid var(--border);
+      }
+      .week-day-col:last-child { border-right: none; }
+      .week-day-col.today { background: rgba(42,149,127,0.04); }
+      [data-theme="neo"] .week-day-col.today { background: rgba(255,90,0,0.05); }
+
+      .week-event {
+        position: absolute;
+        left: 2px; right: 2px;
+        background: var(--brand-500);
+        color: white;
+        border-radius: 6px;
+        padding: 3px 5px;
+        font-size: 9px; font-weight: 700;
+        line-height: 1.2;
+        overflow: hidden;
+        cursor: pointer;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.10);
+      }
+      .week-event .et { font-size: 8px; opacity: 0.85; font-weight: 600; }
+      .week-event .en { font-size: 10px; }
+      .week-event.maddy { background: #3D6B8C; }
+      .week-event.sam   { background: #B85C38; }
+      .week-event.jodie { background: #6B5B95; }
+      .week-event.vet   { background: var(--alert); }
+      .week-event.show  { background: var(--alert); border: 2px solid white; box-shadow: 0 0 0 1px var(--alert); }
+      .week-event.paddock { background: var(--ok); }
+      .week-event.farrier { background: var(--warn-dot); color: var(--ink1); }
+
+      /* Now-line on today */
+      .week-now-line {
+        position: absolute; left: 0; right: 0;
+        height: 2px; background: var(--alert);
+        z-index: 3;
+        box-shadow: 0 0 6px rgba(217,56,30,0.4);
+      }
+      .week-now-line::before {
+        content: "";
+        position: absolute; left: -4px; top: -3px;
+        width: 8px; height: 8px; border-radius: 4px;
+        background: var(--alert);
+      }
+
+      /* ── MONTH view ───────────────────────────────────── */
+      .month-header {
+        display: grid; grid-template-columns: repeat(7, 1fr);
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+      }
+      .month-header .mh-cell {
+        padding: 7px 4px;
+        text-align: center;
+        font-size: 9px; font-weight: 700;
+        color: var(--ink3); letter-spacing: 0.4px;
+      }
+      .month-grid {
+        flex: 1; overflow-y: auto;
+        display: grid; grid-template-columns: repeat(7, 1fr);
+        grid-auto-rows: minmax(80px, 1fr);
+        padding-bottom: 110px;
+      }
+      .month-cell {
+        background: var(--surface);
+        border-right: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        padding: 5px 4px;
+        cursor: pointer;
+        display: flex; flex-direction: column; gap: 3px;
+        min-height: 80px;
+      }
+      .month-cell.muted { opacity: 0.4; }
+      .month-cell .mn {
+        font-size: 12px; font-weight: 700; color: var(--ink1);
+        align-self: flex-start;
+        width: 22px; height: 22px; border-radius: 11px;
+        display: grid; place-items: center;
+      }
+      .month-cell.today .mn {
+        background: var(--brand-500); color: white;
+      }
+      .month-cell .ev-list {
+        display: flex; flex-direction: column; gap: 2px;
+      }
+      .month-cell .mev {
+        font-size: 8px; font-weight: 700;
+        padding: 1px 4px; border-radius: 3px;
+        background: var(--brand-500); color: white;
+        line-height: 1.4;
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      }
+      .month-cell .mev.maddy { background: #3D6B8C; }
+      .month-cell .mev.sam { background: #B85C38; }
+      .month-cell .mev.jodie { background: #6B5B95; }
+      .month-cell .mev.vet { background: var(--alert); }
+      .month-cell .mev.show { background: var(--alert); }
+      .month-cell .mev.paddock { background: var(--ok); }
+      .month-cell .mev.farrier { background: var(--warn-dot); color: var(--ink1); }
+      .month-cell .mev.more {
+        background: transparent; color: var(--ink3);
+        font-weight: 600;
+      }
+
+      /* ── Bottom sheet for event detail ────────────────── */
+      .sheet-backdrop {
+        position: absolute; inset: 0;
+        background: rgba(0,0,0,0.50);
+        opacity: 0; pointer-events: none;
+        transition: opacity 250ms;
+        z-index: 12;
+      }
+      .sheet-backdrop.open { opacity: 1; pointer-events: auto; }
+      .sheet {
+        position: absolute; left: 0; right: 0; bottom: 0;
+        background: var(--surface);
+        border-radius: 22px 22px 0 0;
+        z-index: 13;
+        transform: translateY(100%);
+        transition: transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1);
+        max-height: 75%; overflow-y: auto;
+        padding: 8px 18px 22px;
+      }
+      .sheet.open { transform: translateY(0); }
+      .sheet-handle {
+        width: 38px; height: 4px; border-radius: 2px;
+        background: var(--border);
+        margin: 8px auto 14px;
+      }
+      .sheet-eyebrow {
+        font-size: 10px; font-weight: 700; letter-spacing: 1.4px;
+        text-transform: uppercase; color: var(--ink3);
+      }
+      .sheet-title {
+        font-family: var(--serif); font-style: italic;
+        font-size: 24px; line-height: 28px;
+        color: var(--ink1);
+        margin-top: 4px; margin-bottom: 14px;
+      }
+      .sheet-rows {
+        display: flex; flex-direction: column; gap: 0;
+      }
+      .sheet-row {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 13px;
+      }
+      .sheet-row:last-child { border-bottom: none; }
+      .sheet-row .l { color: var(--ink2); }
+      .sheet-row .r { color: var(--ink1); font-weight: 700; text-align: right; }
+      .sheet-row .r.paid { color: var(--ok); }
+      .sheet-row .r.unpaid { color: var(--alert); }
+      .sheet-actions {
+        display: grid; grid-template-columns: 1fr 1fr;
+        gap: 8px; margin-top: 16px;
+      }
+      .sheet-actions .btn { padding: 12px; font-size: 13px; }
+      .sheet-actions .btn.danger {
+        background: transparent; color: var(--alert);
+        border: 1px solid var(--alert);
+      }
     </style>
   </head>
   <body>
@@ -1107,21 +1513,104 @@
               <button class="ph-burger" data-open-drawer><span></span><span></span><span></span></button>
               <div class="ph-stable"><span class="pin">📍</span>Wellington Park</div>
             </div>
+            <div class="ph-actions">
+              <div class="theme-pair">
+                <button class="sw eu" data-set-theme="eucalyptus"></button>
+                <button class="sw neo" data-set-theme="neo"></button>
+              </div>
+            </div>
           </div>
-          <div class="ph-pulse-line">March 2026.</div>
+          <div class="ph-pulse-line">14 horses in training today.</div>
+          <div class="ph-meta">
+            <span class="item"><span class="live-pip"></span>5 riders here</span>
+            <span class="item"><span class="ic">🐎</span>3 lessons now</span>
+            <span class="item" style="color:#ffd699;"><span class="ic">⚠️</span>1 vet at 14:00</span>
+          </div>
         </div>
-        <div class="placeholder">
-          <div class="icon">📅</div>
-          <div class="t">Calendar</div>
-          <div class="s">Day · Week · Month with filters by lesson type and trainer — coming in piece 2.</div>
-          <div class="badge">PIECE 2 / 5</div>
+
+        <div class="cal-screen">
+          <div class="cal-subheader">
+            <div class="cal-month-row">
+              <button class="cal-nav-arrow" id="cal-prev">‹</button>
+              <div class="cal-month-name" id="cal-month-name">May 2026</div>
+              <button class="cal-nav-arrow" id="cal-next">›</button>
+              <div class="cal-view-toggle">
+                <button class="cal-vbtn" data-cal-view="day">Day</button>
+                <button class="cal-vbtn on" data-cal-view="week">Week</button>
+                <button class="cal-vbtn" data-cal-view="month">Month</button>
+              </div>
+              <button class="cal-add-btn" id="cal-add">+</button>
+            </div>
+            <div class="cal-filters">
+              <div class="cal-fchip on" data-type="lessons">Lessons</div>
+              <div class="cal-fchip" data-type="rides">🐎 Rides</div>
+              <div class="cal-fchip" data-type="paddocks">Paddocks</div>
+              <div class="cal-fchip" data-type="vet">🩺 Vet</div>
+              <div class="cal-fchip" data-type="shows">🏆 Shows</div>
+              <div class="cal-fsep"></div>
+              <div class="cal-tchip" data-tr="maddy"><div class="dot tr-maddy"></div>Maddy</div>
+              <div class="cal-tchip" data-tr="sam"><div class="dot tr-sam"></div>Sam</div>
+              <div class="cal-tchip" data-tr="jodie"><div class="dot tr-jodie"></div>Jodie</div>
+            </div>
+          </div>
+
+          <div class="cal-body" id="cal-body">
+            <!-- DAY view -->
+            <div id="cal-view-day" style="display:none; flex:1; min-height:0; flex-direction:column;">
+              <div class="day-strip" id="day-strip"></div>
+              <div class="day-body" id="day-body"></div>
+            </div>
+
+            <!-- WEEK view -->
+            <div id="cal-view-week" style="display:flex; flex:1; min-height:0; flex-direction:column;">
+              <div class="week-header" id="week-header"></div>
+              <div class="week-grid">
+                <div class="week-grid-inner" id="week-grid-inner"></div>
+              </div>
+            </div>
+
+            <!-- MONTH view -->
+            <div id="cal-view-month" style="display:none; flex:1; min-height:0; flex-direction:column;">
+              <div class="month-header">
+                <div class="mh-cell">MON</div>
+                <div class="mh-cell">TUE</div>
+                <div class="mh-cell">WED</div>
+                <div class="mh-cell">THU</div>
+                <div class="mh-cell">FRI</div>
+                <div class="mh-cell">SAT</div>
+                <div class="mh-cell">SUN</div>
+              </div>
+              <div class="month-grid" id="month-grid"></div>
+            </div>
+          </div>
         </div>
+
         <div class="tabbar">
           <button class="tabitem" data-tab="home"><span class="ic">⌂</span><span>Home</span></button>
           <button class="tabitem" data-tab="stable"><span class="ic">🐴</span><span>Stable</span></button>
           <button class="tabitem active" data-tab="calendar"><span class="ic">📅</span><span>Calendar</span></button>
           <button class="tabitem" data-tab="whiteboard"><span class="ic">📋</span><span>Whiteboard</span></button>
           <button class="tabitem" data-tab="feed"><span class="ic">💬</span><span>Feed</span></button>
+        </div>
+      </div>
+
+      <!-- Event detail sheet (shared) -->
+      <div class="sheet-backdrop" id="sheet-backdrop"></div>
+      <div class="sheet" id="event-sheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-eyebrow" id="sh-eyebrow">LESSON</div>
+        <div class="sheet-title" id="sh-title">Jump · Bella with Maddy</div>
+        <div class="sheet-rows">
+          <div class="sheet-row"><span class="l">When</span><span class="r" id="sh-when">Tue, May 19 · 09:00 → 09:45</span></div>
+          <div class="sheet-row"><span class="l">Horse</span><span class="r" id="sh-horse">Bella · Stall #12</span></div>
+          <div class="sheet-row"><span class="l">Rider</span><span class="r" id="sh-rider">Maddy K.</span></div>
+          <div class="sheet-row"><span class="l">Where</span><span class="r" id="sh-where">Indoor arena</span></div>
+          <div class="sheet-row"><span class="l">Payment</span><span class="r paid" id="sh-pay">✓ Paid · $120</span></div>
+          <div class="sheet-row"><span class="l">Note</span><span class="r" id="sh-note">First lesson back after farrier</span></div>
+        </div>
+        <div class="sheet-actions">
+          <button class="btn danger">Cancel</button>
+          <button class="btn dark">Edit details</button>
         </div>
       </div>
       <div class="screen" data-screen="whiteboard">
@@ -1330,6 +1819,298 @@
         if (e.target.closest("#dark-toggle")) { isDark = !isDark; applyTheme(); persistTheme(); }
       });
       loadTheme(); applyTheme();
+
+      // ── Calendar (piece 2) ─────────────────────────────────
+      // Reference week: May 18 (Mon) – May 24 (Sun) 2026
+      // Today = Tue May 19
+      const CAL_EVENTS = [
+        // dow: 0=Mon..6=Sun · sh/sm = start hour/min · eh/em = end · type · trainer · horse · rider · note · paid
+        { dow:0, sh:9, sm:0, eh:9, em:45, type:'lessons', tr:'maddy', horse:'Storm',  rider:'Sofia Reyes',  loc:'Indoor', note:'Flat work', paid:true,  price:120 },
+        { dow:0, sh:11, sm:0, eh:11, em:45, type:'lessons', tr:'sam', horse:'Indigo', rider:'Mateo Bell',   loc:'Outdoor', note:'Jump', paid:true,  price:120 },
+        { dow:0, sh:14, sm:0, eh:14, em:45, type:'lessons', tr:'sam', horse:'Bella',  rider:'Emma Carter',  loc:'Indoor', note:'Jump 1m10', paid:true,  price:120 },
+
+        { dow:1, sh:9, sm:0, eh:9, em:45, type:'lessons', tr:'maddy', horse:'Bella',  rider:'Maddy K.',     loc:'Indoor', note:'First lesson back after farrier', paid:true, price:120 },
+        { dow:1, sh:10, sm:30, eh:11, em:15, type:'lessons', tr:'sam', horse:'Storm',  rider:'Sofia Reyes',  loc:'Indoor', note:'Flat · supple', paid:true, price:120 },
+        { dow:1, sh:12, sm:0, eh:12, em:45, type:'lessons', tr:'sam', horse:'Indigo', rider:'Mateo Bell',   loc:'Outdoor', note:'Jump', paid:false, price:120 },
+        { dow:1, sh:14, sm:0, eh:15, em:0,  type:'vet', tr:'vet', horse:'Storm', rider:'Dr. Torres',  loc:'Barn aisle', note:'Soundness check', paid:true, price:180 },
+        { dow:1, sh:15, sm:30, eh:16, em:15, type:'lessons', tr:'maddy', horse:'Juno', rider:'Liv Andersen', loc:'Outdoor', note:'Flat', paid:true, price:120 },
+        { dow:1, sh:17, sm:0, eh:18, em:0, type:'lessons', tr:'jodie', horse:'Mix', rider:'Group · 4 beginners', loc:'Outdoor', note:'Beginner class', paid:true, price:320 },
+
+        { dow:2, sh:8, sm:0, eh:9, em:0, type:'vet', tr:'vet', horse:'Bella', rider:'Dr. Torres', loc:'Barn', note:'Annual vaccine', paid:true, price:140 },
+        { dow:2, sh:10, sm:0, eh:10, em:45, type:'lessons', tr:'maddy', horse:'Bella', rider:'Maddy K.', loc:'Outdoor', note:'Flat', paid:true, price:120 },
+        { dow:2, sh:14, sm:0, eh:16, em:0, type:'paddocks', tr:null, horse:'Atlas', rider:null, loc:'Paddock 3', note:'Turn-out', paid:null, price:null },
+        { dow:2, sh:16, sm:0, eh:16, em:45, type:'lessons', tr:'sam', horse:'Indigo', rider:'Mateo Bell', loc:'Indoor', note:'Jump', paid:true, price:120 },
+
+        { dow:3, sh:9, sm:0, eh:10, em:0, type:'lessons', tr:'jodie', horse:'Juno', rider:'Liv Andersen', loc:'Outdoor', note:'Dressage test', paid:true, price:140 },
+        { dow:3, sh:11, sm:0, eh:12, em:0, type:'paddocks', tr:null, horse:'Bella + Storm', rider:null, loc:'Paddock 1', note:'Shared turn-out', paid:null, price:null },
+        { dow:3, sh:14, sm:0, eh:14, em:45, type:'lessons', tr:'maddy', horse:'Storm', rider:'Sofia Reyes', loc:'Indoor', note:'Flat', paid:true, price:120 },
+        { dow:3, sh:16, sm:0, eh:16, em:45, type:'lessons', tr:'sam', horse:'Bella', rider:'Emma Carter', loc:'Outdoor', note:'Jump', paid:false, price:120 },
+
+        { dow:4, sh:8, sm:0, eh:11, em:0, type:'rides', tr:null, horse:'Atlas', rider:'Mike (farrier)', loc:'Stall side', note:'Farrier visit · new shoes', paid:true, price:180 },
+        { dow:4, sh:14, sm:0, eh:14, em:45, type:'lessons', tr:'maddy', horse:'Bella', rider:'Maddy K.', loc:'Indoor', note:'Jump prep show', paid:true, price:120 },
+        { dow:4, sh:15, sm:30, eh:16, em:15, type:'lessons', tr:'sam', horse:'Indigo', rider:'Mateo Bell', loc:'Outdoor', note:'Jump', paid:true, price:120 },
+
+        { dow:5, sh:7, sm:0, eh:18, em:0, type:'shows', tr:'maddy', horse:'Bella', rider:'Maddy K.', loc:'Wellington Showgrounds', note:'1m20 class · double clear target', paid:true, price:280 },
+        { dow:5, sh:10, sm:0, eh:11, em:0, type:'rides', tr:null, horse:'Juno', rider:'Liv Andersen', loc:'Trail', note:'Hack out', paid:null, price:null },
+      ];
+
+      const TYPE_LABEL = { lessons:'Lesson', rides:'Hack / Ride', paddocks:'Paddock', vet:'Vet visit', shows:'Show' };
+      const TR_NAME = { maddy:'Maddy K.', sam:'Sam', jodie:'Jodie', vet:'Dr. Torres' };
+
+      const calState = {
+        view: 'week',
+        filters: new Set(['lessons']),
+        trainers: new Set(['maddy', 'sam', 'jodie']),
+        monthOffset: 0,
+      };
+      const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+      const DAYS_FULL = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+      const TODAY_DOW = 1;     // Tue = today
+      const TODAY_DATE = 19;
+      const WEEK_DATES = [18, 19, 20, 21, 22, 23, 24];
+      const MONTH_NAME = 'May 2026';
+
+      function eventVisible(ev) {
+        if (!calState.filters.has(ev.type)) return false;
+        if (['lessons','shows'].includes(ev.type) && ev.tr && !calState.trainers.has(ev.tr)) return false;
+        return true;
+      }
+      function trainerClass(ev) {
+        if (ev.type === 'vet') return 'vet';
+        if (ev.type === 'shows') return 'show';
+        if (ev.type === 'paddocks') return 'paddock';
+        if (ev.type === 'rides' && ev.rider && ev.rider.includes('farrier')) return 'farrier';
+        return ev.tr || '';
+      }
+
+      function renderDayView() {
+        const strip = document.getElementById('day-strip');
+        strip.innerHTML = '';
+        DAYS.forEach((d, i) => {
+          const cell = document.createElement('div');
+          cell.className = 'day-cell' + (i === TODAY_DOW ? ' today' : '');
+          cell.innerHTML = `<div class="dow">${d.toUpperCase()}</div><div class="n">${WEEK_DATES[i]}</div>`;
+          strip.appendChild(cell);
+        });
+        const body = document.getElementById('day-body');
+        body.innerHTML = '';
+        const todayEvents = CAL_EVENTS
+          .filter(ev => ev.dow === TODAY_DOW && eventVisible(ev))
+          .sort((a,b) => (a.sh*60+a.sm) - (b.sh*60+b.sm));
+        if (todayEvents.length === 0) {
+          body.innerHTML = '<div class="day-empty">Nothing scheduled today.</div>';
+        }
+        todayEvents.forEach(ev => {
+          const cls = trainerClass(ev);
+          const el = document.createElement('div');
+          el.className = 'day-event ' + cls;
+          el.innerHTML = `
+            <div class="time-col">
+              <div class="start">${pad(ev.sh)}:${pad(ev.sm)}</div>
+              <div class="end">→ ${pad(ev.eh)}:${pad(ev.em)}</div>
+            </div>
+            <div class="ev-body">
+              <div class="ev-title">${ev.note || TYPE_LABEL[ev.type]} · ${ev.horse}</div>
+              <div class="ev-meta">${ev.rider ? ev.rider + ' · ' : ''}${ev.loc}${ev.tr && TR_NAME[ev.tr] && ev.rider !== TR_NAME[ev.tr] ? ' · coached by ' + TR_NAME[ev.tr] : ''}</div>
+              ${ev.paid !== null ? `<div class="ev-status ${ev.paid ? 'paid' : 'unpaid'}"><span class="dot"></span>${ev.paid ? 'PAID · $' + ev.price : 'UNPAID · $' + ev.price + ' due'}</div>` : ''}
+            </div>
+          `;
+          el.addEventListener('click', () => openEventSheet(ev));
+          body.appendChild(el);
+        });
+      }
+      function pad(n) { return String(n).padStart(2, '0'); }
+
+      function renderWeekView() {
+        const wh = document.getElementById('week-header');
+        wh.innerHTML = '';
+        DAYS.forEach((d, i) => {
+          const cell = document.createElement('div');
+          cell.className = 'wh-cell' + (i === TODAY_DOW ? ' today' : '');
+          cell.innerHTML = `<div class="dow">${d.toUpperCase()}</div><div class="n">${WEEK_DATES[i]}</div>`;
+          wh.appendChild(cell);
+        });
+        const grid = document.getElementById('week-grid-inner');
+        grid.innerHTML = '';
+
+        // Hour column (06:00 → 20:00)
+        const hCol = document.createElement('div');
+        hCol.className = 'week-hour-col';
+        for (let h = 6; h <= 20; h++) {
+          const hLbl = document.createElement('div');
+          hLbl.className = 'week-hour';
+          hLbl.textContent = `${pad(h)}`;
+          hCol.appendChild(hLbl);
+        }
+        grid.appendChild(hCol);
+
+        // Day columns
+        for (let d = 0; d < 7; d++) {
+          const col = document.createElement('div');
+          col.className = 'week-day-col' + (d === TODAY_DOW ? ' today' : '');
+          // Events
+          CAL_EVENTS.filter(ev => ev.dow === d && eventVisible(ev)).forEach(ev => {
+            const minStart = (ev.sh - 6) * 60 + ev.sm;     // px from top: 50px per hour
+            const dur = (ev.eh - ev.sh) * 60 + (ev.em - ev.sm);
+            const top = (minStart / 60) * 50;
+            const h = Math.max(18, (dur / 60) * 50);
+            const cls = trainerClass(ev);
+            const el = document.createElement('div');
+            el.className = 'week-event ' + cls;
+            el.style.top = top + 'px';
+            el.style.height = h + 'px';
+            const title = ev.type === 'shows' ? '🏆 ' + ev.horse :
+                          ev.type === 'vet' ? '🩺 ' + ev.horse :
+                          ev.type === 'paddocks' ? '📍 ' + ev.horse :
+                          ev.type === 'rides' && cls === 'farrier' ? '🔨 ' + ev.horse :
+                          ev.horse;
+            el.innerHTML = `<div class="et">${pad(ev.sh)}:${pad(ev.sm)}</div><div class="en">${title}</div>`;
+            el.addEventListener('click', () => openEventSheet(ev));
+            col.appendChild(el);
+          });
+          // Now-line on today
+          if (d === TODAY_DOW) {
+            const nowLine = document.createElement('div');
+            nowLine.className = 'week-now-line';
+            // 9:41 = (9-6)*60+41 minutes = 221 min → 221/60*50 = 184px
+            nowLine.style.top = '184px';
+            col.appendChild(nowLine);
+          }
+          grid.appendChild(col);
+        }
+
+        // Auto-scroll to 7:00
+        setTimeout(() => {
+          const wg = grid.parentElement;
+          wg.scrollTop = 60;
+        }, 50);
+      }
+
+      function renderMonthView() {
+        const grid = document.getElementById('month-grid');
+        grid.innerHTML = '';
+        // May 2026: starts on Friday (May 1 = Fri), 31 days
+        // Grid starts on Monday April 27
+        const PREV_MONTH_TAIL = [27, 28, 29, 30];   // Mon Apr 27 → Thu Apr 30
+        const MAY = Array.from({length: 31}, (_, i) => i + 1);
+        const NEXT_MONTH_HEAD = [1, 2, 3, 4, 5, 6, 7];  // Mon Jun 1 → Sun Jun 7
+        const cells = [
+          ...PREV_MONTH_TAIL.map(n => ({ n, muted: true })),
+          ...MAY.map(n => ({ n, muted: false })),
+          ...NEXT_MONTH_HEAD.map(n => ({ n, muted: true })),
+        ].slice(0, 42);
+
+        // Map our 7-day events (May 18 = Mon, dow=0) to specific dates
+        function eventsForDate(date) {
+          // Map date in May to dow (May 1 = Fri = dow 4)
+          // Easier: hardcode our week mapping (May 18-24)
+          const dateToDowMap = { 18:0, 19:1, 20:2, 21:3, 22:4, 23:5, 24:6 };
+          if (dateToDowMap[date] === undefined) return [];
+          const dow = dateToDowMap[date];
+          return CAL_EVENTS.filter(ev => ev.dow === dow && eventVisible(ev));
+        }
+
+        cells.forEach(c => {
+          const cell = document.createElement('div');
+          cell.className = 'month-cell' + (c.muted ? ' muted' : '') + (!c.muted && c.n === TODAY_DATE ? ' today' : '');
+          let html = `<div class="mn">${c.n}</div><div class="ev-list">`;
+          if (!c.muted) {
+            const evs = eventsForDate(c.n);
+            const shown = evs.slice(0, 3);
+            shown.forEach(ev => {
+              const cls = trainerClass(ev);
+              const title = ev.type === 'shows' ? '🏆 ' + ev.horse :
+                            ev.type === 'vet' ? '🩺 ' + ev.horse :
+                            ev.horse;
+              html += `<div class="mev ${cls}">${title}</div>`;
+            });
+            if (evs.length > shown.length) {
+              html += `<div class="mev more">+${evs.length - shown.length} more</div>`;
+            }
+          }
+          html += '</div>';
+          cell.innerHTML = html;
+          grid.appendChild(cell);
+        });
+      }
+
+      function renderCalendar() {
+        if (calState.view === 'day') renderDayView();
+        if (calState.view === 'week') renderWeekView();
+        if (calState.view === 'month') renderMonthView();
+        document.getElementById('cal-month-name').textContent = MONTH_NAME;
+      }
+
+      function setCalView(v) {
+        calState.view = v;
+        document.querySelectorAll('[data-cal-view]').forEach(b => b.classList.toggle('on', b.dataset.calView === v));
+        ['day','week','month'].forEach(name => {
+          const el = document.getElementById('cal-view-' + name);
+          if (el) el.style.display = (name === v) ? 'flex' : 'none';
+        });
+        renderCalendar();
+      }
+      document.querySelectorAll('[data-cal-view]').forEach(b => {
+        b.addEventListener('click', () => setCalView(b.dataset.calView));
+      });
+
+      document.querySelectorAll('.cal-fchip').forEach(c => {
+        c.addEventListener('click', () => {
+          const t = c.dataset.type;
+          if (calState.filters.has(t)) calState.filters.delete(t);
+          else calState.filters.add(t);
+          c.classList.toggle('on');
+          renderCalendar();
+        });
+      });
+      document.querySelectorAll('.cal-tchip').forEach(c => {
+        c.addEventListener('click', () => {
+          const t = c.dataset.tr;
+          if (calState.trainers.has(t)) calState.trainers.delete(t);
+          else calState.trainers.add(t);
+          c.classList.toggle('off');
+          renderCalendar();
+        });
+      });
+
+      // ── Event sheet ────────────────────────────────────────
+      const sheetBackdrop = document.getElementById('sheet-backdrop');
+      const eventSheet = document.getElementById('event-sheet');
+      function openEventSheet(ev) {
+        document.getElementById('sh-eyebrow').textContent = (TYPE_LABEL[ev.type] || ev.type).toUpperCase();
+        const title = ev.type === 'shows' ? '🏆 ' + (ev.note || 'Show') + ' · ' + ev.horse :
+                      ev.type === 'vet' ? '🩺 ' + (ev.note || 'Vet visit') + ' · ' + ev.horse :
+                      ev.type === 'paddocks' ? 'Paddock · ' + ev.horse :
+                      (ev.note || TYPE_LABEL[ev.type]) + ' · ' + ev.horse + (ev.tr ? ' with ' + TR_NAME[ev.tr] : '');
+        document.getElementById('sh-title').textContent = title;
+        const dayName = DAYS_FULL[ev.dow];
+        document.getElementById('sh-when').textContent = `${dayName}, May ${WEEK_DATES[ev.dow]} · ${pad(ev.sh)}:${pad(ev.sm)} → ${pad(ev.eh)}:${pad(ev.em)}`;
+        document.getElementById('sh-horse').textContent = ev.horse;
+        document.getElementById('sh-rider').textContent = ev.rider || '—';
+        document.getElementById('sh-where').textContent = ev.loc || '—';
+        const payEl = document.getElementById('sh-pay');
+        if (ev.paid === null) {
+          payEl.textContent = '—';
+          payEl.className = 'r';
+        } else if (ev.paid) {
+          payEl.textContent = `✓ Paid · $${ev.price}`;
+          payEl.className = 'r paid';
+        } else {
+          payEl.textContent = `Unpaid · $${ev.price} due`;
+          payEl.className = 'r unpaid';
+        }
+        document.getElementById('sh-note').textContent = ev.note || '—';
+        sheetBackdrop.classList.add('open');
+        eventSheet.classList.add('open');
+      }
+      function closeEventSheet() {
+        sheetBackdrop.classList.remove('open');
+        eventSheet.classList.remove('open');
+      }
+      sheetBackdrop.addEventListener('click', closeEventSheet);
+
+      // Initial render
+      setCalView('week');
 
       // ── Groom task interactions ────────────────────────────
       const dopamineNum = document.getElementById("dopamine-num");
