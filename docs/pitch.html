@@ -450,11 +450,15 @@
         padding: 12px 4px;
         font-size: 14px;
       }
-      .wp-body .wb-task .check {
-        width: 22px; height: 22px; border-radius: 11px;
-        flex: 0 0 22px;
-        font-size: 11px;
+      .wp-body .wb-task .task-slider {
+        width: 40px; height: 22px; border-radius: 11px;
+        flex: 0 0 40px;
       }
+      .wp-body .wb-task .task-slider::after {
+        width: 18px; height: 18px; border-radius: 9px;
+        top: 2px; left: 2px;
+      }
+      .wp-body .wb-task.done .task-slider::after { left: 20px; }
       .wp-body .wb-task .when { font-size: 12.5px; }
 
       /* Drawer mini-badge · next to "Approvals & alerts" entry */
@@ -2724,14 +2728,16 @@
 
       .wb-rows {
         flex: 1; overflow-y: auto;
-        padding: 8px 16px 110px;
+        padding: 10px 14px 110px;
         background: var(--bg);
         /* Two-column grid so 2 employees share a row.
-           align-items:start so opening one row doesn't stretch its
-           neighbour. */
+           align-items:start so each cell takes its natural height
+           and never stretches its neighbour. Generous gap so adjacent
+           cards never look attached / overlapping. */
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 8px;
+        column-gap: 10px;
+        row-gap: 14px;
         align-items: start;
       }
       /* Whiteboard v2 · compact list per employee.
@@ -2746,9 +2752,9 @@
         overflow: hidden;
         cursor: pointer;
         transition: background 160ms, border-color 160ms;
-        /* Prevent flex-column parent from shrinking the row when
-           its details expand · scrolling stays at .wb-rows level. */
-        flex: 0 0 auto;
+        /* Soft elevation so adjacent cards never look attached. */
+        box-shadow: 0 1px 2px rgba(0,0,0,0.04),
+                    0 4px 12px rgba(0,0,0,0.05);
       }
       @media (hover: hover) {
         .wb-row:hover { background: var(--brand-50); }
@@ -2842,19 +2848,19 @@
         font-size: 12px; color: var(--ink1);
       }
       .wb-task + .wb-task { border-top: 1px solid var(--border); }
-      .wb-task .check {
-        width: 16px; height: 16px; border-radius: 8px;
-        border: 1.5px solid var(--ink3); background: var(--surface);
-        flex: 0 0 16px;
-        display: grid; place-items: center;
-        font-size: 9px; color: transparent;
+      /* Slider matches the home page pattern, compact (32x18) so it
+         fits in the dense 2-col whiteboard cards. */
+      .wb-task .task-slider {
+        width: 32px; height: 18px; border-radius: 9px;
+        flex: 0 0 32px;
       }
-      .wb-task.done .check {
-        background: var(--brand-500);
-        border-color: var(--brand-500);
-        color: white;
+      .wb-task .task-slider::after {
+        width: 14px; height: 14px; border-radius: 7px;
+        top: 2px; left: 2px;
       }
-      .wb-task.done .check::after { content: "✓"; }
+      .wb-task.done .task-slider { background: var(--ok); }
+      .wb-task.done .task-slider::after { left: 16px; }
+      .wb-task.urgent .task-slider { background: var(--brand-200); }
       .wb-task .lbl {
         flex: 1; min-width: 0;
         font-weight: 600;
@@ -2866,10 +2872,6 @@
         font-variant-numeric: tabular-nums;
       }
       .wb-task.urgent .lbl { color: var(--brand-800); font-weight: 800; }
-      .wb-task.urgent .check {
-        border-color: var(--brand-700);
-        background: var(--brand-100);
-      }
 
       /* ── Feed · Stories + posts ────────────────────── */
       .feed-screen { flex: 1; min-height: 0; display: flex; flex-direction: column; }
@@ -5202,10 +5204,10 @@
                 </div>
               </div>
               <div class="wb-row-details">
-                <div class="wb-task done"><span class="check"></span><span class="lbl">Bella · lunge</span><span class="when">8 am</span></div>
-                <div class="wb-task done"><span class="check"></span><span class="lbl">Stretch · extras</span><span class="when">9:30 am</span></div>
-                <div class="wb-task"><span class="check"></span><span class="lbl">Choose tack · Atlas</span><span class="when">11 am</span></div>
-                <div class="wb-task"><span class="check"></span><span class="lbl">Prep new horse</span><span class="when">2 pm</span></div>
+                <div class="wb-task done"><div class="task-slider"></div><span class="lbl">Bella · lunge</span><span class="when">8 am</span></div>
+                <div class="wb-task done"><div class="task-slider"></div><span class="lbl">Stretch · extras</span><span class="when">9:30 am</span></div>
+                <div class="wb-task"><div class="task-slider"></div><span class="lbl">Choose tack · Atlas</span><span class="when">11 am</span></div>
+                <div class="wb-task"><div class="task-slider"></div><span class="lbl">Prep new horse</span><span class="when">2 pm</span></div>
               </div>
             </div>
 
@@ -5222,9 +5224,9 @@
                 </div>
               </div>
               <div class="wb-row-details">
-                <div class="wb-task done"><span class="check"></span><span class="lbl">Coach · Pilo</span><span class="when">7 am</span></div>
-                <div class="wb-task"><span class="check"></span><span class="lbl">Carrier form</span><span class="when">noon</span></div>
-                <div class="wb-task urgent"><span class="check"></span><span class="lbl">Call vet · Bella</span><span class="when">ASAP</span></div>
+                <div class="wb-task done"><div class="task-slider"></div><span class="lbl">Coach · Pilo</span><span class="when">7 am</span></div>
+                <div class="wb-task"><div class="task-slider"></div><span class="lbl">Carrier form</span><span class="when">noon</span></div>
+                <div class="wb-task urgent"><div class="task-slider"></div><span class="lbl">Call vet · Bella</span><span class="when">ASAP</span></div>
               </div>
             </div>
 
@@ -5241,11 +5243,11 @@
                 </div>
               </div>
               <div class="wb-row-details">
-                <div class="wb-task done"><span class="check"></span><span class="lbl">Stalls 1–6</span><span class="when">7:15 am</span></div>
-                <div class="wb-task done"><span class="check"></span><span class="lbl">Turnout am</span><span class="when">7:30 am</span></div>
-                <div class="wb-task done"><span class="check"></span><span class="lbl">Bella · groom ✨</span><span class="when">7:45 am</span></div>
-                <div class="wb-task"><span class="check"></span><span class="lbl">Feed pm</span><span class="when">5 pm</span></div>
-                <div class="wb-task"><span class="check"></span><span class="lbl">Blankets</span><span class="when">6 pm</span></div>
+                <div class="wb-task done"><div class="task-slider"></div><span class="lbl">Stalls 1–6</span><span class="when">7:15 am</span></div>
+                <div class="wb-task done"><div class="task-slider"></div><span class="lbl">Turnout am</span><span class="when">7:30 am</span></div>
+                <div class="wb-task done"><div class="task-slider"></div><span class="lbl">Bella · groom ✨</span><span class="when">7:45 am</span></div>
+                <div class="wb-task"><div class="task-slider"></div><span class="lbl">Feed pm</span><span class="when">5 pm</span></div>
+                <div class="wb-task"><div class="task-slider"></div><span class="lbl">Blankets</span><span class="when">6 pm</span></div>
               </div>
             </div>
 
@@ -5262,8 +5264,8 @@
                 </div>
               </div>
               <div class="wb-row-details">
-                <div class="wb-task"><span class="check"></span><span class="lbl">Muck 7–12</span><span class="when">10 am</span></div>
-                <div class="wb-task"><span class="check"></span><span class="lbl">Hay delivery</span><span class="when">2 pm</span></div>
+                <div class="wb-task"><div class="task-slider"></div><span class="lbl">Muck 7–12</span><span class="when">10 am</span></div>
+                <div class="wb-task"><div class="task-slider"></div><span class="lbl">Hay delivery</span><span class="when">2 pm</span></div>
               </div>
             </div>
 
@@ -5280,10 +5282,10 @@
                 </div>
               </div>
               <div class="wb-row-details">
-                <div class="wb-task done"><span class="check"></span><span class="lbl">Dressage · Storm</span><span class="when">9 am</span></div>
-                <div class="wb-task done"><span class="check"></span><span class="lbl">Flat · Indigo</span><span class="when">10 am</span></div>
-                <div class="wb-task done"><span class="check"></span><span class="lbl">Jump grid · Juno</span><span class="when">11 am</span></div>
-                <div class="wb-task done"><span class="check"></span><span class="lbl">Cool down · all</span><span class="when">12 pm</span></div>
+                <div class="wb-task done"><div class="task-slider"></div><span class="lbl">Dressage · Storm</span><span class="when">9 am</span></div>
+                <div class="wb-task done"><div class="task-slider"></div><span class="lbl">Flat · Indigo</span><span class="when">10 am</span></div>
+                <div class="wb-task done"><div class="task-slider"></div><span class="lbl">Jump grid · Juno</span><span class="when">11 am</span></div>
+                <div class="wb-task done"><div class="task-slider"></div><span class="lbl">Cool down · all</span><span class="when">12 pm</span></div>
               </div>
             </div>
           </div>
