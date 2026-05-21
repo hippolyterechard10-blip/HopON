@@ -2599,8 +2599,13 @@
         overflow: hidden;
         cursor: pointer;
         transition: background 160ms, border-color 160ms;
+        /* Prevent flex-column parent from shrinking the row when
+           its details expand · scrolling stays at .wb-rows level. */
+        flex: 0 0 auto;
       }
-      .wb-row:hover { background: var(--brand-50); }
+      @media (hover: hover) {
+        .wb-row:hover { background: var(--brand-50); }
+      }
       .wb-row.has-urgent { border-color: var(--brand-300); }
       .wb-row-head {
         display: flex; align-items: center; gap: 10px;
