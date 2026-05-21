@@ -762,11 +762,12 @@
       .task-row.done .text { color: var(--ink3); text-decoration: line-through; }
       .task-row.urgent .text { color: var(--alert); }
 
-      /* NEXT UP variant · same height as a normal task row,
-         eucalyptus fill carries the attention. */
+      /* NEXT UP variant · same height as a normal task row.
+         Vertical gradient: dark on top, flash brand-500 at the bottom
+         to pull the finger toward the slider. */
       .task-row.up-next {
-        background: linear-gradient(135deg, var(--brand-600) 0%, var(--brand-800) 100%);
-        border-color: var(--brand-700);
+        background: linear-gradient(180deg, var(--brand-800) 0%, var(--brand-500) 100%);
+        border-color: var(--brand-600);
       }
       .task-row.up-next .text { color: white; }
       .task-row.up-next .task-slider {
@@ -776,7 +777,7 @@
       .task-row.up-next.done { opacity: 0.85; }
       [data-theme="neo"] .task-row.up-next,
       [data-theme="neo-dark"] .task-row.up-next {
-        background: linear-gradient(135deg, var(--brand-500) 0%, var(--brand-600) 100%);
+        background: linear-gradient(180deg, var(--brand-800) 0%, var(--brand-500) 100%);
         border-color: var(--brand-600);
       }
 
@@ -3025,21 +3026,23 @@
 
       /* ── FAB + petals · adaptive (screen × role) ─────── */
       .fab {
-        /* Match the pulse-header gradient so the FAB reads as the
-           same "campfire" anchor — eucalyptus on default themes,
-           orange→off-black on Neo (not flat hyper-orange). */
         position: absolute; bottom: 92px; right: 16px;
         width: 56px; height: 56px; border-radius: 28px;
-        background: linear-gradient(160deg, var(--brand-900) 0%, var(--brand-700) 100%);
+        background: var(--brand-500);
         color: white;
         border: 0;
-        box-shadow: 0 10px 22px rgba(0,0,0,0.28),
-                    0 4px 10px rgba(0,0,0,0.12);
+        box-shadow: 0 10px 22px rgba(0,0,0,0.22),
+                    0 4px 10px rgba(0,0,0,0.10);
         display: grid; place-items: center;
         font-size: 26px; font-weight: 300;
         cursor: pointer; z-index: 6;
         transition: transform 240ms cubic-bezier(0.34, 1.56, 0.64, 1),
                     background 200ms;
+      }
+      [data-theme="neo"] .fab,
+      [data-theme="neo-dark"] .fab {
+        box-shadow: 0 10px 22px rgba(255,90,0,0.35),
+                    0 4px 10px rgba(0,0,0,0.10);
       }
       .fab.open { transform: rotate(45deg); }
 
