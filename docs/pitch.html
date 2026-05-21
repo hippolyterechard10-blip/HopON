@@ -3337,9 +3337,19 @@
 
         <!-- 80% · Role-shells -->
         <div class="role-stage" id="role-stage">
-          <!-- OWNER -->
+          <!-- OWNER (default home for owner & owner-trainer, the dominant case).
+               Pure owners hide the My day section automatically; owner-trainers
+               see their personal lessons + to-dos there. -->
           <div class="role-shell active" data-shell="owner">
-            <div class="eyebrow">Today · Tue · May 19</div>
+            <!-- Vanity KPI · business-led, owner-trainer accent in the sub line -->
+            <div class="vanity">
+              <span class="vanity-num">$3,600</span>
+              <div class="vanity-meta">
+                <div class="vanity-lbl">Revenue · this month</div>
+                <div class="vanity-sub">+18% vs April · 12 lessons taught · 4 first-times ✨</div>
+              </div>
+            </div>
+
             <div class="section-head"><span class="t">Operations</span><span class="a" data-go="whiteboard">View board ›</span></div>
             <div class="owner-grid">
               <div class="owner-tile ops" data-go="whiteboard">
@@ -3390,6 +3400,99 @@
                 <span class="v">$540</span>
                 <span class="sub">6 invoices · oldest 9 days</span>
               </div>
+            </div>
+
+            <!-- My day · only shows for owners who also wear a trainer/rider hat.
+                 Pure owners (no lessons booked + no to-dos assigned) → section
+                 hidden entirely. -->
+            <div class="section-head" style="margin-top:8px;">
+              <span class="t">My day</span>
+              <span class="a" data-go="calendar">Full calendar ›</span>
+            </div>
+
+            <div class="eyebrow" style="color:var(--brand-700);">Up next · in 25 min</div>
+            <div class="trainer-row up-next" data-go="sharecard">
+              <span class="time">10:30</span>
+              <div class="who">
+                <div class="n">Jump · Bella · Indoor</div>
+                <div class="m">Maddy K. · just groomed by Jess · ⚠️ farrier in 3 days</div>
+              </div>
+              <span class="horse-pill">BELLA</span>
+            </div>
+
+            <div class="eyebrow" style="margin-top:6px;">Today's lessons · 3 left</div>
+            <div class="row-group" id="owner-lessons">
+              <div class="trainer-row"><span class="time">14:00</span><div class="who"><div class="n">Liv Andersen</div><div class="m">Outdoor · Flat · 45 min</div></div><span class="horse-pill">JUNO</span></div>
+              <div class="trainer-row"><span class="time">15:30</span><div class="who"><div class="n">Emma Carter</div><div class="m">Outdoor · Jump · 45 min</div></div><span class="horse-pill">BELLA</span></div>
+              <div class="trainer-row"><span class="time">17:00</span><div class="who"><div class="n">Group · 4 riders</div><div class="m">Outdoor · Beginner · 60 min</div></div><span class="horse-pill">MIX</span></div>
+            </div>
+
+            <div class="eyebrow" style="margin-top:6px;">To-dos &amp; events · 3 items</div>
+            <div class="row-group todos">
+              <div class="task-row" data-task><div class="task-slider"></div><div class="text">Review May invoices · 6 unpaid · oldest 9 days</div></div>
+              <div class="task-row" data-task><div class="task-slider"></div><div class="text">Sign Bella's vaccine consent · vet on Friday</div></div>
+              <div class="trainer-row"><span class="time">18:00</span><div class="who"><div class="n">Riders' meeting</div><div class="m">Barn lounge · 45 min · winter plan</div></div><span class="event-pill">EVENT</span></div>
+            </div>
+
+            <!-- Feed mini · barn posts · auto-news · external · last 7 days -->
+            <div class="eyebrow" style="margin-top:10px;">Latest · last 7 days</div>
+            <div class="feed-mini">
+              <div class="feed-mini-row" data-go="feed">
+                <div class="feed-mini-av">SM</div>
+                <div class="feed-mini-body">
+                  <div class="feed-mini-head">
+                    <span class="feed-mini-author">Sam · trainer</span>
+                    <span class="feed-mini-tag">@owners</span>
+                  </div>
+                  <div class="feed-mini-text">Bella nailed the 1m10 grid · best session this week.</div>
+                  <div class="feed-mini-foot"><span>❤️ 8</span><span>👏 3</span><span class="time">yesterday · 4 pm</span></div>
+                </div>
+              </div>
+              <div class="feed-mini-row news" data-go="feed">
+                <div class="feed-mini-av">🎉</div>
+                <div class="feed-mini-body">
+                  <div class="feed-mini-head">
+                    <span class="feed-mini-author">Barn news</span>
+                    <span class="feed-mini-tag">@all</span>
+                  </div>
+                  <div class="feed-mini-text">Juno turns 12 today — drop a carrot in stall 7.</div>
+                  <div class="feed-mini-foot"><span>❤️ 14</span><span>🥕 9</span><span class="time">today</span></div>
+                </div>
+              </div>
+              <div class="feed-mini-row ext" data-go="feed">
+                <div class="feed-mini-av">WEF</div>
+                <div class="feed-mini-body">
+                  <div class="feed-mini-head">
+                    <span class="feed-mini-author">Winter Equestrian Festival</span>
+                    <span class="feed-mini-tag">industry</span>
+                  </div>
+                  <div class="feed-mini-text">Week 12 schedule released — $500K Grand Prix Saturday under lights.</div>
+                  <div class="feed-mini-foot"><span>wellington.com</span><span class="time">2 days ago</span></div>
+                </div>
+              </div>
+              <div class="feed-mini-row" data-go="feed">
+                <div class="feed-mini-av">CL</div>
+                <div class="feed-mini-body">
+                  <div class="feed-mini-head">
+                    <span class="feed-mini-author">Clara · barn manager</span>
+                    <span class="feed-mini-tag">@team</span>
+                  </div>
+                  <div class="feed-mini-text">Farrier on-site Friday 8 to 11 — please plan rides accordingly.</div>
+                  <div class="feed-mini-foot"><span>👍 6</span><span class="time">2 days ago</span></div>
+                </div>
+              </div>
+              <div class="feed-mini-row ext" data-go="feed">
+                <div class="feed-mini-av">GP</div>
+                <div class="feed-mini-body">
+                  <div class="feed-mini-head">
+                    <span class="feed-mini-author">Grand Prix Magazine</span>
+                    <span class="feed-mini-tag">industry</span>
+                  </div>
+                  <div class="feed-mini-text">USEF rule update · helmet certification standards effective July.</div>
+                  <div class="feed-mini-foot"><span>grandprix-mag.com</span><span class="time">4 days ago</span></div>
+                </div>
+              </div>
+              <div class="feed-mini-see" data-go="feed">See all in feed →</div>
             </div>
           </div>
 
