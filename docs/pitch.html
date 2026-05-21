@@ -251,6 +251,142 @@
         display: grid; place-items: center;
         font-size: 13px;
       }
+      /* ── Notifications sheet · slides up from bottom ─────
+         Hosts approvals + alerts + recent activity. Opened by the
+         bell in any header, by the Approvals tile, by the drawer. */
+      .notif-backdrop {
+        position: absolute; inset: 0;
+        background: rgba(0,0,0,0.45);
+        opacity: 0; pointer-events: none;
+        transition: opacity 220ms;
+        z-index: 20;
+        backdrop-filter: blur(4px);
+      }
+      .notif-backdrop.open { opacity: 1; pointer-events: auto; }
+      .notif-sheet {
+        position: absolute; left: 0; right: 0; bottom: 0;
+        max-height: 78%;
+        background: var(--bg);
+        border-radius: 22px 22px 0 0;
+        transform: translateY(110%);
+        transition: transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1);
+        z-index: 21;
+        display: flex; flex-direction: column;
+        box-shadow: 0 -12px 32px rgba(0,0,0,0.18);
+      }
+      .notif-sheet.open { transform: translateY(0); }
+      .ns-grabber {
+        width: 36px; height: 4px;
+        background: var(--border);
+        border-radius: 2px;
+        margin: 8px auto 4px;
+        flex: 0 0 auto;
+      }
+      .ns-head {
+        display: flex; align-items: center; gap: 10px;
+        padding: 8px 16px 12px;
+        flex: 0 0 auto;
+      }
+      .ns-title {
+        font-family: var(--serif); font-style: italic;
+        font-size: 22px;
+        color: var(--ink1);
+        flex: 1;
+      }
+      .ns-count {
+        font-size: 10px; font-weight: 800; letter-spacing: 0.5px;
+        text-transform: uppercase;
+        color: var(--brand-700);
+        background: var(--brand-50);
+        padding: 4px 8px;
+        border-radius: 8px;
+      }
+      .ns-close {
+        width: 28px; height: 28px; border-radius: 14px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        cursor: pointer;
+        color: var(--ink2);
+        font-size: 12px;
+        display: grid; place-items: center;
+      }
+      .ns-body {
+        flex: 1; min-height: 0;
+        overflow-y: auto;
+        padding: 0 14px 18px;
+        display: flex; flex-direction: column; gap: 14px;
+      }
+      .ns-section {
+        display: flex; flex-direction: column; gap: 6px;
+      }
+      .ns-section-head {
+        font-size: 10px; font-weight: 800;
+        letter-spacing: 0.5px;
+        color: var(--ink3);
+        text-transform: uppercase;
+        padding: 4px 4px 2px;
+        position: relative;
+        padding-left: 10px;
+      }
+      .ns-section-head::before {
+        content: "";
+        position: absolute;
+        left: 0; top: 50%;
+        transform: translateY(-50%);
+        width: 3px; height: 11px;
+        border-radius: 2px;
+      }
+      .ns-section[data-kind="approvals"] .ns-section-head::before { background: linear-gradient(180deg, var(--brand-300), var(--brand-700)); }
+      .ns-section[data-kind="alerts"] .ns-section-head::before    { background: var(--brand-700); }
+      .ns-section[data-kind="activity"] .ns-section-head::before  { background: var(--ink2); }
+      .ns-row {
+        display: flex; align-items: flex-start; gap: 10px;
+        padding: 10px 12px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+      }
+      .ns-ic {
+        width: 32px; height: 32px; border-radius: 16px;
+        background: var(--brand-50);
+        display: grid; place-items: center;
+        font-size: 14px;
+        flex: 0 0 32px;
+      }
+      .ns-row .ns-text { flex: 1; min-width: 0; }
+      .ns-row .ns-n { font-size: 13px; font-weight: 700; color: var(--ink1); }
+      .ns-row .ns-s { font-size: 11px; color: var(--ink3); margin-top: 2px; line-height: 1.3; }
+      .ns-actions { display: flex; gap: 6px; flex: 0 0 auto; }
+      .ns-btn {
+        border: 0; cursor: pointer;
+        padding: 6px 10px;
+        border-radius: 8px;
+        font-family: var(--sans);
+        font-weight: 700; font-size: 11px;
+        letter-spacing: 0.3px;
+      }
+      .ns-btn.ok {
+        background: var(--brand-700); color: white;
+      }
+      .ns-btn.ghost {
+        background: transparent; color: var(--ink3);
+        border: 1px solid var(--border);
+      }
+
+      /* Drawer mini-badge · next to "Approvals & alerts" entry */
+      .drawer-item .badge-mini {
+        margin-left: auto;
+        margin-right: 6px;
+        min-width: 18px; height: 18px;
+        padding: 0 5px;
+        border-radius: 9px;
+        background: var(--brand-300);
+        color: var(--brand-900);
+        font-size: 10px; font-weight: 800;
+        display: grid; place-items: center;
+      }
+      .drawer-item:has(.badge-mini) .arrow { margin-left: 0; }
+
       /* Notifications bell · top-right of the header.
          Hosts approval requests, alerts, and service notifications
          (previously surfaced as inline rows in the Owner home body). */
@@ -3772,11 +3908,6 @@
                 <span class="v">5</span>
                 <span class="sub">3 grooms · 2 trainers</span>
               </div>
-              <div class="owner-tile warn full" data-show-notif>
-                <span class="lbl">⚠ Needs your approval</span>
-                <span class="v">2 treatments · 1 vet visit</span>
-                <span class="sub">Tap the bell · top right · to review</span>
-              </div>
             </div>
 
             <div class="section-head" data-section="business" style="margin-top:8px;">
@@ -5702,6 +5833,12 @@
             <span>Dashboard</span>
             <span class="arrow">›</span>
           </div>
+          <div class="drawer-item" data-show-notif>
+            <span class="ic">🔔</span>
+            <span>Approvals &amp; alerts</span>
+            <span class="badge-mini">3</span>
+            <span class="arrow">›</span>
+          </div>
           <div class="drawer-item">
             <span class="ic">⚙️</span>
             <span>Settings</span>
@@ -5752,6 +5889,87 @@
         <div class="msg">
           <strong id="toast-title">Photo sent to Sofia</strong>
           <span id="toast-sub">Bella's owner just got a push notification.</span>
+        </div>
+      </div>
+
+      <!-- Notifications bottom sheet · opened by bell / drawer / tile -->
+      <div class="notif-backdrop" id="notif-backdrop"></div>
+      <div class="notif-sheet" id="notif-sheet" role="dialog" aria-modal="true" aria-label="Notifications">
+        <div class="ns-grabber"></div>
+        <div class="ns-head">
+          <div class="ns-title">Notifications</div>
+          <div class="ns-count">3 need you</div>
+          <button class="ns-close" id="ns-close" aria-label="Close">✕</button>
+        </div>
+        <div class="ns-body">
+          <div class="ns-section" data-kind="approvals">
+            <div class="ns-section-head">Awaiting your approval · 2</div>
+            <div class="ns-row">
+              <span class="ns-ic">🩺</span>
+              <div class="ns-text">
+                <div class="ns-n">Physio · Pierre Lacroix · Bella</div>
+                <div class="ns-s">Requested by Sofia · 30 min ago · $90</div>
+              </div>
+              <div class="ns-actions">
+                <button class="ns-btn ok">Approve</button>
+                <button class="ns-btn ghost">No</button>
+              </div>
+            </div>
+            <div class="ns-row">
+              <span class="ns-ic">💊</span>
+              <div class="ns-text">
+                <div class="ns-n">Joint supplement · Atlas · $80/mo</div>
+                <div class="ns-s">Requested by Mateo · 2 h ago</div>
+              </div>
+              <div class="ns-actions">
+                <button class="ns-btn ok">Approve</button>
+                <button class="ns-btn ghost">No</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="ns-section" data-kind="alerts">
+            <div class="ns-section-head">Alerts · 1</div>
+            <div class="ns-row">
+              <span class="ns-ic">🩺</span>
+              <div class="ns-text">
+                <div class="ns-n">Vet on-site at 2 pm</div>
+                <div class="ns-s">Dr. Torres · soundness check Atlas + Storm</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ns-section" data-kind="activity">
+            <div class="ns-section-head">Today · activity · 4</div>
+            <div class="ns-row">
+              <span class="ns-ic">✨</span>
+              <div class="ns-text">
+                <div class="ns-n">Jess just groomed Bella for 9 am</div>
+                <div class="ns-s">7:45 am · photo sent to Sofia</div>
+              </div>
+            </div>
+            <div class="ns-row">
+              <span class="ns-ic">💰</span>
+              <div class="ns-text">
+                <div class="ns-n">Sofia paid $120 · Bella lesson</div>
+                <div class="ns-s">10:12 am · Stripe</div>
+              </div>
+            </div>
+            <div class="ns-row">
+              <span class="ns-ic">🐎</span>
+              <div class="ns-text">
+                <div class="ns-n">Sam ended session · Bella + Maddy</div>
+                <div class="ns-s">11:15 am · recap sent</div>
+              </div>
+            </div>
+            <div class="ns-row">
+              <span class="ns-ic">🔨</span>
+              <div class="ns-text">
+                <div class="ns-n">Farrier slot confirmed · Friday 8 to 11 am</div>
+                <div class="ns-s">Mike Garcia · invoiced to barn</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -6388,12 +6606,39 @@
         task.addEventListener("click", () => task.classList.toggle("done"));
       });
 
-      // ── Notifications stub · bell + warn tile both trigger ──
-      // Real panel arrives in a follow-up; for the demo we surface
-      // the pending items as a toast so the flow is clear.
+      // ── Notifications sheet · bell / drawer entry / approval tile ──
+      const notifSheet = document.getElementById("notif-sheet");
+      const notifBackdrop = document.getElementById("notif-backdrop");
+      function openNotifSheet() {
+        // If the drawer is also open, close it first so the sheet is on top.
+        if (typeof closeDrawer === "function") closeDrawer();
+        notifSheet?.classList.add("open");
+        notifBackdrop?.classList.add("open");
+      }
+      function closeNotifSheet() {
+        notifSheet?.classList.remove("open");
+        notifBackdrop?.classList.remove("open");
+      }
       document.querySelectorAll("[data-show-notif]").forEach(el => {
-        el.addEventListener("click", () => {
-          showToast("3 items need you", "2 treatments · 1 vet visit · tap to approve", "🔔");
+        el.addEventListener("click", openNotifSheet);
+      });
+      document.getElementById("ns-close")?.addEventListener("click", closeNotifSheet);
+      notifBackdrop?.addEventListener("click", closeNotifSheet);
+      // Approve / No buttons inside the sheet · demo confirmation toast.
+      document.querySelectorAll(".ns-btn.ok").forEach(b => {
+        b.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const row = b.closest(".ns-row");
+          const label = row?.querySelector(".ns-n")?.textContent || "Request";
+          row?.remove();
+          showToast("Approved", label, "✓");
+        });
+      });
+      document.querySelectorAll(".ns-btn.ghost").forEach(b => {
+        b.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const row = b.closest(".ns-row");
+          row?.remove();
         });
       });
 
