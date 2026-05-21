@@ -182,6 +182,17 @@
       [data-theme="neo"] .pulse-header::before {
         background: radial-gradient(circle, rgba(255,90,0,0.20), transparent 60%);
       }
+      /* Thin header variant · for tab screens (Calendar, Whiteboard,
+         Stable, Feed) where the content needs the full screen real
+         estate. Hides the big title + subline; keeps burger + stable
+         + theme swatches in a single ~44px row. */
+      .pulse-header.thin {
+        padding: 10px 14px 12px;
+      }
+      .pulse-header.thin .ph-top { margin-bottom: 0; }
+      .pulse-header.thin .ph-title,
+      .pulse-header.thin .ph-subline { display: none; }
+      .pulse-header.thin::before { opacity: 0.5; }
       .ph-top {
         display: flex; justify-content: space-between; align-items: center;
         position: relative; z-index: 1;
@@ -4195,7 +4206,7 @@
 
       <!-- PLACEHOLDERS for upcoming pieces -->
       <div class="screen" data-screen="stable">
-        <div class="pulse-header">
+4209:         <div class="pulse-header thin">
           <div class="ph-top">
             <div class="ph-left">
               <button class="ph-burger" data-open-drawer><span></span><span></span><span></span></button>
@@ -4429,7 +4440,7 @@
         </div>
       </div>
       <div class="screen" data-screen="calendar">
-        <div class="pulse-header">
+4443:         <div class="pulse-header thin">
           <div class="ph-top">
             <div class="ph-left">
               <button class="ph-burger" data-open-drawer><span></span><span></span><span></span></button>
@@ -4750,7 +4761,7 @@
         </div>
       </div>
       <div class="screen" data-screen="whiteboard">
-        <div class="pulse-header">
+4764:         <div class="pulse-header thin">
           <div class="ph-top">
             <div class="ph-left">
               <button class="ph-burger" data-open-drawer><span></span><span></span><span></span></button>
@@ -4883,7 +4894,7 @@
         </div>
       </div>
       <div class="screen" data-screen="feed">
-        <div class="pulse-header">
+4897:         <div class="pulse-header thin">
           <div class="ph-top">
             <div class="ph-left">
               <button class="ph-burger" data-open-drawer><span></span><span></span><span></span></button>
