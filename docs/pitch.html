@@ -385,7 +385,13 @@
       }
       .owner-tile:active { transform: scale(0.98); }
       .owner-tile.full { grid-column: 1 / -1; }
-      .owner-tile.warn { background: var(--alert-bg); border-color: var(--alert-bg); }
+      /* Needs-your-attention tile · dark eucalyptus gradient (no red).
+         Same philosophy as the health icons: brand darkens to signal
+         urgency, instead of an alarming red. White text reads on top. */
+      .owner-tile.warn {
+        background: linear-gradient(135deg, var(--brand-700) 0%, var(--brand-900) 100%);
+        border-color: var(--brand-800);
+      }
       .owner-tile.ops {
         background: linear-gradient(160deg, var(--brand-50), var(--brand-100));
         border-color: var(--brand-100);
@@ -394,14 +400,21 @@
         font-size: 10px; font-weight: 700; letter-spacing: 1px;
         text-transform: uppercase; color: var(--ink3);
       }
-      .owner-tile.warn .lbl { color: var(--alert); }
+      .owner-tile.warn .lbl { color: rgba(255,255,255,0.78); }
       .owner-tile .v {
         font-family: var(--serif); font-style: italic;
         font-size: 28px; line-height: 1; margin-top: 8px;
         color: var(--ink1);
       }
-      .owner-tile.warn .v { color: var(--alert); font-size: 18px; font-family: var(--sans); font-style: normal; font-weight: 700; }
+      .owner-tile.warn .v {
+        color: white;
+        font-size: 18px;
+        font-family: var(--sans);
+        font-style: normal;
+        font-weight: 700;
+      }
       .owner-tile .sub { font-size: 11px; color: var(--ink2); margin-top: 6px; }
+      .owner-tile.warn .sub { color: rgba(255,255,255,0.72); }
       .section-head {
         display: flex; justify-content: space-between; align-items: baseline;
         margin: 6px 0 2px;
@@ -3716,6 +3729,12 @@
 
             <!-- Feed mini · barn posts · auto-news · external · last 7 days -->
             <div class="eyebrow" data-section="feed" style="margin-top:10px;">Latest · last 7 days</div>
+            <button class="post-composer" data-go="news">
+              <div class="pc-av">M</div>
+              <span class="pc-placeholder">Share something with the barn…</span>
+              <span class="pc-icon">📷</span>
+              <span class="pc-icon">›</span>
+            </button>
             <div class="feed-mini">
               <div class="feed-mini-row" data-go="feed">
                 <div class="feed-mini-av">SM</div>
@@ -3825,6 +3844,12 @@
 
             <!-- Feed mini · barn posts · auto-news · external · last 7 days -->
             <div class="eyebrow" data-section="feed" style="margin-top:10px;">Latest · last 7 days</div>
+            <button class="post-composer" data-go="news">
+              <div class="pc-av">M</div>
+              <span class="pc-placeholder">Share something with the barn…</span>
+              <span class="pc-icon">📷</span>
+              <span class="pc-icon">›</span>
+            </button>
             <div class="feed-mini">
               <div class="feed-mini-row" data-go="feed">
                 <div class="feed-mini-av">SM</div>
@@ -3932,6 +3957,12 @@
 
             <!-- Feed mini · barn posts · auto-news · external · last 7 days -->
             <div class="eyebrow" data-section="feed" style="margin-top:10px;">Latest · last 7 days</div>
+            <button class="post-composer" data-go="news">
+              <div class="pc-av">M</div>
+              <span class="pc-placeholder">Share something with the barn…</span>
+              <span class="pc-icon">📷</span>
+              <span class="pc-icon">›</span>
+            </button>
             <div class="feed-mini">
               <div class="feed-mini-row" data-go="feed">
                 <div class="feed-mini-av">SM</div>
