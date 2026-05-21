@@ -184,15 +184,22 @@
       }
       /* Thin header variant · for tab screens (Calendar, Whiteboard,
          Stable, Feed) where the content needs the full screen real
-         estate. Hides the big title + subline; keeps burger + stable
-         + theme swatches in a single ~44px row. */
+         estate. Hides the big title + subline + radial glow; shrinks
+         Wellington Park to its pin icon. Single ~32px row. */
       .pulse-header.thin {
-        padding: 10px 14px 12px;
+        padding: 6px 12px 8px;
+        border-radius: 0 0 12px 12px;
       }
       .pulse-header.thin .ph-top { margin-bottom: 0; }
       .pulse-header.thin .ph-title,
       .pulse-header.thin .ph-subline { display: none; }
-      .pulse-header.thin::before { opacity: 0.5; }
+      .pulse-header.thin::before { display: none; }
+      .pulse-header.thin .ph-stable {
+        font-size: 11.5px;
+        padding: 4px 8px;
+      }
+      .pulse-header.thin .ph-stable .caret { font-size: 9px; opacity: 0.6; }
+      .pulse-header.thin .ph-burger { transform: scale(0.85); }
       .ph-top {
         display: flex; justify-content: space-between; align-items: center;
         position: relative; z-index: 1;
@@ -2276,6 +2283,34 @@
         position: relative; overflow: hidden;
       }
       [data-theme="neo"] .wb-pulse { background: var(--ink1); }
+      /* Day progress strip · single-line replacement for wb-pulse.
+         Just the count + percentage + fill bar. ~28px tall. */
+      .wb-progress-strip {
+        display: flex; align-items: center; gap: 12px;
+        margin: 10px 14px 0;
+        padding: 8px 12px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+      }
+      .wbps-lbl {
+        font-size: 11px; font-weight: 800;
+        letter-spacing: 0.5px;
+        color: var(--ink2);
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+      .wbps-bar {
+        flex: 1; height: 6px;
+        background: var(--brand-100);
+        border-radius: 3px; overflow: hidden;
+      }
+      .wbps-bar .fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--brand-500), var(--brand-700));
+        border-radius: 3px;
+        transition: width 600ms cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
       .wb-pulse::before {
         content: ""; position: absolute; top: -50px; right: -50px;
         width: 180px; height: 180px; border-radius: 50%;
@@ -4785,20 +4820,10 @@
           </div>
         </div>
         <div class="wb-screen">
-          <div class="wb-pulse" style="margin: 12px 14px 0; border-radius: 14px;">
-            <div class="wb-pulse-top">
-              <span class="live">Barn pulse · live</span>
-              <span class="date">Today</span>
-            </div>
-            <div class="wb-pct">8 <span class="slash">/ 14 done</span></div>
-            <div class="wb-pulse-label">Wellington Park · day 57% complete</div>
-            <div class="wb-progress"><div class="fill" style="width: 57%;"></div></div>
-            <div class="wb-splits">
-              <div class="wb-split"><span class="n">5</span><span class="l">Riders here</span></div>
-              <div class="wb-split"><span class="n">3</span><span class="l">Lessons now</span></div>
-              <div class="wb-split"><span class="n" style="color:#ffd699;">1</span><span class="l" style="color:#ffd699;">! Urgent</span></div>
-              <div class="wb-split"><span class="n">6</span><span class="l">To go</span></div>
-            </div>
+          <!-- Single-line day progress · replaces the chunky wb-pulse block. -->
+          <div class="wb-progress-strip">
+            <span class="wbps-lbl">8 / 14 done · 57%</span>
+            <div class="wbps-bar"><div class="fill" style="width: 57%;"></div></div>
           </div>
 
           <div class="wb-live-strip">
