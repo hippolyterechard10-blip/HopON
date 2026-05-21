@@ -2731,13 +2731,14 @@
         padding: 10px 14px 110px;
         background: var(--bg);
         /* Two-column grid so 2 employees share a row.
-           align-items:start so each cell takes its natural height
-           and never stretches its neighbour. Generous gap so adjacent
-           cards never look attached / overlapping. */
+           align-items: start + grid-auto-rows: max-content so each
+           cell takes its natural content height and is never stretched
+           or clipped by the parent's flex sizing. */
         display: grid;
         grid-template-columns: 1fr 1fr;
+        grid-auto-rows: max-content;
         column-gap: 10px;
-        row-gap: 14px;
+        row-gap: 18px;
         align-items: start;
       }
       /* Whiteboard v2 · compact list per employee.
@@ -2749,12 +2750,16 @@
         background: var(--surface);
         border: 1px solid var(--border);
         border-radius: 12px;
-        overflow: hidden;
         cursor: pointer;
         transition: background 160ms, border-color 160ms;
+        /* Anchor to the top of its grid cell and grow to fit content;
+           never let the grid stretch this item nor a parent clip it. */
+        align-self: start;
+        min-height: 0;
+        height: auto;
         /* Soft elevation so adjacent cards never look attached. */
-        box-shadow: 0 1px 2px rgba(0,0,0,0.04),
-                    0 4px 12px rgba(0,0,0,0.05);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05),
+                    0 8px 18px rgba(0,0,0,0.07);
       }
       @media (hover: hover) {
         .wb-row:hover { background: var(--brand-50); }
