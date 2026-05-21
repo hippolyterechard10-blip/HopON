@@ -2318,6 +2318,491 @@
       }
       .pay-total .l { font-size: 13px; font-weight: 700; color: var(--ink1); }
       .pay-total .r { font-size: 17px; font-weight: 700; color: var(--alert); }
+
+      /* ════════════════════════════════════════════════════ */
+      /* PIECE 5 · FLOWS + POLISH                              */
+      /* Booking · Share card · Camera · Broadcast · FAB      */
+      /* ════════════════════════════════════════════════════ */
+
+      /* Generic screen sub-header (for booking) */
+      .sub-header {
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        padding: 12px 14px 14px;
+        display: flex; align-items: center; gap: 12px;
+        flex-shrink: 0;
+      }
+      .sub-back {
+        width: 32px; height: 32px; border-radius: 16px;
+        background: var(--bg); border: 0;
+        cursor: pointer; color: var(--ink1); font-size: 18px;
+        display: grid; place-items: center;
+      }
+      .sub-title {
+        flex: 1;
+        font-family: var(--serif); font-style: italic;
+        font-size: 22px; color: var(--ink1);
+      }
+
+      /* Booking screen */
+      .booking-screen {
+        flex: 1; min-height: 0;
+        display: flex; flex-direction: column;
+      }
+      .booking-body {
+        flex: 1; overflow-y: auto;
+        padding: 14px 16px 110px;
+        background: var(--bg);
+        display: flex; flex-direction: column; gap: 12px;
+      }
+      .booking-context {
+        background: var(--brand-50);
+        border: 1px solid var(--brand-100);
+        border-radius: 14px;
+        padding: 14px;
+        display: flex; align-items: center; gap: 12px;
+      }
+      .booking-context .horse-thumb {
+        width: 50px; height: 50px; border-radius: 25px;
+        background: var(--brand-200);
+        display: grid; place-items: center;
+        font-size: 26px;
+        flex: 0 0 50px;
+      }
+      [data-theme="neo"] .booking-context .horse-thumb { background: linear-gradient(160deg, #e8dac3, #b59565); }
+      .booking-context .info { flex: 1; }
+      .booking-context .info .eb {
+        font-size: 10px; font-weight: 700; letter-spacing: 1.2px;
+        text-transform: uppercase; color: var(--brand-700);
+      }
+      [data-theme="neo"] .booking-context .info .eb { color: var(--brand-600); }
+      .booking-context .info .v {
+        font-size: 14px; font-weight: 700; color: var(--ink1);
+        margin-top: 2px;
+      }
+      .booking-context .info .s {
+        font-size: 11px; color: var(--ink2); margin-top: 2px;
+      }
+      .booking-slot {
+        background: var(--surface); border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 12px 14px;
+        display: flex; justify-content: space-between; align-items: center;
+        cursor: pointer;
+        transition: border-color 200ms, background 200ms;
+      }
+      .booking-slot.selected {
+        border-color: var(--brand-500);
+        background: var(--brand-50);
+      }
+      [data-theme="neo"] .booking-slot.selected {
+        background: var(--brand-50);
+        box-shadow: 0 4px 14px rgba(255,90,0,0.10);
+      }
+      .booking-slot .time {
+        font-family: var(--serif); font-style: italic;
+        font-size: 20px; color: var(--ink1);
+      }
+      .booking-slot .meta {
+        font-size: 11px; color: var(--ink3); margin-top: 2px;
+      }
+      .booking-slot .price {
+        font-size: 14px; font-weight: 700; color: var(--brand-700);
+      }
+      [data-theme="neo"] .booking-slot .price { color: var(--brand-600); }
+      .booking-confirm {
+        width: 100%; padding: 16px; margin-top: 6px;
+        background: var(--brand-500); color: white;
+        border: 0; border-radius: 16px;
+        font-family: var(--sans); font-weight: 700; font-size: 15px;
+        cursor: pointer;
+        display: flex; justify-content: center; align-items: center; gap: 8px;
+        box-shadow: 0 10px 24px rgba(42,149,127,0.30);
+      }
+      [data-theme="neo"] .booking-confirm {
+        box-shadow: 0 10px 24px rgba(255,90,0,0.30);
+      }
+      .booking-confirm:active { transform: scale(0.98); }
+
+      /* ── Share card (end-of-lesson) ──────────────────── */
+      .share-screen {
+        flex: 1;
+        background: #0a0a0a;
+        color: white;
+        padding: 24px 18px 24px;
+        display: flex; flex-direction: column; gap: 14px;
+        overflow-y: auto;
+      }
+      .share-head {
+        display: flex; align-items: center; gap: 12px;
+      }
+      .share-head .back {
+        width: 36px; height: 36px; border-radius: 18px;
+        background: rgba(255,255,255,0.10); border: 0;
+        cursor: pointer; color: white; font-size: 18px;
+        display: grid; place-items: center;
+      }
+      .share-head .title {
+        font-size: 14px; font-weight: 700; opacity: 0.85;
+      }
+      .share-card {
+        background:
+          radial-gradient(circle at 80% 20%, rgba(108,242,139,0.20), transparent 50%),
+          radial-gradient(circle at 20% 80%, rgba(42,149,127,0.32), transparent 60%),
+          linear-gradient(160deg, #051a14 0%, #0b2f23 50%, #18604f 100%);
+        border-radius: 22px;
+        padding: 24px;
+        display: flex; flex-direction: column; gap: 16px;
+        position: relative; overflow: hidden;
+      }
+      [data-theme="neo"] .share-card {
+        background:
+          radial-gradient(circle at 80% 20%, rgba(255,200,150,0.30), transparent 50%),
+          radial-gradient(circle at 20% 80%, rgba(255,90,0,0.40), transparent 60%),
+          linear-gradient(160deg, #0a0a0a 0%, #181715 50%, #2c2724 100%);
+      }
+      .share-card .top-row {
+        display: flex; justify-content: space-between; align-items: center;
+      }
+      .share-card .barn-mark {
+        font-size: 10px; font-weight: 700; letter-spacing: 1.4px;
+        text-transform: uppercase; opacity: 0.62;
+      }
+      .share-card .header-block .eb {
+        font-size: 10px; font-weight: 700; letter-spacing: 1.4px;
+        text-transform: uppercase; opacity: 0.7;
+        margin-bottom: 6px;
+      }
+      .share-card .horse-name {
+        font-family: var(--serif); font-style: italic;
+        font-size: 50px; line-height: 0.95; letter-spacing: -0.8px;
+      }
+      .share-card .emotion-line {
+        font-family: var(--serif); font-style: italic;
+        font-size: 17px; opacity: 0.92;
+        margin-top: 2px;
+      }
+      .share-card .horse-photo {
+        position: relative; height: 180px;
+        background:
+          radial-gradient(circle at 60% 40%, rgba(255,255,255,0.15), transparent 60%),
+          linear-gradient(135deg, rgba(95, 205, 175, 0.4), rgba(11,47,35,0.2));
+        border-radius: 18px;
+        display: grid; place-items: center;
+        overflow: hidden;
+      }
+      [data-theme="neo"] .share-card .horse-photo {
+        background:
+          radial-gradient(circle at 60% 40%, rgba(255,200,150,0.20), transparent 60%),
+          linear-gradient(135deg, rgba(255,90,0,0.30), rgba(0,0,0,0.4));
+      }
+      .share-card .horse-photo svg {
+        width: 65%; max-width: 200px;
+        filter: drop-shadow(0 12px 24px rgba(0,0,0,0.5));
+      }
+      .share-card .stats {
+        display: grid; grid-template-columns: 1fr 1fr 1fr;
+        gap: 14px;
+      }
+      .share-card .stat .lbl {
+        font-size: 9px; font-weight: 700; letter-spacing: 0.8px;
+        opacity: 0.62; text-transform: uppercase;
+      }
+      .share-card .stat .v {
+        font-family: var(--serif); font-style: italic;
+        font-size: 22px; line-height: 1.1;
+        margin-top: 3px;
+      }
+      .share-card .coach {
+        display: flex; align-items: center; gap: 10px;
+        padding-top: 14px;
+        border-top: 1px solid rgba(255,255,255,0.12);
+      }
+      .share-card .coach .av {
+        width: 32px; height: 32px; border-radius: 16px;
+        background: rgba(255,255,255,0.20);
+        display: grid; place-items: center;
+        font-size: 11px; font-weight: 700;
+      }
+      .share-card .coach .who { font-size: 12px; }
+      .share-card .coach .who .n { font-weight: 700; }
+      .share-card .coach .who .r { font-size: 10px; opacity: 0.78; margin-top: 1px; }
+      .share-card .footer-brand {
+        display: flex; justify-content: space-between; align-items: center;
+        font-size: 10px; font-weight: 700; letter-spacing: 1.4px;
+        text-transform: uppercase; opacity: 0.62;
+        padding-top: 4px;
+      }
+      .share-card .footer-brand .stable { color: #6cf28b; }
+      [data-theme="neo"] .share-card .footer-brand .stable { color: var(--brand-500); }
+      .share-card .footer-brand .hop {
+        font-family: var(--serif); font-style: italic;
+        font-size: 14px; letter-spacing: -0.3px;
+        text-transform: none; opacity: 0.88;
+      }
+      .share-actions {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+      }
+      .share-actions .btn {
+        background: rgba(255,255,255,0.10); color: white;
+        border: 0; border-radius: 14px;
+        padding: 14px; font-size: 13px; font-weight: 700;
+        cursor: pointer;
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+        font-family: var(--sans);
+      }
+      .share-actions .btn.primary {
+        background: var(--brand-500); color: white;
+      }
+      [data-theme="neo"] .share-actions .btn.primary {
+        background: var(--brand-500);
+        box-shadow: 0 8px 20px rgba(255,90,0,0.30);
+      }
+      .share-skip {
+        background: transparent;
+        color: rgba(255,255,255,0.6);
+        border: 0; padding: 12px;
+        font-family: var(--sans); font-size: 13px;
+        cursor: pointer;
+      }
+
+      /* ── Camera screen (Groom) ───────────────────────── */
+      .camera-screen {
+        flex: 1;
+        background: #000;
+        display: flex; flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+      .camera-viewfinder {
+        flex: 1;
+        background:
+          radial-gradient(circle at 50% 35%, rgba(95,205,175,0.30), transparent 60%),
+          linear-gradient(180deg, #0c1a14 0%, #050a08 100%);
+        position: relative;
+        display: flex; align-items: center; justify-content: center;
+      }
+      [data-theme="neo"] .camera-viewfinder {
+        background:
+          radial-gradient(circle at 50% 35%, rgba(255,90,0,0.25), transparent 60%),
+          linear-gradient(180deg, #14100c 0%, #050402 100%);
+      }
+      .camera-viewfinder .scene {
+        font-size: 200px;
+        filter: drop-shadow(0 24px 40px rgba(0,0,0,0.6));
+      }
+      .camera-top {
+        position: absolute; top: 14px; left: 14px; right: 14px;
+        display: flex; justify-content: space-between; align-items: center;
+        z-index: 2;
+        pointer-events: none;
+      }
+      .camera-top .pill {
+        background: rgba(0,0,0,0.45); backdrop-filter: blur(8px);
+        color: white; font-size: 11px; font-weight: 700;
+        padding: 6px 10px; border-radius: 12px;
+        pointer-events: auto;
+      }
+      .camera-cancel {
+        position: absolute; top: 14px; right: 14px;
+        background: rgba(0,0,0,0.45); backdrop-filter: blur(8px);
+        color: white; padding: 6px 14px; border-radius: 14px;
+        font-size: 13px; font-weight: 700;
+        cursor: pointer; border: 0;
+        z-index: 3;
+      }
+      .camera-bottom {
+        padding: 24px 24px 30px;
+        background: linear-gradient(180deg, transparent, rgba(0,0,0,0.85));
+        display: flex; justify-content: space-between; align-items: center;
+      }
+      .camera-side-btn {
+        width: 44px; height: 44px; border-radius: 22px;
+        background: rgba(255,255,255,0.12);
+        border: 0; color: white; font-size: 18px;
+        display: grid; place-items: center;
+        cursor: pointer;
+      }
+      .camera-shutter {
+        width: 76px; height: 76px; border-radius: 38px;
+        background: white;
+        border: 4px solid rgba(255,255,255,0.6);
+        box-shadow: inset 0 0 0 4px var(--brand-500);
+        cursor: pointer;
+        transition: transform 120ms;
+      }
+      .camera-shutter:active { transform: scale(0.92); }
+
+      /* ── Broadcast composer ──────────────────────────── */
+      .broadcast-screen {
+        flex: 1;
+        background: var(--brand-900);
+        color: white;
+        padding: 22px 18px 24px;
+        display: flex; flex-direction: column; gap: 14px;
+        overflow-y: auto;
+      }
+      [data-theme="neo"] .broadcast-screen { background: var(--ink1); }
+      .broadcast-screen .head {
+        display: flex; align-items: center; gap: 12px;
+      }
+      .broadcast-screen .head .back {
+        width: 36px; height: 36px; border-radius: 18px;
+        background: rgba(255,255,255,0.10); border: 0;
+        cursor: pointer; color: white; font-size: 18px;
+        display: grid; place-items: center;
+      }
+      .broadcast-screen .head .title {
+        font-size: 15px; font-weight: 700;
+      }
+      .broadcast-screen .helper {
+        font-size: 12px; opacity: 0.72; line-height: 1.5;
+      }
+      .broadcast-tags {
+        display: flex; gap: 8px; flex-wrap: wrap;
+      }
+      .broadcast-tag {
+        padding: 8px 14px; border-radius: 12px;
+        background: rgba(255,255,255,0.08);
+        color: white; font-size: 12px; font-weight: 700;
+        cursor: pointer;
+        border: 1px solid transparent;
+        transition: background 200ms;
+      }
+      .broadcast-tag.active {
+        background: var(--brand-500);
+        border-color: var(--brand-300);
+      }
+      [data-theme="neo"] .broadcast-tag.active {
+        background: var(--brand-500); border-color: #ffa566;
+      }
+      .broadcast-composer {
+        flex: 1;
+        background: rgba(255,255,255,0.06);
+        border-radius: 16px;
+        padding: 18px;
+        min-height: 200px;
+      }
+      .broadcast-composer .placeholder {
+        color: rgba(255,255,255,0.4);
+        font-family: var(--serif); font-style: italic;
+        font-size: 14px; line-height: 1.5;
+      }
+      .broadcast-send {
+        background: var(--brand-500); color: white;
+        border: 0; border-radius: 16px;
+        padding: 16px; font-size: 14px; font-weight: 700;
+        cursor: pointer; width: 100%;
+        font-family: var(--sans);
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+        box-shadow: 0 10px 24px rgba(42,149,127,0.20);
+      }
+      [data-theme="neo"] .broadcast-send {
+        background: var(--brand-500);
+        box-shadow: 0 10px 24px rgba(255,90,0,0.30);
+      }
+
+      /* ── FAB + petals (on Home) ──────────────────────── */
+      .fab {
+        position: absolute; bottom: 92px; right: 16px;
+        width: 56px; height: 56px; border-radius: 28px;
+        background: var(--ink1); color: var(--bg);
+        border: 0; box-shadow: 0 10px 22px rgba(0,0,0,0.30);
+        display: grid; place-items: center;
+        font-size: 26px; font-weight: 300;
+        cursor: pointer; z-index: 6;
+        transition: transform 240ms cubic-bezier(0.34, 1.56, 0.64, 1),
+                    background 200ms;
+      }
+      .fab.open { transform: rotate(45deg); }
+      .fab.broadcast {
+        background: var(--alert);
+        box-shadow: 0 10px 22px rgba(217,56,30,0.40);
+      }
+      .fab.broadcast .plus { display: none; }
+      .fab.broadcast::before { content: "📣"; font-size: 24px; }
+
+      .fab-backdrop {
+        position: absolute; inset: 0;
+        background: rgba(0,0,0,0.55);
+        opacity: 0; pointer-events: none;
+        transition: opacity 250ms; z-index: 5;
+        backdrop-filter: blur(6px);
+      }
+      .fab-backdrop.open { opacity: 1; pointer-events: auto; }
+
+      .petals {
+        position: absolute; bottom: 92px; right: 16px;
+        width: 56px; height: 56px; z-index: 5;
+        pointer-events: none;
+      }
+      .petal {
+        position: absolute; top: 0; left: 0;
+        opacity: 0;
+        transform: translate(0, 0) scale(0.6);
+        transition: transform 280ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 200ms;
+        display: flex; flex-direction: column; align-items: center; gap: 6px;
+        pointer-events: none;
+        width: 56px;
+      }
+      .petals.open .petal { opacity: 1; pointer-events: auto; }
+      .petal-btn {
+        width: 50px; height: 50px; border-radius: 25px;
+        background: var(--surface);
+        box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+        border: 0; font-size: 20px;
+        display: grid; place-items: center;
+        cursor: pointer;
+      }
+      .petal-label {
+        font-size: 10px; font-weight: 700;
+        background: var(--ink1); color: var(--bg);
+        padding: 3px 8px; border-radius: 8px;
+        white-space: nowrap;
+      }
+      .petals.open .petal[data-i="0"] { transform: translate(0, -116px) scale(1); transition-delay: 0s; }
+      .petals.open .petal[data-i="1"] { transform: translate(-44px, -108px) scale(1); transition-delay: 0.04s; }
+      .petals.open .petal[data-i="2"] { transform: translate(-80px, -80px) scale(1); transition-delay: 0.08s; }
+      .petals.open .petal[data-i="3"] { transform: translate(-108px, -44px) scale(1); transition-delay: 0.12s; }
+      .petals.open .petal[data-i="4"] { transform: translate(-116px, 0) scale(1); transition-delay: 0.16s; }
+
+      /* ── Toast ──────────────────────────────────────── */
+      .toast {
+        position: absolute; bottom: 100px; left: 16px; right: 16px;
+        background: var(--ink1); color: var(--bg);
+        padding: 12px 14px; border-radius: 14px;
+        display: flex; align-items: center; gap: 12px;
+        box-shadow: 0 14px 32px rgba(0,0,0,0.30);
+        transform: translateY(140px); opacity: 0;
+        transition: transform 360ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 220ms;
+        z-index: 15;
+      }
+      .toast.show { transform: translateY(0); opacity: 1; }
+      .toast .ic {
+        width: 32px; height: 32px; border-radius: 16px;
+        background: var(--brand-500); color: white;
+        display: grid; place-items: center; font-size: 16px;
+        flex: 0 0 32px;
+      }
+      [data-theme="neo"] .toast .ic { background: var(--brand-500); color: white; }
+      .toast .msg { flex: 1; font-size: 12px; line-height: 1.4; }
+      .toast .msg strong { display: block; font-weight: 700; margin-bottom: 2px; }
+      .toast .msg span { opacity: 0.75; }
+
+      /* Pitch footer */
+      .pitch-footer {
+        font-size: 10px; color: var(--ink3); opacity: 0.7;
+        letter-spacing: 0.4px;
+        text-align: center;
+        padding-top: 6px;
+      }
+
+      /* Smoother transitions on all screens */
+      .screen.active { animation: screenIn 320ms cubic-bezier(0.4, 0, 0.2, 1); }
+      @keyframes screenIn {
+        from { opacity: 0; transform: translateY(6px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
     </style>
   </head>
   <body>
@@ -2874,6 +3359,156 @@
           <button class="tabitem active" data-tab="calendar"><span class="ic">📅</span><span>Calendar</span></button>
           <button class="tabitem" data-tab="whiteboard"><span class="ic">📋</span><span>Whiteboard</span></button>
           <button class="tabitem" data-tab="feed"><span class="ic">💬</span><span>Feed</span></button>
+        </div>
+      </div>
+
+      <!-- ════ BOOKING ════ -->
+      <div class="screen" data-screen="booking">
+        <div class="booking-screen">
+          <div class="sub-header">
+            <button class="sub-back" data-go="home">‹</button>
+            <div class="sub-title">Book a session</div>
+          </div>
+          <div class="booking-body">
+            <div class="booking-context">
+              <div class="horse-thumb">🐴</div>
+              <div class="info">
+                <div class="eb">Private lesson</div>
+                <div class="v">Bella with Sam</div>
+                <div class="s">45 min · indoor or outdoor · $120</div>
+              </div>
+            </div>
+
+            <div class="sec-lbl">Pick a slot · Thursday May 21</div>
+            <div class="booking-slot">
+              <div><div class="time">9:00</div><div class="meta">Indoor · with Sam</div></div>
+              <div class="price">$120</div>
+            </div>
+            <div class="booking-slot selected" data-slot>
+              <div><div class="time">14:00</div><div class="meta">Indoor · with Sam · ✓ selected</div></div>
+              <div class="price">$120</div>
+            </div>
+            <div class="booking-slot">
+              <div><div class="time">16:00</div><div class="meta">Outdoor · with Sam</div></div>
+              <div class="price">$120</div>
+            </div>
+
+            <div class="sec-lbl" style="margin-top:8px;">Saturday May 23</div>
+            <div class="booking-slot">
+              <div><div class="time">10:00</div><div class="meta">Indoor · with Maddy</div></div>
+              <div class="price">$120</div>
+            </div>
+            <div class="booking-slot">
+              <div><div class="time">15:30</div><div class="meta">Outdoor · with Sam</div></div>
+              <div class="price">$120</div>
+            </div>
+
+            <button class="booking-confirm" data-go="sharecard">
+              Confirm Thu 14:00 · pay $120
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════ SHARE CARD (end of lesson) ════ -->
+      <div class="screen" data-screen="sharecard">
+        <div class="share-screen">
+          <div class="share-head">
+            <button class="back" data-go="home">‹</button>
+            <div class="title">Lesson complete · share your session</div>
+          </div>
+
+          <div class="share-card">
+            <div class="top-row">
+              <div class="barn-mark">Thu · May 21 · 14:45</div>
+              <div class="barn-mark">No. 142</div>
+            </div>
+            <div class="header-block">
+              <div class="eb">Session of</div>
+              <div class="horse-name">Bella</div>
+              <div class="emotion-line">Forward today · clean round.</div>
+            </div>
+            <div class="horse-photo">
+              <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <defs>
+                  <linearGradient id="shareCoat" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="#3b2718"/>
+                    <stop offset="1" stop-color="#0d0805"/>
+                  </linearGradient>
+                </defs>
+                <path fill="url(#shareCoat)" d="M86 220 L96 142 Q100 96 122 70 Q138 50 152 60 L168 84 L182 78 L184 100 L178 116 L176 134 L170 154 L168 178 L164 220 Z"/>
+                <path fill="#0a0604" d="M114 86 Q102 100 96 142 L86 220 L94 220 L108 156 Q116 116 130 100 Q120 88 114 86 Z"/>
+                <ellipse cx="170" cy="106" rx="4" ry="6" fill="#000"/>
+                <ellipse cx="170" cy="103" rx="1.4" ry="2.2" fill="#fff" opacity="0.7"/>
+                <ellipse cx="184" cy="138" rx="3" ry="5" fill="#000" opacity="0.55"/>
+                <path d="M150 60 L156 42 L162 60 Z" fill="url(#shareCoat)"/>
+                <path d="M164 64 L172 48 L176 66 Z" fill="url(#shareCoat)"/>
+              </svg>
+            </div>
+            <div class="stats">
+              <div class="stat"><div class="lbl">Duration</div><div class="v">45 min</div></div>
+              <div class="stat"><div class="lbl">Type</div><div class="v">Jump</div></div>
+              <div class="stat"><div class="lbl">Heart</div><div class="v">132 bpm</div></div>
+            </div>
+            <div class="coach">
+              <div class="av">SM</div>
+              <div class="who">
+                <div class="n">Coached by Sam</div>
+                <div class="r">Indoor arena · 1m10 grid · double clear</div>
+              </div>
+            </div>
+            <div class="footer-brand">
+              <span class="stable">Wellington Park · est. 2018</span>
+              <span class="hop">Hop<span style="color:#6cf28b; font-style:italic;">O</span>n</span>
+            </div>
+          </div>
+
+          <div class="share-actions">
+            <button class="btn primary" data-share-action>📷 Instagram Story</button>
+            <button class="btn" data-share-action>↗ Share link</button>
+          </div>
+          <button class="share-skip" data-go="home">Skip · back home</button>
+        </div>
+      </div>
+
+      <!-- ════ CAMERA (Groom snap) ════ -->
+      <div class="screen" data-screen="camera">
+        <div class="camera-screen">
+          <div class="camera-viewfinder">
+            <div class="camera-top">
+              <span class="pill">BELLA · grooming</span>
+              <span class="pill">For Sofia · @owner</span>
+            </div>
+            <button class="camera-cancel" data-go="home">Cancel</button>
+            <span class="scene">🐎</span>
+          </div>
+          <div class="camera-bottom">
+            <button class="camera-side-btn">⚡</button>
+            <button class="camera-shutter" data-snap></button>
+            <button class="camera-side-btn">🔄</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════ BROADCAST (Owner FAB) ════ -->
+      <div class="screen" data-screen="broadcast">
+        <div class="broadcast-screen">
+          <div class="head">
+            <button class="back" data-go="home">‹</button>
+            <div class="title">Broadcast to the stable</div>
+          </div>
+          <div class="helper">Pick who hears you — the post lands in everyone's feed and pushes a notification.</div>
+          <div class="broadcast-tags">
+            <span class="broadcast-tag active" data-tag>@all</span>
+            <span class="broadcast-tag" data-tag>@team</span>
+            <span class="broadcast-tag" data-tag>@owners</span>
+            <span class="broadcast-tag" data-tag>@boarders</span>
+            <span class="broadcast-tag" data-tag>@competition</span>
+          </div>
+          <div class="broadcast-composer">
+            <div class="placeholder">e.g. "Arena 1 closed for footing repair until Thursday — all lessons moved to Arena 2."</div>
+          </div>
+          <button class="broadcast-send" data-broadcast-send>📣 Send to @all · 142 people</button>
         </div>
       </div>
 
@@ -3729,9 +4364,30 @@
             </div>
           </div>
         </div>
-        <div class="drawer-foot">HopOn · pitch · piece 1/5 · brand locked</div>
+        <div class="drawer-foot">HopOn · pitch · piece 5/5 · brand locked</div>
+      </div>
+
+      <!-- FAB + petals + toast (global · only shown on home) -->
+      <div class="fab-backdrop" id="fab-backdrop"></div>
+      <div class="petals" id="petals">
+        <div class="petal" data-i="0"><button class="petal-btn" data-go="booking">📚</button><div class="petal-label">Lesson</div></div>
+        <div class="petal" data-i="1"><button class="petal-btn" data-go="calendar">📅</button><div class="petal-label">Calendar event</div></div>
+        <div class="petal" data-i="2"><button class="petal-btn" data-petal-task>✅</button><div class="petal-label">To-do</div></div>
+        <div class="petal" data-i="3"><button class="petal-btn" data-go="feed">💬</button><div class="petal-label">Post</div></div>
+        <div class="petal" data-i="4"><button class="petal-btn" data-petal-extra>✨</button><div class="petal-label">Extras</div></div>
+      </div>
+      <button class="fab" id="fab"><span class="plus">+</span></button>
+
+      <div class="toast" id="toast">
+        <div class="ic" id="toast-ic">✨</div>
+        <div class="msg">
+          <strong id="toast-title">Photo sent to Sofia</strong>
+          <span id="toast-sub">Bella's owner just got a push notification.</span>
+        </div>
       </div>
     </div>
+
+    <div class="pitch-footer">HopOn · pitch prototype · May 2026 · v Pitch 1.0</div>
 
     <script>
       // ── Navigation ─────────────────────────────────────────
@@ -4235,16 +4891,151 @@
       document.querySelectorAll("[data-task]").forEach(row => {
         row.addEventListener("click", () => row.classList.toggle("done"));
       });
-      document.getElementById("snap-btn")?.addEventListener("click", () => {
-        if (dopamineNum) dopamineNum.textContent = String(parseInt(dopamineNum.textContent || "0", 10) + 1);
-        // For piece 1: just give a simple feedback via opacity
-        const btn = document.getElementById("snap-btn");
-        if (btn) {
-          const orig = btn.innerHTML;
-          btn.innerHTML = "<span class='cam-ic'>✓</span> Photo sent to Sofia";
-          setTimeout(() => { btn.innerHTML = orig; }, 1600);
-        }
+      // Snap button on Groom home now opens the Camera screen
+      document.getElementById("snap-btn")?.addEventListener("click", () => show("camera"));
+
+      // ── Toast helper (piece 5) ─────────────────────────────
+      const toast = document.getElementById("toast");
+      const toastTitle = document.getElementById("toast-title");
+      const toastSub = document.getElementById("toast-sub");
+      const toastIc = document.getElementById("toast-ic");
+      function showToast(title, sub, ic) {
+        toastTitle.textContent = title;
+        toastSub.textContent = sub || "";
+        if (ic) toastIc.textContent = ic;
+        toast.classList.add("show");
+        clearTimeout(showToast._t);
+        showToast._t = setTimeout(() => toast.classList.remove("show"), 3400);
+      }
+
+      // ── Camera flow (piece 5) ──────────────────────────────
+      // Tap the shutter → snap, increment dopamine, return home, toast
+      document.querySelectorAll("[data-snap]").forEach(s => {
+        s.addEventListener("click", () => {
+          // Flash effect
+          s.style.background = "var(--brand-500)";
+          setTimeout(() => { s.style.background = ""; }, 180);
+          setTimeout(() => {
+            show("home");
+            showToast("Photo sent to Sofia", "Bella's owner just got a push notification.", "✨");
+            if (dopamineNum) dopamineNum.textContent = String(parseInt(dopamineNum.textContent || "0", 10) + 1);
+          }, 240);
+        });
       });
+
+      // ── Broadcast send (piece 5) ───────────────────────────
+      document.querySelectorAll("[data-tag]").forEach(t => {
+        t.addEventListener("click", () => {
+          document.querySelectorAll("[data-tag]").forEach(x => x.classList.toggle("active", x === t));
+          const lbl = t.textContent.trim();
+          const sendBtn = document.querySelector("[data-broadcast-send]");
+          if (sendBtn) {
+            const count = lbl === "@all" ? "142" : lbl === "@team" ? "12" : lbl === "@owners" ? "38" : "24";
+            sendBtn.textContent = `📣 Send to ${lbl} · ${count} people`;
+          }
+        });
+      });
+      document.querySelectorAll("[data-broadcast-send]").forEach(b => {
+        b.addEventListener("click", () => {
+          showToast("Broadcast sent", "Landed in feed · push notification fired.", "📣");
+          setTimeout(() => show("home"), 280);
+        });
+      });
+
+      // ── Slot picker (booking, piece 5) ─────────────────────
+      document.querySelectorAll("[data-slot]").forEach(s => {
+        s.parentElement.querySelectorAll(".booking-slot").forEach(slot => {
+          slot.addEventListener("click", () => {
+            slot.parentElement.querySelectorAll(".booking-slot").forEach(x => x.classList.remove("selected"));
+            slot.classList.add("selected");
+          });
+        });
+      });
+      // generic slot click
+      document.querySelectorAll(".booking-slot").forEach(slot => {
+        slot.addEventListener("click", () => {
+          document.querySelectorAll(".booking-slot").forEach(x => x.classList.remove("selected"));
+          slot.classList.add("selected");
+        });
+      });
+
+      // ── Share actions (piece 5) ────────────────────────────
+      document.querySelectorAll("[data-share-action]").forEach(b => {
+        b.addEventListener("click", () => {
+          const label = b.textContent.trim();
+          showToast(label + " · ready", "Lesson card copied to clipboard (mock).", "↗");
+        });
+      });
+
+      // ── Petal task / extra (piece 5) ───────────────────────
+      document.querySelectorAll("[data-petal-task]").forEach(b => {
+        b.addEventListener("click", () => {
+          closePetals();
+          showToast("To-do added", "Tap My to-do on Home to see it.", "✓");
+        });
+      });
+      document.querySelectorAll("[data-petal-extra]").forEach(b => {
+        b.addEventListener("click", () => {
+          closePetals();
+          showToast("Extras request sent", "Awaiting admin approval.", "✨");
+        });
+      });
+
+      // ── FAB · role-aware (piece 5) ─────────────────────────
+      // Owner: tap FAB = broadcast directly · others: petals
+      // FAB only shows on Home screen.
+      const fab = document.getElementById("fab");
+      const fabBackdrop = document.getElementById("fab-backdrop");
+      const petalsEl = document.getElementById("petals");
+
+      function currentRole() {
+        const el = document.querySelector('.drawer [data-role].active');
+        return el ? el.dataset.role : 'owner';
+      }
+      function syncFab() {
+        const homeActive = document.querySelector('.screen.active')?.dataset.screen === 'home';
+        const role = currentRole();
+        if (!homeActive) {
+          fab.style.display = 'none';
+          petalsEl.style.display = 'none';
+          fabBackdrop.classList.remove('open');
+          return;
+        }
+        fab.style.display = 'grid';
+        petalsEl.style.display = '';
+        fab.classList.toggle('broadcast', role === 'owner');
+      }
+      function closePetals() {
+        fab.classList.remove('open');
+        fabBackdrop.classList.remove('open');
+        petalsEl.classList.remove('open');
+      }
+      fab.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (currentRole() === 'owner') {
+          show('broadcast');
+          return;
+        }
+        const open = !fab.classList.contains('open');
+        fab.classList.toggle('open', open);
+        fabBackdrop.classList.toggle('open', open);
+        petalsEl.classList.toggle('open', open);
+      });
+      fabBackdrop.addEventListener('click', closePetals);
+
+      // Hook into screen show + role apply to refresh FAB
+      const _origShow = show;
+      show = function (name) {
+        _origShow(name);
+        syncFab();
+      };
+      const _origApplyRole = applyRole;
+      applyRole = function (role) {
+        _origApplyRole(role);
+        syncFab();
+      };
+      // Initial
+      syncFab();
     </script>
   </body>
 </html>
