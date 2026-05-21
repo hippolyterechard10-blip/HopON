@@ -503,6 +503,91 @@
       .wp-body .wb-task.done .task-slider::after { left: 20px; }
       .wp-body .wb-task .when { font-size: 12.5px; }
 
+      /* ── QR partner sheet · external provider scan-to-access ─
+         Reuses .wp-sheet mechanics but its own content layout. */
+      .qr-sheet .qr-body {
+        flex: 1; min-height: 0;
+        overflow-y: auto;
+        padding: 6px 18px 24px;
+        display: flex; flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      .qr-eyebrow {
+        font-size: 10px; font-weight: 800;
+        letter-spacing: 0.5px;
+        color: var(--brand-700);
+        text-transform: uppercase;
+        background: var(--brand-50);
+        padding: 4px 10px;
+        border-radius: 8px;
+        margin: 4px 0 14px;
+      }
+      .qr-title {
+        font-family: var(--serif); font-style: italic;
+        font-size: 26px;
+        color: var(--ink1);
+      }
+      .qr-role {
+        font-size: 11px; font-weight: 700;
+        letter-spacing: 0.5px;
+        color: var(--ink3);
+        text-transform: uppercase;
+        margin-top: 4px;
+      }
+      .qr-frame {
+        margin: 18px 0;
+        padding: 16px;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 8px 28px rgba(0,0,0,0.10);
+      }
+      .qr-svg {
+        width: 180px; height: 180px;
+        display: block;
+        shape-rendering: crispEdges;
+      }
+      .qr-hint {
+        font-size: 12px; color: var(--ink2);
+        max-width: 240px;
+        line-height: 1.4;
+        margin-bottom: 18px;
+      }
+      .qr-context-card {
+        width: 100%;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 12px 14px;
+        display: flex; flex-direction: column; gap: 8px;
+        text-align: left;
+      }
+      .qr-cc-eyebrow {
+        font-size: 9.5px; font-weight: 800;
+        letter-spacing: 0.5px;
+        color: var(--ink3);
+        text-transform: uppercase;
+      }
+      .qr-cc-line {
+        font-size: 12.5px; color: var(--ink1);
+        line-height: 1.4;
+      }
+      .qr-actions {
+        display: flex; gap: 8px;
+        margin-top: 16px;
+        width: 100%;
+      }
+      .qr-actions .ns-btn { flex: 1; padding: 10px; font-size: 12px; }
+
+      /* QR button in the partner row */
+      .stable-action.qr {
+        background: var(--brand-50);
+        color: var(--brand-700);
+        font-size: 14px;
+        padding: 6px 10px;
+        margin-right: 4px;
+      }
+
       /* Drawer mini-badge · next to "Approvals & alerts" entry */
       .drawer-item .badge-mini {
         margin-left: auto;
@@ -2537,6 +2622,94 @@
       .hp-pane.on { display: flex; }
 
       /* Timeline */
+      /* Health history timeline · clean list with icon + when + what */
+      .hp-health-timeline {
+        display: flex; flex-direction: column;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        overflow: hidden;
+      }
+      .hht-item {
+        display: flex; align-items: flex-start; gap: 10px;
+        padding: 11px 12px;
+      }
+      .hht-item + .hht-item { border-top: 1px solid var(--border); }
+      .hht-ic {
+        width: 32px; height: 32px; border-radius: 16px;
+        background: var(--brand-50);
+        display: grid; place-items: center;
+        font-size: 14px;
+        flex: 0 0 32px;
+      }
+      .hht-body { flex: 1; min-width: 0; }
+      .hht-when {
+        font-size: 9.5px; font-weight: 800;
+        letter-spacing: 0.5px;
+        color: var(--ink3);
+        text-transform: uppercase;
+      }
+      .hht-what {
+        font-size: 13px; font-weight: 700;
+        color: var(--ink1);
+        margin-top: 2px;
+      }
+      .hht-by {
+        font-size: 11px; color: var(--ink2);
+        margin-top: 1px;
+      }
+
+      /* Voice log button · tap to record, 3s waveform, auto-post */
+      .voice-log {
+        display: flex; align-items: center; gap: 10px;
+        width: 100%;
+        padding: 12px 14px;
+        background: linear-gradient(135deg, var(--brand-50), var(--brand-100));
+        border: 1px solid var(--brand-200);
+        border-radius: 14px;
+        cursor: pointer;
+        font-family: var(--sans);
+        font-size: 13px; font-weight: 700;
+        color: var(--brand-800);
+        text-align: left;
+        margin-bottom: 4px;
+        transition: background 200ms, border-color 200ms;
+      }
+      .voice-log .vl-mic {
+        font-size: 18px;
+        flex: 0 0 24px;
+      }
+      .voice-log .vl-text { flex: 1; }
+      .voice-log .vl-waves {
+        display: none;
+        align-items: center;
+        gap: 3px;
+        height: 16px;
+      }
+      .voice-log .vl-waves > span {
+        display: inline-block;
+        width: 3px;
+        background: var(--brand-700);
+        border-radius: 2px;
+        animation: vl-pulse 900ms ease-in-out infinite;
+      }
+      .voice-log .vl-waves > span:nth-child(1) { animation-delay: 0ms;   height: 6px; }
+      .voice-log .vl-waves > span:nth-child(2) { animation-delay: 120ms; height: 14px; }
+      .voice-log .vl-waves > span:nth-child(3) { animation-delay: 240ms; height: 9px; }
+      .voice-log .vl-waves > span:nth-child(4) { animation-delay: 360ms; height: 14px; }
+      .voice-log .vl-waves > span:nth-child(5) { animation-delay: 480ms; height: 6px; }
+      @keyframes vl-pulse {
+        0%, 100% { transform: scaleY(0.4); }
+        50%      { transform: scaleY(1.0); }
+      }
+      .voice-log.recording {
+        background: linear-gradient(135deg, var(--brand-500), var(--brand-700));
+        border-color: var(--brand-700);
+        color: white;
+      }
+      .voice-log.recording .vl-waves { display: flex; }
+      .voice-log.recording .vl-waves > span { background: white; }
+
       .timeline { position: relative; padding-left: 0; }
       .timeline::before {
         content: ""; position: absolute;
@@ -4933,7 +5106,8 @@
                 <div class="n">Dr. Torres</div>
                 <div class="m">Vet · (561) 555-0124 · last visit May 19</div>
               </div>
-              <button class="stable-action call" data-stub="Calling…" data-stub-sub="Demo · in production opens your dialer." data-stub-ic="📞">📞 Call</button>
+              <button class="stable-action qr" data-show-qr data-partner-name="Dr. Torres" data-partner-role="Vet" data-partner-initials="DT" data-partner-color="var(--alert)" data-partner-context="3 horses on Friday's soundness check" aria-label="QR access">⚏</button>
+              <button class="stable-action call" data-stub="Calling…" data-stub-sub="Demo · in production opens your dialer." data-stub-ic="📞">📞</button>
             </div>
             <div class="stable-row">
               <div class="stable-av" style="background: var(--warn-dot); color: var(--ink1);">MG</div>
@@ -4941,7 +5115,8 @@
                 <div class="n">Mike Garcia</div>
                 <div class="m">Farrier · (561) 555-0177 · last visit May 22</div>
               </div>
-              <button class="stable-action call" data-stub="Calling…" data-stub-sub="Demo · in production opens your dialer." data-stub-ic="📞">📞 Call</button>
+              <button class="stable-action qr" data-show-qr data-partner-name="Mike Garcia" data-partner-role="Farrier" data-partner-initials="MG" data-partner-color="var(--warn-dot)" data-partner-context="4 horses booked Friday 8 to 11 am" aria-label="QR access">⚏</button>
+              <button class="stable-action call" data-stub="Calling…" data-stub-sub="Demo · in production opens your dialer." data-stub-ic="📞">📞</button>
             </div>
             <div class="stable-row">
               <div class="stable-av" style="background: #6B5B95; color: white;">PL</div>
@@ -4949,7 +5124,8 @@
                 <div class="n">Pierre Lacroix</div>
                 <div class="m">Physio · (561) 555-0192 · 2 sessions pending</div>
               </div>
-              <button class="stable-action call" data-stub="Calling…" data-stub-sub="Demo · in production opens your dialer." data-stub-ic="📞">📞 Call</button>
+              <button class="stable-action qr" data-show-qr data-partner-name="Pierre Lacroix" data-partner-role="Physio" data-partner-initials="PL" data-partner-color="#6B5B95" data-partner-context="2 sessions awaiting confirmation" aria-label="QR access">⚏</button>
+              <button class="stable-action call" data-stub="Calling…" data-stub-sub="Demo · in production opens your dialer." data-stub-ic="📞">📞</button>
             </div>
             <div class="stable-row">
               <div class="stable-av" style="background: #3D6B8C; color: white;">SB</div>
@@ -4957,7 +5133,8 @@
                 <div class="n">Sarah Bell</div>
                 <div class="m">Dentist · (561) 555-0211 · annual check due</div>
               </div>
-              <button class="stable-action call" data-stub="Calling…" data-stub-sub="Demo · in production opens your dialer." data-stub-ic="📞">📞 Call</button>
+              <button class="stable-action qr" data-show-qr data-partner-name="Sarah Bell" data-partner-role="Dentist" data-partner-initials="SB" data-partner-color="#3D6B8C" data-partner-context="12 horses on annual check list" aria-label="QR access">⚏</button>
+              <button class="stable-action call" data-stub="Calling…" data-stub-sub="Demo · in production opens your dialer." data-stub-ic="📞">📞</button>
             </div>
             <div class="stable-row">
               <button class="stable-action invite" style="margin: auto;" data-stub="Add partner" data-stub-sub="Vet · farrier · physio · dentist · transport…" data-stub-ic="🤝">+ Add a partner</button>
@@ -5676,7 +5853,15 @@
 
           <div class="hp-body">
             <div class="hp-pane on" data-hp-pane="timeline">
-              <div class="timeline">
+              <!-- Voice log · tap to record, 3s waveform, posts auto. -->
+              <button class="voice-log" id="voice-log-btn">
+                <span class="vl-mic">🎤</span>
+                <span class="vl-text" id="voice-log-text">Tap to log activity</span>
+                <span class="vl-waves" aria-hidden="true">
+                  <span></span><span></span><span></span><span></span><span></span>
+                </span>
+              </button>
+              <div class="timeline" id="timeline-feed">
                 <div class="tl-item">
                   <div class="tl-dot lesson">✨</div>
                   <div class="tl-content">
@@ -5733,6 +5918,59 @@
               </div>
               <div class="hp-info-card"><div class="lbl">DAILY MEDS</div><div class="v">Equibiom AM + PM. Biotin daily.</div></div>
               <div class="hp-info-card"><div class="lbl">UPLOAD PRESCRIPTION</div><div class="v" style="color:var(--ink2); margin-top:6px; margin-bottom:10px;">PDF or photo · archived indefinitely.</div><button class="btn primary fw" style="font-size:13px;" data-stub="Upload prescription" data-stub-sub="Pick a PDF or photo · auto-creates a treatment on the horse." data-stub-ic="📎">Choose file</button></div>
+
+              <!-- Health history · every medical intervention, oldest at the bottom -->
+              <div class="eyebrow" data-section="health" style="margin-top:8px;">Health history · last 12 months</div>
+              <div class="hp-health-timeline">
+                <div class="hht-item">
+                  <span class="hht-ic">🔨</span>
+                  <div class="hht-body">
+                    <div class="hht-when">May 12 · 10 am</div>
+                    <div class="hht-what">Farrier · new shoes front</div>
+                    <div class="hht-by">Mike Garcia · next visit Jun 9</div>
+                  </div>
+                </div>
+                <div class="hht-item">
+                  <span class="hht-ic">💉</span>
+                  <div class="hht-body">
+                    <div class="hht-when">Apr 28</div>
+                    <div class="hht-what">Vaccine · annual booster</div>
+                    <div class="hht-by">Dr. Torres · next due Apr 2027</div>
+                  </div>
+                </div>
+                <div class="hht-item">
+                  <span class="hht-ic">🦷</span>
+                  <div class="hht-body">
+                    <div class="hht-when">Mar 14</div>
+                    <div class="hht-what">Dental check · two hooks rasped</div>
+                    <div class="hht-by">Sarah Bell · next due Sep</div>
+                  </div>
+                </div>
+                <div class="hht-item">
+                  <span class="hht-ic">💊</span>
+                  <div class="hht-body">
+                    <div class="hht-when">Feb 2</div>
+                    <div class="hht-what">Wormer · paste, full dose</div>
+                    <div class="hht-by">Jess · log only, no vet visit</div>
+                  </div>
+                </div>
+                <div class="hht-item">
+                  <span class="hht-ic">🦴</span>
+                  <div class="hht-body">
+                    <div class="hht-when">Nov 18, 2025</div>
+                    <div class="hht-what">Physio · poll + SI joint release</div>
+                    <div class="hht-by">Pierre Lacroix · 60 min · no flag</div>
+                  </div>
+                </div>
+                <div class="hht-item">
+                  <span class="hht-ic">🩺</span>
+                  <div class="hht-body">
+                    <div class="hht-when">Oct 4, 2025</div>
+                    <div class="hht-what">Soundness · clean on all four</div>
+                    <div class="hht-by">Dr. Torres · annual exam</div>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div class="hp-pane" data-hp-pane="food">
@@ -6231,6 +6469,84 @@
         <div class="msg">
           <strong id="toast-title">Photo sent to Sofia</strong>
           <span id="toast-sub">Bella's owner just got a push notification.</span>
+        </div>
+      </div>
+
+      <!-- Partner QR sheet · external provider access without account -->
+      <div class="wp-sheet qr-sheet" id="qr-sheet" role="dialog" aria-modal="true" aria-label="Partner QR access">
+        <div class="ns-grabber"></div>
+        <button class="ns-close" id="qr-close" aria-label="Close">✕</button>
+        <div class="qr-body">
+          <div class="qr-eyebrow">External access · no account needed</div>
+          <div class="qr-title" id="qr-partner-title">Partner</div>
+          <div class="qr-role" id="qr-partner-role">Role</div>
+          <div class="qr-frame">
+            <svg class="qr-svg" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect width="21" height="21" fill="white"/>
+              <!-- Three corner finder patterns -->
+              <g fill="var(--brand-900)">
+                <rect x="0" y="0" width="7" height="7"/>
+                <rect x="14" y="0" width="7" height="7"/>
+                <rect x="0" y="14" width="7" height="7"/>
+              </g>
+              <g fill="white">
+                <rect x="1" y="1" width="5" height="5"/>
+                <rect x="15" y="1" width="5" height="5"/>
+                <rect x="1" y="15" width="5" height="5"/>
+              </g>
+              <g fill="var(--brand-900)">
+                <rect x="2" y="2" width="3" height="3"/>
+                <rect x="16" y="2" width="3" height="3"/>
+                <rect x="2" y="16" width="3" height="3"/>
+              </g>
+              <!-- Fake data modules · scatter for visual identity -->
+              <g fill="var(--brand-900)">
+                <rect x="8" y="0" width="1" height="1"/><rect x="10" y="0" width="1" height="1"/><rect x="12" y="0" width="1" height="1"/>
+                <rect x="9" y="1" width="1" height="1"/><rect x="11" y="1" width="1" height="1"/>
+                <rect x="8" y="2" width="1" height="1"/><rect x="10" y="2" width="1" height="1"/><rect x="13" y="2" width="1" height="1"/>
+                <rect x="9" y="3" width="1" height="1"/><rect x="11" y="3" width="1" height="1"/><rect x="12" y="3" width="1" height="1"/>
+                <rect x="8" y="4" width="1" height="1"/><rect x="13" y="4" width="1" height="1"/>
+                <rect x="9" y="5" width="1" height="1"/><rect x="10" y="5" width="1" height="1"/><rect x="12" y="5" width="1" height="1"/>
+                <rect x="8" y="6" width="1" height="1"/><rect x="11" y="6" width="1" height="1"/><rect x="13" y="6" width="1" height="1"/>
+                <rect x="0" y="8" width="1" height="1"/><rect x="2" y="8" width="1" height="1"/><rect x="4" y="8" width="1" height="1"/><rect x="6" y="8" width="1" height="1"/>
+                <rect x="8" y="8" width="1" height="1"/><rect x="10" y="8" width="1" height="1"/><rect x="11" y="8" width="1" height="1"/><rect x="13" y="8" width="1" height="1"/>
+                <rect x="15" y="8" width="1" height="1"/><rect x="17" y="8" width="1" height="1"/><rect x="19" y="8" width="1" height="1"/>
+                <rect x="1" y="9" width="1" height="1"/><rect x="3" y="9" width="1" height="1"/><rect x="5" y="9" width="1" height="1"/>
+                <rect x="9" y="9" width="1" height="1"/><rect x="12" y="9" width="1" height="1"/><rect x="14" y="9" width="1" height="1"/>
+                <rect x="16" y="9" width="1" height="1"/><rect x="18" y="9" width="1" height="1"/><rect x="20" y="9" width="1" height="1"/>
+                <rect x="0" y="10" width="1" height="1"/><rect x="2" y="10" width="1" height="1"/><rect x="6" y="10" width="1" height="1"/>
+                <rect x="8" y="10" width="1" height="1"/><rect x="10" y="10" width="1" height="1"/><rect x="13" y="10" width="1" height="1"/>
+                <rect x="15" y="10" width="1" height="1"/><rect x="17" y="10" width="1" height="1"/><rect x="19" y="10" width="1" height="1"/>
+                <rect x="1" y="11" width="1" height="1"/><rect x="3" y="11" width="1" height="1"/><rect x="5" y="11" width="1" height="1"/>
+                <rect x="9" y="11" width="1" height="1"/><rect x="11" y="11" width="1" height="1"/><rect x="14" y="11" width="1" height="1"/>
+                <rect x="16" y="11" width="1" height="1"/><rect x="18" y="11" width="1" height="1"/><rect x="20" y="11" width="1" height="1"/>
+                <rect x="0" y="12" width="1" height="1"/><rect x="4" y="12" width="1" height="1"/><rect x="6" y="12" width="1" height="1"/>
+                <rect x="9" y="12" width="1" height="1"/><rect x="11" y="12" width="1" height="1"/><rect x="13" y="12" width="1" height="1"/>
+                <rect x="15" y="12" width="1" height="1"/><rect x="17" y="12" width="1" height="1"/>
+                <rect x="2" y="13" width="1" height="1"/><rect x="3" y="13" width="1" height="1"/><rect x="5" y="13" width="1" height="1"/>
+                <rect x="8" y="13" width="1" height="1"/><rect x="10" y="13" width="1" height="1"/><rect x="12" y="13" width="1" height="1"/>
+                <rect x="14" y="13" width="1" height="1"/><rect x="16" y="13" width="1" height="1"/><rect x="19" y="13" width="1" height="1"/>
+                <rect x="8" y="14" width="1" height="1"/><rect x="9" y="14" width="1" height="1"/><rect x="11" y="14" width="1" height="1"/><rect x="13" y="14" width="1" height="1"/>
+                <rect x="15" y="14" width="1" height="1"/><rect x="17" y="14" width="1" height="1"/><rect x="20" y="14" width="1" height="1"/>
+                <rect x="8" y="16" width="1" height="1"/><rect x="10" y="16" width="1" height="1"/><rect x="12" y="16" width="1" height="1"/><rect x="14" y="16" width="1" height="1"/><rect x="16" y="16" width="1" height="1"/><rect x="18" y="16" width="1" height="1"/>
+                <rect x="9" y="17" width="1" height="1"/><rect x="11" y="17" width="1" height="1"/><rect x="13" y="17" width="1" height="1"/><rect x="15" y="17" width="1" height="1"/><rect x="17" y="17" width="1" height="1"/><rect x="19" y="17" width="1" height="1"/>
+                <rect x="8" y="18" width="1" height="1"/><rect x="10" y="18" width="1" height="1"/><rect x="13" y="18" width="1" height="1"/><rect x="15" y="18" width="1" height="1"/><rect x="17" y="18" width="1" height="1"/><rect x="20" y="18" width="1" height="1"/>
+                <rect x="9" y="19" width="1" height="1"/><rect x="12" y="19" width="1" height="1"/><rect x="14" y="19" width="1" height="1"/><rect x="16" y="19" width="1" height="1"/><rect x="19" y="19" width="1" height="1"/>
+                <rect x="8" y="20" width="1" height="1"/><rect x="11" y="20" width="1" height="1"/><rect x="13" y="20" width="1" height="1"/><rect x="17" y="20" width="1" height="1"/><rect x="19" y="20" width="1" height="1"/>
+              </g>
+            </svg>
+          </div>
+          <div class="qr-hint">Scan to access today's tasks at Wellington Park</div>
+          <div class="qr-context-card">
+            <div class="qr-cc-eyebrow">What <span id="qr-partner-name-inline">they</span> will see</div>
+            <div class="qr-cc-line">📅 <span id="qr-partner-context">Tasks</span></div>
+            <div class="qr-cc-line">📍 Wellington Park · 200 Polo Lane · Wellington, FL</div>
+            <div class="qr-cc-line">🔒 Read + check off · expires after the visit</div>
+          </div>
+          <div class="qr-actions">
+            <button class="ns-btn ghost" data-stub="Link copied" data-stub-sub="Shared via SMS · valid for 24 h after first scan." data-stub-ic="🔗">Copy link instead</button>
+            <button class="ns-btn ok" data-stub="QR sent" data-stub-sub="Texted to the partner · they'll open it on their phone." data-stub-ic="📲">Send by SMS</button>
+          </div>
         </div>
       </div>
 
@@ -7147,6 +7463,115 @@
         }
       }, true);  // capture phase so we run before [data-stub]
 
+      // ── Voice log · tap → 3s waveform → posts to timeline ──
+      // V3 feature teaser. Realistic recording animation, then a
+      // fresh tl-item appears at the top of the horse's timeline.
+      const VOICE_SAMPLES = [
+        { what: "Hand-walked Bella 15 min", by: "Cooled down well · stall water topped up" },
+        { what: "Stretching routine done", by: "All four legs · no flinch on the off-fore" },
+        { what: "Bath after the jump session", by: "Mane braided · ready for Sofia's visit at 4 pm" },
+        { what: "Watched her in the paddock 10 min", by: "Moving freely · ate carrots from my hand" },
+      ];
+      let voiceSampleIdx = 0;
+      const voiceBtn = document.getElementById("voice-log-btn");
+      const voiceText = document.getElementById("voice-log-text");
+      voiceBtn?.addEventListener("click", () => {
+        if (voiceBtn.classList.contains("recording")) return;
+        voiceBtn.classList.add("recording");
+        if (voiceText) voiceText.textContent = "Listening… 3 s";
+        let remaining = 3;
+        const countdown = setInterval(() => {
+          remaining -= 1;
+          if (voiceText && remaining > 0) voiceText.textContent = `Listening… ${remaining} s`;
+        }, 1000);
+        setTimeout(() => {
+          clearInterval(countdown);
+          voiceBtn.classList.remove("recording");
+          if (voiceText) voiceText.textContent = "Tap to log activity";
+          const sample = VOICE_SAMPLES[voiceSampleIdx % VOICE_SAMPLES.length];
+          voiceSampleIdx += 1;
+          const timeline = document.getElementById("timeline-feed");
+          if (timeline) {
+            const item = document.createElement("div");
+            item.className = "tl-item";
+            item.innerHTML = `
+              <div class="tl-dot lesson">🎤</div>
+              <div class="tl-content">
+                <div class="tl-when">just now · voice note</div>
+                <div class="tl-what">${sample.what}</div>
+                <div class="tl-by">${sample.by}</div>
+              </div>`;
+            timeline.insertBefore(item, timeline.firstChild);
+          }
+          showToast("Voice note logged", "Transcribed · posted to Bella's timeline.", "🎤");
+        }, 3000);
+      });
+
+      // ── Dashboard · count-up animation on KPI heroes ─────
+      // First time we enter the dashboard, we cache each .big's
+      // final text. On every subsequent entry we reset to 0 (with
+      // the same prefix/suffix like "$" or "%") and animate up over
+      // 1.1s with ease-out cubic. Cheap pitch wow-moment.
+      const KPI_CACHE = new WeakMap();
+      function animateKPIs() {
+        const els = document.querySelectorAll('.screen[data-screen="dashboard"] .kpi-hero .big');
+        els.forEach(el => {
+          let target = KPI_CACHE.get(el);
+          if (!target) {
+            target = el.textContent.trim();
+            KPI_CACHE.set(el, target);
+          }
+          const num = parseFloat(target.replace(/[^0-9.]/g, ""));
+          if (isNaN(num) || num === 0) return;
+          const prefix = (target.match(/^[^0-9-]*/) || [""])[0];
+          const suffix = (target.match(/[^0-9.,]*$/) || [""])[0];
+          el.textContent = prefix + "0" + suffix;
+          const start = performance.now();
+          const duration = 1100;
+          function tick(now) {
+            const t = Math.min(1, (now - start) / duration);
+            const eased = 1 - Math.pow(1 - t, 3);
+            const val = Math.round(num * eased);
+            el.textContent = prefix + val.toLocaleString("en-US") + suffix;
+            if (t < 1) requestAnimationFrame(tick);
+            else el.textContent = target;
+          }
+          requestAnimationFrame(tick);
+        });
+      }
+
+      // ── Partner QR sheet · external access without account ──
+      // Tap a [data-show-qr] button on a partner row to open the QR
+      // sheet pre-filled with that partner's name, role, and what
+      // they'd see on scan.
+      const qrSheet = document.getElementById("qr-sheet");
+      function openQrSheet(btn) {
+        if (!qrSheet) return;
+        const name = btn.dataset.partnerName || "Partner";
+        const role = btn.dataset.partnerRole || "External";
+        const context = btn.dataset.partnerContext || "Today's tasks";
+        document.getElementById("qr-partner-title").textContent = name;
+        document.getElementById("qr-partner-role").textContent = role;
+        document.getElementById("qr-partner-name-inline").textContent = name;
+        document.getElementById("qr-partner-context").textContent = context;
+        if (typeof closeDrawer === "function") closeDrawer();
+        qrSheet.classList.add("open");
+        notifBackdrop?.classList.add("open");
+      }
+      function closeQrSheet() {
+        qrSheet?.classList.remove("open");
+        notifBackdrop?.classList.remove("open");
+      }
+      document.querySelectorAll("[data-show-qr]").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          openQrSheet(btn);
+        });
+      });
+      document.getElementById("qr-close")?.addEventListener("click", closeQrSheet);
+      // Backdrop click closes whichever sheet is open (notif / person / qr).
+      notifBackdrop?.addEventListener("click", closeQrSheet);
+
       // ── Stable · live search across the active pane ──────
       // Filters .stable-row elements in the currently-visible pane
       // (horses/clients/team/partners) by matching the input value
@@ -7466,6 +7891,7 @@
         _origShow(name);
         syncFab();
         maybeShowPhotoPrompt();
+        if (name === "dashboard") animateKPIs();
       };
       const _origApplyRole = applyRole;
       applyRole = function (role) {
