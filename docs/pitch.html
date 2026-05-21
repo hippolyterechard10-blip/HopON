@@ -646,6 +646,23 @@
         background: linear-gradient(135deg, var(--brand-50), var(--surface));
         border-color: var(--brand-100);
       }
+      /* External equestrian news · WEF / WEC / Grand Prix etc.
+         Tinted neutral, source label distinct from internal posts. */
+      .feed-mini-row.ext {
+        background: var(--surface);
+        border-left: 3px solid var(--ink2);
+      }
+      .feed-mini-row.ext .feed-mini-av {
+        background: var(--ink1);
+        color: white;
+        font-size: 9.5px;
+        font-weight: 800;
+        letter-spacing: 0.3px;
+      }
+      .feed-mini-row.ext .feed-mini-tag {
+        color: var(--ink2);
+        background: var(--bg);
+      }
       .feed-mini-av {
         width: 32px; height: 32px; border-radius: 16px;
         background: var(--brand-100);
@@ -707,7 +724,7 @@
       }
 
       .task-row {
-        display: flex; align-items: center; gap: 10px;
+        display: flex; align-items: center; gap: 12px;
         padding: 10px 12px;
         background: var(--surface);
         border: 1px solid var(--border);
@@ -716,22 +733,51 @@
         user-select: none;
       }
       .task-row.urgent { background: var(--alert-bg); border-color: var(--alert-bg); }
-      .checkbox {
-        width: 20px; height: 20px; border-radius: 6px;
-        border: 1.5px solid var(--ink3); background: var(--surface);
-        flex: 0 0 20px;
+
+      /* Slide-to-complete · safer than a checkbox.
+         Tap = animates thumb to the right + colors the track. */
+      .task-slider {
+        width: 40px; height: 22px; border-radius: 11px;
+        background: var(--border);
+        position: relative;
+        flex: 0 0 40px;
+        transition: background 320ms;
       }
-      .task-row.done .checkbox { background: var(--ok); border-color: var(--ok); }
-      .task-row.done .checkbox::after {
-        content: "✓"; color: white; font-size: 12px;
-        display: grid; place-items: center; height: 100%;
+      .task-slider::after {
+        content: ""; position: absolute;
+        width: 18px; height: 18px; border-radius: 9px;
+        background: var(--surface);
+        top: 2px; left: 2px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.28);
+        transition: left 320ms cubic-bezier(0.34, 1.56, 0.64, 1);
       }
+      .task-row.done .task-slider { background: var(--ok); }
+      .task-row.done .task-slider::after { left: 20px; }
+      .task-row.urgent .task-slider { background: rgba(217,56,30,0.18); }
+
       .task-row .text {
         flex: 1; font-size: 12px; font-weight: 700;
         letter-spacing: 0.3px; text-transform: uppercase;
       }
       .task-row.done .text { color: var(--ink3); text-decoration: line-through; }
       .task-row.urgent .text { color: var(--alert); }
+
+      /* NEXT UP variant · same height as a normal task row,
+         eucalyptus fill carries the attention. */
+      .task-row.up-next {
+        background: linear-gradient(135deg, var(--brand-600) 0%, var(--brand-800) 100%);
+        border-color: var(--brand-700);
+      }
+      .task-row.up-next .text { color: white; }
+      .task-row.up-next .task-slider {
+        background: rgba(255,255,255,0.22);
+      }
+      .task-row.up-next .task-slider::after { background: white; }
+      .task-row.up-next.done { opacity: 0.85; }
+      [data-theme="neo"] .task-row.up-next {
+        background: linear-gradient(135deg, var(--ink1) 0%, #000 100%);
+        border-color: var(--ink1);
+      }
 
       /* ── CLIENT shell · Instagram + Strava ───────────── */
       .client-cta {
@@ -3066,6 +3112,57 @@
       .toast .msg strong { display: block; font-weight: 700; margin-bottom: 2px; }
       .toast .msg span { opacity: 0.75; }
 
+      /* ── Photo prompt · recurring nudge on Groom home ── */
+      .photo-prompt {
+        position: absolute; bottom: 100px; left: 16px; right: 16px;
+        background: linear-gradient(135deg, var(--brand-700), var(--brand-900));
+        color: white;
+        padding: 12px 14px;
+        border-radius: 16px;
+        display: none; align-items: center; gap: 10px;
+        box-shadow: 0 14px 32px rgba(0,0,0,0.32);
+        z-index: 14;
+      }
+      [data-theme="neo"] .photo-prompt {
+        background: linear-gradient(135deg, var(--ink1), #000);
+      }
+      .photo-prompt.show {
+        display: flex;
+        animation: toastUp 420ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      }
+      .pp-ic {
+        width: 38px; height: 38px; border-radius: 19px;
+        background: rgba(255,255,255,0.18);
+        display: grid; place-items: center;
+        font-size: 19px;
+        flex: 0 0 38px;
+      }
+      .pp-msg { flex: 1; min-width: 0; }
+      .pp-msg strong { display: block; font-size: 13px; }
+      .pp-msg span { display: block; font-size: 11px; opacity: 0.82; margin-top: 1px; }
+      .pp-btn {
+        background: white;
+        color: var(--brand-700);
+        border: 0;
+        padding: 8px 14px;
+        border-radius: 10px;
+        font-family: var(--sans);
+        font-weight: 700; font-size: 12px;
+        letter-spacing: 0.3px;
+        cursor: pointer;
+        flex: 0 0 auto;
+      }
+      [data-theme="neo"] .pp-btn { color: var(--brand-500); }
+      .pp-close {
+        background: transparent;
+        color: rgba(255,255,255,0.7);
+        border: 0;
+        font-size: 14px;
+        cursor: pointer;
+        padding: 4px;
+        flex: 0 0 auto;
+      }
+
       /* Pitch footer */
       .pitch-footer {
         font-size: 10px; color: var(--ink3); opacity: 0.7;
@@ -3246,32 +3343,19 @@
               </div>
             </div>
 
-            <!-- NEXT UP hero -->
-            <div class="eyebrow">Up next · in 5 min</div>
-            <div class="groom-hero">
-              <div class="gh-ctx">
-                <div class="gh-thumb">🐎</div>
-                <div class="flex1">
-                  <div class="gh-eb">For Sofia · @owner</div>
-                  <div class="gh-task">Groom Bella for her 9 am</div>
-                </div>
-              </div>
-              <button class="gh-camera" id="snap-btn">
-                <span class="cam-ic">📸</span>
-                Snap &amp; send to Sofia
-              </button>
-              <div class="gh-skip">Skip · mark done without photo</div>
-            </div>
+            <!-- NEXT UP · same height as other rows, colored to stand out -->
+            <div class="eyebrow" style="color:var(--brand-700);">Up next · in 5 min · for Sofia</div>
+            <div class="task-row up-next" data-task><div class="task-slider"></div><div class="text">Bella · groom + photo · 9:00 am</div></div>
 
             <!-- Rest of the day -->
-            <div class="eyebrow" style="margin-top:4px;">Rest of your day · 4 left</div>
-            <div class="task-row urgent" data-task><div class="checkbox"></div><div class="text">! Storm · tack up · 9:00</div></div>
-            <div class="task-row" data-task><div class="checkbox"></div><div class="text">Indigo · feed PM</div></div>
-            <div class="task-row" data-task><div class="checkbox"></div><div class="text">Juno · groom + photo</div></div>
-            <div class="task-row" data-task><div class="checkbox"></div><div class="text">Bella · evening feed</div></div>
+            <div class="eyebrow" style="margin-top:6px;">Rest of your day · 4 left</div>
+            <div class="task-row urgent" data-task><div class="task-slider"></div><div class="text">! Storm · tack up · 9:00</div></div>
+            <div class="task-row" data-task><div class="task-slider"></div><div class="text">Indigo · feed PM</div></div>
+            <div class="task-row" data-task><div class="task-slider"></div><div class="text">Juno · groom + photo</div></div>
+            <div class="task-row" data-task><div class="task-slider"></div><div class="text">Bella · evening feed</div></div>
 
-            <!-- From the barn · last 7 days -->
-            <div class="eyebrow" style="margin-top:10px;">From the barn · last 7 days</div>
+            <!-- Feed mini · barn posts · auto-news · external · last 7 days -->
+            <div class="eyebrow" style="margin-top:10px;">Latest · last 7 days</div>
             <div class="feed-mini">
               <div class="feed-mini-row" data-go="feed">
                 <div class="feed-mini-av">SM</div>
@@ -3282,6 +3366,28 @@
                   </div>
                   <div class="feed-mini-text">Bella nailed the 1m10 grid · best session this week.</div>
                   <div class="feed-mini-foot"><span>❤️ 8</span><span>👏 3</span><span class="time">yesterday · 4 pm</span></div>
+                </div>
+              </div>
+              <div class="feed-mini-row news" data-go="feed">
+                <div class="feed-mini-av">🎉</div>
+                <div class="feed-mini-body">
+                  <div class="feed-mini-head">
+                    <span class="feed-mini-author">Barn news</span>
+                    <span class="feed-mini-tag">@all</span>
+                  </div>
+                  <div class="feed-mini-text">Juno turns 12 today — drop a carrot in stall 7.</div>
+                  <div class="feed-mini-foot"><span>❤️ 14</span><span>🥕 9</span><span class="time">today</span></div>
+                </div>
+              </div>
+              <div class="feed-mini-row ext" data-go="feed">
+                <div class="feed-mini-av">WEF</div>
+                <div class="feed-mini-body">
+                  <div class="feed-mini-head">
+                    <span class="feed-mini-author">Winter Equestrian Festival</span>
+                    <span class="feed-mini-tag">industry</span>
+                  </div>
+                  <div class="feed-mini-text">Week 12 schedule released — $500K Grand Prix Saturday under lights.</div>
+                  <div class="feed-mini-foot"><span>wellington.com</span><span class="time">2 days ago</span></div>
                 </div>
               </div>
               <div class="feed-mini-row" data-go="feed">
@@ -3295,17 +3401,6 @@
                   <div class="feed-mini-foot"><span>👍 6</span><span class="time">2 days ago</span></div>
                 </div>
               </div>
-              <div class="feed-mini-row news" data-go="feed">
-                <div class="feed-mini-av">🎉</div>
-                <div class="feed-mini-body">
-                  <div class="feed-mini-head">
-                    <span class="feed-mini-author">Auto · barn news</span>
-                    <span class="feed-mini-tag">@all</span>
-                  </div>
-                  <div class="feed-mini-text">Juno turns 12 today — drop a carrot in stall 7.</div>
-                  <div class="feed-mini-foot"><span>❤️ 14</span><span>🥕 9</span><span class="time">5 days ago</span></div>
-                </div>
-              </div>
               <div class="feed-mini-row" data-go="feed">
                 <div class="feed-mini-av">JS</div>
                 <div class="feed-mini-body">
@@ -3313,18 +3408,29 @@
                     <span class="feed-mini-author">Jess · groom</span>
                     <span class="feed-mini-tag">@owners</span>
                   </div>
-                  <div class="feed-mini-text">Storm's bandages changed this morning — clean and dry, healing well.</div>
+                  <div class="feed-mini-text">Storm's bandages changed this morning — clean and dry.</div>
                   <div class="feed-mini-foot"><span>❤️ 5</span><span class="time">3 days ago</span></div>
+                </div>
+              </div>
+              <div class="feed-mini-row ext" data-go="feed">
+                <div class="feed-mini-av">GP</div>
+                <div class="feed-mini-body">
+                  <div class="feed-mini-head">
+                    <span class="feed-mini-author">Grand Prix Magazine</span>
+                    <span class="feed-mini-tag">industry</span>
+                  </div>
+                  <div class="feed-mini-text">USEF rule update · helmet certification standards effective July.</div>
+                  <div class="feed-mini-foot"><span>grandprix-mag.com</span><span class="time">4 days ago</span></div>
                 </div>
               </div>
               <div class="feed-mini-row news" data-go="feed">
                 <div class="feed-mini-av">💉</div>
                 <div class="feed-mini-body">
                   <div class="feed-mini-head">
-                    <span class="feed-mini-author">Auto · barn news</span>
+                    <span class="feed-mini-author">Barn news</span>
                     <span class="feed-mini-tag">@all</span>
                   </div>
-                  <div class="feed-mini-text">Spring vaccines round done · 18 horses covered until Nov.</div>
+                  <div class="feed-mini-text">Spring vaccines done · 18 horses covered until Nov.</div>
                   <div class="feed-mini-foot"><span>✓ done</span><span class="time">6 days ago</span></div>
                 </div>
               </div>
@@ -4850,6 +4956,17 @@
           <span id="toast-sub">Bella's owner just got a push notification.</span>
         </div>
       </div>
+
+      <!-- Photo prompt · recurring nudge on Groom home -->
+      <div class="photo-prompt" id="photo-prompt">
+        <div class="pp-ic">📸</div>
+        <div class="pp-msg">
+          <strong>Take a photo for Sofia</strong>
+          <span>Bella · groom + photo · 9:00 am</span>
+        </div>
+        <button class="pp-btn" id="pp-snap">Snap</button>
+        <button class="pp-close" id="pp-close" aria-label="Dismiss">✕</button>
+      </div>
     </div>
 
     <div class="pitch-footer">HopOn · pitch prototype · May 2026 · v Pitch 1.0</div>
@@ -5425,7 +5542,32 @@
       document.querySelectorAll("[data-task]").forEach(row => {
         row.addEventListener("click", () => row.classList.toggle("done"));
       });
-      // Snap button on Groom home now opens the Camera screen
+
+      // ── Photo prompt · recurring nudge on Groom home ───────
+      // Replaces the snap button inside the old groom-hero block.
+      // Auto-shows ~1.4s after the Groom lands on Home and reappears
+      // each time they come back, so the pattern stays visible during
+      // the pitch demo. Snap → opens camera; X → dismisses silently.
+      const photoPrompt = document.getElementById("photo-prompt");
+      let photoPromptTimer = null;
+      function dismissPhotoPrompt() {
+        if (photoPromptTimer) { clearTimeout(photoPromptTimer); photoPromptTimer = null; }
+        photoPrompt?.classList.remove("show");
+      }
+      function maybeShowPhotoPrompt() {
+        dismissPhotoPrompt();
+        if (typeof currentRole !== "function") return;
+        const onGroomHome =
+          currentRole() === "groom" &&
+          document.querySelector(".screen.active")?.dataset.screen === "home";
+        if (!onGroomHome) return;
+        photoPromptTimer = setTimeout(() => photoPrompt?.classList.add("show"), 1400);
+      }
+      document.getElementById("pp-snap")?.addEventListener("click", () => {
+        dismissPhotoPrompt();
+        show("camera");
+      });
+      document.getElementById("pp-close")?.addEventListener("click", dismissPhotoPrompt);
       document.getElementById("snap-btn")?.addEventListener("click", () => show("camera"));
 
       // ── Toast helper (piece 5) ─────────────────────────────
@@ -5622,14 +5764,17 @@
       show = function (name) {
         _origShow(name);
         syncFab();
+        maybeShowPhotoPrompt();
       };
       const _origApplyRole = applyRole;
       applyRole = function (role) {
         _origApplyRole(role);
         syncFab();
+        maybeShowPhotoPrompt();
       };
       // Initial
       syncFab();
+      maybeShowPhotoPrompt();
     </script>
   </body>
 </html>
