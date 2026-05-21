@@ -401,6 +401,13 @@
         font-size: 10px; font-weight: 700; letter-spacing: 0.3px;
       }
       [data-theme="neo"] .horse-pill { background: var(--ink1); color: var(--bg); }
+      .event-pill {
+        background: var(--bg); color: var(--ink2);
+        padding: 3px 8px; border-radius: 8px;
+        font-size: 10px; font-weight: 700; letter-spacing: 0.3px;
+        border: 1px solid var(--border);
+      }
+      [data-theme="neo"] .event-pill { background: var(--surface); }
       .approval-row .what { flex: 1; }
       .approval-row .what .n { font-size: 13px; font-weight: 700; color: var(--ink1); }
       .approval-row .what .by { font-size: 10px; color: var(--ink3); margin-top: 1px; }
@@ -3348,6 +3355,13 @@
             <div class="trainer-row"><span class="time">14:00</span><div class="who"><div class="n">Liv Andersen</div><div class="m">Outdoor · Flat · 45 min</div></div><span class="horse-pill">JUNO</span></div>
             <div class="trainer-row"><span class="time">15:30</span><div class="who"><div class="n">Emma Carter</div><div class="m">Outdoor · Jump · 45 min</div></div><span class="horse-pill">BELLA</span></div>
             <div class="trainer-row"><span class="time">17:00</span><div class="who"><div class="n">Group · 4 riders</div><div class="m">Outdoor · Beginner · 60 min</div></div><span class="horse-pill">MIX</span></div>
+
+            <!-- My day · personal to-dos + non-lesson events.
+                 Hidden entirely when empty (no need for an empty state). -->
+            <div class="eyebrow" style="margin-top:8px;">My day · 3 items</div>
+            <div class="task-row" data-task><div class="task-slider"></div><div class="text">Order new helmet straps · supplier link in DM</div></div>
+            <div class="task-row" data-task><div class="task-slider"></div><div class="text">Submit May invoice · Tuesday group clients</div></div>
+            <div class="trainer-row"><span class="time">18:00</span><div class="who"><div class="n">Riders' meeting</div><div class="m">Barn lounge · 45 min · winter plan</div></div><span class="event-pill">EVENT</span></div>
 
             <!-- Feed mini · barn posts · auto-news · external · last 7 days -->
             <div class="eyebrow" style="margin-top:10px;">Latest · last 7 days</div>
