@@ -2615,8 +2615,14 @@
       .wb-rows {
         flex: 1; overflow-y: auto;
         padding: 8px 16px 110px;
-        display: flex; flex-direction: column; gap: 10px;
         background: var(--bg);
+        /* Two-column grid so 2 employees share a row.
+           align-items:start so opening one row doesn't stretch its
+           neighbour. */
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        align-items: start;
       }
       /* Whiteboard v2 · compact list per employee.
          Each row is ~52px collapsed; tap to expand task details
@@ -2639,16 +2645,25 @@
       }
       .wb-row.has-urgent { border-color: var(--brand-300); }
       .wb-row-head {
-        display: flex; align-items: center; gap: 10px;
-        padding: 9px 12px;
+        display: flex; flex-direction: column;
+        gap: 8px;
+        padding: 10px 12px;
+      }
+      .wb-row-top {
+        display: flex; align-items: center; gap: 8px;
+        min-width: 0;
+      }
+      .wb-row-bot {
+        display: flex; align-items: center; gap: 8px;
+        min-width: 0;
       }
       .wb-row-av {
-        width: 30px; height: 30px; border-radius: 15px;
+        width: 28px; height: 28px; border-radius: 14px;
         background: var(--brand-100); color: var(--brand-800);
         display: grid; place-items: center;
-        font-size: 10.5px; font-weight: 800;
+        font-size: 10px; font-weight: 800;
         position: relative;
-        flex: 0 0 30px;
+        flex: 0 0 28px;
       }
       [data-theme="neo"] .wb-row-av { background: var(--brand-50); color: var(--ink1); }
       .wb-row-av .live {
@@ -2657,17 +2672,25 @@
         background: var(--brand-500);
         border: 2px solid var(--surface);
       }
-      .wb-row-name { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
-      .wb-row-name .n { font-size: 13px; font-weight: 700; color: var(--ink1); line-height: 1.1; }
+      .wb-row-name {
+        flex: 1; min-width: 0;
+        display: flex; flex-direction: column; gap: 1px;
+        overflow: hidden;
+      }
+      .wb-row-name .n {
+        font-size: 13px; font-weight: 700; color: var(--ink1); line-height: 1.1;
+        overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      }
       .wb-row-name .r {
-        font-size: 9px; font-weight: 700; letter-spacing: 0.5px;
+        font-size: 9px; font-weight: 700; letter-spacing: 0.4px;
         color: var(--ink3);
+        overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
       }
       .wb-row-progress-mini {
-        width: 56px; height: 5px;
+        flex: 1; min-width: 0;
+        height: 5px;
         background: var(--brand-100);
         border-radius: 3px; overflow: hidden;
-        flex: 0 0 56px;
       }
       .wb-row-progress-mini .fill {
         height: 100%;
@@ -2724,7 +2747,11 @@
         color: white;
       }
       .wb-task.done .check::after { content: "✓"; }
-      .wb-task .lbl { flex: 1; font-weight: 600; }
+      .wb-task .lbl {
+        flex: 1; min-width: 0;
+        font-weight: 600;
+        overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      }
       .wb-task.done .lbl { color: var(--ink3); font-weight: 500; }
       .wb-task .when {
         font-size: 11px; color: var(--ink3);
@@ -5051,11 +5078,15 @@
           <div class="wb-rows">
             <div class="wb-row" data-wb-row>
               <div class="wb-row-head">
-                <div class="wb-row-av">SM<span class="live"></span></div>
-                <div class="wb-row-name"><span class="n">Sam</span><span class="r">Trainer · Arena 1</span></div>
-                <div class="wb-row-progress-mini"><div class="fill" style="width: 50%;"></div></div>
-                <div class="wb-row-stats"><span class="pct">2/4</span></div>
-                <span class="wb-row-chev">▾</span>
+                <div class="wb-row-top">
+                  <div class="wb-row-av">SM<span class="live"></span></div>
+                  <div class="wb-row-name"><span class="n">Sam</span><span class="r">Trainer · Arena 1</span></div>
+                </div>
+                <div class="wb-row-bot">
+                  <div class="wb-row-progress-mini"><div class="fill" style="width: 50%;"></div></div>
+                  <div class="wb-row-stats"><span class="pct">2/4</span></div>
+                  <span class="wb-row-chev">▾</span>
+                </div>
               </div>
               <div class="wb-row-details">
                 <div class="wb-task done"><span class="check"></span><span class="lbl">Bella · lunge</span><span class="when">8 am</span></div>
@@ -5067,11 +5098,15 @@
 
             <div class="wb-row has-urgent" data-wb-row>
               <div class="wb-row-head">
-                <div class="wb-row-av">JD<span class="live"></span></div>
-                <div class="wb-row-name"><span class="n">Jodie</span><span class="r">Trainer · Outdoor</span></div>
-                <div class="wb-row-progress-mini"><div class="fill" style="width: 33%;"></div></div>
-                <div class="wb-row-stats"><span class="pct">1/3</span><span class="urg">1!</span></div>
-                <span class="wb-row-chev">▾</span>
+                <div class="wb-row-top">
+                  <div class="wb-row-av">JD<span class="live"></span></div>
+                  <div class="wb-row-name"><span class="n">Jodie</span><span class="r">Trainer · Outdoor</span></div>
+                </div>
+                <div class="wb-row-bot">
+                  <div class="wb-row-progress-mini"><div class="fill" style="width: 33%;"></div></div>
+                  <div class="wb-row-stats"><span class="pct">1/3</span><span class="urg">1!</span></div>
+                  <span class="wb-row-chev">▾</span>
+                </div>
               </div>
               <div class="wb-row-details">
                 <div class="wb-task done"><span class="check"></span><span class="lbl">Coach · Pilo</span><span class="when">7 am</span></div>
@@ -5082,11 +5117,15 @@
 
             <div class="wb-row" data-wb-row>
               <div class="wb-row-head">
-                <div class="wb-row-av" style="background:var(--brand-500); color:white;">JS<span class="live"></span></div>
-                <div class="wb-row-name"><span class="n">Jess</span><span class="r">Groom · Stalls</span></div>
-                <div class="wb-row-progress-mini"><div class="fill" style="width: 60%;"></div></div>
-                <div class="wb-row-stats"><span class="pct">3/5</span></div>
-                <span class="wb-row-chev">▾</span>
+                <div class="wb-row-top">
+                  <div class="wb-row-av" style="background:var(--brand-500); color:white;">JS<span class="live"></span></div>
+                  <div class="wb-row-name"><span class="n">Jess</span><span class="r">Groom · Stalls</span></div>
+                </div>
+                <div class="wb-row-bot">
+                  <div class="wb-row-progress-mini"><div class="fill" style="width: 60%;"></div></div>
+                  <div class="wb-row-stats"><span class="pct">3/5</span></div>
+                  <span class="wb-row-chev">▾</span>
+                </div>
               </div>
               <div class="wb-row-details">
                 <div class="wb-task done"><span class="check"></span><span class="lbl">Stalls 1–6</span><span class="when">7:15 am</span></div>
@@ -5099,11 +5138,15 @@
 
             <div class="wb-row" data-wb-row>
               <div class="wb-row-head">
-                <div class="wb-row-av" style="background:var(--brand-500); color:white;">MC</div>
-                <div class="wb-row-name"><span class="n">Marc</span><span class="r">Groom · Offsite</span></div>
-                <div class="wb-row-progress-mini"><div class="fill" style="width: 0%;"></div></div>
-                <div class="wb-row-stats"><span class="pct">0/2</span></div>
-                <span class="wb-row-chev">▾</span>
+                <div class="wb-row-top">
+                  <div class="wb-row-av" style="background:var(--brand-500); color:white;">MC</div>
+                  <div class="wb-row-name"><span class="n">Marc</span><span class="r">Groom · Offsite</span></div>
+                </div>
+                <div class="wb-row-bot">
+                  <div class="wb-row-progress-mini"><div class="fill" style="width: 0%;"></div></div>
+                  <div class="wb-row-stats"><span class="pct">0/2</span></div>
+                  <span class="wb-row-chev">▾</span>
+                </div>
               </div>
               <div class="wb-row-details">
                 <div class="wb-task"><span class="check"></span><span class="lbl">Muck 7–12</span><span class="when">10 am</span></div>
@@ -5113,11 +5156,15 @@
 
             <div class="wb-row" data-wb-row>
               <div class="wb-row-head">
-                <div class="wb-row-av">AB</div>
-                <div class="wb-row-name"><span class="n">Anna</span><span class="r">Trainer · Arena 2</span></div>
-                <div class="wb-row-progress-mini"><div class="fill" style="width: 100%;"></div></div>
-                <div class="wb-row-stats"><span class="pct">4/4</span></div>
-                <span class="wb-row-chev">▾</span>
+                <div class="wb-row-top">
+                  <div class="wb-row-av">AB</div>
+                  <div class="wb-row-name"><span class="n">Anna</span><span class="r">Trainer · Arena 2</span></div>
+                </div>
+                <div class="wb-row-bot">
+                  <div class="wb-row-progress-mini"><div class="fill" style="width: 100%;"></div></div>
+                  <div class="wb-row-stats"><span class="pct">4/4</span></div>
+                  <span class="wb-row-chev">▾</span>
+                </div>
               </div>
               <div class="wb-row-details">
                 <div class="wb-task done"><span class="check"></span><span class="lbl">Dressage · Storm</span><span class="when">9 am</span></div>
