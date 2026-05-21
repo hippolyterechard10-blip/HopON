@@ -3989,30 +3989,11 @@
               </button>
             </div>
 
-            <div class="section-head" data-section="ops"><span class="t">Operations</span><span class="a" data-go="whiteboard">View board ›</span></div>
-            <div class="owner-grid">
-              <div class="owner-tile ops" data-go="whiteboard">
-                <span class="lbl">Day progress</span>
-                <span class="v">8 / 14</span>
-                <span class="sub">tasks done · 57% complete</span>
-              </div>
-              <div class="owner-tile ops">
-                <span class="lbl">On duty</span>
-                <span class="v">5</span>
-                <span class="sub">3 grooms · 2 trainers</span>
-              </div>
-            </div>
-
-            <!-- My day · only shows for owners who also wear a trainer/rider hat.
-                 Pure owners (no lessons booked + no to-dos assigned) → section
-                 hidden entirely. -->
-            <div class="section-head" data-section="myday" style="margin-top:8px;">
-              <span class="t">My day</span>
-              <span class="a" data-go="calendar">Full calendar ›</span>
-            </div>
-
-            <!-- Two surfaces, calendar first (scheduled · with time)
-                 then tasks (flexible · no fixed slot). -->
+            <!-- My day · personal calendar + personal tasks. Two surfaces,
+                 calendar first (impératifs with time) then tasks
+                 (flexible). Both hide if empty → for a pure owner without
+                 a trainer/rider hat, this whole block disappears and
+                 Operations becomes the first section under the vanity. -->
             <div class="eyebrow" data-section="events" style="margin-top:6px;">
               Today · 5 <span class="aside">calendar · visible to clients</span>
             </div>
@@ -4039,6 +4020,23 @@
               <div class="task-row" data-task><div class="task-slider"></div><div class="text">Review May invoices · 6 unpaid · oldest 9 days</div></div>
               <div class="task-row" data-task><div class="task-slider"></div><div class="text">Sign Bella's vaccine consent · vet on Friday</div></div>
               <div class="rg-arrow" data-go="whiteboard" aria-label="View all on the whiteboard">›</div>
+            </div>
+
+            <!-- Operations · team-wide pulse, after the owner's own day.
+                 For a pure owner (My day empty above), this naturally
+                 sits right under the vanity. -->
+            <div class="section-head" data-section="ops" style="margin-top:8px;"><span class="t">Operations</span><span class="a" data-go="whiteboard">View board ›</span></div>
+            <div class="owner-grid">
+              <div class="owner-tile ops" data-go="whiteboard">
+                <span class="lbl">Day progress</span>
+                <span class="v">8 / 14</span>
+                <span class="sub">tasks done · 57% complete</span>
+              </div>
+              <div class="owner-tile ops">
+                <span class="lbl">On duty</span>
+                <span class="v">5</span>
+                <span class="sub">3 grooms · 2 trainers</span>
+              </div>
             </div>
 
             <!-- Feed mini · barn posts · auto-news · external · last 7 days -->
