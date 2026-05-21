@@ -98,7 +98,7 @@ function screenFromSegment(segment: string | undefined): ScreenKey | null {
 }
 
 const FAB_SIZE = 56;
-const PETAL_RADIUS = 112;
+const PETAL_RADIUS = 144;
 
 /**
  * Adaptive FAB — pétales déterminés par (écran, rôle).
