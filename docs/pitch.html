@@ -784,6 +784,21 @@
         border: 0;
         border-radius: 0;
       }
+      /* Up-next variant keeps its gradient even inside a row-group ·
+         it's the "next thing happening" highlight, sitting at the top
+         of the calendar list. */
+      .row-group > .trainer-row.up-next {
+        background: linear-gradient(180deg, var(--brand-800) 0%, var(--brand-500) 100%);
+      }
+      [data-theme="neo"] .row-group > .trainer-row.up-next,
+      [data-theme="neo-dark"] .row-group > .trainer-row.up-next {
+        background: linear-gradient(180deg, var(--brand-800) 0%, var(--brand-500) 100%);
+      }
+      /* Soften the divider line between the up-next and the next row
+         so it doesn't cut across the gradient. */
+      .row-group > .trainer-row.up-next + * {
+        border-top-color: transparent;
+      }
       .row-group > * + * {
         border-top: 1px solid var(--border);
       }
@@ -3996,18 +4011,10 @@
               <span class="a" data-go="calendar">Full calendar ›</span>
             </div>
 
-            <div class="eyebrow" data-section="next" style="color:var(--brand-700);">Up next · in 25 min</div>
-            <div class="trainer-row up-next" data-go="sharecard">
-              <span class="time">10:30 am</span>
-              <div class="who">
-                <div class="n">Jump · Bella · Indoor</div>
-                <div class="m">Maddy K. · just groomed by Jess · ⚠️ farrier in 3 days</div>
-              </div>
-              <span class="horse-pill">BELLA</span>
-            </div>
-
             <!-- Two surfaces, clearly labeled · whiteboard (team) vs
-                 calendar (lessons + events, visible to clients). -->
+                 calendar (lessons + events, visible to clients).
+                 The "next" item is highlighted in-place by color at
+                 the top of the calendar list. -->
             <div class="eyebrow" data-section="todos" style="margin-top:6px;">
               My tasks · 2 <span class="aside">whiteboard · team only</span>
             </div>
@@ -4018,9 +4025,17 @@
             </div>
 
             <div class="eyebrow" data-section="events" style="margin-top:6px;">
-              Today · 4 <span class="aside">calendar · visible to clients</span>
+              Today · 5 <span class="aside">calendar · visible to clients</span>
             </div>
             <div class="row-group">
+              <div class="trainer-row up-next" data-go="sharecard">
+                <span class="time">10:30 am</span>
+                <div class="who">
+                  <div class="n">Jump · Bella · Indoor</div>
+                  <div class="m">Maddy K. · just groomed by Jess · ⚠️ farrier in 3 days</div>
+                </div>
+                <span class="horse-pill">BELLA</span>
+              </div>
               <div class="trainer-row"><span class="time">2 pm</span><div class="who"><div class="n">Liv Andersen</div><div class="m">Outdoor · Flat · 45 min</div></div><span class="horse-pill">JUNO</span></div>
               <div class="trainer-row"><span class="time">3:30 pm</span><div class="who"><div class="n">Emma Carter</div><div class="m">Outdoor · Jump · 45 min</div></div><span class="horse-pill">BELLA</span></div>
               <div class="trainer-row"><span class="time">5 pm</span><div class="who"><div class="n">Group · 4 riders</div><div class="m">Outdoor · Beginner · 60 min</div></div><span class="horse-pill">MIX</span></div>
@@ -4107,22 +4122,11 @@
               </div>
             </div>
 
-            <!-- Up next · same height as other lesson rows, gradient pulls the eye -->
-            <div class="eyebrow" data-section="next" style="color:var(--brand-700);">Up next · in 25 min</div>
-            <div class="trainer-row up-next" data-go="sharecard">
-              <span class="time">10:30 am</span>
-              <div class="who">
-                <div class="n">Jump · Bella · Indoor</div>
-                <div class="m">Maddy K. · just groomed by Jess · ⚠️ farrier in 3 days</div>
-              </div>
-              <span class="horse-pill">BELLA</span>
-            </div>
-
-            <!-- Two surfaces, clearly labeled so first-time users get the
-                 privacy boundary:
-                 · tasks live on the WHITEBOARD (team-only, may have time)
-                 · everything else lives on the CALENDAR (lessons + events,
-                   always timed, visible to clients) -->
+            <!-- Two surfaces, clearly labeled · whiteboard (team) vs
+                 calendar (lessons + events, visible to clients).
+                 The "next" item is highlighted in-place by color at
+                 the top of the calendar list — no separate Up next
+                 section, the row's gradient is the signal. -->
             <div class="eyebrow" data-section="todos" style="margin-top:6px;">
               My tasks · 2 <span class="aside">whiteboard · team only</span>
             </div>
@@ -4132,12 +4136,18 @@
               <div class="rg-arrow" data-go="whiteboard" aria-label="View all on the whiteboard">›</div>
             </div>
 
-            <!-- Today's calendar · lessons + non-lesson events, sorted by
-                 time. 3 visible + expand chevron for the rest. -->
             <div class="eyebrow" data-section="events" style="margin-top:6px;">
-              Today · 7 <span class="aside">calendar · visible to clients</span>
+              Today · 8 <span class="aside">calendar · visible to clients</span>
             </div>
             <div class="row-group" id="trainer-calendar">
+              <div class="trainer-row up-next" data-go="sharecard">
+                <span class="time">10:30 am</span>
+                <div class="who">
+                  <div class="n">Jump · Bella · Indoor</div>
+                  <div class="m">Maddy K. · just groomed by Jess · ⚠️ farrier in 3 days</div>
+                </div>
+                <span class="horse-pill">BELLA</span>
+              </div>
               <div class="trainer-row"><span class="time">12 pm</span><div class="who"><div class="n">Mateo Bell</div><div class="m">Outdoor · Jump · 45 min</div></div><span class="horse-pill">INDIGO</span></div>
               <div class="trainer-row"><span class="time">2 pm</span><div class="who"><div class="n">Liv Andersen</div><div class="m">Outdoor · Flat · 45 min</div></div><span class="horse-pill">JUNO</span></div>
               <div class="trainer-row"><span class="time">3:30 pm</span><div class="who"><div class="n">Emma Carter</div><div class="m">Outdoor · Jump · 45 min</div></div><span class="horse-pill">BELLA</span></div>
