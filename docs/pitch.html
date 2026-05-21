@@ -815,7 +815,44 @@
         margin-top: 2px;
       }
       .feed-mini-foot .time { margin-left: auto; }
-      /* Tiny corner arrow at the bottom-right of the feed block.
+      /* Whiteboard tab hidden for clients — operational board is
+         a team/owner surface, not a client one. */
+      .phone[data-role="client"] .tabitem[data-tab="whiteboard"] {
+        display: none;
+      }
+
+      /* Post composer · "share something" prompt above the feed.
+         Pushes the user to post; tapping opens the news composer. */
+      .post-composer {
+        display: flex; align-items: center; gap: 10px;
+        padding: 10px 12px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        cursor: pointer;
+        text-align: left;
+        font-family: var(--sans);
+        width: 100%;
+      }
+      .pc-av {
+        width: 32px; height: 32px; border-radius: 16px;
+        background: var(--brand-100);
+        display: grid; place-items: center;
+        font-size: 12px; font-weight: 800;
+        color: var(--brand-700);
+        flex: 0 0 32px;
+      }
+      [data-theme="neo"] .pc-av { background: var(--brand-100); color: var(--brand-700); }
+      .pc-placeholder {
+        flex: 1;
+        font-size: 12.5px;
+        color: var(--ink3);
+      }
+      .pc-icon {
+        font-size: 16px;
+        color: var(--ink2);
+        flex: 0 0 auto;
+      }
          Same role as .rg-arrow on row-groups: discrete "view all"
          indicator instead of a centered boxed footer. */
       .feed-mini-arrow {
@@ -3882,7 +3919,7 @@
                 <div class="health-icon ok"><span class="hi-emoji">🐴</span><span class="hi-lbl">Farrier</span><span class="hi-due">2w</span></div>
                 <div class="health-icon warn"><span class="hi-emoji">💉</span><span class="hi-lbl">Vaccine</span><span class="hi-due">12d</span></div>
                 <div class="health-icon ok"><span class="hi-emoji">💊</span><span class="hi-lbl">Wormer</span><span class="hi-due">5w</span></div>
-                <div class="health-icon alert"><span class="hi-emoji">🦴</span><span class="hi-lbl">Osteo</span><span class="hi-due">overdue</span></div>
+                <div class="health-icon alert"><span class="hi-emoji">🥄</span><span class="hi-lbl">Meds</span><span class="hi-due">missing</span></div>
                 <div class="health-icon ok"><span class="hi-emoji">🏃</span><span class="hi-lbl">Physio</span><span class="hi-due">done</span></div>
                 <div class="health-icon ok"><span class="hi-emoji">🦷</span><span class="hi-lbl">Dentist</span><span class="hi-due">6m</span></div>
               </div>
@@ -3917,6 +3954,13 @@
 
             <!-- Latest · last 7 days · filtered (no @team posts for clients) -->
             <div class="eyebrow" style="margin-top:8px;">Latest · last 7 days</div>
+            <!-- Post composer · "share something" prompt above the feed -->
+            <button class="post-composer" data-go="news">
+              <div class="pc-av">M</div>
+              <span class="pc-placeholder">Share something with the barn…</span>
+              <span class="pc-icon">📷</span>
+              <span class="pc-icon">›</span>
+            </button>
             <div class="feed-mini">
               <div class="feed-mini-row" data-go="feed">
                 <div class="feed-mini-av">SM</div>
@@ -6294,10 +6338,14 @@
       const _origApplyRole = applyRole;
       applyRole = function (role) {
         _origApplyRole(role);
+        // Surface role on the phone so role-scoped UI (Whiteboard tab
+        // hidden for clients, etc.) can react via CSS attribute selectors.
+        document.getElementById("phone")?.setAttribute("data-role", role);
         syncFab();
         maybeShowPhotoPrompt();
       };
       // Initial
+      document.getElementById("phone")?.setAttribute("data-role", currentRole());
       syncFab();
       maybeShowPhotoPrompt();
     </script>
