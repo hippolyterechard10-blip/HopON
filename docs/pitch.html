@@ -4006,17 +4006,8 @@
               <span class="horse-pill">BELLA</span>
             </div>
 
-            <div class="eyebrow" data-section="lessons" style="margin-top:6px;">Today's lessons · 3 left</div>
-            <div class="row-group" id="owner-lessons">
-              <div class="trainer-row"><span class="time">2 pm</span><div class="who"><div class="n">Liv Andersen</div><div class="m">Outdoor · Flat · 45 min</div></div><span class="horse-pill">JUNO</span></div>
-              <div class="trainer-row"><span class="time">3:30 pm</span><div class="who"><div class="n">Emma Carter</div><div class="m">Outdoor · Jump · 45 min</div></div><span class="horse-pill">BELLA</span></div>
-              <div class="trainer-row"><span class="time">5 pm</span><div class="who"><div class="n">Group · 4 riders</div><div class="m">Outdoor · Beginner · 60 min</div></div><span class="horse-pill">MIX</span></div>
-            </div>
-
-            <!-- Two distinct surfaces, clearly labeled so first-time users
-                 understand the privacy boundary:
-                 · tasks live on the WHITEBOARD (team-only)
-                 · events live on the CALENDAR (visible to clients) -->
+            <!-- Two surfaces, clearly labeled · whiteboard (team) vs
+                 calendar (lessons + events, visible to clients). -->
             <div class="eyebrow" data-section="todos" style="margin-top:6px;">
               My tasks · 2 <span class="aside">whiteboard · team only</span>
             </div>
@@ -4027,9 +4018,12 @@
             </div>
 
             <div class="eyebrow" data-section="events" style="margin-top:6px;">
-              My events · 1 <span class="aside">calendar · visible to clients</span>
+              Today · 4 <span class="aside">calendar · visible to clients</span>
             </div>
             <div class="row-group">
+              <div class="trainer-row"><span class="time">2 pm</span><div class="who"><div class="n">Liv Andersen</div><div class="m">Outdoor · Flat · 45 min</div></div><span class="horse-pill">JUNO</span></div>
+              <div class="trainer-row"><span class="time">3:30 pm</span><div class="who"><div class="n">Emma Carter</div><div class="m">Outdoor · Jump · 45 min</div></div><span class="horse-pill">BELLA</span></div>
+              <div class="trainer-row"><span class="time">5 pm</span><div class="who"><div class="n">Group · 4 riders</div><div class="m">Outdoor · Beginner · 60 min</div></div><span class="horse-pill">MIX</span></div>
               <div class="trainer-row"><span class="time">6 pm</span><div class="who"><div class="n">Riders' meeting</div><div class="m">Barn lounge · 45 min · winter plan</div></div><span class="event-pill">EVENT</span></div>
               <div class="rg-arrow" data-go="calendar" aria-label="View all in calendar">›</div>
             </div>
@@ -4124,10 +4118,11 @@
               <span class="horse-pill">BELLA</span>
             </div>
 
-            <!-- Two distinct surfaces, clearly labeled so first-time users
-                 understand the privacy boundary:
-                 · tasks live on the WHITEBOARD (team-only)
-                 · events live on the CALENDAR (visible to clients) -->
+            <!-- Two surfaces, clearly labeled so first-time users get the
+                 privacy boundary:
+                 · tasks live on the WHITEBOARD (team-only, may have time)
+                 · everything else lives on the CALENDAR (lessons + events,
+                   always timed, visible to clients) -->
             <div class="eyebrow" data-section="todos" style="margin-top:6px;">
               My tasks · 2 <span class="aside">whiteboard · team only</span>
             </div>
@@ -4137,26 +4132,22 @@
               <div class="rg-arrow" data-go="whiteboard" aria-label="View all on the whiteboard">›</div>
             </div>
 
+            <!-- Today's calendar · lessons + non-lesson events, sorted by
+                 time. 3 visible + expand chevron for the rest. -->
             <div class="eyebrow" data-section="events" style="margin-top:6px;">
-              My events · 1 <span class="aside">calendar · visible to clients</span>
+              Today · 7 <span class="aside">calendar · visible to clients</span>
             </div>
-            <div class="row-group">
-              <div class="trainer-row"><span class="time">6 pm</span><div class="who"><div class="n">Riders' meeting</div><div class="m">Barn lounge · 45 min · winter plan</div></div><span class="event-pill">EVENT</span></div>
-              <div class="rg-arrow" data-go="calendar" aria-label="View all in calendar">›</div>
-            </div>
-
-            <!-- Today's lessons · grouped solid card · 3 visible, rest
-                 inline behind a chevron (stays on home). -->
-            <div class="eyebrow" data-section="lessons" style="margin-top:6px;">Today's lessons · 6 left</div>
-            <div class="row-group" id="trainer-lessons">
+            <div class="row-group" id="trainer-calendar">
               <div class="trainer-row"><span class="time">12 pm</span><div class="who"><div class="n">Mateo Bell</div><div class="m">Outdoor · Jump · 45 min</div></div><span class="horse-pill">INDIGO</span></div>
               <div class="trainer-row"><span class="time">2 pm</span><div class="who"><div class="n">Liv Andersen</div><div class="m">Outdoor · Flat · 45 min</div></div><span class="horse-pill">JUNO</span></div>
               <div class="trainer-row"><span class="time">3:30 pm</span><div class="who"><div class="n">Emma Carter</div><div class="m">Outdoor · Jump · 45 min</div></div><span class="horse-pill">BELLA</span></div>
               <div class="trainer-row extra"><span class="time">5 pm</span><div class="who"><div class="n">Group · 4 riders</div><div class="m">Outdoor · Beginner · 60 min</div></div><span class="horse-pill">MIX</span></div>
+              <div class="trainer-row extra"><span class="time">6 pm</span><div class="who"><div class="n">Riders' meeting</div><div class="m">Barn lounge · 45 min · winter plan</div></div><span class="event-pill">EVENT</span></div>
               <div class="trainer-row extra"><span class="time">6:30 pm</span><div class="who"><div class="n">Anna Beaumont</div><div class="m">Outdoor · Flat · 45 min</div></div><span class="horse-pill">STORM</span></div>
               <div class="trainer-row extra"><span class="time">7:30 pm</span><div class="who"><div class="n">Kate Lewis</div><div class="m">Indoor · Jump · 45 min</div></div><span class="horse-pill">INDIGO</span></div>
+              <div class="rg-arrow" data-go="calendar" aria-label="View all in calendar">›</div>
             </div>
-            <button class="show-more" data-show-extra="trainer-lessons"><span class="chev">▾</span><span class="lbl">Show 3 more</span></button>
+            <button class="show-more" data-show-extra="trainer-calendar"><span class="chev">▾</span><span class="lbl">Show 4 more</span></button>
 
             <!-- Feed mini · barn posts · auto-news · external · last 7 days -->
             <div class="eyebrow" data-section="feed" style="margin-top:10px;">Latest · last 7 days</div>
