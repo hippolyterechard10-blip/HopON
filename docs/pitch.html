@@ -2848,7 +2848,7 @@
         box-shadow: 0 10px 24px rgba(255,90,0,0.30);
       }
 
-      /* ── FAB + petals (on Home) ──────────────────────── */
+      /* ── FAB + petals · adaptive (screen × role) ─────── */
       .fab {
         position: absolute; bottom: 92px; right: 16px;
         width: 56px; height: 56px; border-radius: 28px;
@@ -2861,12 +2861,6 @@
                     background 200ms;
       }
       .fab.open { transform: rotate(45deg); }
-      .fab.broadcast {
-        background: var(--alert);
-        box-shadow: 0 10px 22px rgba(217,56,30,0.40);
-      }
-      .fab.broadcast .plus { display: none; }
-      .fab.broadcast::before { content: "📣"; font-size: 24px; }
 
       .fab-backdrop {
         position: absolute; inset: 0;
@@ -2906,11 +2900,9 @@
         padding: 3px 8px; border-radius: 8px;
         white-space: nowrap;
       }
-      .petals.open .petal[data-i="0"] { transform: translate(0, -116px) scale(1); transition-delay: 0s; }
-      .petals.open .petal[data-i="1"] { transform: translate(-44px, -108px) scale(1); transition-delay: 0.04s; }
-      .petals.open .petal[data-i="2"] { transform: translate(-80px, -80px) scale(1); transition-delay: 0.08s; }
-      .petals.open .petal[data-i="3"] { transform: translate(-108px, -44px) scale(1); transition-delay: 0.12s; }
-      .petals.open .petal[data-i="4"] { transform: translate(-116px, 0) scale(1); transition-delay: 0.16s; }
+      .petals.open .petal {
+        transform: translate(var(--tx, 0), var(--ty, 0)) scale(1);
+      }
 
       /* ── Toast ──────────────────────────────────────── */
       .toast {
@@ -4646,15 +4638,9 @@
         <div class="drawer-foot">HopOn · pitch · piece 5/5 · brand locked</div>
       </div>
 
-      <!-- FAB + petals + toast (global · only shown on home) -->
+      <!-- FAB + petals + toast (adaptive · screen × role · rendered by JS) -->
       <div class="fab-backdrop" id="fab-backdrop"></div>
-      <div class="petals" id="petals">
-        <div class="petal" data-i="0"><button class="petal-btn" data-go="booking">📚</button><div class="petal-label">Lesson</div></div>
-        <div class="petal" data-i="1"><button class="petal-btn" data-go="calendar">📅</button><div class="petal-label">Calendar event</div></div>
-        <div class="petal" data-i="2"><button class="petal-btn" data-petal-task>✅</button><div class="petal-label">To-do</div></div>
-        <div class="petal" data-i="3"><button class="petal-btn" data-go="feed">💬</button><div class="petal-label">Post</div></div>
-        <div class="petal" data-i="4"><button class="petal-btn" data-petal-extra>✨</button><div class="petal-label">Extras</div></div>
-      </div>
+      <div class="petals" id="petals"></div>
       <button class="fab" id="fab"><span class="plus">+</span></button>
 
       <div class="toast" id="toast">
@@ -5315,61 +5301,119 @@
         });
       });
 
-      // ── Petal task / extra (piece 5) ───────────────────────
-      document.querySelectorAll("[data-petal-task]").forEach(b => {
-        b.addEventListener("click", () => {
-          closePetals();
-          showToast("To-do added", "Tap My to-do on Home to see it.", "✓");
-        });
-      });
-      document.querySelectorAll("[data-petal-extra]").forEach(b => {
-        b.addEventListener("click", () => {
-          closePetals();
-          showToast("Extras request sent", "Awaiting admin approval.", "✨");
-        });
-      });
-
-      // ── FAB · role-aware (piece 5) ─────────────────────────
-      // Owner: tap FAB = broadcast directly · others: petals
-      // FAB only shows on Home screen.
+      // ── FAB · adaptive (screen × role) ─────────────────────
+      // Petals are rebuilt on every screen change or role swap.
+      // Rule: the "+" never gets replaced by another action — it always
+      // opens the petals (or hides if no actions apply to this role/screen).
       const fab = document.getElementById("fab");
       const fabBackdrop = document.getElementById("fab-backdrop");
       const petalsEl = document.getElementById("petals");
+      const PETAL_RADIUS = 116;
+
+      // Petal universe — id → emoji, label, action
+      const PETALS = {
+        lesson:  { emoji: "📚", label: "Lesson",  run: () => show("booking") },
+        event:   { emoji: "📅", label: "Event",   run: () => show("calendar") },
+        todo:    { emoji: "✅", label: "To-do",   run: () => showToast("To-do added", "Tap My to-do on Home to see it.", "✓") },
+        post:    { emoji: "💬", label: "Post",    run: () => show("broadcast") },
+        service: { emoji: "✨", label: "Service", run: () => showToast("Service requested", "Awaiting admin approval.", "✨") },
+        horse:   { emoji: "🐴", label: "Horse",   run: () => showToast("Add horse", "Horse composer opens.", "🐴") },
+        client:  { emoji: "👤", label: "Client",  run: () => showToast("Add client", "QR · link · CSV import.", "👤") },
+        team:    { emoji: "🧑", label: "Team",    run: () => showToast("Invite team", "Send invite link.", "🧑") },
+        partner: { emoji: "🤝", label: "Partner", run: () => showToast("Add partner", "Vet · farrier · transport…", "🤝") },
+        photo:   { emoji: "📷", label: "Photo",   run: () => show("camera") },
+        poll:    { emoji: "📊", label: "Poll",    run: () => showToast("Poll started", "Pick groups to ask.", "📊") },
+        note:    { emoji: "📝", label: "Note",    run: () => showToast("Note added", "Saved on horse timeline.", "📝") },
+        health:  { emoji: "🩺", label: "Health",  run: () => showToast("Health log", "Treatment composer opens.", "🩺") },
+        invoice: { emoji: "🧾", label: "Invoice", run: () => showToast("Invoice draft", "Pre-filled from this month.", "🧾") },
+        payment: { emoji: "💰", label: "Payment", run: () => showToast("Payment recorded", "Stripe · Zelle · Square.", "💰") },
+      };
+
+      // Matrix: screen × role → petal ids (null/undefined = FAB hidden)
+      const INTERNAL_STD  = ["lesson", "event", "todo", "post", "service"];
+      const CLIENT_STD    = ["lesson", "event", "post", "service"];
+      const STABLE_ADMIN  = ["horse", "client", "team", "partner"];
+      const FEED_ALL      = ["post", "photo", "poll"];
+      const HORSE_TEAM    = ["note", "health", "photo", "todo"];
+      const HORSE_CLIENT  = ["note", "health", "photo", "service"];
+      const DASHBOARD_OWNER = ["invoice", "payment", "note"];
+
+      const FAB_MATRIX = {
+        home:       { owner: INTERNAL_STD, trainer: INTERNAL_STD, groom: INTERNAL_STD, client: CLIENT_STD },
+        calendar:   { owner: INTERNAL_STD, trainer: INTERNAL_STD, groom: INTERNAL_STD, client: CLIENT_STD },
+        whiteboard: { owner: INTERNAL_STD, trainer: INTERNAL_STD, groom: INTERNAL_STD, client: null },
+        stable:     { owner: STABLE_ADMIN, trainer: STABLE_ADMIN, groom: STABLE_ADMIN, client: null },
+        feed:       { owner: FEED_ALL,     trainer: FEED_ALL,     groom: FEED_ALL,     client: FEED_ALL },
+        horse:      { owner: HORSE_TEAM,   trainer: HORSE_TEAM,   groom: HORSE_TEAM,   client: HORSE_CLIENT },
+        dashboard:  { owner: DASHBOARD_OWNER, trainer: null, groom: null, client: null },
+      };
 
       function currentRole() {
         const el = document.querySelector('.drawer [data-role].active');
         return el ? el.dataset.role : 'owner';
       }
-      function syncFab() {
-        const homeActive = document.querySelector('.screen.active')?.dataset.screen === 'home';
-        const role = currentRole();
-        if (!homeActive) {
-          fab.style.display = 'none';
-          petalsEl.style.display = 'none';
-          fabBackdrop.classList.remove('open');
-          return;
-        }
-        fab.style.display = 'grid';
-        petalsEl.style.display = '';
-        fab.classList.toggle('broadcast', role === 'owner');
+
+      function renderPetals(ids) {
+        petalsEl.innerHTML = "";
+        const n = ids.length;
+        ids.forEach((id, i) => {
+          const p = PETALS[id];
+          if (!p) return;
+          // Quarter-arc: i=0 straight up, i=n-1 straight left.
+          const t = n === 1 ? Math.PI / 4 : (Math.PI / 2) * (i / (n - 1));
+          const tx = -Math.sin(t) * PETAL_RADIUS;
+          const ty = -Math.cos(t) * PETAL_RADIUS;
+          const petal = document.createElement("div");
+          petal.className = "petal";
+          petal.dataset.i = String(i);
+          petal.style.setProperty("--tx", tx.toFixed(1) + "px");
+          petal.style.setProperty("--ty", ty.toFixed(1) + "px");
+          petal.style.transitionDelay = (i * 0.04).toFixed(2) + "s";
+          petal.innerHTML =
+            '<button class="petal-btn" data-petal-id="' + id + '">' + p.emoji + '</button>' +
+            '<div class="petal-label">' + p.label + '</div>';
+          petalsEl.appendChild(petal);
+        });
       }
+
       function closePetals() {
-        fab.classList.remove('open');
-        fabBackdrop.classList.remove('open');
-        petalsEl.classList.remove('open');
+        fab.classList.remove("open");
+        fabBackdrop.classList.remove("open");
+        petalsEl.classList.remove("open");
       }
-      fab.addEventListener('click', (e) => {
-        e.stopPropagation();
-        if (currentRole() === 'owner') {
-          show('broadcast');
+
+      function syncFab() {
+        const screen = document.querySelector('.screen.active')?.dataset.screen;
+        const role = currentRole();
+        const ids = FAB_MATRIX[screen] && FAB_MATRIX[screen][role];
+        closePetals();
+        if (!ids || ids.length === 0) {
+          fab.style.display = "none";
+          petalsEl.style.display = "none";
           return;
         }
-        const open = !fab.classList.contains('open');
-        fab.classList.toggle('open', open);
-        fabBackdrop.classList.toggle('open', open);
-        petalsEl.classList.toggle('open', open);
+        fab.style.display = "grid";
+        petalsEl.style.display = "";
+        renderPetals(ids);
+      }
+
+      fab.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const open = !fab.classList.contains("open");
+        fab.classList.toggle("open", open);
+        fabBackdrop.classList.toggle("open", open);
+        petalsEl.classList.toggle("open", open);
       });
-      fabBackdrop.addEventListener('click', closePetals);
+      fabBackdrop.addEventListener("click", closePetals);
+
+      // Delegated petal click — close + run the petal's action.
+      petalsEl.addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-petal-id]");
+        if (!btn) return;
+        const id = btn.dataset.petalId;
+        closePetals();
+        setTimeout(() => PETALS[id] && PETALS[id].run && PETALS[id].run(), 120);
+      });
 
       // Hook into screen show + role apply to refresh FAB
       const _origShow = show;
