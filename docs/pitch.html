@@ -162,6 +162,48 @@
         border: 1px solid rgba(255,255,255,0.25);
       }
 
+      /* Sign-in form fields · sit on the eucalyptus welcome background */
+      .signin-screen { gap: 24px; }
+      .signin-form {
+        display: flex; flex-direction: column; gap: 14px;
+      }
+      .signin-field {
+        display: flex; flex-direction: column; gap: 6px;
+      }
+      .signin-field > span {
+        font-size: 10px; font-weight: 800;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.7);
+      }
+      .signin-field input {
+        background: rgba(255,255,255,0.10);
+        border: 1px solid rgba(255,255,255,0.18);
+        border-radius: 12px;
+        padding: 12px 14px;
+        color: white;
+        font-family: var(--sans);
+        font-size: 14px;
+        outline: none;
+        transition: border-color 160ms, background 160ms;
+      }
+      .signin-field input::placeholder { color: rgba(255,255,255,0.35); }
+      .signin-field input:focus {
+        border-color: rgba(255,255,255,0.5);
+        background: rgba(255,255,255,0.14);
+      }
+      .signin-forgot {
+        background: transparent; border: 0; cursor: pointer;
+        color: rgba(255,255,255,0.75);
+        font-family: var(--sans);
+        font-size: 12px;
+        font-weight: 600;
+        text-align: right;
+        padding: 4px 2px;
+        align-self: flex-end;
+      }
+      .signin-forgot:hover { color: white; }
+
       /* ── PULSE HEADER (the 20% campfire) ─────────────── */
       .pulse-header {
         background: linear-gradient(160deg, var(--brand-900) 0%, var(--brand-700) 100%);
@@ -3852,9 +3894,39 @@
         flex: 1;
         background: rgba(255,255,255,0.06);
         border-radius: 16px;
-        padding: 18px;
+        padding: 14px 14px 10px;
         min-height: 200px;
+        display: flex; flex-direction: column;
       }
+      .broadcast-text {
+        flex: 1;
+        background: transparent;
+        border: 0; outline: 0;
+        color: white;
+        font-family: var(--serif); font-style: italic;
+        font-size: 14px; line-height: 1.5;
+        resize: none;
+        width: 100%;
+      }
+      .broadcast-text::placeholder {
+        color: rgba(255,255,255,0.4);
+      }
+      .broadcast-tools {
+        display: flex; gap: 6px;
+        padding-top: 10px;
+        border-top: 1px solid rgba(255,255,255,0.10);
+        margin-top: 8px;
+      }
+      .broadcast-tool {
+        width: 36px; height: 36px; border-radius: 18px;
+        background: rgba(255,255,255,0.10);
+        border: 0; cursor: pointer;
+        color: white;
+        font-size: 16px;
+        display: grid; place-items: center;
+        transition: background 160ms, transform 160ms;
+      }
+      .broadcast-tool:hover { background: rgba(255,255,255,0.18); transform: scale(1.04); }
       .broadcast-composer .placeholder {
         color: rgba(255,255,255,0.4);
         font-family: var(--serif); font-style: italic;
@@ -4062,7 +4134,36 @@
           </div>
           <div class="actions">
             <button class="btn primary" data-go="home">Get started</button>
-            <button class="btn ghost" data-go="home">I already have an account</button>
+            <button class="btn ghost" data-go="signin">I already have an account</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════ SIGN IN ════ -->
+      <div class="screen" data-screen="signin">
+        <div class="welcome signin-screen">
+          <div>
+            <div class="brand-top">
+              <div class="mark">H</div>
+              <div class="word">Hop<span>O</span>n</div>
+            </div>
+            <div class="hero-text" style="font-size:32px; line-height:36px; margin-top:24px;">Welcome back.</div>
+            <div class="lede" style="margin-top:12px;">Sign in to your barn dashboard.</div>
+          </div>
+          <div class="signin-form">
+            <label class="signin-field">
+              <span>Email</span>
+              <input type="email" placeholder="you@yourbarn.com" autocomplete="email" />
+            </label>
+            <label class="signin-field">
+              <span>Password</span>
+              <input type="password" placeholder="••••••••" autocomplete="current-password" />
+            </label>
+            <button class="signin-forgot" data-stub="Reset link sent" data-stub-sub="Check your inbox · expires in 15 min." data-stub-ic="🔐">Forgot password?</button>
+          </div>
+          <div class="actions">
+            <button class="btn primary" data-go="home">Sign in</button>
+            <button class="btn ghost" data-go="welcome">← Back</button>
           </div>
         </div>
       </div>
@@ -5113,7 +5214,7 @@
         <div class="broadcast-screen">
           <div class="head">
             <button class="back" data-go="home">‹</button>
-            <div class="title">Broadcast to the stable</div>
+            <div class="title">Share with the barn</div>
           </div>
           <div class="helper">Pick who hears you — the post lands in everyone's feed and pushes a notification.</div>
           <div class="broadcast-tags">
@@ -5124,7 +5225,12 @@
             <span class="broadcast-tag" data-tag>@competition</span>
           </div>
           <div class="broadcast-composer">
-            <div class="placeholder">e.g. "Arena 1 closed for footing repair until Thursday — all lessons moved to Arena 2."</div>
+            <textarea id="broadcast-text" class="broadcast-text" rows="5" placeholder='e.g. "Arena 1 closed for footing repair until Thursday — all lessons moved to Arena 2."'></textarea>
+            <div class="broadcast-tools">
+              <button class="broadcast-tool" data-stub="Add photo" data-stub-sub="Pick from camera roll or take a new one." data-stub-ic="📷" aria-label="Photo">📷</button>
+              <button class="broadcast-tool" data-stub="Start a poll" data-stub-sub="Two-tap polls · 'Trail ride Saturday? Yes / No'." data-stub-ic="📊" aria-label="Poll">📊</button>
+              <button class="broadcast-tool" data-stub="Mention horse" data-stub-sub="Pick a horse · auto-notifies the owner." data-stub-ic="🐴" aria-label="Mention horse">🐴</button>
+            </div>
           </div>
           <button class="broadcast-send" data-broadcast-send>📣 Send to @all · 142 people</button>
         </div>
@@ -6945,6 +7051,128 @@
         });
       });
 
+      // ── Service request workflow ─────────────────────────
+      // Client taps "Book →" on Today's extra or "Book" on the
+      // upcoming-service row → a fresh approval row is prepended to
+      // the notifications sheet (bell badge bumps too). When the
+      // Owner taps Approve in the sheet, the task auto-lands on the
+      // Whiteboard for the right teammate.
+      const bellBadge = document.querySelector(".ph-notif .badge");
+      function bumpBadge() {
+        if (!bellBadge) return;
+        const n = parseInt(bellBadge.textContent || "0", 10) + 1;
+        document.querySelectorAll(".ph-notif .badge").forEach(b => { b.textContent = String(n); });
+        const countEl = document.querySelector(".ns-count");
+        if (countEl) countEl.textContent = `${n} need you`;
+      }
+      function addServiceRequest(opts) {
+        const section = document.querySelector('.ns-section[data-kind="approvals"]');
+        if (!section) return;
+        const row = document.createElement("div");
+        row.className = "ns-row service-request";
+        row.dataset.assignee = opts.assignee || "Jess";
+        row.dataset.taskLabel = opts.task || "New task";
+        row.dataset.taskWhen = opts.when || "today";
+        row.innerHTML = `
+          <span class="ns-ic">${opts.icon || "✨"}</span>
+          <div class="ns-text">
+            <div class="ns-n">${opts.title}</div>
+            <div class="ns-s">${opts.sub}</div>
+          </div>
+          <div class="ns-actions">
+            <button class="ns-btn ok">Approve</button>
+            <button class="ns-btn ghost">No</button>
+          </div>`;
+        // Wire the buttons on the new row.
+        row.querySelector(".ns-btn.ok").addEventListener("click", (e) => {
+          e.stopPropagation();
+          // Find the assignee's whiteboard row and prepend the task there.
+          const wbRows = document.querySelectorAll(".wb-rows .wb-row");
+          let target;
+          wbRows.forEach(r => {
+            const n = r.querySelector(".wb-row-name .n")?.textContent.trim();
+            if (n === row.dataset.assignee) target = r;
+          });
+          if (target) {
+            const details = target.querySelector(".wb-row-details");
+            const newTask = document.createElement("div");
+            newTask.className = "wb-task";
+            newTask.innerHTML = `<div class="task-slider"></div><span class="lbl">${row.dataset.taskLabel}</span><span class="when">${row.dataset.taskWhen}</span>`;
+            newTask.addEventListener("click", () => newTask.classList.toggle("done"));
+            // Insert before the +Add task button.
+            const addBtn = details.querySelector(".wb-add-task");
+            if (addBtn) details.insertBefore(newTask, addBtn);
+            else details.appendChild(newTask);
+          }
+          row.remove();
+          showToast("Approved", `${row.dataset.taskLabel} · added to ${row.dataset.assignee}'s board.`, "✓");
+        });
+        row.querySelector(".ns-btn.ghost").addEventListener("click", (e) => {
+          e.stopPropagation();
+          row.remove();
+        });
+        section.insertBefore(row, section.children[1] || null);
+        bumpBadge();
+      }
+      // Wire the Client-side service request triggers. We re-bind these
+      // BEFORE the generic [data-stub] handler so they can suppress the
+      // default toast and produce the proper flow instead.
+      document.addEventListener("click", (e) => {
+        const teCta = e.target.closest(".te-cta");
+        const farrierBtn = e.target.closest(".approval-row .btn.dark");
+        if (teCta) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          addServiceRequest({
+            title: "Trail ride · Sofia · Bella",
+            sub: "Wed 6 pm · 60 min · $80 · escorted by Sam",
+            assignee: "Sam",
+            task: "Sunset trail · Sofia + Bella",
+            when: "Wed 6 pm",
+            icon: "🌅",
+          });
+          showToast("Request sent", "Awaiting barn approval · you'll be notified.", "🌅");
+        } else if (farrierBtn) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          addServiceRequest({
+            title: "Farrier slot · Bella · Sofia",
+            sub: "Friday 9 to 11 am · Mike Garcia booked on-site",
+            assignee: "Jess",
+            task: "Bring Bella to farrier",
+            when: "Fri 9 am",
+            icon: "🐴",
+          });
+          showToast("Request sent", "Awaiting barn approval · slot tentatively held.", "🐴");
+        }
+      }, true);  // capture phase so we run before [data-stub]
+
+      // ── Stable · live search across the active pane ──────
+      // Filters .stable-row elements in the currently-visible pane
+      // (horses/clients/team/partners) by matching the input value
+      // against the .n (name) text. Hides non-matches.
+      const stableSearch = document.getElementById("stable-search-input");
+      stableSearch?.addEventListener("input", () => {
+        const q = stableSearch.value.trim().toLowerCase();
+        const pane = document.querySelector(".stable-list:not([hidden]):not(.hidden)") ||
+                     document.querySelector(".stable-list");
+        document.querySelectorAll(".stable-list .stable-row").forEach(row => {
+          if (!q) { row.style.display = ""; return; }
+          const name = row.querySelector(".n")?.textContent.toLowerCase() || "";
+          const meta = row.querySelector(".m")?.textContent.toLowerCase() || "";
+          row.style.display = (name.includes(q) || meta.includes(q)) ? "" : "none";
+        });
+      });
+      // Clear the query when switching sub-tabs.
+      document.querySelectorAll("[data-stable-tab]").forEach(t => {
+        t.addEventListener("click", () => {
+          if (stableSearch) { stableSearch.value = ""; }
+          document.querySelectorAll(".stable-list .stable-row").forEach(row => {
+            row.style.display = "";
+          });
+        });
+      });
+
       // ── Dashboard · Invoice month navigation ─────────────
       const invMonths = ["April 2026", "May 2026", "June 2026"];
       let invIdx = 1;
@@ -7050,9 +7278,43 @@
           }
         });
       });
+      // Send the composed broadcast → prepend a fresh card at the top
+      // of every visible feed-mini so the user sees the post land in
+      // realtime. Author = "Me" (M), tag = currently-active chip.
       document.querySelectorAll("[data-broadcast-send]").forEach(b => {
         b.addEventListener("click", () => {
-          showToast("Broadcast sent", "Landed in feed · push notification fired.", "📣");
+          const textarea = document.getElementById("broadcast-text");
+          const text = (textarea?.value || "").trim();
+          const activeTag = document.querySelector(".broadcast-tag.active")?.textContent.trim() || "@all";
+          const audience = activeTag === "@all" ? "142 people" :
+                           activeTag === "@team" ? "12 people" :
+                           activeTag === "@owners" ? "38 people" :
+                           activeTag === "@boarders" ? "24 people" :
+                           "16 people";
+
+          if (text) {
+            const card = `
+              <div class="feed-mini-row" data-go="feed">
+                <div class="feed-mini-av">M</div>
+                <div class="feed-mini-body">
+                  <div class="feed-mini-head">
+                    <span class="feed-mini-author">You · just now</span>
+                    <span class="feed-mini-tag">${activeTag}</span>
+                  </div>
+                  <div class="feed-mini-text">${text.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>
+                  <div class="feed-mini-foot"><span>❤️ 0</span><span class="time">just now</span></div>
+                </div>
+              </div>`;
+            document.querySelectorAll(".feed-mini").forEach(fm => {
+              fm.insertAdjacentHTML("afterbegin", card);
+            });
+            if (textarea) textarea.value = "";
+          }
+          showToast(
+            text ? "Posted to the barn" : "Broadcast sent",
+            `Landed in everyone's feed · ${audience} got a push.`,
+            "📣"
+          );
           setTimeout(() => show("home"), 280);
         });
       });
