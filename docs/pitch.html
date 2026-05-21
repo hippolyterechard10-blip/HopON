@@ -4171,7 +4171,7 @@
 
             <!-- Feed mini · barn posts · auto-news · external · last 7 days -->
             <div class="eyebrow" data-section="feed" style="margin-top:10px;">Latest · last 7 days</div>
-            <button class="post-composer" data-go="news">
+            <button class="post-composer" data-go="broadcast">
               <div class="pc-av">M</div>
               <span class="pc-placeholder">Share something with the barn…</span>
               <span class="pc-icon">📷</span>
@@ -4286,7 +4286,7 @@
 
             <!-- Feed mini · barn posts · auto-news · external · last 7 days -->
             <div class="eyebrow" data-section="feed" style="margin-top:10px;">Latest · last 7 days</div>
-            <button class="post-composer" data-go="news">
+            <button class="post-composer" data-go="broadcast">
               <div class="pc-av">M</div>
               <span class="pc-placeholder">Share something with the barn…</span>
               <span class="pc-icon">📷</span>
@@ -4401,7 +4401,7 @@
 
             <!-- Feed mini · barn posts · auto-news · external · last 7 days -->
             <div class="eyebrow" data-section="feed" style="margin-top:10px;">Latest · last 7 days</div>
-            <button class="post-composer" data-go="news">
+            <button class="post-composer" data-go="broadcast">
               <div class="pc-av">M</div>
               <span class="pc-placeholder">Share something with the barn…</span>
               <span class="pc-icon">📷</span>
@@ -4533,7 +4533,7 @@
               <div class="te-eyebrow">Today's extra · barn offer</div>
               <div class="te-title">Sunset trail ride with Sam</div>
               <div class="te-sub">Wed 6 pm · 60 min · $80 · 2 slots left</div>
-              <button class="te-cta">Book →</button>
+              <button class="te-cta" data-stub="Sunset trail ride" data-stub-sub="Wed 6 pm · 60 min · $80 · 2 slots left · tap to confirm." data-stub-ic="🌅">Book →</button>
             </div>
 
             <!-- Upcoming service · upsell opportunity tied to the horse -->
@@ -4543,13 +4543,13 @@
                 <div class="n">Farrier slot · this Friday</div>
                 <div class="by">8 to 11 am on-site · pick your time</div>
               </div>
-              <button class="btn dark">Book</button>
+              <button class="btn dark" data-stub="Farrier slot" data-stub-sub="Pick a 30-min window between 8 and 11 am on Friday." data-stub-ic="🐴">Book</button>
             </div>
 
             <!-- Latest · last 7 days · filtered (no @team posts for clients) -->
             <div class="eyebrow" data-section="feed" style="margin-top:8px;">Latest · last 7 days</div>
             <!-- Post composer · "share something" prompt above the feed -->
-            <button class="post-composer" data-go="news">
+            <button class="post-composer" data-go="broadcast">
               <div class="pc-av">M</div>
               <span class="pc-placeholder">Share something with the barn…</span>
               <span class="pc-icon">📷</span>
@@ -4821,7 +4821,7 @@
               <div class="stable-status"><span class="status-dot warn"></span>Offsite</div>
             </div>
             <div class="stable-row">
-              <button class="stable-action invite" style="margin: auto;">+ Invite a team member</button>
+              <button class="stable-action invite" style="margin: auto;" data-stub="Invite link copied" data-stub-sub="Share via SMS, email, or QR · expires in 24 h." data-stub-ic="🔗">+ Invite a team member</button>
             </div>
           </div>
 
@@ -4832,7 +4832,7 @@
                 <div class="n">Dr. Torres</div>
                 <div class="m">Vet · (561) 555-0124 · last visit May 19</div>
               </div>
-              <button class="stable-action call">📞 Call</button>
+              <button class="stable-action call" data-stub="Calling…" data-stub-sub="Demo · in production opens your dialer." data-stub-ic="📞">📞 Call</button>
             </div>
             <div class="stable-row">
               <div class="stable-av" style="background: var(--warn-dot); color: var(--ink1);">MG</div>
@@ -4840,7 +4840,7 @@
                 <div class="n">Mike Garcia</div>
                 <div class="m">Farrier · (561) 555-0177 · last visit May 22</div>
               </div>
-              <button class="stable-action call">📞 Call</button>
+              <button class="stable-action call" data-stub="Calling…" data-stub-sub="Demo · in production opens your dialer." data-stub-ic="📞">📞 Call</button>
             </div>
             <div class="stable-row">
               <div class="stable-av" style="background: #6B5B95; color: white;">PL</div>
@@ -4848,7 +4848,7 @@
                 <div class="n">Pierre Lacroix</div>
                 <div class="m">Physio · (561) 555-0192 · 2 sessions pending</div>
               </div>
-              <button class="stable-action call">📞 Call</button>
+              <button class="stable-action call" data-stub="Calling…" data-stub-sub="Demo · in production opens your dialer." data-stub-ic="📞">📞 Call</button>
             </div>
             <div class="stable-row">
               <div class="stable-av" style="background: #3D6B8C; color: white;">SB</div>
@@ -4856,10 +4856,10 @@
                 <div class="n">Sarah Bell</div>
                 <div class="m">Dentist · (561) 555-0211 · annual check due</div>
               </div>
-              <button class="stable-action call">📞 Call</button>
+              <button class="stable-action call" data-stub="Calling…" data-stub-sub="Demo · in production opens your dialer." data-stub-ic="📞">📞 Call</button>
             </div>
             <div class="stable-row">
-              <button class="stable-action invite" style="margin: auto;">+ Add a partner</button>
+              <button class="stable-action invite" style="margin: auto;" data-stub="Add partner" data-stub-sub="Vet · farrier · physio · dentist · transport…" data-stub-ic="🤝">+ Add a partner</button>
             </div>
           </div>
         </div>
@@ -5101,9 +5101,9 @@
             <span class="scene">🐎</span>
           </div>
           <div class="camera-bottom">
-            <button class="camera-side-btn">⚡</button>
+            <button class="camera-side-btn" data-stub="Flash on" data-stub-sub="Toggle the flash for low-light stalls." data-stub-ic="⚡">⚡</button>
             <button class="camera-shutter" data-snap></button>
-            <button class="camera-side-btn">🔄</button>
+            <button class="camera-side-btn" data-stub="Switched camera" data-stub-sub="Front / back · choose your angle." data-stub-ic="🔄">🔄</button>
           </div>
         </div>
       </div>
@@ -5189,8 +5189,8 @@
           <div class="sheet-row"><span class="l">Note</span><span class="r" id="sh-note">First lesson back after farrier</span></div>
         </div>
         <div class="sheet-actions">
-          <button class="btn danger">Cancel</button>
-          <button class="btn dark">Edit details</button>
+          <button class="btn danger" data-stub="Lesson cancelled" data-stub-sub="Maddy notified · slot returned to availability." data-stub-ic="✕">Cancel</button>
+          <button class="btn dark" data-stub="Edit lesson" data-stub-sub="Composer opens · move time · change horse · update note." data-stub-ic="✎">Edit details</button>
         </div>
       </div>
       <div class="screen" data-screen="whiteboard">
@@ -5517,8 +5517,8 @@
         <div class="hp-screen">
           <div class="hp-hero" style="height: 200px;">
             <div class="hp-actions-top">
-              <button class="ic">↗</button>
-              <button class="ic">⋯</button>
+              <button class="ic" data-stub="Share Bella" data-stub-sub="Send the horse passport link to vet · trainer · owner." data-stub-ic="↗">↗</button>
+              <button class="ic" data-stub="More" data-stub-sub="Archive · transfer ownership · export records · delete." data-stub-ic="⋯">⋯</button>
             </div>
             <div class="illu" aria-hidden="true">
               <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
@@ -5626,7 +5626,7 @@
                 <div class="health-tile"><span class="ic">🏆</span><span class="lbl">Show</span><span class="v">3 days</span></div>
               </div>
               <div class="hp-info-card"><div class="lbl">DAILY MEDS</div><div class="v">Equibiom AM + PM. Biotin daily.</div></div>
-              <div class="hp-info-card"><div class="lbl">UPLOAD PRESCRIPTION</div><div class="v" style="color:var(--ink2); margin-top:6px; margin-bottom:10px;">PDF or photo · archived indefinitely.</div><button class="btn primary fw" style="font-size:13px;">Choose file</button></div>
+              <div class="hp-info-card"><div class="lbl">UPLOAD PRESCRIPTION</div><div class="v" style="color:var(--ink2); margin-top:6px; margin-bottom:10px;">PDF or photo · archived indefinitely.</div><button class="btn primary fw" style="font-size:13px;" data-stub="Upload prescription" data-stub-sub="Pick a PDF or photo · auto-creates a treatment on the horse." data-stub-ic="📎">Choose file</button></div>
             </div>
 
             <div class="hp-pane" data-hp-pane="food">
@@ -5829,7 +5829,7 @@
                 <div class="list-row"><div class="l"><span class="ic">🔧</span><strong>Equipment</strong></div><div class="r">$360</div></div>
                 <div class="list-row"><div class="l"><span class="ic">🚚</span><strong>Transport</strong></div><div class="r">$560</div></div>
               </div>
-              <button class="add-cost">+ Add cost entry</button>
+              <button class="add-cost" data-stub="New cost entry" data-stub-sub="Category · amount · date · invoice attachment." data-stub-ic="🧾">+ Add cost entry</button>
             </div>
 
             <!-- ROI -->
@@ -5963,8 +5963,8 @@
                 <div class="pay-bar"><div class="fill" style="width: 0%;"></div></div>
                 <div class="pay-status"><span class="l">$0 paid</span><span class="r">$320 due</span></div>
                 <div class="pay-actions">
-                  <button class="btn outline">Send reminder</button>
-                  <button class="btn dark">Mark paid ✓</button>
+                  <button class="btn outline" data-stub="Reminder sent" data-stub-sub="Email queued via Stripe · client will see a polite nudge." data-stub-ic="📨">Send reminder</button>
+                  <button class="btn dark" data-stub="Marked as paid" data-stub-sub="Invoice closed · revenue updated · receipt sent." data-stub-ic="💰">Mark paid ✓</button>
                 </div>
               </div>
 
@@ -5983,8 +5983,8 @@
                 <div class="pay-bar"><div class="fill" style="width: 50%; background: var(--warn-dot);"></div></div>
                 <div class="pay-status"><span class="l" style="color:var(--warn);">$120 paid</span><span class="r" style="color:var(--warn);">$120 due</span></div>
                 <div class="pay-actions">
-                  <button class="btn outline">Send reminder</button>
-                  <button class="btn dark">Mark paid ✓</button>
+                  <button class="btn outline" data-stub="Reminder sent" data-stub-sub="Email queued via Stripe · client will see a polite nudge." data-stub-ic="📨">Send reminder</button>
+                  <button class="btn dark" data-stub="Marked as paid" data-stub-sub="Invoice closed · revenue updated · receipt sent." data-stub-ic="💰">Mark paid ✓</button>
                 </div>
               </div>
 
@@ -6024,15 +6024,15 @@
               <div class="list-card">
                 <div class="pay-old-row">
                   <div class="l"><div class="n">Paul Durand</div><div class="s">April · 3 lessons</div></div>
-                  <div class="r"><span class="amt">$240</span><button class="remind">Remind</button></div>
+                  <div class="r"><span class="amt">$240</span><button class="remind" data-stub="Reminder sent" data-stub-sub="Polite nudge by email · second reminder in 7 days." data-stub-ic="📨">Remind</button></div>
                 </div>
                 <div class="pay-old-row">
                   <div class="l"><div class="n">Marc Petit</div><div class="s">March · 2 lessons</div></div>
-                  <div class="r"><span class="amt">$160</span><button class="remind">Remind</button></div>
+                  <div class="r"><span class="amt">$160</span><button class="remind" data-stub="Reminder sent" data-stub-sub="Polite nudge by email · second reminder in 7 days." data-stub-ic="📨">Remind</button></div>
                 </div>
                 <div class="pay-old-row">
                   <div class="l"><div class="n">Marie Janssen</div><div class="s">March · 1 lesson</div></div>
-                  <div class="r"><span class="amt">$80</span><button class="remind">Remind</button></div>
+                  <div class="r"><span class="amt">$80</span><button class="remind" data-stub="Reminder sent" data-stub-sub="Polite nudge by email · second reminder in 7 days." data-stub-ic="📨">Remind</button></div>
                 </div>
                 <div class="pay-total">
                   <span class="l">Total unpaid (prior months)</span>
@@ -6061,7 +6061,7 @@
             <div class="n">Wellington Park</div>
             <div class="s">Wellington, FL · 24 horses</div>
           </div>
-          <div class="change">Change ›</div>
+          <div class="change" data-stub="Switch barn" data-stub-sub="You manage 1 barn · invite-only beta to add more." data-stub-ic="🏠">Change ›</div>
         </div>
         <div class="drawer-items">
           <div class="drawer-item featured" data-go="dashboard">
@@ -6075,17 +6075,17 @@
             <span class="badge-mini">3</span>
             <span class="arrow">›</span>
           </div>
-          <div class="drawer-item">
+          <div class="drawer-item" data-stub="Settings" data-stub-sub="Profile · notifications · billing · integrations · language." data-stub-ic="⚙️">
             <span class="ic">⚙️</span>
             <span>Settings</span>
             <span class="arrow">›</span>
           </div>
-          <div class="drawer-item">
+          <div class="drawer-item" data-stub="Help &amp; docs" data-stub-sub="Guides · video walk-throughs · chat with the team." data-stub-ic="📚">
             <span class="ic">📚</span>
             <span>Help &amp; docs</span>
             <span class="arrow">›</span>
           </div>
-          <div class="drawer-item">
+          <div class="drawer-item" data-stub="Switch barn" data-stub-sub="You manage 1 barn · invite-only beta to add more." data-stub-ic="↻">
             <span class="ic">↻</span>
             <span>Switch barn</span>
             <span class="arrow">›</span>
@@ -6888,6 +6888,73 @@
         const row = btn.closest(".wb-row");
         const who = row?.querySelector(".wb-row-name .n")?.textContent.trim() || "this person";
         showToast(`New task for ${who}`, "Composer pre-filled · assignee locked.", "+");
+      });
+
+      // ── Generic stub action handler ──────────────────────
+      // Any element with [data-stub] fires a contextual toast
+      // (title + optional sub + icon). Keeps the demo end-to-end
+      // tappable while the full composers / flows ship later.
+      document.addEventListener("click", (e) => {
+        const stub = e.target.closest("[data-stub]");
+        if (!stub) return;
+        e.preventDefault();
+        e.stopPropagation();
+        showToast(
+          stub.dataset.stub,
+          stub.dataset.stubSub || "",
+          stub.dataset.stubIc || "✨"
+        );
+      });
+
+      // ── Calendar navigation · prev / next month + add event ──
+      const calMonths = [
+        "January 2026", "February 2026", "March 2026", "April 2026",
+        "May 2026", "June 2026", "July 2026", "August 2026",
+        "September 2026", "October 2026", "November 2026", "December 2026",
+      ];
+      let calIdx = 4; // May 2026
+      const calMonthName = document.getElementById("cal-month-name");
+      if (calMonthName) calMonthName.style.transition = "opacity 160ms";
+      function setCalMonth(delta) {
+        calIdx = (calIdx + delta + calMonths.length) % calMonths.length;
+        if (!calMonthName) return;
+        calMonthName.style.opacity = "0";
+        setTimeout(() => {
+          calMonthName.textContent = calMonths[calIdx];
+          calMonthName.style.opacity = "1";
+        }, 120);
+      }
+      document.getElementById("cal-prev")?.addEventListener("click", () => setCalMonth(-1));
+      document.getElementById("cal-next")?.addEventListener("click", () => setCalMonth(+1));
+      document.getElementById("cal-add")?.addEventListener("click", () => {
+        showToast("New event", "Composer opens · time pre-filled to next available slot.", "📅");
+      });
+
+      // ── Dashboard · Month / Year period toggle ───────────
+      document.querySelectorAll(".dash-period button").forEach(b => {
+        b.addEventListener("click", () => {
+          const siblings = b.parentElement?.querySelectorAll("button") || [];
+          siblings.forEach(s => {
+            s.classList.remove("on");
+            s.style.background = "transparent";
+            s.style.color = "rgba(255,255,255,0.6)";
+          });
+          b.classList.add("on");
+          b.style.background = "white";
+          b.style.color = "var(--brand-900)";
+        });
+      });
+
+      // ── Dashboard · Invoice month navigation ─────────────
+      const invMonths = ["April 2026", "May 2026", "June 2026"];
+      let invIdx = 1;
+      document.querySelectorAll(".pay-month-nav .arrow").forEach((btn, i) => {
+        btn.addEventListener("click", () => {
+          invIdx = Math.max(0, Math.min(invMonths.length - 1,
+            invIdx + (i === 0 ? -1 : +1)));
+          const nameEl = btn.parentElement?.querySelector(".name");
+          if (nameEl) nameEl.textContent = invMonths[invIdx];
+        });
       });
 
       // ── Notifications sheet · bell / drawer entry / approval tile ──
