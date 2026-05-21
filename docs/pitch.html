@@ -251,6 +251,40 @@
         display: grid; place-items: center;
         font-size: 13px;
       }
+      /* Notifications bell · top-right of the header.
+         Hosts approval requests, alerts, and service notifications
+         (previously surfaced as inline rows in the Owner home body). */
+      .ph-notif {
+        position: relative;
+        width: 28px; height: 28px;
+        border-radius: 14px;
+        background: rgba(255,255,255,0.12);
+        border: 0;
+        color: white; cursor: pointer;
+        display: grid; place-items: center;
+        font-size: 13px;
+        line-height: 1;
+      }
+      .ph-notif:hover { background: rgba(255,255,255,0.18); }
+      .ph-notif .badge {
+        position: absolute;
+        top: -3px; right: -3px;
+        min-width: 16px; height: 16px;
+        padding: 0 4px;
+        border-radius: 8px;
+        background: var(--brand-300);
+        color: var(--brand-900);
+        font-size: 9px;
+        font-weight: 800;
+        display: grid; place-items: center;
+        border: 2px solid var(--brand-900);
+      }
+      [data-theme="neo"] .ph-notif .badge,
+      [data-theme="neo-dark"] .ph-notif .badge {
+        background: var(--brand-300);
+        color: var(--brand-900);
+        border-color: var(--ink1);
+      }
       .ph-pulse-line {
         position: relative; z-index: 1;
         font-family: var(--serif); font-style: italic;
@@ -3653,7 +3687,7 @@
                 <span class="caret">▼</span>
               </div>
             </div>
-            <div class="ph-actions">
+            <div class="ph-actions"><button class="ph-notif" data-show-notif aria-label="Notifications">🔔<span class="badge">3</span></button>
               <div class="theme-pair" id="theme-pair">
                 <button class="sw eu active" data-set-theme="eucalyptus" aria-label="Eucalyptus theme"></button>
                 <button class="sw neo" data-set-theme="neo" aria-label="Neo theme"></button>
@@ -3700,27 +3734,11 @@
                 <span class="v">5</span>
                 <span class="sub">3 grooms · 2 trainers</span>
               </div>
-              <div class="owner-tile warn full">
+              <div class="owner-tile warn full" data-show-notif>
                 <span class="lbl">⚠ Needs your approval</span>
                 <span class="v">2 treatments · 1 vet visit</span>
-                <span class="sub">Sofia · Bella physio · 30 min ago</span>
+                <span class="sub">Tap the bell · top right · to review</span>
               </div>
-            </div>
-            <div class="approval-row">
-              <span class="horse-pill">BELLA</span>
-              <div class="what">
-                <div class="n">Physio · Pierre Lacroix</div>
-                <div class="by">Requested by Sofia · 30 min ago</div>
-              </div>
-              <button class="btn dark">OK</button>
-            </div>
-            <div class="approval-row">
-              <span class="horse-pill">ATLAS</span>
-              <div class="what">
-                <div class="n">Joint supplement · $80/mo</div>
-                <div class="by">Requested by Mateo · 2 h ago</div>
-              </div>
-              <button class="btn dark">OK</button>
             </div>
 
             <div class="section-head" data-section="business" style="margin-top:8px;">
@@ -4241,13 +4259,13 @@
 
       <!-- PLACEHOLDERS for upcoming pieces -->
       <div class="screen" data-screen="stable">
-4209:         <div class="pulse-header thin">
+        <div class="pulse-header thin">
           <div class="ph-top">
             <div class="ph-left">
               <button class="ph-burger" data-open-drawer><span></span><span></span><span></span></button>
               <div class="ph-stable"><span class="pin">📍</span>Wellington Park</div>
             </div>
-            <div class="ph-actions">
+            <div class="ph-actions"><button class="ph-notif" data-show-notif aria-label="Notifications">🔔<span class="badge">3</span></button>
               <div class="theme-pair">
                 <button class="sw eu" data-set-theme="eucalyptus"></button>
                 <button class="sw neo" data-set-theme="neo"></button>
@@ -4475,13 +4493,13 @@
         </div>
       </div>
       <div class="screen" data-screen="calendar">
-4443:         <div class="pulse-header thin">
+        <div class="pulse-header thin">
           <div class="ph-top">
             <div class="ph-left">
               <button class="ph-burger" data-open-drawer><span></span><span></span><span></span></button>
               <div class="ph-stable"><span class="pin">📍</span>Wellington Park</div>
             </div>
-            <div class="ph-actions">
+            <div class="ph-actions"><button class="ph-notif" data-show-notif aria-label="Notifications">🔔<span class="badge">3</span></button>
               <div class="theme-pair">
                 <button class="sw eu" data-set-theme="eucalyptus"></button>
                 <button class="sw neo" data-set-theme="neo"></button>
@@ -4574,7 +4592,7 @@
               <button class="ph-back" data-go="home">‹</button>
               <div class="ph-stable"><span class="pin">📍</span>Wellington Park</div>
             </div>
-            <div class="ph-actions">
+            <div class="ph-actions"><button class="ph-notif" data-show-notif aria-label="Notifications">🔔<span class="badge">3</span></button>
               <div class="theme-pair">
                 <button class="sw eu" data-set-theme="eucalyptus"></button>
                 <button class="sw neo" data-set-theme="neo"></button>
@@ -4796,13 +4814,13 @@
         </div>
       </div>
       <div class="screen" data-screen="whiteboard">
-4764:         <div class="pulse-header thin">
+        <div class="pulse-header thin">
           <div class="ph-top">
             <div class="ph-left">
               <button class="ph-burger" data-open-drawer><span></span><span></span><span></span></button>
               <div class="ph-stable"><span class="pin">📍</span>Wellington Park<span class="caret">▼</span></div>
             </div>
-            <div class="ph-actions">
+            <div class="ph-actions"><button class="ph-notif" data-show-notif aria-label="Notifications">🔔<span class="badge">3</span></button>
               <div class="theme-pair">
                 <button class="sw eu" data-set-theme="eucalyptus"></button>
                 <button class="sw neo" data-set-theme="neo"></button>
@@ -4919,13 +4937,13 @@
         </div>
       </div>
       <div class="screen" data-screen="feed">
-4897:         <div class="pulse-header thin">
+        <div class="pulse-header thin">
           <div class="ph-top">
             <div class="ph-left">
               <button class="ph-burger" data-open-drawer><span></span><span></span><span></span></button>
               <div class="ph-stable"><span class="pin">📍</span>Wellington Park</div>
             </div>
-            <div class="ph-actions">
+            <div class="ph-actions"><button class="ph-notif" data-show-notif aria-label="Notifications">🔔<span class="badge">3</span></button>
               <div class="theme-pair">
                 <button class="sw eu" data-set-theme="eucalyptus"></button>
                 <button class="sw neo" data-set-theme="neo"></button>
@@ -5067,7 +5085,7 @@
               <button class="ph-back" data-go="stable">‹</button>
               <div class="ph-stable"><span class="pin">📍</span>Wellington Park</div>
             </div>
-            <div class="ph-actions">
+            <div class="ph-actions"><button class="ph-notif" data-show-notif aria-label="Notifications">🔔<span class="badge">3</span></button>
               <div class="theme-pair">
                 <button class="sw eu" data-set-theme="eucalyptus"></button>
                 <button class="sw neo" data-set-theme="neo"></button>
@@ -5250,7 +5268,7 @@
               <button class="ph-back" data-go="home">‹</button>
               <div class="ph-stable"><span class="pin">📍</span>Wellington Park<span class="caret">▼</span></div>
             </div>
-            <div class="ph-actions">
+            <div class="ph-actions"><button class="ph-notif" data-show-notif aria-label="Notifications">🔔<span class="badge">3</span></button>
               <div class="dash-period" style="background: rgba(255,255,255,0.10);">
                 <button style="color: white; opacity: 0.6;">Month</button>
                 <button class="on" style="background: white; color: var(--brand-900);">Year</button>
@@ -6308,6 +6326,15 @@
       });
       document.getElementById("pp-close")?.addEventListener("click", dismissPhotoPrompt);
       document.getElementById("snap-btn")?.addEventListener("click", () => show("camera"));
+
+      // ── Notifications stub · bell + warn tile both trigger ──
+      // Real panel arrives in a follow-up; for the demo we surface
+      // the pending items as a toast so the flow is clear.
+      document.querySelectorAll("[data-show-notif]").forEach(el => {
+        el.addEventListener("click", () => {
+          showToast("3 items need you", "2 treatments · 1 vet visit · tap to approve", "🔔");
+        });
+      });
 
       // ── Show more · inline expand for lessons / lists ──────
       // Toggles .show-extra on a target row-group; rows tagged with
