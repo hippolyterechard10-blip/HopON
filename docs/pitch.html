@@ -1956,6 +1956,368 @@
         font-size: 13px; line-height: 1.4;
       }
       .sv-caption strong { display: block; font-weight: 700; margin-bottom: 2px; }
+
+      /* ════════════════════════════════════════════════════ */
+      /* PIECE 4 · DASHBOARD (Overview · Revenue · Costs ·    */
+      /* ROI · Payments) Barnly-inspired                      */
+      /* ════════════════════════════════════════════════════ */
+
+      .dash-screen { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+      .dash-head {
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        padding: 12px 16px 8px;
+        display: flex; flex-direction: column; gap: 10px;
+      }
+      .dash-head-top {
+        display: flex; align-items: center; gap: 12px;
+      }
+      .dash-back {
+        width: 32px; height: 32px; border-radius: 16px;
+        background: var(--bg); border: 0;
+        cursor: pointer; color: var(--ink1); font-size: 18px;
+        display: grid; place-items: center;
+      }
+      .dash-head-title {
+        flex: 1;
+        font-family: var(--serif); font-style: italic;
+        font-size: 22px; color: var(--ink1);
+      }
+      .dash-period {
+        display: flex; background: var(--bg);
+        border-radius: 8px; padding: 3px;
+      }
+      .dash-period button {
+        padding: 5px 10px; font-size: 11px; font-weight: 700;
+        border: 0; background: transparent; cursor: pointer;
+        color: var(--ink3); border-radius: 6px;
+      }
+      .dash-period button.on { background: var(--ink1); color: var(--bg); }
+
+      .dash-tabs {
+        display: flex; gap: 16px;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+      .dash-tabs::-webkit-scrollbar { display: none; }
+      .dash-tab {
+        font-size: 12px; font-weight: 700;
+        color: var(--ink3);
+        padding: 6px 0; cursor: pointer;
+        border-bottom: 2px solid transparent;
+        white-space: nowrap;
+        transition: color 200ms, border-color 200ms;
+      }
+      .dash-tab.on { color: var(--ink1); border-bottom-color: var(--brand-500); }
+      [data-theme="neo"] .dash-tab.on { border-bottom-color: var(--brand-500); }
+
+      .dash-body {
+        flex: 1; overflow-y: auto;
+        padding: 14px 16px 110px;
+        background: var(--bg);
+      }
+      .dash-pane { display: none; flex-direction: column; gap: 12px; }
+      .dash-pane.on { display: flex; }
+
+      /* ── KPI hero (dark) — Overview, Costs, Payments ── */
+      .kpi-hero {
+        background: var(--brand-900); color: white;
+        border-radius: 18px; padding: 18px 20px;
+        position: relative; overflow: hidden;
+      }
+      [data-theme="neo"] .kpi-hero { background: var(--ink1); }
+      .kpi-hero .lbl {
+        font-size: 10px; opacity: 0.55;
+        letter-spacing: 1.5px; text-transform: uppercase;
+        font-weight: 700;
+      }
+      .kpi-hero .big {
+        font-family: var(--serif); font-style: italic;
+        font-size: 40px; line-height: 1; color: white;
+        margin-top: 6px;
+      }
+      .kpi-hero .delta-line {
+        font-size: 11px; font-weight: 600;
+        color: #6cf28b; margin-top: 6px;
+      }
+      [data-theme="neo"] .kpi-hero .delta-line { color: #ffa566; }
+      .kpi-hero .split {
+        display: flex; margin-top: 16px;
+      }
+      .kpi-hero .split > div {
+        flex: 1; text-align: center;
+        padding: 4px 0;
+        border-right: 1px solid rgba(255,255,255,0.10);
+      }
+      .kpi-hero .split > div:last-child { border-right: none; }
+      .kpi-hero .split .v {
+        font-size: 18px; font-weight: 700;
+      }
+      .kpi-hero .split .v.green { color: #6cf28b; }
+      [data-theme="neo"] .kpi-hero .split .v.green { color: #ffa566; }
+      .kpi-hero .split .v.red { color: #ff8a66; }
+      .kpi-hero .split .v.gold { color: #ffd699; }
+      .kpi-hero .split .l {
+        font-size: 9px; opacity: 0.55;
+        letter-spacing: 0.6px; text-transform: uppercase;
+        margin-top: 4px;
+      }
+
+      /* 2x2 KPI grid */
+      .kpi-grid {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+      }
+      .kpi-tile {
+        background: var(--surface); border: 1px solid var(--border);
+        border-radius: 14px; padding: 14px;
+        cursor: pointer;
+        transition: transform 120ms;
+      }
+      .kpi-tile:active { transform: scale(0.98); }
+      .kpi-tile .lbl {
+        font-size: 10px; font-weight: 700; letter-spacing: 0.8px;
+        text-transform: uppercase; color: var(--ink3);
+      }
+      .kpi-tile .v {
+        font-size: 20px; font-weight: 700; color: var(--ink1);
+        margin-top: 4px;
+      }
+      .kpi-tile .d {
+        font-size: 11px; margin-top: 3px;
+      }
+      .kpi-tile .d.up { color: var(--ok); }
+      .kpi-tile .d.flat { color: var(--ink3); }
+      .kpi-tile .d.down { color: var(--alert); }
+      .kpi-tile .d.warn { color: var(--alert); }
+
+      /* Section label */
+      .sec-lbl {
+        font-size: 10px; font-weight: 700; letter-spacing: 1.4px;
+        text-transform: uppercase; color: var(--ink3);
+        padding: 0 2px; margin-top: 4px;
+      }
+
+      /* Generic list card with rows */
+      .list-card {
+        background: var(--surface); border: 1px solid var(--border);
+        border-radius: 14px; padding: 4px 14px;
+      }
+      .list-row {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 11px 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .list-row:last-child { border-bottom: none; }
+      .list-row .l { font-size: 13px; color: var(--ink2); display: flex; align-items: center; gap: 8px; }
+      .list-row .l strong { color: var(--ink1); font-weight: 700; }
+      .list-row .l .ic { font-size: 14px; }
+      .list-row .r { font-size: 14px; font-weight: 700; color: var(--ink1); text-align: right; }
+      .list-row .r.brand { color: var(--brand-600); }
+      [data-theme="neo"] .list-row .r.brand { color: var(--brand-500); }
+      .list-row .r.green { color: var(--ok); }
+      .list-row .r.red { color: var(--alert); }
+      .list-row.total { border-top: 2px solid var(--ink1); border-bottom: none; }
+      .list-row.total .l { font-weight: 700; color: var(--ink1); }
+      .list-row.total .r { font-size: 16px; }
+
+      /* Sparkline */
+      .sparkline {
+        background: var(--surface); border: 1px solid var(--border);
+        border-radius: 14px; padding: 14px;
+      }
+      .sparkline .head {
+        display: flex; justify-content: space-between; align-items: baseline;
+        margin-bottom: 10px;
+      }
+      .sparkline .head .l {
+        font-family: var(--serif); font-style: italic;
+        font-size: 18px; color: var(--ink1);
+      }
+      .sparkline .head .r {
+        font-size: 11px; color: var(--ok); font-weight: 700;
+      }
+      .sparkline svg { width: 100%; height: 100px; }
+
+      /* Add cost button */
+      .add-cost {
+        width: 100%; padding: 13px;
+        background: transparent;
+        border: 2px dashed var(--border);
+        border-radius: 14px;
+        color: var(--ink3);
+        font-family: var(--sans); font-size: 13px; font-weight: 700;
+        cursor: pointer;
+      }
+      .add-cost:hover { border-color: var(--ink2); color: var(--ink2); }
+
+      /* ROI horse cards */
+      .roi-card {
+        background: var(--surface); border: 1px solid var(--border);
+        border-radius: 14px; padding: 14px;
+        border-left: 4px solid var(--ok);
+      }
+      .roi-card.gold { border-left-color: var(--warn-dot); }
+      .roi-card.red { border-left-color: var(--alert); }
+      .roi-head {
+        display: flex; align-items: center; gap: 12px;
+        margin-bottom: 12px;
+      }
+      .roi-head .em { font-size: 28px; flex: 0 0 auto; }
+      .roi-head .info { flex: 1; }
+      .roi-head .info .n { font-size: 16px; font-weight: 700; color: var(--ink1); }
+      .roi-head .info .s { font-size: 11px; color: var(--ink3); margin-top: 1px; }
+      .roi-head .net {
+        text-align: right;
+      }
+      .roi-head .net .lbl {
+        font-size: 10px; font-weight: 700; letter-spacing: 0.6px;
+        color: var(--ok);
+      }
+      .roi-card.gold .roi-head .net .lbl { color: var(--warn-dot); }
+      .roi-card.red .roi-head .net .lbl { color: var(--alert); }
+      .roi-head .net .v {
+        font-family: var(--serif); font-style: italic;
+        font-size: 22px; color: var(--ok);
+      }
+      .roi-card.gold .roi-head .net .v { color: var(--warn-dot); }
+      .roi-card.red .roi-head .net .v { color: var(--alert); }
+      .roi-bar {
+        height: 8px; background: var(--bg);
+        border-radius: 20px; overflow: hidden;
+        margin-bottom: 8px;
+      }
+      .roi-bar .fill {
+        height: 100%; border-radius: 20px;
+        background: var(--ok);
+      }
+      .roi-card.gold .roi-bar .fill { background: var(--warn-dot); }
+      .roi-card.red .roi-bar .fill { background: var(--alert); }
+      .roi-split {
+        display: flex; gap: 6px;
+      }
+      .roi-split > div {
+        flex: 1;
+        background: var(--bg);
+        border-radius: 8px;
+        padding: 8px;
+        text-align: center;
+      }
+      .roi-split > div.green { background: var(--ok-bg); }
+      .roi-split > div.red { background: var(--alert-bg); }
+      .roi-split > div .v { font-size: 13px; font-weight: 700; color: var(--ink1); }
+      .roi-split > div.green .v { color: var(--ok); }
+      .roi-split > div.red .v { color: var(--alert); }
+      .roi-split > div .l { font-size: 9px; color: var(--ink3); margin-top: 2px; }
+
+      /* Payments tab */
+      .pay-month-nav {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 10px 14px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+      }
+      .pay-month-nav .arrow {
+        font-size: 18px; color: var(--ink3); cursor: pointer;
+        background: transparent; border: 0; padding: 4px 8px;
+      }
+      .pay-month-nav .name {
+        font-size: 14px; font-weight: 700; color: var(--ink1);
+      }
+      .pay-card {
+        background: var(--surface); border: 1px solid var(--border);
+        border-radius: 14px; padding: 14px;
+      }
+      .pay-card.paid { opacity: 0.78; }
+      .pay-card .head {
+        display: flex; align-items: center; gap: 10px;
+        margin-bottom: 11px;
+      }
+      .pay-card .av {
+        width: 40px; height: 40px; border-radius: 12px;
+        color: white; font-size: 13px; font-weight: 700;
+        display: grid; place-items: center;
+        flex: 0 0 40px;
+      }
+      .pay-card .who { flex: 1; min-width: 0; }
+      .pay-card .who .n { font-size: 15px; font-weight: 700; color: var(--ink1); }
+      .pay-card .who .s { font-size: 11px; color: var(--ink3); margin-top: 1px; }
+      .pay-card .amount { text-align: right; }
+      .pay-card .amount .v {
+        font-size: 15px; font-weight: 700; color: var(--ink1);
+      }
+      .pay-card.unpaid .amount .v { color: var(--alert); }
+      .pay-card .amount .s {
+        font-size: 11px; color: var(--ink3); margin-top: 1px;
+      }
+      .pay-bar {
+        height: 6px; background: var(--bg);
+        border-radius: 20px; overflow: hidden;
+        margin-bottom: 6px;
+      }
+      .pay-bar .fill {
+        height: 100%; border-radius: 20px;
+        background: var(--ok);
+      }
+      .pay-card.unpaid .pay-bar .fill { background: var(--alert); }
+      .pay-status {
+        display: flex; justify-content: space-between;
+        margin-bottom: 11px;
+      }
+      .pay-status .l {
+        font-size: 11px; font-weight: 700; color: var(--ok);
+      }
+      .pay-card.unpaid .pay-status .l { color: var(--alert); }
+      .pay-card.partial .pay-status .l { color: var(--warn); }
+      .pay-status .r {
+        font-size: 11px; font-weight: 700; color: var(--ok);
+      }
+      .pay-card.unpaid .pay-status .r { color: var(--alert); }
+      .pay-actions {
+        display: flex; gap: 8px;
+      }
+      .pay-actions .btn {
+        flex: 1; padding: 8px;
+        font-size: 12px; font-weight: 700;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+      .pay-actions .btn.outline {
+        background: var(--bg); border: 1px solid var(--border);
+        color: var(--ink1);
+      }
+      .pay-actions .btn.dark {
+        background: var(--ink1); color: var(--bg);
+        border: 0;
+      }
+      .pay-old-row {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 11px 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .pay-old-row:last-child { border-bottom: 0; }
+      .pay-old-row .l .n { font-size: 13px; color: var(--ink1); font-weight: 600; }
+      .pay-old-row .l .s { font-size: 11px; color: var(--ink3); margin-top: 1px; }
+      .pay-old-row .r { display: flex; align-items: center; gap: 10px; }
+      .pay-old-row .amt {
+        font-size: 14px; font-weight: 700; color: var(--alert);
+      }
+      .pay-old-row .remind {
+        font-size: 11px; font-weight: 700; color: var(--brand-600);
+        padding: 5px 11px;
+        border: 1px solid var(--brand-600);
+        border-radius: 20px;
+        background: transparent;
+        cursor: pointer;
+      }
+      [data-theme="neo"] .pay-old-row .remind { color: var(--ink1); border-color: var(--ink1); }
+      .pay-total {
+        display: flex; justify-content: space-between;
+        padding-top: 12px; margin-top: 12px;
+        border-top: 1px solid var(--border);
+      }
+      .pay-total .l { font-size: 13px; font-weight: 700; color: var(--ink1); }
+      .pay-total .r { font-size: 17px; font-weight: 700; color: var(--alert); }
     </style>
   </head>
   <body>
@@ -2951,20 +3313,365 @@
         </div>
       </div>
       <div class="screen" data-screen="dashboard">
-        <div class="pulse-header">
-          <div class="ph-top">
-            <div class="ph-left">
-              <button class="ph-burger" data-open-drawer><span></span><span></span><span></span></button>
-              <div class="ph-stable"><span class="pin">📊</span>Dashboard</div>
+        <div class="dash-screen">
+          <div class="dash-head">
+            <div class="dash-head-top">
+              <button class="dash-back" data-go="home">‹</button>
+              <div class="dash-head-title">Dashboard</div>
+              <div class="dash-period">
+                <button>Month</button>
+                <button class="on">Year</button>
+              </div>
+            </div>
+            <div class="dash-tabs">
+              <div class="dash-tab on" data-dash-tab="overview">Overview</div>
+              <div class="dash-tab" data-dash-tab="revenue">Revenue</div>
+              <div class="dash-tab" data-dash-tab="costs">Costs</div>
+              <div class="dash-tab" data-dash-tab="roi">ROI</div>
+              <div class="dash-tab" data-dash-tab="payments">Payments</div>
             </div>
           </div>
-          <div class="ph-pulse-line">Revenue · Costs · Payments.</div>
+
+          <div class="dash-body">
+            <!-- OVERVIEW -->
+            <div class="dash-pane on" data-dash-pane="overview">
+              <div class="kpi-hero">
+                <div class="lbl">Net margin · 2026 YTD</div>
+                <div class="big">69%</div>
+                <div class="split">
+                  <div><div class="v green">$47,280</div><div class="l">Revenue</div></div>
+                  <div><div class="v red">$14,620</div><div class="l">Costs</div></div>
+                  <div><div class="v gold">$32,660</div><div class="l">Net</div></div>
+                </div>
+              </div>
+
+              <div class="kpi-grid">
+                <div class="kpi-tile" data-dash-jump="revenue">
+                  <span class="lbl">Lessons MTD</span>
+                  <span class="v">$3,600</span>
+                  <span class="d up">↑ 18%</span>
+                </div>
+                <div class="kpi-tile" data-dash-jump="costs">
+                  <span class="lbl">Costs MTD</span>
+                  <span class="v" style="color:var(--alert);">$1,420</span>
+                  <span class="d flat">→ vs Apr</span>
+                </div>
+                <div class="kpi-tile" data-dash-jump="roi">
+                  <span class="lbl">Best ROI horse</span>
+                  <span class="v">🐎 Scout</span>
+                  <span class="d up">+$4,280 YTD</span>
+                </div>
+                <div class="kpi-tile" data-dash-jump="payments">
+                  <span class="lbl">Outstanding</span>
+                  <span class="v" style="color:var(--alert);">$540</span>
+                  <span class="d warn">6 clients</span>
+                </div>
+              </div>
+
+              <div class="sparkline">
+                <div class="head">
+                  <span class="l">Revenue · last 6 months</span>
+                  <span class="r">↑ 18%</span>
+                </div>
+                <svg viewBox="0 0 320 100" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="sparkfill" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0" stop-color="var(--brand-500)" stop-opacity="0.30"/>
+                      <stop offset="1" stop-color="var(--brand-500)" stop-opacity="0"/>
+                    </linearGradient>
+                  </defs>
+                  <path d="M0,75 L53,68 L107,55 L160,42 L213,38 L267,28 L320,18 L320,100 L0,100 Z" fill="url(#sparkfill)"/>
+                  <path d="M0,75 L53,68 L107,55 L160,42 L213,38 L267,28 L320,18" stroke="var(--brand-500)" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+                  <circle cx="320" cy="18" r="4" fill="var(--brand-500)"/>
+                  <circle cx="320" cy="18" r="8" fill="var(--brand-500)" opacity="0.18"/>
+                </svg>
+                <div style="display:flex; justify-content:space-between; font-size:9px; color:var(--ink3); margin-top:6px; padding: 0 4px; font-weight:600; letter-spacing:0.4px;">
+                  <span>DEC</span><span>JAN</span><span>FEB</span><span>MAR</span><span>APR</span><span>MAY</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- REVENUE -->
+            <div class="dash-pane" data-dash-pane="revenue">
+              <div class="kpi-hero">
+                <div class="lbl">Revenue · 2026 YTD</div>
+                <div class="big">$47,280</div>
+                <div class="delta-line">↑ 18% vs 2025 same period</div>
+              </div>
+              <div class="sec-lbl">Breakdown</div>
+              <div class="list-card">
+                <div class="list-row"><div class="l"><span class="ic">📚</span>Lessons</div><div class="r">$38,400</div></div>
+                <div class="list-row"><div class="l"><span class="ic">🧠</span>Freelance commission</div><div class="r brand">$5,280</div></div>
+                <div class="list-row"><div class="l"><span class="ic">🏠</span>Boarding</div><div class="r">$3,600</div></div>
+                <div class="list-row total"><div class="l">Total</div><div class="r green">$47,280</div></div>
+              </div>
+              <div class="sec-lbl">Top clients</div>
+              <div class="list-card">
+                <div class="list-row">
+                  <div class="l"><strong>Claire Martin</strong></div>
+                  <div class="r"><div>$5,760</div><div style="font-size:11px; color:var(--ink3); font-weight:500;">72 lessons</div></div>
+                </div>
+                <div class="list-row">
+                  <div class="l"><strong>Paul Durand</strong></div>
+                  <div class="r"><div>$3,360</div><div style="font-size:11px; color:var(--ink3); font-weight:500;">48 lessons</div></div>
+                </div>
+                <div class="list-row">
+                  <div class="l"><strong>Sophie Blanc</strong></div>
+                  <div class="r"><div>$2,160</div><div style="font-size:11px; color:var(--ink3); font-weight:500;">36 lessons</div></div>
+                </div>
+                <div class="list-row">
+                  <div class="l"><strong>Sofia Carter</strong></div>
+                  <div class="r"><div>$1,920</div><div style="font-size:11px; color:var(--ink3); font-weight:500;">32 lessons</div></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- COSTS -->
+            <div class="dash-pane" data-dash-pane="costs">
+              <div class="kpi-hero" style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                  <div class="lbl">Total costs · May</div>
+                  <div class="big" style="font-size:30px;">$14,620</div>
+                </div>
+                <div style="text-align:right;">
+                  <div class="lbl">Net margin</div>
+                  <div class="big" style="font-size:26px; color:#6cf28b;">69%</div>
+                </div>
+              </div>
+              <div class="sec-lbl">Fixed</div>
+              <div class="list-card">
+                <div class="list-row"><div class="l"><span class="ic">🏠</span><strong>Mortgage / Rent</strong></div><div class="r">$5,200</div></div>
+                <div class="list-row"><div class="l"><span class="ic">📋</span><strong>Insurance</strong></div><div class="r">$1,800</div></div>
+                <div class="list-row"><div class="l"><span class="ic">👥</span><strong>Staff salaries</strong></div><div class="r">$4,000</div></div>
+              </div>
+              <div class="sec-lbl">Variable</div>
+              <div class="list-card">
+                <div class="list-row"><div class="l"><span class="ic">🌾</span><strong>Hay / Feed</strong></div><div class="r">$1,240</div></div>
+                <div class="list-row"><div class="l"><span class="ic">⚡</span><strong>Electricity</strong></div><div class="r">$620</div></div>
+                <div class="list-row"><div class="l"><span class="ic">🩺</span><strong>Vet bills</strong></div><div class="r">$840</div></div>
+                <div class="list-row"><div class="l"><span class="ic">🔧</span><strong>Equipment</strong></div><div class="r">$360</div></div>
+                <div class="list-row"><div class="l"><span class="ic">🚚</span><strong>Transport</strong></div><div class="r">$560</div></div>
+              </div>
+              <button class="add-cost">+ Add cost entry</button>
+            </div>
+
+            <!-- ROI -->
+            <div class="dash-pane" data-dash-pane="roi">
+              <div class="kpi-hero" style="background: var(--brand-50); color: var(--ink1); border: 1px solid var(--brand-100);">
+                <div class="lbl" style="color: var(--brand-700); opacity: 1;">How to read this</div>
+                <div style="font-size: 13px; line-height: 18px; margin-top: 6px; color: var(--ink2);">
+                  ROI = lessons revenue + show winnings − horse costs (food, vet, shoes, transport). Sorted from best to worst.
+                </div>
+              </div>
+
+              <div class="roi-card">
+                <div class="roi-head">
+                  <div class="em">🐎</div>
+                  <div class="info">
+                    <div class="n">Scout</div>
+                    <div class="s">Claire Martin · 72 lessons YTD</div>
+                  </div>
+                  <div class="net">
+                    <div class="lbl">NET ROI</div>
+                    <div class="v">+$4,280</div>
+                  </div>
+                </div>
+                <div class="roi-bar"><div class="fill" style="width: 72%;"></div></div>
+                <div class="roi-split">
+                  <div><div class="v">$10,560</div><div class="l">lessons</div></div>
+                  <div class="green"><div class="v">$480</div><div class="l">🏆 wins</div></div>
+                  <div class="red"><div class="v">$6,760</div><div class="l">costs</div></div>
+                </div>
+              </div>
+
+              <div class="roi-card gold">
+                <div class="roi-head">
+                  <div class="em">🐴</div>
+                  <div class="info">
+                    <div class="n">Bella</div>
+                    <div class="s">Sofia C. · 64 lessons YTD</div>
+                  </div>
+                  <div class="net">
+                    <div class="lbl">NET ROI</div>
+                    <div class="v">+$2,140</div>
+                  </div>
+                </div>
+                <div class="roi-bar"><div class="fill" style="width: 62%;"></div></div>
+                <div class="roi-split">
+                  <div><div class="v">$9,440</div><div class="l">lessons</div></div>
+                  <div class="green"><div class="v">$320</div><div class="l">🏆 wins</div></div>
+                  <div class="red"><div class="v">$7,620</div><div class="l">costs</div></div>
+                </div>
+              </div>
+
+              <div class="roi-card gold">
+                <div class="roi-head">
+                  <div class="em">🐴</div>
+                  <div class="info">
+                    <div class="n">Flame</div>
+                    <div class="s">Paul Durand · 48 lessons YTD</div>
+                  </div>
+                  <div class="net">
+                    <div class="lbl">NET ROI</div>
+                    <div class="v">+$640</div>
+                  </div>
+                </div>
+                <div class="roi-bar"><div class="fill" style="width: 52%;"></div></div>
+                <div class="roi-split">
+                  <div><div class="v">$7,200</div><div class="l">lessons</div></div>
+                  <div class="green"><div class="v">$0</div><div class="l">🏆 wins</div></div>
+                  <div class="red"><div class="v">$6,560</div><div class="l">costs</div></div>
+                </div>
+              </div>
+
+              <div class="roi-card red">
+                <div class="roi-head">
+                  <div class="em">🐎</div>
+                  <div class="info">
+                    <div class="n">Atlas</div>
+                    <div class="s">Claire Martin · 18 lessons · injured Q1</div>
+                  </div>
+                  <div class="net">
+                    <div class="lbl">NET ROI</div>
+                    <div class="v">−$1,820</div>
+                  </div>
+                </div>
+                <div class="roi-bar"><div class="fill" style="width: 28%;"></div></div>
+                <div class="roi-split">
+                  <div><div class="v">$2,160</div><div class="l">lessons</div></div>
+                  <div class="green"><div class="v">$0</div><div class="l">🏆 wins</div></div>
+                  <div class="red"><div class="v">$3,980</div><div class="l">costs</div></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PAYMENTS — the pain point -->
+            <div class="dash-pane" data-dash-pane="payments">
+              <div class="kpi-hero" style="display:flex; justify-content:space-between; padding: 16px 14px;">
+                <div style="flex:1; text-align:center;">
+                  <div class="big" style="font-size:22px;">$6,200</div>
+                  <div class="lbl">Billed</div>
+                  <div style="font-size:11px; color:#6cf28b; margin-top:3px;">↑ 8%</div>
+                </div>
+                <div style="flex:1; text-align:center; border-left:1px solid rgba(255,255,255,0.10);">
+                  <div class="big" style="font-size:22px; color:#6cf28b;">$5,660</div>
+                  <div class="lbl">Collected</div>
+                </div>
+                <div style="flex:1; text-align:center; border-left:1px solid rgba(255,255,255,0.10);">
+                  <div class="big" style="font-size:22px; color:#ff8a66;">$540</div>
+                  <div class="lbl">Outstanding</div>
+                </div>
+              </div>
+
+              <div class="pay-month-nav">
+                <button class="arrow">‹</button>
+                <span class="name">May 2026</span>
+                <button class="arrow">›</button>
+              </div>
+
+              <div class="sec-lbl">This month</div>
+
+              <div class="pay-card unpaid">
+                <div class="head">
+                  <div class="av" style="background:var(--alert);">PD</div>
+                  <div class="who">
+                    <div class="n">Paul Durand</div>
+                    <div class="s">4 lessons · Jumping</div>
+                  </div>
+                  <div class="amount">
+                    <div class="v">$0</div>
+                    <div class="s">of $320</div>
+                  </div>
+                </div>
+                <div class="pay-bar"><div class="fill" style="width: 0%;"></div></div>
+                <div class="pay-status"><span class="l">$0 paid</span><span class="r">$320 due</span></div>
+                <div class="pay-actions">
+                  <button class="btn outline">Send reminder</button>
+                  <button class="btn dark">Mark paid ✓</button>
+                </div>
+              </div>
+
+              <div class="pay-card partial">
+                <div class="head">
+                  <div class="av" style="background:var(--warn-dot); color:var(--ink1);">EC</div>
+                  <div class="who">
+                    <div class="n">Emma Carter</div>
+                    <div class="s">3 lessons · Jumping</div>
+                  </div>
+                  <div class="amount">
+                    <div class="v" style="color:var(--warn);">$120</div>
+                    <div class="s">of $240</div>
+                  </div>
+                </div>
+                <div class="pay-bar"><div class="fill" style="width: 50%; background: var(--warn-dot);"></div></div>
+                <div class="pay-status"><span class="l" style="color:var(--warn);">$120 paid</span><span class="r" style="color:var(--warn);">$120 due</span></div>
+                <div class="pay-actions">
+                  <button class="btn outline">Send reminder</button>
+                  <button class="btn dark">Mark paid ✓</button>
+                </div>
+              </div>
+
+              <div class="pay-card paid">
+                <div class="head">
+                  <div class="av" style="background:#3D6B8C;">CM</div>
+                  <div class="who">
+                    <div class="n">Claire Martin</div>
+                    <div class="s">6 lessons · Dressage</div>
+                  </div>
+                  <div class="amount">
+                    <div class="v" style="color:var(--ok);">$480</div>
+                    <div class="s">of $480</div>
+                  </div>
+                </div>
+                <div class="pay-bar"><div class="fill" style="width: 100%;"></div></div>
+                <div class="pay-status"><span class="l">$480 paid ✓</span><span class="r">Complete</span></div>
+              </div>
+
+              <div class="pay-card paid">
+                <div class="head">
+                  <div class="av" style="background:var(--brand-500);">SC</div>
+                  <div class="who">
+                    <div class="n">Sofia Carter</div>
+                    <div class="s">8 lessons · Bella + Storm</div>
+                  </div>
+                  <div class="amount">
+                    <div class="v" style="color:var(--ok);">$960</div>
+                    <div class="s">of $960</div>
+                  </div>
+                </div>
+                <div class="pay-bar"><div class="fill" style="width: 100%;"></div></div>
+                <div class="pay-status"><span class="l">$960 paid ✓</span><span class="r">Complete</span></div>
+              </div>
+
+              <div class="sec-lbl" style="margin-top:4px;">Previous months unpaid</div>
+              <div class="list-card">
+                <div class="pay-old-row">
+                  <div class="l"><div class="n">Paul Durand</div><div class="s">April · 3 lessons</div></div>
+                  <div class="r"><span class="amt">$240</span><button class="remind">Remind</button></div>
+                </div>
+                <div class="pay-old-row">
+                  <div class="l"><div class="n">Marc Petit</div><div class="s">March · 2 lessons</div></div>
+                  <div class="r"><span class="amt">$160</span><button class="remind">Remind</button></div>
+                </div>
+                <div class="pay-old-row">
+                  <div class="l"><div class="n">Marie Janssen</div><div class="s">March · 1 lesson</div></div>
+                  <div class="r"><span class="amt">$80</span><button class="remind">Remind</button></div>
+                </div>
+                <div class="pay-total">
+                  <span class="l">Total outstanding (prior)</span>
+                  <span class="r">$480</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="placeholder">
-          <div class="icon">📊</div>
-          <div class="t">Dashboard</div>
-          <div class="s">Overview · Revenue · Costs · ROI · Payments (Barnly-style) — coming in piece 4.</div>
-          <div class="badge">PIECE 4 / 5</div>
+
+        <div class="tabbar">
+          <button class="tabitem" data-tab="home"><span class="ic">⌂</span><span>Home</span></button>
+          <button class="tabitem" data-tab="stable"><span class="ic">🐴</span><span>Stable</span></button>
+          <button class="tabitem" data-tab="calendar"><span class="ic">📅</span><span>Calendar</span></button>
+          <button class="tabitem" data-tab="whiteboard"><span class="ic">📋</span><span>Whiteboard</span></button>
+          <button class="tabitem" data-tab="feed"><span class="ic">💬</span><span>Feed</span></button>
         </div>
       </div>
 
@@ -3400,6 +4107,18 @@
 
       // Initial render
       setCalView('week');
+
+      // ── Dashboard sub-tabs (piece 4) ───────────────────────
+      function setDashTab(v) {
+        document.querySelectorAll('[data-dash-tab]').forEach(t => t.classList.toggle('on', t.dataset.dashTab === v));
+        document.querySelectorAll('[data-dash-pane]').forEach(p => p.classList.toggle('on', p.dataset.dashPane === v));
+      }
+      document.querySelectorAll('[data-dash-tab]').forEach(tab => {
+        tab.addEventListener('click', () => setDashTab(tab.dataset.dashTab));
+      });
+      document.querySelectorAll('[data-dash-jump]').forEach(tile => {
+        tile.addEventListener('click', () => setDashTab(tile.dataset.dashJump));
+      });
 
       // ── Stable sub-tabs (piece 3) ──────────────────────────
       document.querySelectorAll('[data-stable-tab]').forEach(btn => {
