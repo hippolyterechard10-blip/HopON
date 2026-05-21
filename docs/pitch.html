@@ -373,6 +373,90 @@
         border: 1px solid var(--border);
       }
 
+      /* ── Whiteboard person sheet · full-view of one teammate's day.
+         Opens from tapping a person's head in the 2-col board. Same
+         bottom-sheet mechanics as the notifications sheet. */
+      .wp-sheet {
+        position: absolute; left: 0; right: 0; bottom: 0;
+        max-height: 82%;
+        background: var(--bg);
+        border-radius: 22px 22px 0 0;
+        transform: translateY(110%);
+        transition: transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1);
+        z-index: 21;
+        display: flex; flex-direction: column;
+        box-shadow: 0 -12px 32px rgba(0,0,0,0.18);
+      }
+      .wp-sheet.open { transform: translateY(0); }
+      .wp-sheet .ns-grabber {
+        width: 36px; height: 4px;
+        background: var(--border);
+        border-radius: 2px;
+        margin: 8px auto 4px;
+        flex: 0 0 auto;
+      }
+      .wp-sheet .ns-close {
+        position: absolute; top: 14px; right: 14px;
+        width: 28px; height: 28px; border-radius: 14px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        cursor: pointer;
+        color: var(--ink2);
+        font-size: 12px;
+        display: grid; place-items: center;
+        z-index: 2;
+      }
+      .wp-body {
+        flex: 1; min-height: 0;
+        overflow-y: auto;
+        padding: 4px 16px 24px;
+      }
+      /* The cloned wb-row inside the sheet gets larger, full-width styling. */
+      .wp-body .wb-row {
+        background: transparent;
+        border: 0;
+        cursor: default;
+        padding: 0;
+      }
+      .wp-body .wb-row-head {
+        padding: 14px 6px;
+        cursor: default;
+      }
+      .wp-body .wb-row-top { gap: 12px; }
+      .wp-body .wb-row-av {
+        width: 48px; height: 48px; border-radius: 24px;
+        font-size: 15px;
+        flex: 0 0 48px;
+      }
+      .wp-body .wb-row-name .n {
+        font-family: var(--serif); font-style: italic;
+        font-size: 24px;
+        line-height: 1.1;
+        font-weight: 400;
+      }
+      .wp-body .wb-row-name .r {
+        font-size: 11px;
+        margin-top: 4px;
+      }
+      .wp-body .wb-row-bot { gap: 12px; }
+      .wp-body .wb-row-progress-mini { height: 7px; }
+      .wp-body .wb-row-stats .pct { font-size: 16px; }
+      .wp-body .wb-row-details {
+        padding: 6px 0 0;
+        border-top: 1px solid var(--border);
+        gap: 0;
+      }
+      .wp-body .wb-task {
+        padding: 12px 4px;
+        font-size: 14px;
+      }
+      .wp-body .wb-task .check {
+        width: 22px; height: 22px; border-radius: 11px;
+        flex: 0 0 22px;
+        font-size: 11px;
+      }
+      .wp-body .wb-task .when { font-size: 12.5px; }
+
       /* Drawer mini-badge · next to "Approvals & alerts" entry */
       .drawer-item .badge-mini {
         margin-left: auto;
@@ -2740,20 +2824,18 @@
         color: white;
         font-size: 9.5px; font-weight: 800;
       }
-      .wb-row-chev {
-        width: 18px; text-align: center;
-        font-size: 12px; color: var(--ink3);
-        transition: transform 240ms cubic-bezier(0.34, 1.56, 0.64, 1);
+      /* Tap-handle on the person's head · opens the full-view sheet. */
+      .wb-row-head {
+        cursor: pointer;
       }
-      .wb-row.open .wb-row-chev { transform: rotate(180deg); }
 
-      /* Expanded task list inside a row · clean rows, no scratched-out chips. */
+      /* Tasks always visible · no more swipe/tap to expand.
+         Clean list under each person's head. */
       .wb-row-details {
-        display: none;
+        display: flex; flex-direction: column; gap: 2px;
         padding: 4px 12px 10px;
         border-top: 1px solid var(--border);
       }
-      .wb-row.open .wb-row-details { display: flex; flex-direction: column; gap: 2px; }
       .wb-task {
         display: flex; align-items: center; gap: 10px;
         padding: 7px 0;
@@ -5116,7 +5198,7 @@
                 <div class="wb-row-bot">
                   <div class="wb-row-progress-mini"><div class="fill" style="width: 50%;"></div></div>
                   <div class="wb-row-stats"><span class="pct">2/4</span></div>
-                  <span class="wb-row-chev">▾</span>
+                  
                 </div>
               </div>
               <div class="wb-row-details">
@@ -5136,7 +5218,7 @@
                 <div class="wb-row-bot">
                   <div class="wb-row-progress-mini"><div class="fill" style="width: 33%;"></div></div>
                   <div class="wb-row-stats"><span class="pct">1/3</span><span class="urg">1!</span></div>
-                  <span class="wb-row-chev">▾</span>
+                  
                 </div>
               </div>
               <div class="wb-row-details">
@@ -5155,7 +5237,7 @@
                 <div class="wb-row-bot">
                   <div class="wb-row-progress-mini"><div class="fill" style="width: 60%;"></div></div>
                   <div class="wb-row-stats"><span class="pct">3/5</span></div>
-                  <span class="wb-row-chev">▾</span>
+                  
                 </div>
               </div>
               <div class="wb-row-details">
@@ -5176,7 +5258,7 @@
                 <div class="wb-row-bot">
                   <div class="wb-row-progress-mini"><div class="fill" style="width: 0%;"></div></div>
                   <div class="wb-row-stats"><span class="pct">0/2</span></div>
-                  <span class="wb-row-chev">▾</span>
+                  
                 </div>
               </div>
               <div class="wb-row-details">
@@ -5194,7 +5276,7 @@
                 <div class="wb-row-bot">
                   <div class="wb-row-progress-mini"><div class="fill" style="width: 100%;"></div></div>
                   <div class="wb-row-stats"><span class="pct">4/4</span></div>
-                  <span class="wb-row-chev">▾</span>
+                  
                 </div>
               </div>
               <div class="wb-row-details">
@@ -5993,6 +6075,13 @@
         </div>
       </div>
 
+      <!-- Whiteboard person sheet · full-view of one teammate's day -->
+      <div class="wp-sheet" id="wp-sheet" role="dialog" aria-modal="true" aria-label="Person board">
+        <div class="ns-grabber"></div>
+        <button class="ns-close" id="wp-close" aria-label="Close">✕</button>
+        <div class="wp-body" id="wp-body"></div>
+      </div>
+
       <!-- Notifications bottom sheet · opened by bell / drawer / tile -->
       <div class="notif-backdrop" id="notif-backdrop"></div>
       <div class="notif-sheet" id="notif-sheet" role="dialog" aria-modal="true" aria-label="Notifications">
@@ -6693,18 +6782,48 @@
       document.getElementById("pp-close")?.addEventListener("click", dismissPhotoPrompt);
       document.getElementById("snap-btn")?.addEventListener("click", () => show("camera"));
 
-      // ── Whiteboard v2 · tap row to expand task list inline ──
-      document.querySelectorAll("[data-wb-row]").forEach(row => {
-        row.addEventListener("click", (e) => {
-          // Ignore taps that originated inside the expanded task list
-          // so checking off a task doesn't collapse the row.
-          if (e.target.closest(".wb-row-details")) return;
-          row.classList.toggle("open");
+      // ── Whiteboard v2 · person sheet ─────────────────────
+      // Tap on a person's head (avatar / name) → opens a bottom sheet
+      // with that person's full board in larger format. Details are
+      // always visible inline now; the sheet is for "full view" focus.
+      const wpSheet = document.getElementById("wp-sheet");
+      const wpBody = document.getElementById("wp-body");
+      const wpNotifBackdrop = document.getElementById("notif-backdrop"); // reuse the dim layer
+      function openPersonSheet(rowEl) {
+        if (!wpSheet || !wpBody || !rowEl) return;
+        const clone = rowEl.cloneNode(true);
+        clone.classList.add("clone");
+        wpBody.innerHTML = "";
+        wpBody.appendChild(clone);
+        wpSheet.classList.add("open");
+        wpNotifBackdrop?.classList.add("open");
+        // Tasks inside the sheet still toggle done independently.
+        clone.querySelectorAll(".wb-task").forEach(task => {
+          task.addEventListener("click", () => task.classList.toggle("done"));
+        });
+      }
+      function closePersonSheet() {
+        wpSheet?.classList.remove("open");
+        wpNotifBackdrop?.classList.remove("open");
+      }
+      document.querySelectorAll(".wb-row .wb-row-head").forEach(head => {
+        head.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const row = head.closest(".wb-row");
+          if (row) openPersonSheet(row);
         });
       });
-      // Tasks themselves toggle their done state independently.
-      document.querySelectorAll(".wb-task").forEach(task => {
-        task.addEventListener("click", () => task.classList.toggle("done"));
+      document.getElementById("wp-close")?.addEventListener("click", closePersonSheet);
+      wpNotifBackdrop?.addEventListener("click", () => {
+        // Backdrop closes whichever sheet is open.
+        closePersonSheet();
+      });
+      // Tasks in the inline 2-col view still toggle done on click.
+      document.querySelectorAll(".wb-row-details .wb-task").forEach(task => {
+        task.addEventListener("click", (e) => {
+          e.stopPropagation();
+          task.classList.toggle("done");
+        });
       });
 
       // ── Notifications sheet · bell / drawer entry / approval tile ──
