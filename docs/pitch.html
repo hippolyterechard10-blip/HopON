@@ -314,6 +314,31 @@
         font-size: 10px; font-weight: 700; letter-spacing: 1.4px;
         text-transform: uppercase; color: var(--ink3);
       }
+      /* Section-tagged eyebrow · a tiny vertical bar before the title,
+         color-coded by section type. Same code = same color across
+         the whole app, so users build wayfinding habits. */
+      .eyebrow[data-section] {
+        position: relative;
+        padding-left: 10px;
+        display: inline-flex; align-items: center;
+      }
+      .eyebrow[data-section]::before {
+        content: "";
+        position: absolute;
+        left: 0; top: 50%;
+        transform: translateY(-50%);
+        width: 3px; height: 12px;
+        border-radius: 2px;
+        background: var(--ink3);
+      }
+      .eyebrow[data-section="next"]::before    { background: linear-gradient(180deg, var(--brand-800), var(--brand-500)); }
+      .eyebrow[data-section="lessons"]::before { background: var(--brand-500); }
+      .eyebrow[data-section="todos"]::before   { background: var(--brand-300); }
+      .eyebrow[data-section="ops"]::before     { background: var(--brand-700); }
+      .eyebrow[data-section="business"]::before{ background: var(--ink2); }
+      .eyebrow[data-section="health"]::before  { background: linear-gradient(180deg, var(--brand-100), var(--brand-700)); }
+      .eyebrow[data-section="upcoming"]::before{ background: var(--brand-500); }
+      .eyebrow[data-section="feed"]::before    { background: var(--ink2); }
       .card {
         background: var(--surface);
         border: 1px solid var(--border);
@@ -384,7 +409,21 @@
       .section-head .t {
         font-family: var(--serif); font-style: italic;
         font-size: 18px; color: var(--ink1);
+        position: relative;
+        padding-left: 12px;
       }
+      .section-head[data-section] .t::before {
+        content: "";
+        position: absolute;
+        left: 0; top: 0.32em;
+        width: 3px; height: 0.7em;
+        border-radius: 2px;
+        background: var(--ink3);
+      }
+      .section-head[data-section="ops"] .t::before      { background: var(--brand-700); }
+      .section-head[data-section="business"] .t::before { background: var(--ink2); }
+      .section-head[data-section="todos"] .t::before    { background: var(--brand-300); }
+      .section-head[data-section="myday"] .t::before    { background: linear-gradient(180deg, var(--brand-300), var(--brand-700)); }
       .section-head .a { font-size: 11px; font-weight: 700; color: var(--brand-600); }
       [data-theme="neo"] .section-head .a { color: var(--ink1); }
 
@@ -992,16 +1031,30 @@
         font-size: 9px; color: var(--ink3);
         font-weight: 600;
       }
-      .health-icon.ok .hi-due { color: var(--ok, #1e7e4a); }
-      .health-icon.warn {
-        background: #fff5e0; border-color: #ffd57a;
+      /* 4-level urgency · white → dark eucalyptus. No red, no amber:
+         just the brand color darkening as the due date approaches
+         and passes. Habit-building, not stress-inducing. */
+      .health-icon.ok .hi-due { color: var(--ink2); }
+      .health-icon.soon {
+        background: var(--brand-50);
+        border-color: var(--brand-100);
       }
-      .health-icon.warn .hi-due { color: #aa6c00; }
-      .health-icon.alert {
-        background: var(--alert-bg, #fdecea);
-        border-color: var(--alert, #d9381e);
+      .health-icon.soon .hi-due { color: var(--brand-700); }
+      .health-icon.due {
+        background: var(--brand-200);
+        border-color: var(--brand-300);
       }
-      .health-icon.alert .hi-due { color: var(--alert, #d9381e); font-weight: 700; }
+      .health-icon.due .hi-lbl { color: var(--brand-900); }
+      .health-icon.due .hi-due { color: var(--brand-900); font-weight: 800; }
+      .health-icon.overdue {
+        background: linear-gradient(135deg, var(--brand-700) 0%, var(--brand-900) 100%);
+        border-color: var(--brand-800);
+      }
+      .health-icon.overdue .hi-lbl,
+      .health-icon.overdue .hi-due {
+        color: white;
+        font-weight: 800;
+      }
 
       /* Next lesson + Next show side-by-side */
       .upcoming-grid {
@@ -3520,7 +3573,7 @@
               </div>
             </div>
 
-            <div class="section-head"><span class="t">Operations</span><span class="a" data-go="whiteboard">View board ›</span></div>
+            <div class="section-head" data-section="ops"><span class="t">Operations</span><span class="a" data-go="whiteboard">View board ›</span></div>
             <div class="owner-grid">
               <div class="owner-tile ops" data-go="whiteboard">
                 <span class="lbl">Day progress</span>
@@ -3555,7 +3608,7 @@
               <button class="btn dark">OK</button>
             </div>
 
-            <div class="section-head" style="margin-top:8px;">
+            <div class="section-head" data-section="business" style="margin-top:8px;">
               <span class="t">Business</span>
               <span class="a" data-open-drawer-dashboard>Full dashboard ›</span>
             </div>
@@ -3575,12 +3628,12 @@
             <!-- My day · only shows for owners who also wear a trainer/rider hat.
                  Pure owners (no lessons booked + no to-dos assigned) → section
                  hidden entirely. -->
-            <div class="section-head" style="margin-top:8px;">
+            <div class="section-head" data-section="myday" style="margin-top:8px;">
               <span class="t">My day</span>
               <span class="a" data-go="calendar">Full calendar ›</span>
             </div>
 
-            <div class="eyebrow" style="color:var(--brand-700);">Up next · in 25 min</div>
+            <div class="eyebrow" data-section="next" style="color:var(--brand-700);">Up next · in 25 min</div>
             <div class="trainer-row up-next" data-go="sharecard">
               <span class="time">10:30 am</span>
               <div class="who">
@@ -3590,14 +3643,14 @@
               <span class="horse-pill">BELLA</span>
             </div>
 
-            <div class="eyebrow" style="margin-top:6px;">Today's lessons · 3 left</div>
+            <div class="eyebrow" data-section="lessons" style="margin-top:6px;">Today's lessons · 3 left</div>
             <div class="row-group" id="owner-lessons">
               <div class="trainer-row"><span class="time">2 pm</span><div class="who"><div class="n">Liv Andersen</div><div class="m">Outdoor · Flat · 45 min</div></div><span class="horse-pill">JUNO</span></div>
               <div class="trainer-row"><span class="time">3:30 pm</span><div class="who"><div class="n">Emma Carter</div><div class="m">Outdoor · Jump · 45 min</div></div><span class="horse-pill">BELLA</span></div>
               <div class="trainer-row"><span class="time">5 pm</span><div class="who"><div class="n">Group · 4 riders</div><div class="m">Outdoor · Beginner · 60 min</div></div><span class="horse-pill">MIX</span></div>
             </div>
 
-            <div class="eyebrow" style="margin-top:6px;">To-dos &amp; events · 3 items</div>
+            <div class="eyebrow" data-section="todos" style="margin-top:6px;">To-dos &amp; events · 3 items</div>
             <div class="row-group todos">
               <div class="task-row" data-task><div class="task-slider"></div><div class="text">Review May invoices · 6 unpaid · oldest 9 days</div></div>
               <div class="task-row" data-task><div class="task-slider"></div><div class="text">Sign Bella's vaccine consent · vet on Friday</div></div>
@@ -3606,7 +3659,7 @@
             </div>
 
             <!-- Feed mini · barn posts · auto-news · external · last 7 days -->
-            <div class="eyebrow" style="margin-top:10px;">Latest · last 7 days</div>
+            <div class="eyebrow" data-section="feed" style="margin-top:10px;">Latest · last 7 days</div>
             <div class="feed-mini">
               <div class="feed-mini-row" data-go="feed">
                 <div class="feed-mini-av">SM</div>
@@ -3679,7 +3732,7 @@
             </div>
 
             <!-- Up next · same height as other lesson rows, gradient pulls the eye -->
-            <div class="eyebrow" style="color:var(--brand-700);">Up next · in 25 min</div>
+            <div class="eyebrow" data-section="next" style="color:var(--brand-700);">Up next · in 25 min</div>
             <div class="trainer-row up-next" data-go="sharecard">
               <span class="time">10:30 am</span>
               <div class="who">
@@ -3693,7 +3746,7 @@
                  Wrapped in .row-group.todos so the section reads as a
                  lightweight checklist, visually distinct from the solid
                  lesson card below. Section hides entirely when empty. -->
-            <div class="eyebrow" style="margin-top:6px;">My day · 3 items</div>
+            <div class="eyebrow" data-section="todos" style="margin-top:6px;">My day · 3 items</div>
             <div class="row-group todos">
               <div class="task-row" data-task><div class="task-slider"></div><div class="text">Muck stalls 4 to 7 · before lunch</div></div>
               <div class="task-row" data-task><div class="task-slider"></div><div class="text">Hand-walk Storm 30 min · injury recovery</div></div>
@@ -3703,7 +3756,7 @@
 
             <!-- Today's lessons · grouped solid card · 3 visible, rest
                  inline behind a chevron (stays on home). -->
-            <div class="eyebrow" style="margin-top:6px;">Today's lessons · 6 left</div>
+            <div class="eyebrow" data-section="lessons" style="margin-top:6px;">Today's lessons · 6 left</div>
             <div class="row-group" id="trainer-lessons">
               <div class="trainer-row"><span class="time">12 pm</span><div class="who"><div class="n">Mateo Bell</div><div class="m">Outdoor · Jump · 45 min</div></div><span class="horse-pill">INDIGO</span></div>
               <div class="trainer-row"><span class="time">2 pm</span><div class="who"><div class="n">Liv Andersen</div><div class="m">Outdoor · Flat · 45 min</div></div><span class="horse-pill">JUNO</span></div>
@@ -3715,7 +3768,7 @@
             <button class="show-more" data-show-extra="trainer-lessons"><span class="chev">▾</span><span class="lbl">Show 3 more</span></button>
 
             <!-- Feed mini · barn posts · auto-news · external · last 7 days -->
-            <div class="eyebrow" style="margin-top:10px;">Latest · last 7 days</div>
+            <div class="eyebrow" data-section="feed" style="margin-top:10px;">Latest · last 7 days</div>
             <div class="feed-mini">
               <div class="feed-mini-row" data-go="feed">
                 <div class="feed-mini-av">SM</div>
@@ -3811,18 +3864,18 @@
             </div>
 
             <!-- NEXT UP · same height as other rows, colored to stand out -->
-            <div class="eyebrow" style="color:var(--brand-700);">Up next · in 5 min · for Sofia</div>
+            <div class="eyebrow" data-section="next" style="color:var(--brand-700);">Up next · in 5 min · for Sofia</div>
             <div class="task-row up-next" data-task><div class="task-slider"></div><div class="text">Bella · groom + photo · 9:00 am</div></div>
 
             <!-- Rest of the day -->
-            <div class="eyebrow" style="margin-top:6px;">Rest of your day · 4 left</div>
+            <div class="eyebrow" data-section="lessons" style="margin-top:6px;">Rest of your day · 4 left</div>
             <div class="task-row urgent" data-task><div class="task-slider"></div><div class="text">! Storm · tack up · 9 am</div></div>
             <div class="task-row" data-task><div class="task-slider"></div><div class="text">Indigo · feed PM</div></div>
             <div class="task-row" data-task><div class="task-slider"></div><div class="text">Juno · groom + photo</div></div>
             <div class="task-row" data-task><div class="task-slider"></div><div class="text">Bella · evening feed</div></div>
 
             <!-- Feed mini · barn posts · auto-news · external · last 7 days -->
-            <div class="eyebrow" style="margin-top:10px;">Latest · last 7 days</div>
+            <div class="eyebrow" data-section="feed" style="margin-top:10px;">Latest · last 7 days</div>
             <div class="feed-mini">
               <div class="feed-mini-row" data-go="feed">
                 <div class="feed-mini-av">SM</div>
@@ -3916,10 +3969,10 @@
               <div class="hs-name">Bella</div>
               <div class="hs-meta">9 years · KWPN · stall 7</div>
               <div class="health-strip">
-                <div class="health-icon ok"><span class="hi-emoji">🐴</span><span class="hi-lbl">Farrier</span><span class="hi-due">2w</span></div>
-                <div class="health-icon warn"><span class="hi-emoji">💉</span><span class="hi-lbl">Vaccine</span><span class="hi-due">12d</span></div>
+                <div class="health-icon soon"><span class="hi-emoji">🐴</span><span class="hi-lbl">Farrier</span><span class="hi-due">2w</span></div>
+                <div class="health-icon due"><span class="hi-emoji">💉</span><span class="hi-lbl">Vaccine</span><span class="hi-due">12d</span></div>
                 <div class="health-icon ok"><span class="hi-emoji">💊</span><span class="hi-lbl">Wormer</span><span class="hi-due">5w</span></div>
-                <div class="health-icon alert"><span class="hi-emoji">🥄</span><span class="hi-lbl">Meds</span><span class="hi-due">missing</span></div>
+                <div class="health-icon overdue"><span class="hi-emoji">🥄</span><span class="hi-lbl">Meds</span><span class="hi-due">missing</span></div>
                 <div class="health-icon ok"><span class="hi-emoji">🏃</span><span class="hi-lbl">Physio</span><span class="hi-due">done</span></div>
                 <div class="health-icon ok"><span class="hi-emoji">🦷</span><span class="hi-lbl">Dentist</span><span class="hi-due">6m</span></div>
               </div>
@@ -3953,7 +4006,7 @@
             </div>
 
             <!-- Latest · last 7 days · filtered (no @team posts for clients) -->
-            <div class="eyebrow" style="margin-top:8px;">Latest · last 7 days</div>
+            <div class="eyebrow" data-section="feed" style="margin-top:8px;">Latest · last 7 days</div>
             <!-- Post composer · "share something" prompt above the feed -->
             <button class="post-composer" data-go="news">
               <div class="pc-av">M</div>
