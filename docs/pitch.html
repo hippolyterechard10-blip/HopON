@@ -240,6 +240,39 @@
         letter-spacing: -0.2px;
         margin-bottom: 6px;
       }
+      /* PIECE 6 · standardized header pattern */
+      .ph-title {
+        position: relative; z-index: 1;
+        font-family: var(--serif); font-style: italic;
+        font-size: 24px; line-height: 1.05;
+        letter-spacing: -0.3px;
+        color: white;
+        margin-top: 4px; margin-bottom: 4px;
+      }
+      .ph-subline {
+        position: relative; z-index: 1;
+        display: flex; align-items: center; gap: 8px;
+        flex-wrap: wrap;
+        font-size: 11px; font-weight: 600;
+        opacity: 0.85; letter-spacing: 0.2px;
+      }
+      .ph-subline .ph-date { opacity: 0.7; font-weight: 700; letter-spacing: 0.3px; }
+      .ph-subline .sep { opacity: 0.4; }
+      .ph-subline .item { display: flex; align-items: center; gap: 5px; }
+      .ph-subline .item .ic { font-size: 12px; opacity: 0.85; }
+      .ph-subline .live-pip {
+        width: 6px; height: 6px; border-radius: 3px;
+        background: #6cf28b;
+        animation: livepulse 1.6s ease-in-out infinite;
+      }
+      [data-theme="neo"] .ph-subline .live-pip { background: #FF5A00; }
+      .ph-back {
+        width: 26px; height: 22px;
+        border: 0; background: transparent;
+        cursor: pointer; padding: 0;
+        display: grid; place-items: center;
+        color: white; font-size: 22px; line-height: 1;
+      }
       .ph-meta {
         position: relative; z-index: 1;
         display: flex; gap: 14px; flex-wrap: wrap;
@@ -925,6 +958,109 @@
       }
       .cal-tchip.off { opacity: 0.45; }
       .cal-tchip .dot { width: 8px; height: 8px; border-radius: 4px; }
+
+      /* PIECE 6 · Calendar filters v2 — 3 buttons → popups */
+      .cal-filters-v2 {
+        display: flex; gap: 8px;
+      }
+      .cal-filter-btn {
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 8px 12px; border-radius: 10px;
+        font-size: 12px; font-weight: 700; color: var(--ink1);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        cursor: pointer;
+        transition: background 200ms, border-color 200ms;
+      }
+      .cal-filter-btn:hover { border-color: var(--ink3); }
+      .cal-filter-btn .badge {
+        font-size: 10px; font-weight: 700;
+        padding: 1px 6px; border-radius: 6px;
+        background: var(--bg); color: var(--ink2);
+      }
+      .cal-filter-btn.has-filter .badge {
+        background: var(--ink1); color: var(--bg);
+      }
+      .cal-filter-btn .caret { font-size: 8px; opacity: 0.5; }
+
+      .filter-popup-backdrop {
+        position: absolute; inset: 0;
+        background: rgba(0,0,0,0.45);
+        z-index: 12;
+        display: none;
+      }
+      .filter-popup-backdrop.open { display: block; }
+      .filter-popup {
+        position: absolute; left: 14px; right: 14px;
+        top: 50%; transform: translateY(-50%);
+        background: var(--surface);
+        border-radius: 18px;
+        z-index: 13;
+        max-height: 70%;
+        display: none; flex-direction: column;
+        box-shadow: 0 24px 48px rgba(0,0,0,0.3);
+        overflow: hidden;
+        animation: popupIn 280ms cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      .filter-popup.open { display: flex; }
+      @keyframes popupIn {
+        from { opacity: 0; transform: translate(0, -50%) scale(0.92); }
+        to { opacity: 1; transform: translate(0, -50%) scale(1); }
+      }
+      .popup-head {
+        padding: 14px 18px 8px;
+        font-family: var(--serif); font-style: italic;
+        font-size: 18px; color: var(--ink1);
+        border-bottom: 1px solid var(--border);
+      }
+      .popup-options {
+        flex: 1; overflow-y: auto;
+        padding: 4px 10px;
+      }
+      .popup-option {
+        display: flex; align-items: center; gap: 12px;
+        padding: 12px 10px;
+        cursor: pointer;
+        border-radius: 10px;
+        font-size: 14px; color: var(--ink1);
+      }
+      .popup-option:hover { background: var(--bg); }
+      .popup-option .check {
+        width: 22px; height: 22px; border-radius: 6px;
+        border: 2px solid var(--border);
+        display: grid; place-items: center;
+        font-size: 12px; color: white;
+        flex: 0 0 22px;
+        transition: background 200ms, border-color 200ms;
+      }
+      .popup-option.on .check {
+        background: var(--ink1);
+        border-color: var(--ink1);
+      }
+      .popup-option.on .check::after { content: "✓"; }
+      .popup-option .dot {
+        width: 10px; height: 10px; border-radius: 5px;
+      }
+      .popup-option .label { flex: 1; font-weight: 600; }
+      .popup-option .ic { font-size: 16px; }
+      .popup-foot {
+        display: flex; gap: 10px;
+        padding: 12px 14px 14px;
+        border-top: 1px solid var(--border);
+      }
+      .popup-foot button {
+        flex: 1; padding: 12px;
+        font-size: 13px; font-weight: 700;
+        border-radius: 12px; border: 0;
+        cursor: pointer;
+        font-family: var(--sans);
+      }
+      .popup-foot .reset {
+        background: var(--bg); color: var(--ink1);
+      }
+      .popup-foot .done {
+        background: var(--ink1); color: var(--bg);
+      }
 
       /* Trainer colors (used everywhere) */
       .tr-maddy { background: #3D6B8C; }   /* blue */
@@ -2869,11 +3005,15 @@
               <button class="ph-dark-toggle" id="dark-toggle" aria-label="Toggle dark mode">☾</button>
             </div>
           </div>
-          <div class="ph-pulse-line">14 horses in training today. Rain at 4 PM.</div>
-          <div class="ph-meta">
+          <div class="ph-title">Home.</div>
+          <div class="ph-subline">
+            <span class="ph-date">Tue · May 19</span>
+            <span class="sep">·</span>
             <span class="item"><span class="live-pip"></span>5 riders here</span>
-            <span class="item"><span class="ic">🐎</span>3 lessons now</span>
-            <span class="item" style="color:#ffd699;"><span class="ic">⚠️</span>1 needs you</span>
+            <span class="sep">·</span>
+            <span class="item">🐎 3 lessons now</span>
+            <span class="sep">·</span>
+            <span class="item" style="color:#ffd699;">⚠️ 1 needs you</span>
           </div>
         </div>
 
@@ -2928,9 +3068,9 @@
                 <span class="sub" style="color: var(--ok); font-weight:600;">+18% vs April</span>
               </div>
               <div class="owner-tile" data-open-drawer-dashboard>
-                <span class="lbl">Awaiting</span>
+                <span class="lbl">Unpaid</span>
                 <span class="v">$540</span>
-                <span class="sub">6 invoices · 9 days</span>
+                <span class="sub">6 invoices · oldest 9 days</span>
               </div>
             </div>
           </div>
@@ -3073,11 +3213,15 @@
               </div>
             </div>
           </div>
-          <div class="ph-pulse-line">My Stable.</div>
-          <div class="ph-meta">
-            <span class="item"><span class="ic">🐴</span>24 horses</span>
-            <span class="item"><span class="ic">👥</span>118 clients</span>
-            <span class="item"><span class="ic">🤝</span>5 partners</span>
+          <div class="ph-title">My Stable.</div>
+          <div class="ph-subline">
+            <span class="ph-date">Tue · May 19</span>
+            <span class="sep">·</span>
+            <span class="item">🐴 24 horses</span>
+            <span class="sep">·</span>
+            <span class="item">👥 118 clients</span>
+            <span class="sep">·</span>
+            <span class="item">🤝 5 partners</span>
           </div>
         </div>
 
@@ -3303,11 +3447,15 @@
               </div>
             </div>
           </div>
-          <div class="ph-pulse-line">14 horses in training today.</div>
-          <div class="ph-meta">
+          <div class="ph-title">Calendar — May 2026.</div>
+          <div class="ph-subline">
+            <span class="ph-date">Tue · May 19</span>
+            <span class="sep">·</span>
             <span class="item"><span class="live-pip"></span>5 riders here</span>
-            <span class="item"><span class="ic">🐎</span>3 lessons now</span>
-            <span class="item" style="color:#ffd699;"><span class="ic">⚠️</span>1 vet at 14:00</span>
+            <span class="sep">·</span>
+            <span class="item">🐎 3 lessons now</span>
+            <span class="sep">·</span>
+            <span class="item" style="color:#ffd699;">⚠️ vet at 14:00</span>
           </div>
         </div>
 
@@ -3324,16 +3472,16 @@
               </div>
               <button class="cal-add-btn" id="cal-add">+</button>
             </div>
-            <div class="cal-filters">
-              <div class="cal-fchip on" data-type="lessons">Lessons</div>
-              <div class="cal-fchip" data-type="rides">🐎 Rides</div>
-              <div class="cal-fchip" data-type="paddocks">Paddocks</div>
-              <div class="cal-fchip" data-type="vet">🩺 Vet</div>
-              <div class="cal-fchip" data-type="shows">🏆 Shows</div>
-              <div class="cal-fsep"></div>
-              <div class="cal-tchip" data-tr="maddy"><div class="dot tr-maddy"></div>Maddy</div>
-              <div class="cal-tchip" data-tr="sam"><div class="dot tr-sam"></div>Sam</div>
-              <div class="cal-tchip" data-tr="jodie"><div class="dot tr-jodie"></div>Jodie</div>
+            <div class="cal-filters-v2">
+              <button class="cal-filter-btn" data-filter-open="types">
+                Types <span class="badge" id="badge-types">1 / 5</span> <span class="caret">▾</span>
+              </button>
+              <button class="cal-filter-btn" data-filter-open="staff">
+                Staff <span class="badge" id="badge-staff">All</span> <span class="caret">▾</span>
+              </button>
+              <button class="cal-filter-btn" data-filter-open="horses">
+                Horses <span class="badge" id="badge-horses">All</span> <span class="caret">▾</span>
+              </button>
             </div>
           </div>
 
@@ -3379,11 +3527,27 @@
 
       <!-- ════ BOOKING ════ -->
       <div class="screen" data-screen="booking">
-        <div class="booking-screen">
-          <div class="sub-header">
-            <button class="sub-back" data-go="home">‹</button>
-            <div class="sub-title">Book a session</div>
+        <div class="pulse-header">
+          <div class="ph-top">
+            <div class="ph-left">
+              <button class="ph-back" data-go="home">‹</button>
+              <div class="ph-stable"><span class="pin">📍</span>Wellington Park</div>
+            </div>
+            <div class="ph-actions">
+              <div class="theme-pair">
+                <button class="sw eu" data-set-theme="eucalyptus"></button>
+                <button class="sw neo" data-set-theme="neo"></button>
+              </div>
+            </div>
           </div>
+          <div class="ph-title">Book a session.</div>
+          <div class="ph-subline">
+            <span class="ph-date">Thu · May 21</span>
+            <span class="sep">·</span>
+            <span class="item">Bella with Sam · 45 min · $120</span>
+          </div>
+        </div>
+        <div class="booking-screen">
           <div class="booking-body">
             <div class="booking-context">
               <div class="horse-thumb">🐴</div>
@@ -3527,6 +3691,50 @@
         </div>
       </div>
 
+      <!-- Filter popups (Calendar) -->
+      <div class="filter-popup-backdrop" id="filter-popup-backdrop"></div>
+      <div class="filter-popup" data-filter-popup="types">
+        <div class="popup-head">Filter by type</div>
+        <div class="popup-options">
+          <div class="popup-option on" data-popup-toggle="types:lessons"><div class="check"></div><span class="dot" style="background:#3D6B8C;"></span><span class="ic">📚</span><span class="label">Lessons</span></div>
+          <div class="popup-option" data-popup-toggle="types:rides"><div class="check"></div><span class="dot" style="background:var(--ink3);"></span><span class="ic">🐎</span><span class="label">Rides</span></div>
+          <div class="popup-option" data-popup-toggle="types:paddocks"><div class="check"></div><span class="dot" style="background:var(--ok);"></span><span class="ic">🌿</span><span class="label">Paddocks</span></div>
+          <div class="popup-option" data-popup-toggle="types:vet"><div class="check"></div><span class="dot" style="background:var(--alert);"></span><span class="ic">🩺</span><span class="label">Vet visits</span></div>
+          <div class="popup-option" data-popup-toggle="types:shows"><div class="check"></div><span class="dot" style="background:var(--alert);"></span><span class="ic">🏆</span><span class="label">Shows</span></div>
+        </div>
+        <div class="popup-foot">
+          <button class="reset" data-popup-reset="types">Reset</button>
+          <button class="done" data-popup-close>Done</button>
+        </div>
+      </div>
+      <div class="filter-popup" data-filter-popup="staff">
+        <div class="popup-head">Filter by staff</div>
+        <div class="popup-options">
+          <div class="popup-option on" data-popup-toggle="staff:maddy"><div class="check"></div><span class="dot tr-maddy"></span><span class="label">Maddy K.</span></div>
+          <div class="popup-option on" data-popup-toggle="staff:sam"><div class="check"></div><span class="dot tr-sam"></span><span class="label">Sam</span></div>
+          <div class="popup-option on" data-popup-toggle="staff:jodie"><div class="check"></div><span class="dot tr-jodie"></span><span class="label">Jodie</span></div>
+        </div>
+        <div class="popup-foot">
+          <button class="reset" data-popup-reset="staff">All</button>
+          <button class="done" data-popup-close>Done</button>
+        </div>
+      </div>
+      <div class="filter-popup" data-filter-popup="horses">
+        <div class="popup-head">Filter by horse</div>
+        <div class="popup-options">
+          <div class="popup-option on" data-popup-toggle="horses:Bella"><div class="check"></div><span class="ic">🐴</span><span class="label">Bella</span></div>
+          <div class="popup-option on" data-popup-toggle="horses:Atlas"><div class="check"></div><span class="ic">🐴</span><span class="label">Atlas</span></div>
+          <div class="popup-option on" data-popup-toggle="horses:Storm"><div class="check"></div><span class="ic">🐴</span><span class="label">Storm</span></div>
+          <div class="popup-option on" data-popup-toggle="horses:Indigo"><div class="check"></div><span class="ic">🐴</span><span class="label">Indigo</span></div>
+          <div class="popup-option on" data-popup-toggle="horses:Juno"><div class="check"></div><span class="ic">🐴</span><span class="label">Juno</span></div>
+          <div class="popup-option on" data-popup-toggle="horses:Pippin"><div class="check"></div><span class="ic">🐴</span><span class="label">Pippin</span></div>
+        </div>
+        <div class="popup-foot">
+          <button class="reset" data-popup-reset="horses">All</button>
+          <button class="done" data-popup-close>Done</button>
+        </div>
+      </div>
+
       <!-- Event detail sheet (shared) -->
       <div class="sheet-backdrop" id="sheet-backdrop"></div>
       <div class="sheet" id="event-sheet">
@@ -3547,11 +3755,34 @@
         </div>
       </div>
       <div class="screen" data-screen="whiteboard">
+        <div class="pulse-header">
+          <div class="ph-top">
+            <div class="ph-left">
+              <button class="ph-burger" data-open-drawer><span></span><span></span><span></span></button>
+              <div class="ph-stable"><span class="pin">📍</span>Wellington Park<span class="caret">▼</span></div>
+            </div>
+            <div class="ph-actions">
+              <div class="theme-pair">
+                <button class="sw eu" data-set-theme="eucalyptus"></button>
+                <button class="sw neo" data-set-theme="neo"></button>
+              </div>
+              <button class="ph-dark-toggle">☾</button>
+            </div>
+          </div>
+          <div class="ph-title">Whiteboard · live.</div>
+          <div class="ph-subline">
+            <span class="ph-date">Tue · May 19</span>
+            <span class="sep">·</span>
+            <span class="item"><span class="live-pip"></span>8 / 14 done · 57%</span>
+            <span class="sep">·</span>
+            <span class="item" style="color:#ffd699;">1 urgent</span>
+          </div>
+        </div>
         <div class="wb-screen">
-          <div class="wb-pulse">
+          <div class="wb-pulse" style="margin: 12px 14px 0; border-radius: 14px;">
             <div class="wb-pulse-top">
               <span class="live">Barn pulse · live</span>
-              <span class="date">Tue · May 19</span>
+              <span class="date">Today</span>
             </div>
             <div class="wb-pct">8 <span class="slash">/ 14 done</span></div>
             <div class="wb-pulse-label">Wellington Park · day 57% complete</div>
@@ -3670,10 +3901,13 @@
               </div>
             </div>
           </div>
-          <div class="ph-pulse-line">Hop News.</div>
-          <div class="ph-meta">
+          <div class="ph-title">Hop News.</div>
+          <div class="ph-subline">
+            <span class="ph-date">Tue · May 19</span>
+            <span class="sep">·</span>
             <span class="item"><span class="live-pip"></span>Bella's story · live</span>
-            <span class="item"><span class="ic">✨</span>4 auto-posts today</span>
+            <span class="sep">·</span>
+            <span class="item">✨ 4 auto-posts today</span>
           </div>
         </div>
 
@@ -3796,9 +4030,29 @@
 
       <!-- ════ HORSE PASSPORT (Bella) ════ -->
       <div class="screen" data-screen="horse">
+        <div class="pulse-header">
+          <div class="ph-top">
+            <div class="ph-left">
+              <button class="ph-back" data-go="stable">‹</button>
+              <div class="ph-stable"><span class="pin">📍</span>Wellington Park</div>
+            </div>
+            <div class="ph-actions">
+              <div class="theme-pair">
+                <button class="sw eu" data-set-theme="eucalyptus"></button>
+                <button class="sw neo" data-set-theme="neo"></button>
+              </div>
+              <button class="ph-dark-toggle">☾</button>
+            </div>
+          </div>
+          <div class="ph-title">Bella.</div>
+          <div class="ph-subline">
+            <span class="ph-date">9 yrs · KWPN · Stall #12</span>
+            <span class="sep">·</span>
+            <span class="item" style="color:#ffd699;">⚠️ Farrier in 3 days</span>
+          </div>
+        </div>
         <div class="hp-screen">
-          <div class="hp-hero">
-            <button class="hp-back" data-go="stable">‹</button>
+          <div class="hp-hero" style="height: 200px;">
             <div class="hp-actions-top">
               <button class="ic">↗</button>
               <button class="ic">⋯</button>
@@ -3825,11 +4079,7 @@
               </svg>
             </div>
             <div class="grad"></div>
-            <div class="hp-id-row">
-              <div>
-                <div class="hp-name">Bella</div>
-                <div class="hp-meta">9 yrs · KWPN · Stall #12</div>
-              </div>
+            <div class="hp-id-row" style="justify-content: flex-end;">
               <div class="hp-owners">
                 <span class="lbl">Owners</span>
                 <div class="stack">
@@ -3963,16 +4213,30 @@
         </div>
       </div>
       <div class="screen" data-screen="dashboard">
-        <div class="dash-screen">
-          <div class="dash-head">
-            <div class="dash-head-top">
-              <button class="dash-back" data-go="home">‹</button>
-              <div class="dash-head-title">Dashboard</div>
-              <div class="dash-period">
-                <button>Month</button>
-                <button class="on">Year</button>
+        <div class="pulse-header">
+          <div class="ph-top">
+            <div class="ph-left">
+              <button class="ph-back" data-go="home">‹</button>
+              <div class="ph-stable"><span class="pin">📍</span>Wellington Park<span class="caret">▼</span></div>
+            </div>
+            <div class="ph-actions">
+              <div class="dash-period" style="background: rgba(255,255,255,0.10);">
+                <button style="color: white; opacity: 0.6;">Month</button>
+                <button class="on" style="background: white; color: var(--brand-900);">Year</button>
               </div>
             </div>
+          </div>
+          <div class="ph-title">Dashboard.</div>
+          <div class="ph-subline">
+            <span class="ph-date">May 2026 · YTD</span>
+            <span class="sep">·</span>
+            <span class="item">$47,280 revenue</span>
+            <span class="sep">·</span>
+            <span class="item" style="color:#6cf28b;">69% margin</span>
+          </div>
+        </div>
+        <div class="dash-screen">
+          <div class="dash-head" style="border-top: 0;">
             <div class="dash-tabs">
               <div class="dash-tab on" data-dash-tab="overview">Overview</div>
               <div class="dash-tab" data-dash-tab="revenue">Revenue</div>
@@ -4012,7 +4276,7 @@
                   <span class="d up">+$4,280 YTD</span>
                 </div>
                 <div class="kpi-tile" data-dash-jump="payments">
-                  <span class="lbl">Outstanding</span>
+                  <span class="lbl">Unpaid</span>
                   <span class="v" style="color:var(--alert);">$540</span>
                   <span class="d warn">6 clients</span>
                 </div>
@@ -4209,7 +4473,7 @@
                 </div>
                 <div style="flex:1; text-align:center; border-left:1px solid rgba(255,255,255,0.10);">
                   <div class="big" style="font-size:22px; color:#ff8a66;">$540</div>
-                  <div class="lbl">Outstanding</div>
+                  <div class="lbl">Unpaid</div>
                 </div>
               </div>
 
@@ -4308,7 +4572,7 @@
                   <div class="r"><span class="amt">$80</span><button class="remind">Remind</button></div>
                 </div>
                 <div class="pay-total">
-                  <span class="l">Total outstanding (prior)</span>
+                  <span class="l">Total unpaid (prior months)</span>
                   <span class="r">$480</span>
                 </div>
               </div>
@@ -4524,10 +4788,12 @@
       const TYPE_LABEL = { lessons:'Lesson', rides:'Hack / Ride', paddocks:'Paddock', vet:'Vet visit', shows:'Show' };
       const TR_NAME = { maddy:'Maddy K.', sam:'Sam', jodie:'Jodie', vet:'Dr. Torres' };
 
+      const ALL_HORSES = ['Bella','Atlas','Storm','Indigo','Juno','Pippin'];
       const calState = {
         view: 'week',
         filters: new Set(['lessons']),
         trainers: new Set(['maddy', 'sam', 'jodie']),
+        horses: new Set(ALL_HORSES),
         monthOffset: 0,
       };
       const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
@@ -4540,6 +4806,11 @@
       function eventVisible(ev) {
         if (!calState.filters.has(ev.type)) return false;
         if (['lessons','shows'].includes(ev.type) && ev.tr && !calState.trainers.has(ev.tr)) return false;
+        if (ev.horse) {
+          // Match if any "+" -separated horse name is in calState.horses
+          const horseList = ev.horse.split(/[·+,]/).map(h => h.trim());
+          if (!horseList.some(h => calState.horses.has(h) || h === 'Mix')) return false;
+        }
         return true;
       }
       function trainerClass(ev) {
@@ -4721,24 +4992,86 @@
         b.addEventListener('click', () => setCalView(b.dataset.calView));
       });
 
-      document.querySelectorAll('.cal-fchip').forEach(c => {
-        c.addEventListener('click', () => {
-          const t = c.dataset.type;
-          if (calState.filters.has(t)) calState.filters.delete(t);
-          else calState.filters.add(t);
-          c.classList.toggle('on');
+      // ── Calendar filter popups (piece 6) ───────────────────
+      const ALL_TYPES = ['lessons','rides','paddocks','vet','shows'];
+      const ALL_STAFF = ['maddy','sam','jodie'];
+      const filterPopupBackdrop = document.getElementById('filter-popup-backdrop');
+
+      function updateFilterBadges() {
+        const typesBadge = document.getElementById('badge-types');
+        const staffBadge = document.getElementById('badge-staff');
+        const horsesBadge = document.getElementById('badge-horses');
+        if (typesBadge) {
+          typesBadge.textContent = `${calState.filters.size} / ${ALL_TYPES.length}`;
+          typesBadge.parentElement.classList.toggle('has-filter', calState.filters.size < ALL_TYPES.length);
+        }
+        if (staffBadge) {
+          staffBadge.textContent = calState.trainers.size === ALL_STAFF.length ? 'All' : `${calState.trainers.size} / ${ALL_STAFF.length}`;
+          staffBadge.parentElement.classList.toggle('has-filter', calState.trainers.size < ALL_STAFF.length);
+        }
+        if (horsesBadge) {
+          horsesBadge.textContent = calState.horses.size === ALL_HORSES.length ? 'All' : `${calState.horses.size} / ${ALL_HORSES.length}`;
+          horsesBadge.parentElement.classList.toggle('has-filter', calState.horses.size < ALL_HORSES.length);
+        }
+      }
+
+      function openFilterPopup(name) {
+        filterPopupBackdrop.classList.add('open');
+        document.querySelectorAll('[data-filter-popup]').forEach(p => p.classList.toggle('open', p.dataset.filterPopup === name));
+      }
+      function closeFilterPopup() {
+        filterPopupBackdrop.classList.remove('open');
+        document.querySelectorAll('[data-filter-popup]').forEach(p => p.classList.remove('open'));
+      }
+      function getStateSet(category) {
+        if (category === 'types') return calState.filters;
+        if (category === 'staff') return calState.trainers;
+        if (category === 'horses') return calState.horses;
+      }
+      function getAllForCategory(category) {
+        if (category === 'types') return ALL_TYPES;
+        if (category === 'staff') return ALL_STAFF;
+        if (category === 'horses') return ALL_HORSES;
+      }
+
+      document.querySelectorAll('[data-filter-open]').forEach(b => {
+        b.addEventListener('click', () => openFilterPopup(b.dataset.filterOpen));
+      });
+      filterPopupBackdrop.addEventListener('click', closeFilterPopup);
+      document.querySelectorAll('[data-popup-close]').forEach(b => b.addEventListener('click', closeFilterPopup));
+      document.querySelectorAll('[data-popup-toggle]').forEach(opt => {
+        opt.addEventListener('click', () => {
+          const [cat, val] = opt.dataset.popupToggle.split(':');
+          const set = getStateSet(cat);
+          if (set.has(val)) set.delete(val);
+          else set.add(val);
+          opt.classList.toggle('on');
+          updateFilterBadges();
           renderCalendar();
         });
       });
-      document.querySelectorAll('.cal-tchip').forEach(c => {
-        c.addEventListener('click', () => {
-          const t = c.dataset.tr;
-          if (calState.trainers.has(t)) calState.trainers.delete(t);
-          else calState.trainers.add(t);
-          c.classList.toggle('off');
+      document.querySelectorAll('[data-popup-reset]').forEach(b => {
+        b.addEventListener('click', () => {
+          const cat = b.dataset.popupReset;
+          const set = getStateSet(cat);
+          const all = getAllForCategory(cat);
+          // Toggle: if all selected, clear; else select all
+          if (set.size === all.length) {
+            set.clear();
+          } else {
+            set.clear();
+            all.forEach(v => set.add(v));
+          }
+          // Sync UI
+          document.querySelectorAll(`[data-popup-toggle^="${cat}:"]`).forEach(opt => {
+            const val = opt.dataset.popupToggle.split(':')[1];
+            opt.classList.toggle('on', set.has(val));
+          });
+          updateFilterBadges();
           renderCalendar();
         });
       });
+      updateFilterBadges();
 
       // ── Event sheet ────────────────────────────────────────
       const sheetBackdrop = document.getElementById('sheet-backdrop');
