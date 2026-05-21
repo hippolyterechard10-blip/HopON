@@ -503,6 +503,48 @@
       .trainer-row .who .n { font-size: 13px; font-weight: 700; }
       .trainer-row .who .m { font-size: 11px; color: var(--ink3); margin-top: 1px; }
 
+      /* Up next variant for the Trainer · same height as other lesson
+         rows, dark→flash gradient pulls the eye like the Groom NEXT UP. */
+      .trainer-row.up-next {
+        background: linear-gradient(180deg, var(--brand-800) 0%, var(--brand-500) 100%);
+        border-color: var(--brand-600);
+      }
+      .trainer-row.up-next .time,
+      .trainer-row.up-next .who .n { color: white; }
+      .trainer-row.up-next .who .m { color: rgba(255,255,255,0.78); }
+      .trainer-row.up-next .horse-pill {
+        background: rgba(255,255,255,0.22);
+        color: white;
+      }
+
+      /* Show-more chevron · expands extra rows inline without navigation. */
+      .show-more {
+        display: flex; align-items: center; justify-content: center;
+        gap: 6px;
+        width: 100%;
+        padding: 9px 12px;
+        background: transparent;
+        border: 1px dashed var(--border);
+        border-radius: 12px;
+        font-family: var(--sans);
+        font-size: 10.5px; font-weight: 700;
+        letter-spacing: 0.4px; text-transform: uppercase;
+        color: var(--ink2);
+        cursor: pointer;
+        transition: background 160ms, border-color 160ms;
+      }
+      .show-more:hover { background: var(--surface); border-color: var(--ink3); }
+      .show-more .chev {
+        display: inline-block;
+        transition: transform 240ms cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      .show-more.open .chev { transform: rotate(180deg); }
+      .more-rows {
+        display: none;
+        flex-direction: column; gap: 6px;
+      }
+      .more-rows.open { display: flex; }
+
       /* ── GROOM shell · BeReal ────────────────────────── */
       .groom-hero {
         background: linear-gradient(180deg, var(--brand-700) 0%, var(--brand-900) 100%);
@@ -3326,42 +3368,35 @@
               </div>
             </div>
 
-            <div class="eyebrow">Up next · in 25 min</div>
-            <div class="dyn-island">
-              <span class="di-pill"><span class="pip"></span>Up next · in 25 min</span>
-              <div class="di-main">
-                <div class="di-thumb">🐎</div>
-                <div class="di-info">
-                  <div class="di-time">10:30 → 11:15</div>
-                  <div class="di-title">Jump · Bella · Indoor</div>
-                  <div class="di-sub">Maddy K. · first lesson back after farrier</div>
-                </div>
+            <!-- Up next · same height as other lesson rows, gradient pulls the eye -->
+            <div class="eyebrow" style="color:var(--brand-700);">Up next · in 25 min</div>
+            <div class="trainer-row up-next" data-go="sharecard">
+              <span class="time">10:30</span>
+              <div class="who">
+                <div class="n">Jump · Bella · Indoor</div>
+                <div class="m">Maddy K. · just groomed by Jess · ⚠️ farrier in 3 days</div>
               </div>
-              <div class="di-warn-row warn">
-                <span class="ic">🔨</span>
-                <span><strong>Bella</strong> · farrier in 3 days · go gentle on hard ground</span>
-              </div>
-              <div class="di-warn-row">
-                <span class="ic">✨</span>
-                <span><strong>Jess</strong> just groomed Bella · ready in arena</span>
-              </div>
-              <button class="di-cta" data-go="sharecard">
-                <span>End session &amp; recap</span>
-                <span>→</span>
-              </button>
+              <span class="horse-pill">BELLA</span>
             </div>
-            <div class="eyebrow" style="margin-top:6px;">Rest of your day</div>
+
+            <!-- My day · personal to-dos + events · trainers also do barn work.
+                 Hidden entirely when empty (no need for an empty state). -->
+            <div class="eyebrow" style="margin-top:6px;">My day · 3 items</div>
+            <div class="task-row" data-task><div class="task-slider"></div><div class="text">Muck stalls 4 to 7 · before lunch</div></div>
+            <div class="task-row" data-task><div class="task-slider"></div><div class="text">Hand-walk Storm 30 min · injury recovery</div></div>
+            <div class="trainer-row"><span class="time">18:00</span><div class="who"><div class="n">Riders' meeting</div><div class="m">Barn lounge · 45 min · winter plan</div></div><span class="event-pill">EVENT</span></div>
+
+            <!-- Today's lessons · first 3, rest behind a chevron (stays on home) -->
+            <div class="eyebrow" style="margin-top:6px;">Today's lessons · 6 left</div>
             <div class="trainer-row"><span class="time">12:00</span><div class="who"><div class="n">Mateo Bell</div><div class="m">Outdoor · Jump · 45 min</div></div><span class="horse-pill">INDIGO</span></div>
             <div class="trainer-row"><span class="time">14:00</span><div class="who"><div class="n">Liv Andersen</div><div class="m">Outdoor · Flat · 45 min</div></div><span class="horse-pill">JUNO</span></div>
             <div class="trainer-row"><span class="time">15:30</span><div class="who"><div class="n">Emma Carter</div><div class="m">Outdoor · Jump · 45 min</div></div><span class="horse-pill">BELLA</span></div>
-            <div class="trainer-row"><span class="time">17:00</span><div class="who"><div class="n">Group · 4 riders</div><div class="m">Outdoor · Beginner · 60 min</div></div><span class="horse-pill">MIX</span></div>
-
-            <!-- My day · personal to-dos + non-lesson events.
-                 Hidden entirely when empty (no need for an empty state). -->
-            <div class="eyebrow" style="margin-top:8px;">My day · 3 items</div>
-            <div class="task-row" data-task><div class="task-slider"></div><div class="text">Order new helmet straps · supplier link in DM</div></div>
-            <div class="task-row" data-task><div class="task-slider"></div><div class="text">Submit May invoice · Tuesday group clients</div></div>
-            <div class="trainer-row"><span class="time">18:00</span><div class="who"><div class="n">Riders' meeting</div><div class="m">Barn lounge · 45 min · winter plan</div></div><span class="event-pill">EVENT</span></div>
+            <div class="more-rows" id="trainer-more">
+              <div class="trainer-row"><span class="time">17:00</span><div class="who"><div class="n">Group · 4 riders</div><div class="m">Outdoor · Beginner · 60 min</div></div><span class="horse-pill">MIX</span></div>
+              <div class="trainer-row"><span class="time">18:30</span><div class="who"><div class="n">Anna Beaumont</div><div class="m">Outdoor · Flat · 45 min</div></div><span class="horse-pill">STORM</span></div>
+              <div class="trainer-row"><span class="time">19:30</span><div class="who"><div class="n">Kate Lewis</div><div class="m">Indoor · Jump · 45 min</div></div><span class="horse-pill">INDIGO</span></div>
+            </div>
+            <button class="show-more" data-show-more="trainer-more"><span class="chev">▾</span><span class="lbl">Show 3 more</span></button>
 
             <!-- Feed mini · barn posts · auto-news · external · last 7 days -->
             <div class="eyebrow" style="margin-top:10px;">Latest · last 7 days</div>
@@ -5685,6 +5720,18 @@
       });
       document.getElementById("pp-close")?.addEventListener("click", dismissPhotoPrompt);
       document.getElementById("snap-btn")?.addEventListener("click", () => show("camera"));
+
+      // ── Show more · inline expand for lessons / lists ──────
+      document.querySelectorAll("[data-show-more]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const target = document.getElementById(btn.dataset.showMore);
+          if (!target) return;
+          const opened = target.classList.toggle("open");
+          btn.classList.toggle("open", opened);
+          const lbl = btn.querySelector(".lbl");
+          if (lbl) lbl.textContent = opened ? "Show less" : `Show ${target.children.length} more`;
+        });
+      });
 
       // ── Toast helper (piece 5) ─────────────────────────────
       const toast = document.getElementById("toast");
