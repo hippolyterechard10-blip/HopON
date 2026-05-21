@@ -517,6 +517,42 @@
         color: white;
       }
 
+      /* Row-group · stacks rows into a single visual block so each
+         home section reads as a distinct shape rather than a flat
+         list of look-alike cards. */
+      .row-group {
+        display: flex; flex-direction: column;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        overflow: hidden;
+      }
+      .row-group > .trainer-row,
+      .row-group > .task-row {
+        background: transparent;
+        border: 0;
+        border-radius: 0;
+      }
+      .row-group > * + * {
+        border-top: 1px solid var(--border);
+      }
+      /* "To-dos" variant — looser checklist feel, distinct from a
+         solid lesson card. Transparent background + dashed outline. */
+      .row-group.todos {
+        background: transparent;
+        border-style: dashed;
+        border-color: var(--brand-200);
+      }
+      .row-group.todos > * + * {
+        border-top-style: dashed;
+        border-top-color: var(--brand-100);
+      }
+      /* Hidden rows revealed by the show-more chevron. */
+      .trainer-row.extra,
+      .task-row.extra { display: none; }
+      .row-group.show-extra .trainer-row.extra,
+      .row-group.show-extra .task-row.extra { display: flex; }
+
       /* Show-more chevron · expands extra rows inline without navigation. */
       .show-more {
         display: flex; align-items: center; justify-content: center;
@@ -3380,23 +3416,28 @@
             </div>
 
             <!-- My day · personal to-dos + events · trainers also do barn work.
-                 Hidden entirely when empty (no need for an empty state). -->
+                 Wrapped in .row-group.todos so the section reads as a
+                 lightweight checklist, visually distinct from the solid
+                 lesson card below. Section hides entirely when empty. -->
             <div class="eyebrow" style="margin-top:6px;">My day · 3 items</div>
-            <div class="task-row" data-task><div class="task-slider"></div><div class="text">Muck stalls 4 to 7 · before lunch</div></div>
-            <div class="task-row" data-task><div class="task-slider"></div><div class="text">Hand-walk Storm 30 min · injury recovery</div></div>
-            <div class="trainer-row"><span class="time">18:00</span><div class="who"><div class="n">Riders' meeting</div><div class="m">Barn lounge · 45 min · winter plan</div></div><span class="event-pill">EVENT</span></div>
-
-            <!-- Today's lessons · first 3, rest behind a chevron (stays on home) -->
-            <div class="eyebrow" style="margin-top:6px;">Today's lessons · 6 left</div>
-            <div class="trainer-row"><span class="time">12:00</span><div class="who"><div class="n">Mateo Bell</div><div class="m">Outdoor · Jump · 45 min</div></div><span class="horse-pill">INDIGO</span></div>
-            <div class="trainer-row"><span class="time">14:00</span><div class="who"><div class="n">Liv Andersen</div><div class="m">Outdoor · Flat · 45 min</div></div><span class="horse-pill">JUNO</span></div>
-            <div class="trainer-row"><span class="time">15:30</span><div class="who"><div class="n">Emma Carter</div><div class="m">Outdoor · Jump · 45 min</div></div><span class="horse-pill">BELLA</span></div>
-            <div class="more-rows" id="trainer-more">
-              <div class="trainer-row"><span class="time">17:00</span><div class="who"><div class="n">Group · 4 riders</div><div class="m">Outdoor · Beginner · 60 min</div></div><span class="horse-pill">MIX</span></div>
-              <div class="trainer-row"><span class="time">18:30</span><div class="who"><div class="n">Anna Beaumont</div><div class="m">Outdoor · Flat · 45 min</div></div><span class="horse-pill">STORM</span></div>
-              <div class="trainer-row"><span class="time">19:30</span><div class="who"><div class="n">Kate Lewis</div><div class="m">Indoor · Jump · 45 min</div></div><span class="horse-pill">INDIGO</span></div>
+            <div class="row-group todos">
+              <div class="task-row" data-task><div class="task-slider"></div><div class="text">Muck stalls 4 to 7 · before lunch</div></div>
+              <div class="task-row" data-task><div class="task-slider"></div><div class="text">Hand-walk Storm 30 min · injury recovery</div></div>
+              <div class="trainer-row"><span class="time">18:00</span><div class="who"><div class="n">Riders' meeting</div><div class="m">Barn lounge · 45 min · winter plan</div></div><span class="event-pill">EVENT</span></div>
             </div>
-            <button class="show-more" data-show-more="trainer-more"><span class="chev">▾</span><span class="lbl">Show 3 more</span></button>
+
+            <!-- Today's lessons · grouped solid card · 3 visible, rest
+                 inline behind a chevron (stays on home). -->
+            <div class="eyebrow" style="margin-top:6px;">Today's lessons · 6 left</div>
+            <div class="row-group" id="trainer-lessons">
+              <div class="trainer-row"><span class="time">12:00</span><div class="who"><div class="n">Mateo Bell</div><div class="m">Outdoor · Jump · 45 min</div></div><span class="horse-pill">INDIGO</span></div>
+              <div class="trainer-row"><span class="time">14:00</span><div class="who"><div class="n">Liv Andersen</div><div class="m">Outdoor · Flat · 45 min</div></div><span class="horse-pill">JUNO</span></div>
+              <div class="trainer-row"><span class="time">15:30</span><div class="who"><div class="n">Emma Carter</div><div class="m">Outdoor · Jump · 45 min</div></div><span class="horse-pill">BELLA</span></div>
+              <div class="trainer-row extra"><span class="time">17:00</span><div class="who"><div class="n">Group · 4 riders</div><div class="m">Outdoor · Beginner · 60 min</div></div><span class="horse-pill">MIX</span></div>
+              <div class="trainer-row extra"><span class="time">18:30</span><div class="who"><div class="n">Anna Beaumont</div><div class="m">Outdoor · Flat · 45 min</div></div><span class="horse-pill">STORM</span></div>
+              <div class="trainer-row extra"><span class="time">19:30</span><div class="who"><div class="n">Kate Lewis</div><div class="m">Indoor · Jump · 45 min</div></div><span class="horse-pill">INDIGO</span></div>
+            </div>
+            <button class="show-more" data-show-extra="trainer-lessons"><span class="chev">▾</span><span class="lbl">Show 3 more</span></button>
 
             <!-- Feed mini · barn posts · auto-news · external · last 7 days -->
             <div class="eyebrow" style="margin-top:10px;">Latest · last 7 days</div>
@@ -5722,14 +5763,18 @@
       document.getElementById("snap-btn")?.addEventListener("click", () => show("camera"));
 
       // ── Show more · inline expand for lessons / lists ──────
-      document.querySelectorAll("[data-show-more]").forEach(btn => {
+      // Toggles .show-extra on a target row-group; rows tagged with
+      // .extra inside that group then become visible. Button label
+      // swaps between "Show N more" and "Show less".
+      document.querySelectorAll("[data-show-extra]").forEach(btn => {
         btn.addEventListener("click", () => {
-          const target = document.getElementById(btn.dataset.showMore);
+          const target = document.getElementById(btn.dataset.showExtra);
           if (!target) return;
-          const opened = target.classList.toggle("open");
+          const opened = target.classList.toggle("show-extra");
           btn.classList.toggle("open", opened);
           const lbl = btn.querySelector(".lbl");
-          if (lbl) lbl.textContent = opened ? "Show less" : `Show ${target.children.length} more`;
+          const extraCount = target.querySelectorAll(".extra").length;
+          if (lbl) lbl.textContent = opened ? "Show less" : `Show ${extraCount} more`;
         });
       });
 
