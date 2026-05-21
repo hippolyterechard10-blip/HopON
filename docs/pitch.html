@@ -774,9 +774,10 @@
       }
       .task-row.up-next .task-slider::after { background: white; }
       .task-row.up-next.done { opacity: 0.85; }
-      [data-theme="neo"] .task-row.up-next {
-        background: linear-gradient(135deg, var(--ink1) 0%, #000 100%);
-        border-color: var(--ink1);
+      [data-theme="neo"] .task-row.up-next,
+      [data-theme="neo-dark"] .task-row.up-next {
+        background: linear-gradient(135deg, var(--brand-500) 0%, var(--brand-600) 100%);
+        border-color: var(--brand-600);
       }
 
       /* ── CLIENT shell · Instagram + Strava ───────────── */
@@ -3026,13 +3027,21 @@
       .fab {
         position: absolute; bottom: 92px; right: 16px;
         width: 56px; height: 56px; border-radius: 28px;
-        background: var(--ink1); color: var(--bg);
-        border: 0; box-shadow: 0 10px 22px rgba(0,0,0,0.30);
+        background: var(--brand-500);
+        color: white;
+        border: 0;
+        box-shadow: 0 10px 22px rgba(0,0,0,0.22),
+                    0 4px 10px rgba(0,0,0,0.10);
         display: grid; place-items: center;
         font-size: 26px; font-weight: 300;
         cursor: pointer; z-index: 6;
         transition: transform 240ms cubic-bezier(0.34, 1.56, 0.64, 1),
                     background 200ms;
+      }
+      [data-theme="neo"] .fab,
+      [data-theme="neo-dark"] .fab {
+        box-shadow: 0 10px 22px rgba(255,90,0,0.35),
+                    0 4px 10px rgba(0,0,0,0.10);
       }
       .fab.open { transform: rotate(45deg); }
 
