@@ -2883,21 +2883,27 @@
         transition: transform 280ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 200ms;
         display: flex; flex-direction: column; align-items: center; gap: 6px;
         pointer-events: none;
-        width: 56px;
+        width: 64px;
       }
       .petals.open .petal { opacity: 1; pointer-events: auto; }
       .petal-btn {
-        width: 50px; height: 50px; border-radius: 25px;
+        width: 64px; height: 64px; border-radius: 32px;
         background: var(--surface);
-        box-shadow: 0 8px 18px rgba(0,0,0,0.25);
-        border: 0; font-size: 20px;
-        display: grid; place-items: center;
+        box-shadow: 0 8px 18px rgba(0,0,0,0.28);
+        border: 0;
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        gap: 1px;
         cursor: pointer;
+        padding: 6px 4px 5px;
       }
+      .petal-emoji { font-size: 22px; line-height: 1; }
       .petal-label {
-        font-size: 10px; font-weight: 700;
-        background: var(--ink1); color: var(--bg);
-        padding: 3px 8px; border-radius: 8px;
+        font-size: 8.5px;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+        color: var(--ink1);
+        line-height: 1;
         white-space: nowrap;
       }
       .petals.open .petal {
@@ -5308,7 +5314,7 @@
       const fab = document.getElementById("fab");
       const fabBackdrop = document.getElementById("fab-backdrop");
       const petalsEl = document.getElementById("petals");
-      const PETAL_RADIUS = 144;
+      const PETAL_RADIUS = 152;
 
       // Petal universe — id → emoji, label, action
       const PETALS = {
@@ -5370,8 +5376,10 @@
           petal.style.setProperty("--ty", ty.toFixed(1) + "px");
           petal.style.transitionDelay = (i * 0.04).toFixed(2) + "s";
           petal.innerHTML =
-            '<button class="petal-btn" data-petal-id="' + id + '">' + p.emoji + '</button>' +
-            '<div class="petal-label">' + p.label + '</div>';
+            '<button class="petal-btn" data-petal-id="' + id + '">' +
+              '<span class="petal-emoji">' + p.emoji + '</span>' +
+              '<span class="petal-label">' + p.label + '</span>' +
+            '</button>';
           petalsEl.appendChild(petal);
         });
       }

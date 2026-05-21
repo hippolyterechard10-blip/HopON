@@ -12,7 +12,6 @@ import Animated, {
 
 import { Text } from "@/components/ui/Text";
 import { colors } from "@/constants/colors";
-import { radii, spacing } from "@/constants/spacing";
 import { useBarnStore } from "@/stores/barnStore";
 import { computeHomeVariant } from "@/types/roles";
 
@@ -98,7 +97,7 @@ function screenFromSegment(segment: string | undefined): ScreenKey | null {
 }
 
 const FAB_SIZE = 56;
-const PETAL_RADIUS = 144;
+const PETAL_RADIUS = 152;
 
 /**
  * Adaptive FAB — pétales déterminés par (écran, rôle).
@@ -228,12 +227,8 @@ function PetalView({
         accessibilityLabel={petal.label}
       >
         <Text style={styles.petalEmoji}>{petal.emoji}</Text>
+        <Text style={styles.petalLabel}>{petal.label}</Text>
       </Pressable>
-      <View style={styles.petalLabelWrap}>
-        <Text variant="label" color="white">
-          {petal.label}
-        </Text>
-      </View>
     </Animated.View>
   );
 }
@@ -244,37 +239,40 @@ const styles = StyleSheet.create({
   },
   petalsAnchor: {
     position: "absolute",
-    right: 20 + FAB_SIZE / 2 - 24,
-    bottom: 84 + FAB_SIZE / 2 - 24,
-    width: 48,
-    height: 48,
+    right: 20 + FAB_SIZE / 2 - 32,
+    bottom: 84 + FAB_SIZE / 2 - 32,
+    width: 64,
+    height: 64,
   },
   petal: {
     position: "absolute",
-    width: 48,
-    height: 48,
+    width: 64,
+    height: 64,
     alignItems: "center",
   },
   petalBtn: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+    width: 64,
+    height: 64,
+    borderRadius: 32,
     backgroundColor: colors.surface,
     alignItems: "center",
     justifyContent: "center",
+    gap: 1,
+    paddingTop: 6,
+    paddingBottom: 5,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.18,
-    shadowRadius: 10,
+    shadowOpacity: 0.22,
+    shadowRadius: 12,
     elevation: 6,
   },
-  petalEmoji: { fontSize: 22 },
-  petalLabelWrap: {
-    marginTop: 6,
-    paddingHorizontal: spacing.s,
-    paddingVertical: 2,
-    borderRadius: radii.full,
-    backgroundColor: "rgba(11, 47, 35, 0.85)",
+  petalEmoji: { fontSize: 22, lineHeight: 24 },
+  petalLabel: {
+    fontSize: 9,
+    fontWeight: "700",
+    letterSpacing: 0.2,
+    color: colors.ink1,
+    lineHeight: 10,
   },
   fab: {
     position: "absolute",
