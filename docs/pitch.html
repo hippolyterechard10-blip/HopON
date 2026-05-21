@@ -499,11 +499,11 @@
       /* ── GROOM shell · BeReal ────────────────────────── */
       .groom-hero {
         background: linear-gradient(180deg, var(--brand-700) 0%, var(--brand-900) 100%);
-        border-radius: 22px;
-        padding: 20px;
+        border-radius: 18px;
+        padding: 14px;
         color: white;
         position: relative; overflow: hidden;
-        display: flex; flex-direction: column; gap: 14px;
+        display: flex; flex-direction: column; gap: 10px;
       }
       [data-theme="neo"] .groom-hero { background: linear-gradient(180deg, var(--ink1) 0%, #000 100%); }
       .groom-hero::before {
@@ -514,48 +514,47 @@
         background: radial-gradient(circle at 80% 20%, rgba(255,90,0,0.25), transparent 50%);
       }
       .groom-hero > * { position: relative; z-index: 1; }
-      .gh-ctx { display: flex; align-items: center; gap: 12px; }
+      .gh-ctx { display: flex; align-items: center; gap: 10px; }
       .gh-thumb {
-        width: 52px; height: 52px; border-radius: 26px;
+        width: 40px; height: 40px; border-radius: 20px;
         background: linear-gradient(160deg, #c4dfd0, #6fa48a);
-        display: grid; place-items: center; font-size: 28px;
-        flex: 0 0 52px;
-        box-shadow: 0 6px 14px rgba(0,0,0,0.3);
+        display: grid; place-items: center; font-size: 22px;
+        flex: 0 0 40px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
       }
       .gh-eb {
-        font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase;
+        font-size: 9.5px; letter-spacing: 1px; text-transform: uppercase;
         opacity: 0.78; font-weight: 700;
       }
       .gh-task {
         font-family: var(--serif); font-style: italic;
-        font-size: 20px; line-height: 24px;
-        margin-top: 3px;
+        font-size: 17px; line-height: 21px;
+        margin-top: 2px;
       }
-      .gh-for { font-size: 11px; opacity: 0.82; margin-top: 3px; }
       .gh-camera {
-        width: 100%; min-height: 60px;
+        width: 100%; min-height: 44px;
         background: var(--brand-500); color: white;
-        border-radius: 16px; border: 0;
-        display: flex; align-items: center; justify-content: center; gap: 12px;
-        font-family: var(--sans); font-weight: 700; font-size: 15px;
+        border-radius: 12px; border: 0;
+        display: flex; align-items: center; justify-content: center; gap: 10px;
+        font-family: var(--sans); font-weight: 700; font-size: 13px;
         cursor: pointer;
         transition: transform 120ms;
-        box-shadow: 0 10px 24px rgba(0,0,0,0.25);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.22);
       }
       [data-theme="neo"] .gh-camera {
         background: var(--brand-500);
-        box-shadow: 0 10px 24px rgba(255,90,0,0.4);
+        box-shadow: 0 6px 16px rgba(255,90,0,0.4);
       }
       .gh-camera:active { transform: scale(0.98); }
       .gh-camera .cam-ic {
-        width: 34px; height: 34px; border-radius: 17px;
+        width: 26px; height: 26px; border-radius: 13px;
         background: rgba(255,255,255,0.18);
         display: grid; place-items: center;
-        font-size: 18px;
+        font-size: 14px;
       }
       .gh-skip {
-        font-size: 12px; opacity: 0.7;
-        text-align: center; cursor: pointer; padding: 2px;
+        font-size: 11px; opacity: 0.7;
+        text-align: center; cursor: pointer; padding: 1px;
       }
       .gh-skip::before { content: "→ "; }
 
@@ -630,15 +629,22 @@
       }
 
       /* ── Mini barn feed · last 7 days on home ────────── */
+      /* Compact feed cards · same DNA as the Feed tab reels,
+         tighter padding, two-line body, reactions visible. */
       .feed-mini {
-        display: flex; flex-direction: column; gap: 6px;
+        display: flex; flex-direction: column; gap: 8px;
       }
       .feed-mini-row {
-        display: flex; align-items: center; gap: 10px;
+        display: flex; gap: 10px;
         padding: 10px 12px;
         background: var(--surface);
         border: 1px solid var(--border);
         border-radius: 12px;
+        cursor: pointer;
+      }
+      .feed-mini-row.news {
+        background: linear-gradient(135deg, var(--brand-50), var(--surface));
+        border-color: var(--brand-100);
       }
       .feed-mini-av {
         width: 32px; height: 32px; border-radius: 16px;
@@ -646,33 +652,52 @@
         display: grid; place-items: center;
         font-size: 13px; font-weight: 700;
         color: var(--brand-700);
-        flex: 0 0 auto;
+        flex: 0 0 32px;
+        margin-top: 1px;
+      }
+      .feed-mini-row.news .feed-mini-av {
+        background: var(--brand-200);
+        font-size: 16px;
       }
       .feed-mini-body {
         flex: 1; min-width: 0;
-        display: flex; flex-direction: column; gap: 1px;
+        display: flex; flex-direction: column; gap: 2px;
       }
-      .feed-mini-title {
-        font-size: 12.5px; color: var(--ink1);
+      .feed-mini-head {
+        display: flex; align-items: center; gap: 6px;
+      }
+      .feed-mini-author {
+        font-size: 11px; color: var(--ink2);
         font-weight: 600;
-        overflow: hidden; text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-      .feed-mini-meta {
-        font-size: 10.5px; color: var(--ink3);
       }
       .feed-mini-tag {
         font-size: 9.5px; font-weight: 700;
         letter-spacing: 0.3px;
         color: var(--brand-700);
         background: var(--brand-50);
-        padding: 2px 6px;
-        border-radius: 6px;
+        padding: 1px 6px;
+        border-radius: 5px;
+        line-height: 1.5;
         flex: 0 0 auto;
       }
+      .feed-mini-text {
+        font-size: 12.5px; color: var(--ink1);
+        font-weight: 500;
+        line-height: 1.35;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .feed-mini-foot {
+        display: flex; gap: 10px;
+        font-size: 10.5px; color: var(--ink3);
+        margin-top: 2px;
+      }
+      .feed-mini-foot .time { margin-left: auto; }
       .feed-mini-see {
         text-align: center;
-        padding: 8px 10px;
+        padding: 6px 10px;
         font-size: 10.5px;
         font-weight: 700;
         letter-spacing: 0.4px;
@@ -3229,7 +3254,6 @@
                 <div class="flex1">
                   <div class="gh-eb">For Sofia · @owner</div>
                   <div class="gh-task">Groom Bella for her 9 am</div>
-                  <div class="gh-for">Sofia will see the photo as soon as you send it ✨</div>
                 </div>
               </div>
               <button class="gh-camera" id="snap-btn">
@@ -3252,26 +3276,57 @@
               <div class="feed-mini-row" data-go="feed">
                 <div class="feed-mini-av">SM</div>
                 <div class="feed-mini-body">
-                  <div class="feed-mini-title">Bella nailed the 1m10 grid · best session</div>
-                  <div class="feed-mini-meta">Sam · trainer · yesterday 4 pm</div>
+                  <div class="feed-mini-head">
+                    <span class="feed-mini-author">Sam · trainer</span>
+                    <span class="feed-mini-tag">@owners</span>
+                  </div>
+                  <div class="feed-mini-text">Bella nailed the 1m10 grid · best session this week.</div>
+                  <div class="feed-mini-foot"><span>❤️ 8</span><span>👏 3</span><span class="time">yesterday · 4 pm</span></div>
                 </div>
-                <span class="feed-mini-tag">@owners</span>
               </div>
               <div class="feed-mini-row" data-go="feed">
                 <div class="feed-mini-av">CL</div>
                 <div class="feed-mini-body">
-                  <div class="feed-mini-title">Farrier on-site Friday 8–11 · plan ahead</div>
-                  <div class="feed-mini-meta">Clara · barn manager · 2 days ago</div>
+                  <div class="feed-mini-head">
+                    <span class="feed-mini-author">Clara · barn manager</span>
+                    <span class="feed-mini-tag">@team</span>
+                  </div>
+                  <div class="feed-mini-text">Farrier on-site Friday 8 to 11 — please plan rides accordingly.</div>
+                  <div class="feed-mini-foot"><span>👍 6</span><span class="time">2 days ago</span></div>
                 </div>
-                <span class="feed-mini-tag">@team</span>
               </div>
-              <div class="feed-mini-row" data-go="feed">
+              <div class="feed-mini-row news" data-go="feed">
                 <div class="feed-mini-av">🎉</div>
                 <div class="feed-mini-body">
-                  <div class="feed-mini-title">Juno turns 12 today · pic in stall 7</div>
-                  <div class="feed-mini-meta">Auto · 5 days ago</div>
+                  <div class="feed-mini-head">
+                    <span class="feed-mini-author">Auto · barn news</span>
+                    <span class="feed-mini-tag">@all</span>
+                  </div>
+                  <div class="feed-mini-text">Juno turns 12 today — drop a carrot in stall 7.</div>
+                  <div class="feed-mini-foot"><span>❤️ 14</span><span>🥕 9</span><span class="time">5 days ago</span></div>
                 </div>
-                <span class="feed-mini-tag">@all</span>
+              </div>
+              <div class="feed-mini-row" data-go="feed">
+                <div class="feed-mini-av">JS</div>
+                <div class="feed-mini-body">
+                  <div class="feed-mini-head">
+                    <span class="feed-mini-author">Jess · groom</span>
+                    <span class="feed-mini-tag">@owners</span>
+                  </div>
+                  <div class="feed-mini-text">Storm's bandages changed this morning — clean and dry, healing well.</div>
+                  <div class="feed-mini-foot"><span>❤️ 5</span><span class="time">3 days ago</span></div>
+                </div>
+              </div>
+              <div class="feed-mini-row news" data-go="feed">
+                <div class="feed-mini-av">💉</div>
+                <div class="feed-mini-body">
+                  <div class="feed-mini-head">
+                    <span class="feed-mini-author">Auto · barn news</span>
+                    <span class="feed-mini-tag">@all</span>
+                  </div>
+                  <div class="feed-mini-text">Spring vaccines round done · 18 horses covered until Nov.</div>
+                  <div class="feed-mini-foot"><span>✓ done</span><span class="time">6 days ago</span></div>
+                </div>
               </div>
               <div class="feed-mini-see" data-go="feed">See all in feed →</div>
             </div>
