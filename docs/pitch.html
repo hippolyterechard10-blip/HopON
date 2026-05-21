@@ -892,7 +892,114 @@
         border-color: var(--brand-600);
       }
 
-      /* ── CLIENT shell · Instagram + Strava ───────────── */
+      /* ── CLIENT shell · horse-first home ─────────────── */
+      /* Horse spotlight: big photo + name + 6 health icons.
+         The centerpiece of the client home, per Sprint Day 3 spec. */
+      .horse-spotlight {
+        display: flex; flex-direction: column;
+        align-items: center; gap: 4px;
+        padding: 18px 14px 14px;
+        background: linear-gradient(180deg, var(--surface) 0%, var(--brand-50) 100%);
+        border: 1px solid var(--brand-100);
+        border-radius: 18px;
+      }
+      .hs-photo {
+        width: 92px; height: 92px; border-radius: 46px;
+        background: linear-gradient(160deg, var(--brand-200), var(--brand-500));
+        display: grid; place-items: center;
+        font-size: 52px;
+        box-shadow: 0 8px 22px rgba(0,0,0,0.18);
+      }
+      [data-theme="neo"] .hs-photo {
+        background: linear-gradient(160deg, #c4a48c, #6b4a2c);
+      }
+      .hs-name {
+        font-family: var(--serif); font-style: italic;
+        font-size: 22px;
+        color: var(--ink1);
+        margin-top: 8px;
+        line-height: 1;
+      }
+      .hs-meta {
+        font-size: 10.5px; color: var(--ink3);
+        letter-spacing: 0.4px;
+        text-transform: uppercase;
+        margin-top: 2px;
+      }
+      /* 6-icon health strip · color-coded urgency.
+         Green = on schedule · amber = soon · terracotta = overdue. */
+      .health-strip {
+        display: grid; grid-template-columns: repeat(6, 1fr);
+        gap: 5px;
+        margin-top: 12px;
+        width: 100%;
+      }
+      .health-icon {
+        display: flex; flex-direction: column; align-items: center;
+        gap: 2px;
+        padding: 7px 2px 6px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        cursor: pointer;
+        text-align: center;
+      }
+      .health-icon .hi-emoji { font-size: 18px; line-height: 1; }
+      .health-icon .hi-lbl {
+        font-size: 8.5px; font-weight: 700;
+        letter-spacing: 0.3px;
+        color: var(--ink2);
+        text-transform: uppercase;
+      }
+      .health-icon .hi-due {
+        font-size: 9px; color: var(--ink3);
+        font-weight: 600;
+      }
+      .health-icon.ok .hi-due { color: var(--ok, #1e7e4a); }
+      .health-icon.warn {
+        background: #fff5e0; border-color: #ffd57a;
+      }
+      .health-icon.warn .hi-due { color: #aa6c00; }
+      .health-icon.alert {
+        background: var(--alert-bg, #fdecea);
+        border-color: var(--alert, #d9381e);
+      }
+      .health-icon.alert .hi-due { color: var(--alert, #d9381e); font-weight: 700; }
+
+      /* Next lesson + Next show side-by-side */
+      .upcoming-grid {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+      }
+      .upcoming-card {
+        display: flex; flex-direction: column; gap: 1px;
+        padding: 12px 14px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        cursor: pointer;
+      }
+      .upcoming-card .uc-lbl {
+        font-size: 9.5px; font-weight: 700;
+        letter-spacing: 0.5px;
+        color: var(--ink3);
+        text-transform: uppercase;
+      }
+      .upcoming-card .uc-when {
+        font-family: var(--serif); font-style: italic;
+        font-size: 18px; line-height: 1.1;
+        color: var(--ink1);
+        margin-top: 3px;
+      }
+      .upcoming-card .uc-meta {
+        font-size: 11px; color: var(--ink2);
+        margin-top: 1px;
+      }
+      .upcoming-card.show {
+        background: linear-gradient(135deg, var(--brand-50), var(--surface));
+        border-color: var(--brand-100);
+      }
+      .upcoming-card.show .uc-lbl { color: var(--brand-700); }
+
       .client-cta {
         width: 100%; padding: 16px;
         background: var(--brand-500); color: white;
@@ -3438,7 +3545,7 @@
 
             <div class="eyebrow" style="color:var(--brand-700);">Up next · in 25 min</div>
             <div class="trainer-row up-next" data-go="sharecard">
-              <span class="time">10:30</span>
+              <span class="time">10:30 am</span>
               <div class="who">
                 <div class="n">Jump · Bella · Indoor</div>
                 <div class="m">Maddy K. · just groomed by Jess · ⚠️ farrier in 3 days</div>
@@ -3448,16 +3555,16 @@
 
             <div class="eyebrow" style="margin-top:6px;">Today's lessons · 3 left</div>
             <div class="row-group" id="owner-lessons">
-              <div class="trainer-row"><span class="time">14:00</span><div class="who"><div class="n">Liv Andersen</div><div class="m">Outdoor · Flat · 45 min</div></div><span class="horse-pill">JUNO</span></div>
-              <div class="trainer-row"><span class="time">15:30</span><div class="who"><div class="n">Emma Carter</div><div class="m">Outdoor · Jump · 45 min</div></div><span class="horse-pill">BELLA</span></div>
-              <div class="trainer-row"><span class="time">17:00</span><div class="who"><div class="n">Group · 4 riders</div><div class="m">Outdoor · Beginner · 60 min</div></div><span class="horse-pill">MIX</span></div>
+              <div class="trainer-row"><span class="time">2 pm</span><div class="who"><div class="n">Liv Andersen</div><div class="m">Outdoor · Flat · 45 min</div></div><span class="horse-pill">JUNO</span></div>
+              <div class="trainer-row"><span class="time">3:30 pm</span><div class="who"><div class="n">Emma Carter</div><div class="m">Outdoor · Jump · 45 min</div></div><span class="horse-pill">BELLA</span></div>
+              <div class="trainer-row"><span class="time">5 pm</span><div class="who"><div class="n">Group · 4 riders</div><div class="m">Outdoor · Beginner · 60 min</div></div><span class="horse-pill">MIX</span></div>
             </div>
 
             <div class="eyebrow" style="margin-top:6px;">To-dos &amp; events · 3 items</div>
             <div class="row-group todos">
               <div class="task-row" data-task><div class="task-slider"></div><div class="text">Review May invoices · 6 unpaid · oldest 9 days</div></div>
               <div class="task-row" data-task><div class="task-slider"></div><div class="text">Sign Bella's vaccine consent · vet on Friday</div></div>
-              <div class="trainer-row"><span class="time">18:00</span><div class="who"><div class="n">Riders' meeting</div><div class="m">Barn lounge · 45 min · winter plan</div></div><span class="event-pill">EVENT</span></div>
+              <div class="trainer-row"><span class="time">6 pm</span><div class="who"><div class="n">Riders' meeting</div><div class="m">Barn lounge · 45 min · winter plan</div></div><span class="event-pill">EVENT</span></div>
               <div class="rg-arrow" data-go="whiteboard" aria-label="View all to-dos">›</div>
             </div>
 
@@ -3537,7 +3644,7 @@
             <!-- Up next · same height as other lesson rows, gradient pulls the eye -->
             <div class="eyebrow" style="color:var(--brand-700);">Up next · in 25 min</div>
             <div class="trainer-row up-next" data-go="sharecard">
-              <span class="time">10:30</span>
+              <span class="time">10:30 am</span>
               <div class="who">
                 <div class="n">Jump · Bella · Indoor</div>
                 <div class="m">Maddy K. · just groomed by Jess · ⚠️ farrier in 3 days</div>
@@ -3553,7 +3660,7 @@
             <div class="row-group todos">
               <div class="task-row" data-task><div class="task-slider"></div><div class="text">Muck stalls 4 to 7 · before lunch</div></div>
               <div class="task-row" data-task><div class="task-slider"></div><div class="text">Hand-walk Storm 30 min · injury recovery</div></div>
-              <div class="trainer-row"><span class="time">18:00</span><div class="who"><div class="n">Riders' meeting</div><div class="m">Barn lounge · 45 min · winter plan</div></div><span class="event-pill">EVENT</span></div>
+              <div class="trainer-row"><span class="time">6 pm</span><div class="who"><div class="n">Riders' meeting</div><div class="m">Barn lounge · 45 min · winter plan</div></div><span class="event-pill">EVENT</span></div>
               <div class="rg-arrow" data-go="whiteboard" aria-label="View all to-dos">›</div>
             </div>
 
@@ -3561,12 +3668,12 @@
                  inline behind a chevron (stays on home). -->
             <div class="eyebrow" style="margin-top:6px;">Today's lessons · 6 left</div>
             <div class="row-group" id="trainer-lessons">
-              <div class="trainer-row"><span class="time">12:00</span><div class="who"><div class="n">Mateo Bell</div><div class="m">Outdoor · Jump · 45 min</div></div><span class="horse-pill">INDIGO</span></div>
-              <div class="trainer-row"><span class="time">14:00</span><div class="who"><div class="n">Liv Andersen</div><div class="m">Outdoor · Flat · 45 min</div></div><span class="horse-pill">JUNO</span></div>
-              <div class="trainer-row"><span class="time">15:30</span><div class="who"><div class="n">Emma Carter</div><div class="m">Outdoor · Jump · 45 min</div></div><span class="horse-pill">BELLA</span></div>
-              <div class="trainer-row extra"><span class="time">17:00</span><div class="who"><div class="n">Group · 4 riders</div><div class="m">Outdoor · Beginner · 60 min</div></div><span class="horse-pill">MIX</span></div>
-              <div class="trainer-row extra"><span class="time">18:30</span><div class="who"><div class="n">Anna Beaumont</div><div class="m">Outdoor · Flat · 45 min</div></div><span class="horse-pill">STORM</span></div>
-              <div class="trainer-row extra"><span class="time">19:30</span><div class="who"><div class="n">Kate Lewis</div><div class="m">Indoor · Jump · 45 min</div></div><span class="horse-pill">INDIGO</span></div>
+              <div class="trainer-row"><span class="time">12 pm</span><div class="who"><div class="n">Mateo Bell</div><div class="m">Outdoor · Jump · 45 min</div></div><span class="horse-pill">INDIGO</span></div>
+              <div class="trainer-row"><span class="time">2 pm</span><div class="who"><div class="n">Liv Andersen</div><div class="m">Outdoor · Flat · 45 min</div></div><span class="horse-pill">JUNO</span></div>
+              <div class="trainer-row"><span class="time">3:30 pm</span><div class="who"><div class="n">Emma Carter</div><div class="m">Outdoor · Jump · 45 min</div></div><span class="horse-pill">BELLA</span></div>
+              <div class="trainer-row extra"><span class="time">5 pm</span><div class="who"><div class="n">Group · 4 riders</div><div class="m">Outdoor · Beginner · 60 min</div></div><span class="horse-pill">MIX</span></div>
+              <div class="trainer-row extra"><span class="time">6:30 pm</span><div class="who"><div class="n">Anna Beaumont</div><div class="m">Outdoor · Flat · 45 min</div></div><span class="horse-pill">STORM</span></div>
+              <div class="trainer-row extra"><span class="time">7:30 pm</span><div class="who"><div class="n">Kate Lewis</div><div class="m">Indoor · Jump · 45 min</div></div><span class="horse-pill">INDIGO</span></div>
             </div>
             <button class="show-more" data-show-extra="trainer-lessons"><span class="chev">▾</span><span class="lbl">Show 3 more</span></button>
 
@@ -3672,7 +3779,7 @@
 
             <!-- Rest of the day -->
             <div class="eyebrow" style="margin-top:6px;">Rest of your day · 4 left</div>
-            <div class="task-row urgent" data-task><div class="task-slider"></div><div class="text">! Storm · tack up · 9:00</div></div>
+            <div class="task-row urgent" data-task><div class="task-slider"></div><div class="text">! Storm · tack up · 9 am</div></div>
             <div class="task-row" data-task><div class="task-slider"></div><div class="text">Indigo · feed PM</div></div>
             <div class="task-row" data-task><div class="task-slider"></div><div class="text">Juno · groom + photo</div></div>
             <div class="task-row" data-task><div class="task-slider"></div><div class="text">Bella · evening feed</div></div>
@@ -3761,50 +3868,123 @@
             </div>
           </div>
 
-          <!-- CLIENT -->
+          <!-- CLIENT · horse-first home (Sprint Day 3 spec).
+               Photo cheval centered + 6 health emojis · Book CTA ·
+               Next lesson + Next show · upcoming service upsell ·
+               barn feed filtered to @all and @owners. -->
           <div class="role-shell" data-shell="client">
+            <!-- Horse spotlight + health strip -->
+            <div class="horse-spotlight">
+              <div class="hs-photo">🐎</div>
+              <div class="hs-name">Bella</div>
+              <div class="hs-meta">9 years · KWPN · stall 7</div>
+              <div class="health-strip">
+                <div class="health-icon ok"><span class="hi-emoji">🐴</span><span class="hi-lbl">Farrier</span><span class="hi-due">2w</span></div>
+                <div class="health-icon warn"><span class="hi-emoji">💉</span><span class="hi-lbl">Vaccine</span><span class="hi-due">12d</span></div>
+                <div class="health-icon ok"><span class="hi-emoji">💊</span><span class="hi-lbl">Wormer</span><span class="hi-due">5w</span></div>
+                <div class="health-icon alert"><span class="hi-emoji">🦴</span><span class="hi-lbl">Osteo</span><span class="hi-due">overdue</span></div>
+                <div class="health-icon ok"><span class="hi-emoji">🏃</span><span class="hi-lbl">Physio</span><span class="hi-due">done</span></div>
+                <div class="health-icon ok"><span class="hi-emoji">🦷</span><span class="hi-lbl">Dentist</span><span class="hi-due">6m</span></div>
+              </div>
+            </div>
+
+            <!-- Book a lesson · vibrant CTA, always on top of the action zone -->
             <button class="client-cta" data-go="booking"><span>Book Bella a lesson</span><span>→</span></button>
-            <div class="strava">
-              <div class="h">Bella · this month</div>
-              <div class="strava-grid">
-                <div class="strava-stat"><span class="lbl">Hours in saddle</span><span class="v">9 h</span><span class="d">+2 h vs April</span></div>
-                <div class="strava-stat"><span class="lbl">Lessons</span><span class="v">12</span><span class="d">100% participation</span></div>
-                <div class="strava-stat"><span class="lbl">Jumps cleared</span><span class="v">47</span><span class="d">3 shows</span></div>
-                <div class="strava-stat"><span class="lbl">Personal best</span><span class="v">1m20</span><span class="d">Wellington · May 5</span></div>
+
+            <!-- Next lesson + Next show -->
+            <div class="upcoming-grid">
+              <div class="upcoming-card lesson" data-go="booking">
+                <span class="uc-lbl">Next lesson</span>
+                <span class="uc-when">Thu · 2 pm</span>
+                <span class="uc-meta">Sam · indoor jump</span>
+              </div>
+              <div class="upcoming-card show">
+                <span class="uc-lbl">Next show</span>
+                <span class="uc-when">Jun 5</span>
+                <span class="uc-meta">WEF · 1m10 class</span>
               </div>
             </div>
-            <div class="reel">
-              <div class="media">
-                <span class="live-pill">Live · 25 min ago</span>
-                <span class="scene">✨</span>
-                <span class="play-pill">📷 photo</span>
+
+            <!-- Upcoming service · upsell opportunity tied to the horse -->
+            <div class="approval-row">
+              <span class="horse-pill">BELLA</span>
+              <div class="what">
+                <div class="n">Farrier slot · this Friday</div>
+                <div class="by">8 to 11 am on-site · pick your time</div>
               </div>
-              <div class="body">
-                <div class="head">
-                  <div class="av">JS</div>
-                  <div class="who"><div class="n">Jess · groom</div><div class="w">For you · @owner</div></div>
-                  <span class="pill">@owners</span>
-                </div>
-                <div class="title">Bella is ready and beautiful.</div>
-                <div class="body-text">Full groom done at 7:45 — mane braided, ready for her 9 am with Maddy.</div>
-                <div class="rxn"><span class="heart">❤️ 4</span><span>👏 2</span><span>💬 1</span></div>
-              </div>
+              <button class="btn dark">Book</button>
             </div>
-            <div class="reel">
-              <div class="media">
-                <span class="scene">🏇</span>
-                <span class="play-pill">▶ 0:42</span>
-              </div>
-              <div class="body">
-                <div class="head">
-                  <div class="av">SM</div>
-                  <div class="who"><div class="n">Sam · trainer</div><div class="w">Yesterday · 4 pm</div></div>
-                  <span class="pill">@owners</span>
+
+            <!-- Latest · last 7 days · filtered (no @team posts for clients) -->
+            <div class="eyebrow" style="margin-top:8px;">Latest · last 7 days</div>
+            <div class="feed-mini">
+              <div class="feed-mini-row" data-go="feed">
+                <div class="feed-mini-av">SM</div>
+                <div class="feed-mini-body">
+                  <div class="feed-mini-head">
+                    <span class="feed-mini-author">Sam · trainer</span>
+                    <span class="feed-mini-tag">@owners</span>
+                  </div>
+                  <div class="feed-mini-text">Bella nailed the 1m10 grid · best session this week.</div>
+                  <div class="feed-mini-foot"><span>❤️ 8</span><span>👏 3</span><span class="time">yesterday · 4 pm</span></div>
                 </div>
-                <div class="title">Forward today · clean round.</div>
-                <div class="body-text">Bella nailed the 1m10 grid · best session this week.</div>
-                <div class="rxn"><span class="heart">❤️ 8</span><span>👏 3</span><span>💬 2</span></div>
               </div>
+              <div class="feed-mini-row news" data-go="feed">
+                <div class="feed-mini-av">🎉</div>
+                <div class="feed-mini-body">
+                  <div class="feed-mini-head">
+                    <span class="feed-mini-author">Barn news</span>
+                    <span class="feed-mini-tag">@all</span>
+                  </div>
+                  <div class="feed-mini-text">Juno turns 12 today — drop a carrot in stall 7.</div>
+                  <div class="feed-mini-foot"><span>❤️ 14</span><span>🥕 9</span><span class="time">today</span></div>
+                </div>
+              </div>
+              <div class="feed-mini-row" data-go="feed">
+                <div class="feed-mini-av">JS</div>
+                <div class="feed-mini-body">
+                  <div class="feed-mini-head">
+                    <span class="feed-mini-author">Jess · groom</span>
+                    <span class="feed-mini-tag">@owners</span>
+                  </div>
+                  <div class="feed-mini-text">Bella is ready and beautiful — mane braided, looking sharp.</div>
+                  <div class="feed-mini-foot"><span>❤️ 4</span><span>👏 2</span><span class="time">this morning</span></div>
+                </div>
+              </div>
+              <div class="feed-mini-row ext" data-go="feed">
+                <div class="feed-mini-av">WEF</div>
+                <div class="feed-mini-body">
+                  <div class="feed-mini-head">
+                    <span class="feed-mini-author">Winter Equestrian Festival</span>
+                    <span class="feed-mini-tag">industry</span>
+                  </div>
+                  <div class="feed-mini-text">Week 12 schedule released — $500K Grand Prix Saturday under lights.</div>
+                  <div class="feed-mini-foot"><span>wellington.com</span><span class="time">2 days ago</span></div>
+                </div>
+              </div>
+              <div class="feed-mini-row ext" data-go="feed">
+                <div class="feed-mini-av">GP</div>
+                <div class="feed-mini-body">
+                  <div class="feed-mini-head">
+                    <span class="feed-mini-author">Grand Prix Magazine</span>
+                    <span class="feed-mini-tag">industry</span>
+                  </div>
+                  <div class="feed-mini-text">USEF rule update · helmet certification standards effective July.</div>
+                  <div class="feed-mini-foot"><span>grandprix-mag.com</span><span class="time">4 days ago</span></div>
+                </div>
+              </div>
+              <div class="feed-mini-row news" data-go="feed">
+                <div class="feed-mini-av">💉</div>
+                <div class="feed-mini-body">
+                  <div class="feed-mini-head">
+                    <span class="feed-mini-author">Barn news</span>
+                    <span class="feed-mini-tag">@all</span>
+                  </div>
+                  <div class="feed-mini-text">Spring vaccines done · 18 horses covered until Nov.</div>
+                  <div class="feed-mini-foot"><span>✓ done</span><span class="time">6 days ago</span></div>
+                </div>
+              </div>
+              <div class="feed-mini-arrow" data-go="feed" aria-label="See all in feed">›</div>
             </div>
           </div>
         </div>
@@ -4076,7 +4256,7 @@
             <span class="sep">·</span>
             <span class="item">🐎 3 lessons now</span>
             <span class="sep">·</span>
-            <span class="item" style="color:#ffd699;">⚠️ vet at 14:00</span>
+            <span class="item" style="color:#ffd699;">⚠️ vet at 2 pm</span>
           </div>
         </div>
 
@@ -4181,30 +4361,30 @@
 
             <div class="sec-lbl">Pick a slot · Thursday May 21</div>
             <div class="booking-slot">
-              <div><div class="time">9:00</div><div class="meta">Indoor · with Sam</div></div>
+              <div><div class="time">9 am</div><div class="meta">Indoor · with Sam</div></div>
               <div class="price">$120</div>
             </div>
             <div class="booking-slot selected" data-slot>
-              <div><div class="time">14:00</div><div class="meta">Indoor · with Sam · ✓ selected</div></div>
+              <div><div class="time">2 pm</div><div class="meta">Indoor · with Sam · ✓ selected</div></div>
               <div class="price">$120</div>
             </div>
             <div class="booking-slot">
-              <div><div class="time">16:00</div><div class="meta">Outdoor · with Sam</div></div>
+              <div><div class="time">4 pm</div><div class="meta">Outdoor · with Sam</div></div>
               <div class="price">$120</div>
             </div>
 
             <div class="sec-lbl" style="margin-top:8px;">Saturday May 23</div>
             <div class="booking-slot">
-              <div><div class="time">10:00</div><div class="meta">Indoor · with Maddy</div></div>
+              <div><div class="time">10 am</div><div class="meta">Indoor · with Maddy</div></div>
               <div class="price">$120</div>
             </div>
             <div class="booking-slot">
-              <div><div class="time">15:30</div><div class="meta">Outdoor · with Sam</div></div>
+              <div><div class="time">3:30 pm</div><div class="meta">Outdoor · with Sam</div></div>
               <div class="price">$120</div>
             </div>
 
             <button class="booking-confirm" data-go="sharecard">
-              Confirm Thu 14:00 · pay $120
+              Confirm Thu 2 pm · pay $120
             </button>
           </div>
         </div>
@@ -4220,7 +4400,7 @@
 
           <div class="share-card">
             <div class="top-row">
-              <div class="barn-mark">Thu · May 21 · 14:45</div>
+              <div class="barn-mark">Thu · May 21 · 2:45 pm</div>
               <div class="barn-mark">No. 142</div>
             </div>
             <div class="header-block">
@@ -4363,7 +4543,7 @@
         <div class="sheet-eyebrow" id="sh-eyebrow">LESSON</div>
         <div class="sheet-title" id="sh-title">Jump · Bella with Maddy</div>
         <div class="sheet-rows">
-          <div class="sheet-row"><span class="l">When</span><span class="r" id="sh-when">Tue, May 19 · 09:00 → 09:45</span></div>
+          <div class="sheet-row"><span class="l">When</span><span class="r" id="sh-when">Tue, May 19 · 9 am → 9:45 am</span></div>
           <div class="sheet-row"><span class="l">Horse</span><span class="r" id="sh-horse">Bella · Stall #12</span></div>
           <div class="sheet-row"><span class="l">Rider</span><span class="r" id="sh-rider">Maddy K.</span></div>
           <div class="sheet-row"><span class="l">Where</span><span class="r" id="sh-where">Indoor arena</span></div>
@@ -4443,7 +4623,7 @@
               <div class="wb-row-progress"><div class="fill" style="width: 50%;"></div></div>
               <div class="wb-chips">
                 <span class="wb-chip done"><span class="box"></span>BELLA · LUNGE <span class="time">· 8am</span></span>
-                <span class="wb-chip done"><span class="box"></span>STRETCH · EXTRAS <span class="time">· 9:30</span></span>
+                <span class="wb-chip done"><span class="box"></span>STRETCH · EXTRAS <span class="time">· 9:30 am</span></span>
                 <span class="wb-chip"><span class="box"></span>CHOOSE TACK ATLAS</span>
                 <span class="wb-chip"><span class="box"></span>PREP NEW HORSE</span>
               </div>
@@ -4826,10 +5006,10 @@
         </div>
         <div class="sv-stage">
           <div class="scene" id="sv-scene">✨</div>
-          <div class="by" id="sv-by">7:45 · by Jess</div>
+          <div class="by" id="sv-by">7:45 am · by Jess</div>
           <div class="sv-caption">
             <strong id="sv-cap-title">Groomed and ready</strong>
-            <span id="sv-cap-sub">Jess gave Bella a full brush at 7:45. Ready for her 9 am.</span>
+            <span id="sv-cap-sub">Jess gave Bella a full brush at 7:45 am. Ready for her 9 am.</span>
           </div>
         </div>
       </div>
@@ -5470,8 +5650,8 @@
           el.className = 'day-event ' + cls;
           el.innerHTML = `
             <div class="time-col">
-              <div class="start">${pad(ev.sh)}:${pad(ev.sm)}</div>
-              <div class="end">→ ${pad(ev.eh)}:${pad(ev.em)}</div>
+              <div class="start">${fmt12(ev.sh, ev.sm)}</div>
+              <div class="end">→ ${fmt12(ev.eh, ev.em)}</div>
             </div>
             <div class="ev-body">
               <div class="ev-title">${ev.note || TYPE_LABEL[ev.type]} · ${ev.horse}</div>
@@ -5484,6 +5664,12 @@
         });
       }
       function pad(n) { return String(n).padStart(2, '0'); }
+      // US time format · 14:00 → "2 pm", 9:30 → "9:30 am", 12:00 → "12 pm"
+      function fmt12(h, m) {
+        const meridiem = h >= 12 ? 'pm' : 'am';
+        const h12 = h === 0 ? 12 : h > 12 ? h - 12 : h;
+        return (m == null || m === 0) ? `${h12} ${meridiem}` : `${h12}:${pad(m)} ${meridiem}`;
+      }
 
       function renderWeekView() {
         const wh = document.getElementById('week-header');
@@ -5503,7 +5689,7 @@
         for (let h = 6; h <= 20; h++) {
           const hLbl = document.createElement('div');
           hLbl.className = 'week-hour';
-          hLbl.textContent = `${pad(h)}`;
+          hLbl.textContent = fmt12(h, 0);
           hCol.appendChild(hLbl);
         }
         grid.appendChild(hCol);
@@ -5528,7 +5714,7 @@
                           ev.type === 'paddocks' ? '📍 ' + ev.horse :
                           ev.type === 'rides' && cls === 'farrier' ? '🔨 ' + ev.horse :
                           ev.horse;
-            el.innerHTML = `<div class="et">${pad(ev.sh)}:${pad(ev.sm)}</div><div class="en">${title}</div>`;
+            el.innerHTML = `<div class="et">${fmt12(ev.sh, ev.sm)}</div><div class="en">${title}</div>`;
             el.addEventListener('click', () => openEventSheet(ev));
             col.appendChild(el);
           });
@@ -5710,7 +5896,7 @@
                       (ev.note || TYPE_LABEL[ev.type]) + ' · ' + ev.horse + (ev.tr ? ' with ' + TR_NAME[ev.tr] : '');
         document.getElementById('sh-title').textContent = title;
         const dayName = DAYS_FULL[ev.dow];
-        document.getElementById('sh-when').textContent = `${dayName}, May ${WEEK_DATES[ev.dow]} · ${pad(ev.sh)}:${pad(ev.sm)} → ${pad(ev.eh)}:${pad(ev.em)}`;
+        document.getElementById('sh-when').textContent = `${dayName}, May ${WEEK_DATES[ev.dow]} · ${fmt12(ev.sh, ev.sm)} → ${fmt12(ev.eh, ev.em)}`;
         document.getElementById('sh-horse').textContent = ev.horse;
         document.getElementById('sh-rider').textContent = ev.rider || '—';
         document.getElementById('sh-where').textContent = ev.loc || '—';
@@ -5783,21 +5969,21 @@
 
       const STORIES = {
         bella: { who: 'Bella · today', when: 'Live · 25 min ago', scenes: [
-          { ic:'✨', t:'Groomed and ready', s:"Jess gave Bella a full brush at 7:45. Ready for her 9 am.", by:'7:45 · by Jess' },
-          { ic:'🐎', t:'Lunge with Sam', s:"20 min · indoor · 'forward and supple today'.", by:'8:00 · by Sam' },
-          { ic:'🏇', t:'Jump session with Maddy', s:"45 min · 1m10 grid · clean round.", by:'9:00 · by Sam' },
-          { ic:'🥕', t:'Treats from Sofia', s:'Sofia stopped by to say hi.', by:'10:20' },
-          { ic:'💤', t:'Resting in stall 12', s:'Cool down complete. Next ride 4 pm.', by:'11:00' },
+          { ic:'✨', t:'Groomed and ready', s:"Jess gave Bella a full brush at 7:45 am. Ready for her 9 am.", by:'7:45 am · by Jess' },
+          { ic:'🐎', t:'Lunge with Sam', s:"20 min · indoor · 'forward and supple today'.", by:'8 am · by Sam' },
+          { ic:'🏇', t:'Jump session with Maddy', s:"45 min · 1m10 grid · clean round.", by:'9 am · by Sam' },
+          { ic:'🥕', t:'Treats from Sofia', s:'Sofia stopped by to say hi.', by:'10:20 am' },
+          { ic:'💤', t:'Resting in stall 12', s:'Cool down complete. Next ride 4 pm.', by:'11 am' },
         ]},
         atlas: { who: 'Atlas · today', when: '3 h ago', scenes: [
-          { ic:'💊', t:'Morning meds', s:"Jess logged Atlas's dose. Next in 8 h.", by:'7:20 · by Jess' },
-          { ic:'🔨', t:'Farrier check booked', s:'Mike Garcia · Thursday 10 am.', by:'9:00 · Mateo' },
-          { ic:'🐎', t:'Walk-out with Mateo', s:'Easy 15 min after stall rest.', by:'10:30' },
+          { ic:'💊', t:'Morning meds', s:"Jess logged Atlas's dose. Next in 8 h.", by:'7:20 am · by Jess' },
+          { ic:'🔨', t:'Farrier check booked', s:'Mike Garcia · Thursday 10 am.', by:'9 am · Mateo' },
+          { ic:'🐎', t:'Walk-out with Mateo', s:'Easy 15 min after stall rest.', by:'10:30 am' },
         ]},
         storm: { who: 'Storm · today', when: 'Live · 12 min ago', scenes: [
-          { ic:'🩺', t:'Vet · soundness check', s:'All clear. Cleared for jumping next week.', by:'8:30 · Dr. Torres' },
-          { ic:'🐎', t:'Flat with Jodie', s:"30 min · 'tight on the right rein'.", by:'10:00 · by Jodie' },
-          { ic:'📸', t:'New conformation photos', s:'Sarah took photos for the Sunday show.', by:'11:15' },
+          { ic:'🩺', t:'Vet · soundness check', s:'All clear. Cleared for jumping next week.', by:'8:30 am · Dr. Torres' },
+          { ic:'🐎', t:'Flat with Jodie', s:"30 min · 'tight on the right rein'.", by:'10 am · by Jodie' },
+          { ic:'📸', t:'New conformation photos', s:'Sarah took photos for the Sunday show.', by:'11:15 am' },
         ]},
         indigo: { who: 'Indigo · yesterday', when: 'Yesterday', scenes: [
           { ic:'🐎', t:'Jump school with Mateo', s:'1m05 · two refusals, then clean.', by:"y'day 4 pm" },
@@ -5806,13 +5992,13 @@
           { ic:'🚿', t:'Bath day', s:'Jess gave Juno a full bath after her dressage test.', by:"y'day 6 pm" },
         ]},
         jess: { who: 'Jess · groom', when: 'Today · 3 done', scenes: [
-          { ic:'✓', t:'Stalls 1–6 mucked', s:'All bedded and watered.', by:'7:15' },
-          { ic:'✨', t:'Groomed Bella for 9 am', s:"Photo sent to Sofia · 'looking sharp!'", by:'7:45' },
-          { ic:'🥕', t:'Morning feed done', s:'All horses fed by 8 am.', by:'8:10' },
+          { ic:'✓', t:'Stalls 1–6 mucked', s:'All bedded and watered.', by:'7:15 am' },
+          { ic:'✨', t:'Groomed Bella for 9 am', s:"Photo sent to Sofia · 'looking sharp!'", by:'7:45 am' },
+          { ic:'🥕', t:'Morning feed done', s:'All horses fed by 8 am.', by:'8:10 am' },
         ]},
         sam: { who: 'Sam · trainer', when: 'Today · 2 lessons coached', scenes: [
-          { ic:'🏇', t:'Jump lesson with Maddy', s:'Bella · 45 min · 1m10 grid.', by:'9:00' },
-          { ic:'🐎', t:'Flat lesson with Sofia', s:'Storm · 45 min · supple work.', by:'10:30' },
+          { ic:'🏇', t:'Jump lesson with Maddy', s:'Bella · 45 min · 1m10 grid.', by:'9 am' },
+          { ic:'🐎', t:'Flat lesson with Sofia', s:'Storm · 45 min · supple work.', by:'10:30 am' },
         ]},
       };
 
