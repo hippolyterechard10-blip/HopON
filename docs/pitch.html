@@ -1090,6 +1090,62 @@
       }
       .upcoming-card.show .uc-lbl { color: var(--brand-700); }
 
+      /* Today's extra · daily rotating barn offer (extras services,
+         trail rides, photo sessions). Distinct tinted card with its
+         own visual identity — not a regular service prompt. */
+      .today-extra {
+        position: relative;
+        display: flex; flex-direction: column;
+        gap: 2px;
+        padding: 14px 16px;
+        background: linear-gradient(135deg, var(--brand-50), var(--brand-100));
+        border: 1px solid var(--brand-200);
+        border-radius: 16px;
+      }
+      [data-theme="neo"] .today-extra,
+      [data-theme="neo-dark"] .today-extra {
+        background: linear-gradient(135deg, var(--brand-50), var(--brand-100));
+      }
+      .te-eyebrow {
+        font-size: 9.5px;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+        color: var(--brand-700);
+        text-transform: uppercase;
+      }
+      .te-emoji {
+        position: absolute;
+        top: 12px; right: 14px;
+        font-size: 28px;
+        line-height: 1;
+      }
+      .te-title {
+        font-family: var(--serif); font-style: italic;
+        font-size: 19px;
+        color: var(--ink1);
+        margin-top: 2px;
+        padding-right: 38px;
+      }
+      .te-sub {
+        font-size: 11.5px;
+        color: var(--ink2);
+        margin-top: 2px;
+      }
+      .te-cta {
+        align-self: flex-end;
+        margin-top: 6px;
+        padding: 7px 14px;
+        background: var(--brand-700);
+        color: white;
+        border: 0; border-radius: 10px;
+        font-family: var(--sans);
+        font-weight: 700;
+        font-size: 12px;
+        letter-spacing: 0.3px;
+        cursor: pointer;
+      }
+      .te-cta:active { transform: scale(0.98); }
+
       .client-cta {
         width: 100%; padding: 16px;
         background: var(--brand-500); color: white;
@@ -3993,6 +4049,16 @@
                 <span class="uc-when">Jun 5</span>
                 <span class="uc-meta">WEF · 1m10 class</span>
               </div>
+            </div>
+
+            <!-- Today's extra · daily rotating barn offer (V1: static
+                 demo; production rotates by day + horse personalization). -->
+            <div class="today-extra" data-go="booking">
+              <span class="te-emoji">🌅</span>
+              <div class="te-eyebrow">Today's extra · barn offer</div>
+              <div class="te-title">Sunset trail ride with Sam</div>
+              <div class="te-sub">Wed 6 pm · 60 min · $80 · 2 slots left</div>
+              <button class="te-cta">Book →</button>
             </div>
 
             <!-- Upcoming service · upsell opportunity tied to the horse -->
