@@ -522,11 +522,22 @@
       .eyebrow[data-section="next"]::before    { background: linear-gradient(180deg, var(--brand-800), var(--brand-500)); }
       .eyebrow[data-section="lessons"]::before { background: var(--brand-500); }
       .eyebrow[data-section="todos"]::before   { background: var(--brand-300); }
+      .eyebrow[data-section="events"]::before  { background: var(--brand-500); }
       .eyebrow[data-section="ops"]::before     { background: var(--brand-700); }
       .eyebrow[data-section="business"]::before{ background: var(--ink2); }
       .eyebrow[data-section="health"]::before  { background: linear-gradient(180deg, var(--brand-100), var(--brand-700)); }
       .eyebrow[data-section="upcoming"]::before{ background: var(--brand-500); }
       .eyebrow[data-section="feed"]::before    { background: var(--ink2); }
+      /* Aside on an eyebrow · communicates the privacy / visibility
+         of the rows below it (e.g. "whiteboard · team only" vs
+         "calendar · visible to clients"). Sits on the same line. */
+      .eyebrow .aside {
+        margin-left: 6px;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+        text-transform: none;
+        opacity: 0.7;
+      }
       .card {
         background: var(--surface);
         border: 1px solid var(--border);
@@ -4002,12 +4013,25 @@
               <div class="trainer-row"><span class="time">5 pm</span><div class="who"><div class="n">Group · 4 riders</div><div class="m">Outdoor · Beginner · 60 min</div></div><span class="horse-pill">MIX</span></div>
             </div>
 
-            <div class="eyebrow" data-section="todos" style="margin-top:6px;">To-dos &amp; events · 3 items</div>
+            <!-- Two distinct surfaces, clearly labeled so first-time users
+                 understand the privacy boundary:
+                 · tasks live on the WHITEBOARD (team-only)
+                 · events live on the CALENDAR (visible to clients) -->
+            <div class="eyebrow" data-section="todos" style="margin-top:6px;">
+              My tasks · 2 <span class="aside">whiteboard · team only</span>
+            </div>
             <div class="row-group todos">
               <div class="task-row" data-task><div class="task-slider"></div><div class="text">Review May invoices · 6 unpaid · oldest 9 days</div></div>
               <div class="task-row" data-task><div class="task-slider"></div><div class="text">Sign Bella's vaccine consent · vet on Friday</div></div>
+              <div class="rg-arrow" data-go="whiteboard" aria-label="View all on the whiteboard">›</div>
+            </div>
+
+            <div class="eyebrow" data-section="events" style="margin-top:6px;">
+              My events · 1 <span class="aside">calendar · visible to clients</span>
+            </div>
+            <div class="row-group">
               <div class="trainer-row"><span class="time">6 pm</span><div class="who"><div class="n">Riders' meeting</div><div class="m">Barn lounge · 45 min · winter plan</div></div><span class="event-pill">EVENT</span></div>
-              <div class="rg-arrow" data-go="whiteboard" aria-label="View all to-dos">›</div>
+              <div class="rg-arrow" data-go="calendar" aria-label="View all in calendar">›</div>
             </div>
 
             <!-- Feed mini · barn posts · auto-news · external · last 7 days -->
@@ -4100,16 +4124,25 @@
               <span class="horse-pill">BELLA</span>
             </div>
 
-            <!-- My day · personal to-dos + events · trainers also do barn work.
-                 Wrapped in .row-group.todos so the section reads as a
-                 lightweight checklist, visually distinct from the solid
-                 lesson card below. Section hides entirely when empty. -->
-            <div class="eyebrow" data-section="todos" style="margin-top:6px;">My day · 3 items</div>
+            <!-- Two distinct surfaces, clearly labeled so first-time users
+                 understand the privacy boundary:
+                 · tasks live on the WHITEBOARD (team-only)
+                 · events live on the CALENDAR (visible to clients) -->
+            <div class="eyebrow" data-section="todos" style="margin-top:6px;">
+              My tasks · 2 <span class="aside">whiteboard · team only</span>
+            </div>
             <div class="row-group todos">
               <div class="task-row" data-task><div class="task-slider"></div><div class="text">Muck stalls 4 to 7 · before lunch</div></div>
               <div class="task-row" data-task><div class="task-slider"></div><div class="text">Hand-walk Storm 30 min · injury recovery</div></div>
+              <div class="rg-arrow" data-go="whiteboard" aria-label="View all on the whiteboard">›</div>
+            </div>
+
+            <div class="eyebrow" data-section="events" style="margin-top:6px;">
+              My events · 1 <span class="aside">calendar · visible to clients</span>
+            </div>
+            <div class="row-group">
               <div class="trainer-row"><span class="time">6 pm</span><div class="who"><div class="n">Riders' meeting</div><div class="m">Barn lounge · 45 min · winter plan</div></div><span class="event-pill">EVENT</span></div>
-              <div class="rg-arrow" data-go="whiteboard" aria-label="View all to-dos">›</div>
+              <div class="rg-arrow" data-go="calendar" aria-label="View all in calendar">›</div>
             </div>
 
             <!-- Today's lessons · grouped solid card · 3 visible, rest
@@ -4232,7 +4265,9 @@
             <div class="task-row up-next" data-task><div class="task-slider"></div><div class="text">Bella · groom + photo · 9:00 am</div></div>
 
             <!-- Rest of the day -->
-            <div class="eyebrow" data-section="lessons" style="margin-top:6px;">Rest of your day · 4 left</div>
+            <div class="eyebrow" data-section="todos" style="margin-top:6px;">
+              Rest of your day · 4 left <span class="aside">whiteboard · team only</span>
+            </div>
             <div class="task-row urgent" data-task><div class="task-slider"></div><div class="text">! Storm · tack up · 9 am</div></div>
             <div class="task-row" data-task><div class="task-slider"></div><div class="text">Indigo · feed PM</div></div>
             <div class="task-row" data-task><div class="task-slider"></div><div class="text">Juno · groom + photo</div></div>
