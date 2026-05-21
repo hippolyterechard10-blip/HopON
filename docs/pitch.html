@@ -2873,6 +2873,43 @@
       }
       .wb-task.urgent .lbl { color: var(--brand-800); font-weight: 800; }
 
+      /* "+ Add task" button at the bottom of each person card.
+         Pre-fills the assignee on tap. Lives inside .wb-row-details
+         after the last task. */
+      .wb-add-task {
+        display: flex; align-items: center; justify-content: center;
+        gap: 5px;
+        width: 100%;
+        margin-top: 4px;
+        padding: 7px 6px;
+        background: transparent;
+        border: 0;
+        border-top: 1px dashed var(--border);
+        cursor: pointer;
+        font-family: var(--sans);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.4px;
+        color: var(--ink3);
+        text-transform: uppercase;
+        transition: color 160ms, background 160ms;
+      }
+      .wb-add-task:hover {
+        color: var(--brand-700);
+        background: var(--brand-50);
+      }
+      .wb-add-task::before {
+        content: "+";
+        font-size: 13px;
+        font-weight: 700;
+      }
+      /* Full-view sheet · larger add button to match scale. */
+      .wp-body .wb-add-task {
+        font-size: 12px;
+        padding: 12px 6px;
+        margin-top: 8px;
+      }
+
       /* ── Feed · Stories + posts ────────────────────── */
       .feed-screen { flex: 1; min-height: 0; display: flex; flex-direction: column; }
       .feed-body {
@@ -5208,6 +5245,7 @@
                 <div class="wb-task done"><div class="task-slider"></div><span class="lbl">Stretch · extras</span><span class="when">9:30 am</span></div>
                 <div class="wb-task"><div class="task-slider"></div><span class="lbl">Choose tack · Atlas</span><span class="when">11 am</span></div>
                 <div class="wb-task"><div class="task-slider"></div><span class="lbl">Prep new horse</span><span class="when">2 pm</span></div>
+                <button class="wb-add-task" data-add-task>Add task</button>
               </div>
             </div>
 
@@ -5227,6 +5265,7 @@
                 <div class="wb-task done"><div class="task-slider"></div><span class="lbl">Coach · Pilo</span><span class="when">7 am</span></div>
                 <div class="wb-task"><div class="task-slider"></div><span class="lbl">Carrier form</span><span class="when">noon</span></div>
                 <div class="wb-task urgent"><div class="task-slider"></div><span class="lbl">Call vet · Bella</span><span class="when">ASAP</span></div>
+                <button class="wb-add-task" data-add-task>Add task</button>
               </div>
             </div>
 
@@ -5248,6 +5287,7 @@
                 <div class="wb-task done"><div class="task-slider"></div><span class="lbl">Bella · groom ✨</span><span class="when">7:45 am</span></div>
                 <div class="wb-task"><div class="task-slider"></div><span class="lbl">Feed pm</span><span class="when">5 pm</span></div>
                 <div class="wb-task"><div class="task-slider"></div><span class="lbl">Blankets</span><span class="when">6 pm</span></div>
+                <button class="wb-add-task" data-add-task>Add task</button>
               </div>
             </div>
 
@@ -5266,6 +5306,7 @@
               <div class="wb-row-details">
                 <div class="wb-task"><div class="task-slider"></div><span class="lbl">Muck 7–12</span><span class="when">10 am</span></div>
                 <div class="wb-task"><div class="task-slider"></div><span class="lbl">Hay delivery</span><span class="when">2 pm</span></div>
+                <button class="wb-add-task" data-add-task>Add task</button>
               </div>
             </div>
 
@@ -5286,6 +5327,7 @@
                 <div class="wb-task done"><div class="task-slider"></div><span class="lbl">Flat · Indigo</span><span class="when">10 am</span></div>
                 <div class="wb-task done"><div class="task-slider"></div><span class="lbl">Jump grid · Juno</span><span class="when">11 am</span></div>
                 <div class="wb-task done"><div class="task-slider"></div><span class="lbl">Cool down · all</span><span class="when">12 pm</span></div>
+                <button class="wb-add-task" data-add-task>Add task</button>
               </div>
             </div>
           </div>
@@ -6826,6 +6868,17 @@
           e.stopPropagation();
           task.classList.toggle("done");
         });
+      });
+      // "+ Add task" button per card · pre-fills the assignee.
+      // Uses event delegation so it works for both the inline cards
+      // and the cloned card inside the person sheet.
+      document.addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-add-task]");
+        if (!btn) return;
+        e.stopPropagation();
+        const row = btn.closest(".wb-row");
+        const who = row?.querySelector(".wb-row-name .n")?.textContent.trim() || "this person";
+        showToast(`New task for ${who}`, "Composer pre-filled · assignee locked.", "+");
       });
 
       // ── Notifications sheet · bell / drawer entry / approval tile ──
