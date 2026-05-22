@@ -7807,6 +7807,175 @@
             showToast("Event added", `${state.type || "Event"} · ${state.horse || "all horses"} · ${state.when || "TBD"}`, "📅");
           },
         },
+
+        cost: {
+          title: "Add cost entry",
+          submit: (s) => s.amount ? `Log $${s.amount}` : "Log cost",
+          sections: [
+            { key: "category", label: "Category", required: true, options: [
+              { v: "Feed",        ic: "🥕" },
+              { v: "Bedding",     ic: "🌾" },
+              { v: "Veterinary",  ic: "🩺" },
+              { v: "Farrier",     ic: "🔨" },
+              { v: "Equipment",   ic: "🔧" },
+              { v: "Transport",   ic: "🚚" },
+              { v: "Insurance",   ic: "🛡️" },
+              { v: "Staff",       ic: "👥" },
+              { v: "Utilities",   ic: "💡" },
+              { v: "Other",       ic: "·" },
+            ]},
+            { key: "amount", label: "Amount (USD)", required: true, kind: "input",
+              type: "number", placeholder: "e.g. 240" },
+            { key: "when", label: "When", required: true, options: [
+              { v: "Today" }, { v: "Yesterday" }, { v: "This week" },
+              { v: "Last week" }, { v: "Pick date…" },
+            ]},
+            { key: "note", label: "Description (optional)", kind: "text",
+              placeholder: "e.g. 'May hay delivery · 40 bales'…" },
+          ],
+          onSubmit: (state) => {
+            showToast(`$${state.amount} · ${state.category}`,
+              `${state.when} · logged in P&L · attach invoice in production.`,
+              "🧾");
+          },
+        },
+
+        invite: {
+          title: "Invite a team member",
+          submit: () => "Send invite link",
+          sections: [
+            { key: "role", label: "Role", required: true, options: [
+              { v: "Trainer",       ic: "🐎" },
+              { v: "Groom",         ic: "🪣" },
+              { v: "Barn manager",  ic: "📋" },
+              { v: "Secretary",     ic: "📞" },
+              { v: "Pro rider",     ic: "🏆" },
+            ]},
+            { key: "name", label: "Name", required: true, kind: "input",
+              placeholder: "First name" },
+            { key: "contact", label: "Phone or email", required: true, kind: "input",
+              placeholder: "(561) 555-… or them@email.com" },
+            { key: "access", label: "Permissions", required: true, options: [
+              { v: "Full team access" },
+              { v: "Tasks only" },
+              { v: "Read only" },
+            ]},
+          ],
+          onSubmit: (state) => {
+            showToast(`Invite sent to ${state.name}`,
+              `Role: ${state.role} · ${state.access} · expires in 24 h.`,
+              "🔗");
+          },
+        },
+
+        partner: {
+          title: "Add a partner",
+          submit: () => "Add partner",
+          sections: [
+            { key: "type", label: "Type", required: true, options: [
+              { v: "Vet",            ic: "🩺" },
+              { v: "Farrier",        ic: "🔨" },
+              { v: "Physio",         ic: "🦴" },
+              { v: "Dentist",        ic: "🦷" },
+              { v: "Transport",      ic: "🚚" },
+              { v: "Saddle fitter",  ic: "🪛" },
+              { v: "Nutritionist",   ic: "🥕" },
+              { v: "Other",          ic: "·" },
+            ]},
+            { key: "name", label: "Name", required: true, kind: "input",
+              placeholder: "Dr. ____" },
+            { key: "phone", label: "Phone", required: true, kind: "input",
+              type: "tel", placeholder: "(561) 555-0000" },
+            { key: "note", label: "Note (optional)", kind: "text",
+              placeholder: "e.g. 'on call Friday mornings'…" },
+          ],
+          onSubmit: (state) => {
+            showToast(`${state.name} added`,
+              `${state.type} · QR code generated for visits.`,
+              "🤝");
+          },
+        },
+
+        reminder: {
+          title: "Send invoice reminder",
+          submit: (s) => "Send via " + (s.channel || "email"),
+          ctxLabel: (ctx) => ctx.client ? `to ${ctx.client}` : null,
+          sections: [
+            { key: "tone", label: "Tone", required: true, options: [
+              { v: "Friendly nudge", ic: "🙂" },
+              { v: "Standard",        ic: "·" },
+              { v: "Final notice",    ic: "⚠️" },
+            ]},
+            { key: "channel", label: "Channel", required: true, options: [
+              { v: "Email",    ic: "✉️" },
+              { v: "SMS",      ic: "💬" },
+              { v: "Both",     ic: "📨" },
+            ]},
+            { key: "note", label: "Add a personal line (optional)", kind: "text",
+              placeholder: "e.g. 'happy to chat if anything is unclear'…" },
+          ],
+          onSubmit: (state, ctx) => {
+            const who = ctx.client || "client";
+            showToast(`Reminder sent to ${who}`,
+              `${state.tone} · via ${state.channel} · we'll auto-retry in 7 days.`,
+              "📨");
+          },
+        },
+
+        paid: {
+          title: "Mark invoice paid",
+          submit: () => "Mark paid",
+          ctxLabel: (ctx) => ctx.client ? `· ${ctx.client}` : null,
+          sections: [
+            { key: "method", label: "Payment method", required: true, options: [
+              { v: "Stripe (card)",  ic: "💳" },
+              { v: "Zelle",          ic: "📲" },
+              { v: "Square",         ic: "🟪" },
+              { v: "Cash",           ic: "💵" },
+              { v: "Check",          ic: "📝" },
+              { v: "Other",          ic: "·" },
+            ]},
+            { key: "when", label: "Received", required: true, options: [
+              { v: "Today" }, { v: "Yesterday" }, { v: "Last week" }, { v: "Custom date" },
+            ]},
+            { key: "note", label: "Note (optional)", kind: "text",
+              placeholder: "e.g. 'tipped trainer cash · already given'…" },
+          ],
+          onSubmit: (state, ctx) => {
+            const who = ctx.client || "client";
+            showToast(`Paid · ${who}`,
+              `${state.method} · received ${state.when?.toLowerCase()} · receipt sent.`,
+              "💰");
+          },
+        },
+
+        prescription: {
+          title: "Upload prescription",
+          submit: () => "Save + auto-create treatment",
+          sections: [
+            { key: "source", label: "Pick source", required: true, options: [
+              { v: "Take photo",     ic: "📷" },
+              { v: "Photo library",  ic: "🖼" },
+              { v: "Files",          ic: "📁" },
+            ]},
+            { key: "horse", label: "For horse", required: true,
+              options: HORSES.map(h => ({ v: h, ic: "🐴" })) },
+            { key: "kind", label: "What is it", required: true, options: [
+              { v: "Daily supplement", ic: "💊" },
+              { v: "Antibiotic",       ic: "💉" },
+              { v: "Pain mgmt",        ic: "🩹" },
+              { v: "Wormer",           ic: "💊" },
+              { v: "Other",            ic: "·" },
+            ]},
+            { key: "note", label: "Note (optional)", kind: "text",
+              placeholder: "e.g. 'twice daily · empty stomach'…" },
+          ],
+          onSubmit: (state) => {
+            showToast("Prescription saved",
+              `${state.kind} · ${state.horse} · auto-created a treatment on the horse · archived.`,
+              "📎");
+          },
+        },
       };
 
       function renderComposer(name, ctx) {
@@ -7838,6 +8007,18 @@
               refreshSubmit();
             });
             wrap.appendChild(ta);
+          } else if (sec.kind === "input") {
+            const inp = document.createElement("input");
+            inp.type = sec.type || "text";
+            inp.className = "cs-text";
+            inp.placeholder = sec.placeholder || "";
+            if (sec.prefix) inp.dataset.prefix = sec.prefix;
+            inp.addEventListener("input", () => {
+              csState[sec.key] = inp.value;
+              c.afterState?.(csState);
+              refreshSubmit();
+            });
+            wrap.appendChild(inp);
           } else {
             const row = document.createElement("div");
             row.className = "cs-chips";
@@ -7912,6 +8093,53 @@
       document.getElementById("cal-add")?.addEventListener("click", (e) => {
         e.stopImmediatePropagation();
         openComposer("event", {});
+      }, true);
+
+      // Wire the remaining create / action buttons to their composers
+      // (capture phase so they pre-empt the generic [data-stub] toast).
+      document.addEventListener("click", (e) => {
+        // Dashboard '+ Add cost entry'
+        if (e.target.closest(".add-cost")) {
+          e.stopImmediatePropagation();
+          openComposer("cost", {});
+          return;
+        }
+        // Stable '+ Invite a team member'
+        const invite = e.target.closest(".stable-action.invite");
+        if (invite) {
+          e.stopImmediatePropagation();
+          const text = (invite.textContent || "").toLowerCase();
+          if (text.includes("partner")) openComposer("partner", {});
+          else openComposer("invite", {});
+          return;
+        }
+        // Dashboard 'Send reminder' / 'Remind' (any pay-row context)
+        const remindBtn = e.target.closest('.btn.outline, .remind');
+        if (remindBtn && (remindBtn.textContent || "").toLowerCase().includes("remind")) {
+          e.stopImmediatePropagation();
+          // Try to read the client name from the closest invoice row.
+          const row = remindBtn.closest(".list-row, .invoice-row, .pay-row, tr, div");
+          const who = row?.querySelector(".n, .client, strong")?.textContent.trim();
+          openComposer("reminder", { client: who });
+          return;
+        }
+        // Dashboard 'Mark paid ✓'
+        const paidBtn = e.target.closest(".btn.dark");
+        if (paidBtn && /mark paid/i.test(paidBtn.textContent || "")) {
+          e.stopImmediatePropagation();
+          const row = paidBtn.closest(".list-row, .invoice-row, .pay-row, tr, div");
+          const who = row?.querySelector(".n, .client, strong")?.textContent.trim();
+          openComposer("paid", { client: who });
+          return;
+        }
+        // Horse passport 'Choose file' prescription
+        const choose = e.target.closest('button');
+        if (choose && /choose file/i.test(choose.textContent || "") &&
+            choose.closest('[class*="UPLOAD"], .hp-info-card')) {
+          e.stopImmediatePropagation();
+          openComposer("prescription", {});
+          return;
+        }
       }, true);
 
       // ── Partner QR sheet · external access without account ──
