@@ -7699,7 +7699,7 @@
       const COMPOSERS = {
         task: {
           title: "Add task",
-          submit: () => "Add to " + (csState._ctx?.assignee || "board"),
+          submit: () => "Add to " + (csState.assignee || csState._ctx?.assignee || "board"),
           ctxLabel: (ctx) => ctx.assignee ? `for ${ctx.assignee}` : null,
           sections: [
             { key: "type", label: "Type", required: true, options: [
@@ -7712,6 +7712,16 @@
               { v: "Photo",      ic: "📷" },
               { v: "Custom",     ic: "✎" },
             ]},
+            // Assignee chips · only rendered when we don't already have
+            // a context (e.g. tapping +Add task on Sam's wb-row pre-locks
+            // assignee · tapping Task from the FAB picks here).
+            { key: "assignee", label: "Assign to", required: true,
+              skipIfCtx: "assignee",
+              options: [
+                { v: "Sam",   ic: "👤" }, { v: "Sofia", ic: "👤" }, { v: "Jodie", ic: "👤" },
+                { v: "Maddy", ic: "👤" }, { v: "Anna",  ic: "👤" }, { v: "Jess",  ic: "🪣" },
+                { v: "Marc",  ic: "🪣" }, { v: "Me",    ic: "🙋" },
+              ]},
             { key: "horse", label: "Horse", options: HORSES.map(h => ({ v: h, ic: "🐴" })).concat([{ v: "Any horse", ic: "·" }]) },
             { key: "when", label: "When", options: [
               { v: "Now" }, { v: "Before lunch" }, { v: "This afternoon" },
@@ -7721,7 +7731,7 @@
               placeholder: "e.g. 'be gentle on the off-fore'…" },
           ],
           onSubmit: (state, ctx) => {
-            const assignee = ctx.assignee || "Jess";
+            const assignee = ctx.assignee || state.assignee || "Jess";
             const label = state.type === "Custom" && state.note ? state.note
                          : (state.type || "Task") +
                            (state.horse && state.horse !== "Any horse" ? ` · ${state.horse}` : "");
@@ -7989,6 +7999,12 @@
         else { csCtx.hidden = true; }
         csBody.innerHTML = "";
         c.sections.forEach(sec => {
+          // Skip sections that are pre-filled by context (e.g. assignee
+          // is locked when +Add task is tapped from a wb-row).
+          if (sec.skipIfCtx && (ctx || {})[sec.skipIfCtx]) {
+            csState[sec.key] = ctx[sec.skipIfCtx];
+            return;
+          }
           const wrap = document.createElement("div");
           wrap.className = "cs-section";
           wrap.dataset.sectionKey = sec.key;
@@ -8383,23 +8399,26 @@
       const petalsEl = document.getElementById("petals");
       const PETAL_RADIUS = 152;
 
-      // Petal universe — id → emoji, label, action
+      // Petal universe — id → emoji, label, action.
+      // Where a composer flow exists, the petal opens that composer
+      // directly (no toast fakery). Petals without a composer yet
+      // still fall back to a contextual toast.
       const PETALS = {
-        lesson:  { emoji: "📚", label: "Lesson",  run: () => show("booking") },
-        event:   { emoji: "📅", label: "Event",   run: () => show("calendar") },
-        todo:    { emoji: "✅", label: "To-do",   run: () => showToast("To-do added", "Tap My to-do on Home to see it.", "✓") },
+        lesson:  { emoji: "📚", label: "Lesson",  run: () => openComposer("lesson", {}) },
+        event:   { emoji: "📅", label: "Event",   run: () => openComposer("event", {}) },
+        todo:    { emoji: "✅", label: "Task",    run: () => openComposer("task", {}) },
         post:    { emoji: "💬", label: "Post",    run: () => show("broadcast") },
         service: { emoji: "✨", label: "Service", run: () => showToast("Service requested", "Awaiting admin approval.", "✨") },
         horse:   { emoji: "🐴", label: "Horse",   run: () => showToast("Add horse", "Horse composer opens.", "🐴") },
         client:  { emoji: "👤", label: "Client",  run: () => showToast("Add client", "QR · link · CSV import.", "👤") },
-        team:    { emoji: "🧑", label: "Team",    run: () => showToast("Invite team", "Send invite link.", "🧑") },
-        partner: { emoji: "🤝", label: "Partner", run: () => showToast("Add partner", "Vet · farrier · transport…", "🤝") },
+        team:    { emoji: "🧑", label: "Team",    run: () => openComposer("invite", {}) },
+        partner: { emoji: "🤝", label: "Partner", run: () => openComposer("partner", {}) },
         photo:   { emoji: "📷", label: "Photo",   run: () => show("camera") },
         poll:    { emoji: "📊", label: "Poll",    run: () => showToast("Poll started", "Pick groups to ask.", "📊") },
         note:    { emoji: "📝", label: "Note",    run: () => showToast("Note added", "Saved on horse timeline.", "📝") },
         health:  { emoji: "🩺", label: "Health",  run: () => showToast("Health log", "Treatment composer opens.", "🩺") },
-        invoice: { emoji: "🧾", label: "Invoice", run: () => showToast("Invoice draft", "Pre-filled from this month.", "🧾") },
-        payment: { emoji: "💰", label: "Payment", run: () => showToast("Payment recorded", "Stripe · Zelle · Square.", "💰") },
+        invoice: { emoji: "🧾", label: "Invoice", run: () => openComposer("cost", {}) },
+        payment: { emoji: "💰", label: "Payment", run: () => openComposer("paid", {}) },
       };
 
       // Matrix: screen × role → petal ids (null/undefined = FAB hidden)
