@@ -503,6 +503,137 @@
       .wp-body .wb-task.done .task-slider::after { left: 20px; }
       .wp-body .wb-task .when { font-size: 12.5px; }
 
+      /* ── Composer sheet · reusable bottom sheet for create flows
+         (add task, book lesson, new event, add cost, invite, etc.) ─*/
+      .composer-sheet {
+        position: absolute; left: 0; right: 0; bottom: 0;
+        max-height: 84%;
+        background: var(--bg);
+        border-radius: 22px 22px 0 0;
+        transform: translateY(110%);
+        transition: transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1);
+        z-index: 22;
+        display: flex; flex-direction: column;
+        box-shadow: 0 -12px 32px rgba(0,0,0,0.20);
+      }
+      .composer-sheet.open { transform: translateY(0); }
+      .composer-sheet .ns-grabber {
+        width: 36px; height: 4px;
+        background: var(--border);
+        border-radius: 2px;
+        margin: 8px auto 4px;
+        flex: 0 0 auto;
+      }
+      .cs-head {
+        display: flex; align-items: center; gap: 10px;
+        padding: 8px 16px 12px;
+        flex: 0 0 auto;
+      }
+      .cs-title {
+        font-family: var(--serif); font-style: italic;
+        font-size: 22px;
+        color: var(--ink1);
+        flex: 1;
+      }
+      .cs-ctx {
+        font-size: 10px; font-weight: 800;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        color: var(--brand-700);
+        background: var(--brand-50);
+        padding: 4px 8px;
+        border-radius: 8px;
+      }
+      .cs-close {
+        width: 28px; height: 28px; border-radius: 14px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        cursor: pointer;
+        color: var(--ink2);
+        font-size: 12px;
+        display: grid; place-items: center;
+      }
+      .cs-body {
+        flex: 1; min-height: 0;
+        overflow-y: auto;
+        padding: 0 16px 12px;
+        display: flex; flex-direction: column; gap: 14px;
+      }
+      .cs-section {
+        display: flex; flex-direction: column; gap: 8px;
+      }
+      .cs-section-lbl {
+        font-size: 10px; font-weight: 800;
+        letter-spacing: 0.5px;
+        color: var(--ink3);
+        text-transform: uppercase;
+        padding-left: 10px;
+        position: relative;
+      }
+      .cs-section-lbl::before {
+        content: "";
+        position: absolute;
+        left: 0; top: 50%;
+        transform: translateY(-50%);
+        width: 3px; height: 11px;
+        border-radius: 2px;
+        background: var(--brand-300);
+      }
+      .cs-chips {
+        display: flex; flex-wrap: wrap; gap: 6px;
+      }
+      .cs-chip {
+        display: inline-flex; align-items: center; gap: 5px;
+        padding: 8px 12px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        font-family: var(--sans);
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--ink1);
+        cursor: pointer;
+        transition: background 160ms, border-color 160ms, color 160ms;
+      }
+      .cs-chip .ic { font-size: 13px; }
+      .cs-chip:hover { background: var(--brand-50); }
+      .cs-chip.on {
+        background: var(--brand-700);
+        border-color: var(--brand-700);
+        color: white;
+      }
+      .cs-text {
+        width: 100%;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 12px 14px;
+        font-family: var(--sans);
+        font-size: 13px;
+        color: var(--ink1);
+        resize: none;
+        outline: none;
+      }
+      .cs-text:focus { border-color: var(--brand-300); }
+      .cs-text::placeholder { color: var(--ink3); }
+      .cs-submit {
+        margin: 12px 16px 18px;
+        padding: 14px;
+        background: var(--brand-700);
+        color: white;
+        border: 0; border-radius: 14px;
+        font-family: var(--sans);
+        font-weight: 800;
+        font-size: 14px;
+        letter-spacing: 0.3px;
+        cursor: pointer;
+        flex: 0 0 auto;
+        transition: background 160ms, transform 160ms;
+      }
+      .cs-submit:hover { background: var(--brand-800); }
+      .cs-submit:active { transform: scale(0.98); }
+      .cs-submit:disabled { background: var(--ink3); cursor: not-allowed; opacity: 0.7; }
+
       /* ── QR partner sheet · external provider scan-to-access ─
          Reuses .wp-sheet mechanics but its own content layout. */
       .qr-sheet .qr-body {
@@ -6472,6 +6603,18 @@
         </div>
       </div>
 
+      <!-- Composer sheet · reusable bottom sheet for create flows -->
+      <div class="composer-sheet" id="composer-sheet" role="dialog" aria-modal="true" aria-label="Composer">
+        <div class="ns-grabber"></div>
+        <div class="cs-head">
+          <div class="cs-title" id="cs-title">Add</div>
+          <div class="cs-ctx" id="cs-ctx" hidden></div>
+          <button class="cs-close" id="cs-close" aria-label="Close">✕</button>
+        </div>
+        <div class="cs-body" id="cs-body"></div>
+        <button class="cs-submit" id="cs-submit">Save</button>
+      </div>
+
       <!-- Partner QR sheet · external provider access without account -->
       <div class="wp-sheet qr-sheet" id="qr-sheet" role="dialog" aria-modal="true" aria-label="Partner QR access">
         <div class="ns-grabber"></div>
@@ -7537,6 +7680,239 @@
           requestAnimationFrame(tick);
         });
       }
+
+      // ── Composer sheet · reusable create-flow engine ─────────
+      // One bottom sheet, repopulated per flow. Each flow declares
+      // a list of sections (chips / textarea), an onSubmit handler,
+      // and optionally a context label (e.g. assignee for +Add task).
+      const HORSES = ["Bella", "Atlas", "Storm", "Indigo", "Juno", "Pippin"];
+      const TRAINERS = ["Sam", "Sofia", "Jodie", "Maddy", "Anna"];
+      const csSheet = document.getElementById("composer-sheet");
+      const csBackdrop = document.getElementById("notif-backdrop");
+      const csTitle = document.getElementById("cs-title");
+      const csCtx = document.getElementById("cs-ctx");
+      const csBody = document.getElementById("cs-body");
+      const csSubmit = document.getElementById("cs-submit");
+      let csState = {};
+      let csCurrent = null;
+
+      const COMPOSERS = {
+        task: {
+          title: "Add task",
+          submit: () => "Add to " + (csState._ctx?.assignee || "board"),
+          ctxLabel: (ctx) => ctx.assignee ? `for ${ctx.assignee}` : null,
+          sections: [
+            { key: "type", label: "Type", required: true, options: [
+              { v: "Groom",      ic: "✨" },
+              { v: "Feed",       ic: "🥕" },
+              { v: "Tack up",    ic: "🐎" },
+              { v: "Hand-walk",  ic: "🚶" },
+              { v: "Lunge",      ic: "🔄" },
+              { v: "Medication", ic: "💊" },
+              { v: "Photo",      ic: "📷" },
+              { v: "Custom",     ic: "✎" },
+            ]},
+            { key: "horse", label: "Horse", options: HORSES.map(h => ({ v: h, ic: "🐴" })).concat([{ v: "Any horse", ic: "·" }]) },
+            { key: "when", label: "When", options: [
+              { v: "Now" }, { v: "Before lunch" }, { v: "This afternoon" },
+              { v: "Tomorrow am" }, { v: "Custom time" },
+            ]},
+            { key: "note", label: "Note (optional)", kind: "text",
+              placeholder: "e.g. 'be gentle on the off-fore'…" },
+          ],
+          onSubmit: (state, ctx) => {
+            const assignee = ctx.assignee || "Jess";
+            const label = state.type === "Custom" && state.note ? state.note
+                         : (state.type || "Task") +
+                           (state.horse && state.horse !== "Any horse" ? ` · ${state.horse}` : "");
+            const when = state.when === "Custom time" ? "today" : (state.when || "today").toLowerCase();
+            // Find the wb-row for the assignee and prepend a new task.
+            let targetRow;
+            document.querySelectorAll(".wb-rows .wb-row").forEach(r => {
+              const n = r.querySelector(".wb-row-name .n")?.textContent.trim();
+              if (n === assignee) targetRow = r;
+            });
+            if (targetRow) {
+              const details = targetRow.querySelector(".wb-row-details");
+              const newTask = document.createElement("div");
+              newTask.className = "wb-task";
+              newTask.innerHTML = `<div class="task-slider"></div><span class="lbl">${label}</span><span class="when">${when}</span>`;
+              newTask.addEventListener("click", () => newTask.classList.toggle("done"));
+              const addBtn = details.querySelector(".wb-add-task");
+              if (addBtn) details.insertBefore(newTask, addBtn);
+              else details.appendChild(newTask);
+            }
+            showToast(`Task added for ${assignee}`, `${label} · ${when}`, "✓");
+          },
+        },
+
+        lesson: {
+          title: "Book a lesson",
+          submit: (state) => state.price ? `Book · ${state.price}` : "Book lesson",
+          sections: [
+            { key: "type", label: "Type", required: true, options: [
+              { v: "Flat",     ic: "🐎" },
+              { v: "Jump",     ic: "🏇" },
+              { v: "Dressage", ic: "🎀" },
+              { v: "Hack",     ic: "🌳" },
+              { v: "Lunge",    ic: "🔄" },
+            ]},
+            { key: "horse", label: "Horse", required: true,
+              options: HORSES.map(h => ({ v: h, ic: "🐴" })) },
+            { key: "trainer", label: "Trainer", required: true,
+              options: TRAINERS.map(t => ({ v: t, ic: "👤" })) },
+            { key: "slot", label: "Slot today", required: true, options: [
+              { v: "2 pm · indoor" },
+              { v: "3:30 pm · outdoor" },
+              { v: "5 pm · group · outdoor" },
+              { v: "6:30 pm · outdoor" },
+            ]},
+            { key: "note", label: "Note (optional)", kind: "text",
+              placeholder: "e.g. 'first session back after farrier'…" },
+          ],
+          afterState: (state) => {
+            const map = { Flat: 110, Jump: 130, Dressage: 140, Hack: 90, Lunge: 70 };
+            state.price = state.type ? `$${map[state.type] || 110}` : "";
+          },
+          onSubmit: (state) => {
+            showToast("Lesson booked",
+              `${state.type} · ${state.horse} · ${state.trainer} · ${state.slot} · ${state.price}`,
+              "📅");
+          },
+        },
+
+        event: {
+          title: "New event",
+          submit: () => "Add to calendar",
+          sections: [
+            { key: "type", label: "Type", required: true, options: [
+              { v: "Lesson",   ic: "📚" },
+              { v: "Vet",      ic: "🩺" },
+              { v: "Farrier",  ic: "🔨" },
+              { v: "Physio",   ic: "🦴" },
+              { v: "Dentist",  ic: "🦷" },
+              { v: "Show",     ic: "🏆" },
+              { v: "Transport",ic: "🚚" },
+              { v: "Meeting",  ic: "💬" },
+            ]},
+            { key: "horse", label: "Horse (optional)", options: HORSES.map(h => ({ v: h, ic: "🐴" })).concat([{ v: "All horses", ic: "·" }]) },
+            { key: "when", label: "When", required: true, options: [
+              { v: "Today · 5 pm" }, { v: "Tomorrow am" }, { v: "Wed 6 pm" },
+              { v: "Fri 9 am" }, { v: "Sat 10 am" }, { v: "Pick date…" },
+            ]},
+            { key: "note", label: "Notes (optional)", kind: "text",
+              placeholder: "e.g. 'soundness check on Atlas + Storm'…" },
+          ],
+          onSubmit: (state) => {
+            showToast("Event added", `${state.type || "Event"} · ${state.horse || "all horses"} · ${state.when || "TBD"}`, "📅");
+          },
+        },
+      };
+
+      function renderComposer(name, ctx) {
+        const c = COMPOSERS[name];
+        if (!c) return;
+        csCurrent = name;
+        csState = { _ctx: ctx || {} };
+        csTitle.textContent = c.title;
+        const ctxLabel = c.ctxLabel?.(ctx || {});
+        if (ctxLabel) { csCtx.textContent = ctxLabel; csCtx.hidden = false; }
+        else { csCtx.hidden = true; }
+        csBody.innerHTML = "";
+        c.sections.forEach(sec => {
+          const wrap = document.createElement("div");
+          wrap.className = "cs-section";
+          wrap.dataset.sectionKey = sec.key;
+          const lbl = document.createElement("div");
+          lbl.className = "cs-section-lbl";
+          lbl.textContent = sec.label;
+          wrap.appendChild(lbl);
+          if (sec.kind === "text") {
+            const ta = document.createElement("textarea");
+            ta.className = "cs-text";
+            ta.rows = 3;
+            ta.placeholder = sec.placeholder || "";
+            ta.addEventListener("input", () => {
+              csState[sec.key] = ta.value;
+              c.afterState?.(csState);
+              refreshSubmit();
+            });
+            wrap.appendChild(ta);
+          } else {
+            const row = document.createElement("div");
+            row.className = "cs-chips";
+            sec.options.forEach(opt => {
+              const chip = document.createElement("button");
+              chip.className = "cs-chip";
+              chip.type = "button";
+              chip.innerHTML = (opt.ic ? `<span class="ic">${opt.ic}</span>` : "") + opt.v;
+              chip.addEventListener("click", () => {
+                row.querySelectorAll(".cs-chip").forEach(x => x.classList.remove("on"));
+                chip.classList.add("on");
+                csState[sec.key] = opt.v;
+                c.afterState?.(csState);
+                refreshSubmit();
+              });
+              row.appendChild(chip);
+            });
+            wrap.appendChild(row);
+          }
+          csBody.appendChild(wrap);
+        });
+        refreshSubmit();
+
+        function refreshSubmit() {
+          const missing = c.sections.some(s => s.required && !csState[s.key]);
+          csSubmit.disabled = missing;
+          csSubmit.textContent = typeof c.submit === "function" ? c.submit(csState) : c.submit;
+        }
+      }
+      function openComposer(name, ctx) {
+        if (!csSheet) return;
+        if (typeof closeDrawer === "function") closeDrawer();
+        renderComposer(name, ctx);
+        csSheet.classList.add("open");
+        csBackdrop?.classList.add("open");
+      }
+      function closeComposer() {
+        csSheet?.classList.remove("open");
+        csBackdrop?.classList.remove("open");
+      }
+      csSubmit?.addEventListener("click", () => {
+        const c = COMPOSERS[csCurrent];
+        if (!c) return;
+        c.onSubmit(csState, csState._ctx || {});
+        closeComposer();
+      });
+      document.getElementById("cs-close")?.addEventListener("click", closeComposer);
+      csBackdrop?.addEventListener("click", closeComposer);
+
+      // Hook the existing [data-add-task] buttons to the composer.
+      // (Replaces the prior toast-only handler higher up.)
+      document.addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-add-task]");
+        if (!btn) return;
+        // Stop the simpler [data-add-task] toast from also firing.
+        e.stopImmediatePropagation();
+        const row = btn.closest(".wb-row");
+        const assignee = row?.querySelector(".wb-row-name .n")?.textContent.trim() || "Jess";
+        openComposer("task", { assignee });
+      }, true);
+
+      // Wire the Client home CTAs to the lesson composer.
+      document.addEventListener("click", (e) => {
+        const cta = e.target.closest(".client-cta");
+        if (!cta) return;
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        openComposer("lesson", {});
+      }, true);
+
+      // Wire the Calendar + add button to the event composer.
+      document.getElementById("cal-add")?.addEventListener("click", (e) => {
+        e.stopImmediatePropagation();
+        openComposer("event", {});
+      }, true);
 
       // ── Partner QR sheet · external access without account ──
       // Tap a [data-show-qr] button on a partner row to open the QR
