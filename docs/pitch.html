@@ -4817,7 +4817,7 @@
                 <div class="n">Farrier slot · this Friday</div>
                 <div class="by">8 to 11 am on-site · pick your time</div>
               </div>
-              <button class="btn dark" data-stub="Farrier slot" data-stub-sub="Pick a 30-min window between 8 and 11 am on Friday." data-stub-ic="🐴">Book</button>
+              <button class="btn dark">Book</button>
             </div>
 
             <!-- Latest · last 7 days · filtered (no @team posts for clients) -->
@@ -7225,7 +7225,6 @@
       });
 
       // ── Groom task interactions ────────────────────────────
-      const dopamineNum = document.getElementById("dopamine-num");
       document.querySelectorAll("[data-task]").forEach(row => {
         row.addEventListener("click", () => row.classList.toggle("done"));
       });
@@ -7255,7 +7254,6 @@
         show("camera");
       });
       document.getElementById("pp-close")?.addEventListener("click", dismissPhotoPrompt);
-      document.getElementById("snap-btn")?.addEventListener("click", () => show("camera"));
 
       // ── Whiteboard v2 · person sheet ─────────────────────
       // Tap on a person's head (avatar / name) → opens a bottom sheet
@@ -7690,7 +7688,6 @@
           setTimeout(() => {
             show("home");
             showToast("Photo sent to Sofia", "Bella's owner just got a push notification.", "✨");
-            if (dopamineNum) dopamineNum.textContent = String(parseInt(dopamineNum.textContent || "0", 10) + 1);
           }, 240);
         });
       });
