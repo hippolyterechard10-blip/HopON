@@ -7986,6 +7986,197 @@
               "📎");
           },
         },
+
+        horse: {
+          title: "Add a horse",
+          submit: (s) => s.name ? `Add ${s.name}` : "Add horse",
+          sections: [
+            { key: "name", label: "Name", required: true, kind: "input",
+              placeholder: "e.g. Bella" },
+            { key: "breed", label: "Breed", required: true, options: [
+              { v: "KWPN" }, { v: "Oldenburg" }, { v: "Hanoverian" },
+              { v: "Selle Français" }, { v: "Warmblood" }, { v: "Connemara" },
+              { v: "Quarter Horse" }, { v: "Other" },
+            ]},
+            { key: "age", label: "Age (years)", required: true, kind: "input",
+              type: "number", placeholder: "e.g. 9" },
+            { key: "stall", label: "Stall #", kind: "input",
+              placeholder: "e.g. 12" },
+            { key: "discipline", label: "Main discipline", required: true, options: [
+              { v: "Show jumping",  ic: "🏇" },
+              { v: "Dressage",      ic: "🎀" },
+              { v: "Eventing",      ic: "🏆" },
+              { v: "Hack / leisure",ic: "🌳" },
+              { v: "Lesson horse",  ic: "📚" },
+              { v: "Breeding",      ic: "🐎" },
+            ]},
+            { key: "owner", label: "Primary owner", required: true, options: [
+              { v: "Sofia Carter",  ic: "👤" },
+              { v: "Claire Martin", ic: "👤" },
+              { v: "Marc Petit",    ic: "👤" },
+              { v: "Paul Durand",   ic: "👤" },
+              { v: "Barn-owned",    ic: "🏠" },
+              { v: "Add new client",ic: "+" },
+            ]},
+            { key: "note", label: "Note (optional)", kind: "text",
+              placeholder: "e.g. 'no alfalfa · soak hay 20 min'…" },
+          ],
+          onSubmit: (state) => {
+            showToast(`${state.name} added`,
+              `${state.breed} · ${state.age} yrs · ${state.discipline} · owner: ${state.owner}.`,
+              "🐴");
+          },
+        },
+
+        client: {
+          title: "Add a client",
+          submit: (s) => s.name ? `Add ${s.name.split(" ")[0]}` : "Add client",
+          sections: [
+            { key: "type", label: "Type", required: true, options: [
+              { v: "Owner",       ic: "👤" },
+              { v: "Boarder",     ic: "🏠" },
+              { v: "Lesson only", ic: "📚" },
+              { v: "Parent of",   ic: "👨‍👧" },
+              { v: "Pro rider",   ic: "🏆" },
+            ]},
+            { key: "name", label: "Full name", required: true, kind: "input",
+              placeholder: "First Last" },
+            { key: "contact", label: "Phone or email", required: true, kind: "input",
+              placeholder: "(561) 555-… or them@email.com" },
+            { key: "horse", label: "Linked horse (optional)",
+              options: HORSES.map(h => ({ v: h, ic: "🐴" })).concat([{ v: "No horse yet", ic: "·" }]) },
+            { key: "group", label: "Add to group (optional)", options: [
+              { v: "Competition" }, { v: "Beginners" }, { v: "Boarders" },
+              { v: "Pony club" }, { v: "None" },
+            ]},
+            { key: "note", label: "Note (optional)", kind: "text",
+              placeholder: "e.g. 'pays month-to-month · prefers Sat lessons'…" },
+          ],
+          onSubmit: (state) => {
+            showToast(`${state.name} added`,
+              `${state.type}${state.horse && state.horse !== "No horse yet" ? " · linked to " + state.horse : ""} · invite SMS sent.`,
+              "👤");
+          },
+        },
+
+        poll: {
+          title: "Start a poll",
+          submit: () => "Send poll",
+          sections: [
+            { key: "question", label: "Question", required: true, kind: "input",
+              placeholder: "e.g. 'Trail ride this Saturday?'" },
+            { key: "options", label: "Options", required: true, kind: "text",
+              placeholder: "one per line · e.g. 'Yes\\nNo\\nMaybe'" },
+            { key: "audience", label: "Ask who", required: true, options: [
+              { v: "@all" }, { v: "@owners" }, { v: "@boarders" },
+              { v: "@team" }, { v: "@competition" },
+            ]},
+            { key: "duration", label: "Open for", required: true, options: [
+              { v: "24 hours" }, { v: "3 days" }, { v: "1 week" }, { v: "Until I close" },
+            ]},
+          ],
+          onSubmit: (state) => {
+            showToast("Poll launched",
+              `${state.audience} · open for ${state.duration?.toLowerCase()} · landed in feed.`,
+              "📊");
+          },
+        },
+
+        note: {
+          title: "Quick note",
+          submit: () => "Save note",
+          sections: [
+            { key: "horse", label: "About horse", required: true,
+              options: HORSES.map(h => ({ v: h, ic: "🐴" })) },
+            { key: "kind", label: "Category", required: true, options: [
+              { v: "Behavior",      ic: "🧠" },
+              { v: "Health watch",  ic: "🩺" },
+              { v: "Performance",   ic: "🏇" },
+              { v: "Logistics",     ic: "📋" },
+              { v: "Vet/farrier note", ic: "🔨" },
+              { v: "Other",         ic: "·" },
+            ]},
+            { key: "text", label: "Note", required: true, kind: "text",
+              placeholder: "Type your observation…" },
+            { key: "visibility", label: "Visible to", required: true, options: [
+              { v: "Private (just me)", ic: "🔒" },
+              { v: "Team",              ic: "🧑" },
+              { v: "Owner",             ic: "👤" },
+              { v: "Everyone",          ic: "🌐" },
+            ]},
+          ],
+          onSubmit: (state) => {
+            showToast(`Note on ${state.horse}`,
+              `${state.kind} · ${state.visibility.toLowerCase()} · saved on horse timeline.`,
+              "📝");
+          },
+        },
+
+        health: {
+          title: "Log health entry",
+          submit: () => "Save + update reminders",
+          sections: [
+            { key: "horse", label: "For horse", required: true,
+              options: HORSES.map(h => ({ v: h, ic: "🐴" })) },
+            { key: "type", label: "What was done", required: true, options: [
+              { v: "Vaccine",        ic: "💉" },
+              { v: "Wormer",         ic: "💊" },
+              { v: "Farrier",        ic: "🔨" },
+              { v: "Dental",         ic: "🦷" },
+              { v: "Physio",         ic: "🦴" },
+              { v: "Vet exam",       ic: "🩺" },
+              { v: "Lameness flag",  ic: "⚠️" },
+              { v: "Wound",          ic: "🩹" },
+              { v: "Other",          ic: "·" },
+            ]},
+            { key: "when", label: "When", required: true, options: [
+              { v: "Today" }, { v: "Yesterday" }, { v: "Last week" }, { v: "Custom date" },
+            ]},
+            { key: "by", label: "Practitioner (optional)", kind: "input",
+              placeholder: "e.g. Dr. Torres" },
+            { key: "note", label: "Note (optional)", kind: "text",
+              placeholder: "e.g. 'next due in 6 months · scheduled'…" },
+          ],
+          onSubmit: (state) => {
+            showToast(`Health logged · ${state.horse}`,
+              `${state.type} · ${state.when?.toLowerCase()} · reminders refreshed.`,
+              "🩺");
+          },
+        },
+
+        service: {
+          title: "Request a service",
+          submit: () => "Send to barn manager",
+          sections: [
+            { key: "horse", label: "For horse", required: true,
+              options: HORSES.map(h => ({ v: h, ic: "🐴" })) },
+            { key: "type", label: "Service", required: true, options: [
+              { v: "Vet visit",      ic: "🩺" },
+              { v: "Farrier",        ic: "🔨" },
+              { v: "Physio",         ic: "🦴" },
+              { v: "Dental",         ic: "🦷" },
+              { v: "Transport",      ic: "🚚" },
+              { v: "Saddle fit",     ic: "🪛" },
+              { v: "Photo session",  ic: "📷" },
+              { v: "Other",          ic: "·" },
+            ]},
+            { key: "urgency", label: "Urgency", required: true, options: [
+              { v: "Routine",  ic: "·" },
+              { v: "This week",ic: "📅" },
+              { v: "ASAP",     ic: "⚠️" },
+            ]},
+            { key: "when", label: "Preferred time (optional)", options: [
+              { v: "Morning" }, { v: "Afternoon" }, { v: "Anytime" }, { v: "Specific slot" },
+            ]},
+            { key: "note", label: "Note (optional)", kind: "text",
+              placeholder: "e.g. 'right hind a bit short' · 'show on Sunday so before Sat'…" },
+          ],
+          onSubmit: (state) => {
+            showToast("Service requested",
+              `${state.type} · ${state.horse} · ${state.urgency} · awaiting approval.`,
+              "✨");
+          },
+        },
       };
 
       function renderComposer(name, ctx) {
@@ -8408,15 +8599,15 @@
         event:   { emoji: "📅", label: "Event",   run: () => openComposer("event", {}) },
         todo:    { emoji: "✅", label: "Task",    run: () => openComposer("task", {}) },
         post:    { emoji: "💬", label: "Post",    run: () => show("broadcast") },
-        service: { emoji: "✨", label: "Service", run: () => showToast("Service requested", "Awaiting admin approval.", "✨") },
-        horse:   { emoji: "🐴", label: "Horse",   run: () => showToast("Add horse", "Horse composer opens.", "🐴") },
-        client:  { emoji: "👤", label: "Client",  run: () => showToast("Add client", "QR · link · CSV import.", "👤") },
+        service: { emoji: "✨", label: "Service", run: () => openComposer("service", {}) },
+        horse:   { emoji: "🐴", label: "Horse",   run: () => openComposer("horse", {}) },
+        client:  { emoji: "👤", label: "Client",  run: () => openComposer("client", {}) },
         team:    { emoji: "🧑", label: "Team",    run: () => openComposer("invite", {}) },
         partner: { emoji: "🤝", label: "Partner", run: () => openComposer("partner", {}) },
         photo:   { emoji: "📷", label: "Photo",   run: () => show("camera") },
-        poll:    { emoji: "📊", label: "Poll",    run: () => showToast("Poll started", "Pick groups to ask.", "📊") },
-        note:    { emoji: "📝", label: "Note",    run: () => showToast("Note added", "Saved on horse timeline.", "📝") },
-        health:  { emoji: "🩺", label: "Health",  run: () => showToast("Health log", "Treatment composer opens.", "🩺") },
+        poll:    { emoji: "📊", label: "Poll",    run: () => openComposer("poll", {}) },
+        note:    { emoji: "📝", label: "Note",    run: () => openComposer("note", {}) },
+        health:  { emoji: "🩺", label: "Health",  run: () => openComposer("health", {}) },
         invoice: { emoji: "🧾", label: "Invoice", run: () => openComposer("cost", {}) },
         payment: { emoji: "💰", label: "Payment", run: () => openComposer("paid", {}) },
       };
