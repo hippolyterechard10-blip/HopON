@@ -7543,8 +7543,12 @@
       // ── Partner QR sheet · external access without account ──
       // Tap a [data-show-qr] button on a partner row to open the QR
       // sheet pre-filled with that partner's name, role, and what
-      // they'd see on scan.
+      // they'd see on scan. Note: this section runs BEFORE the
+      // notifSheet/notifBackdrop consts are declared further down,
+      // so we grab the backdrop directly via getElementById each
+      // time rather than relying on a hoisted reference.
       const qrSheet = document.getElementById("qr-sheet");
+      const qrBackdrop = document.getElementById("notif-backdrop");
       function openQrSheet(btn) {
         if (!qrSheet) return;
         const name = btn.dataset.partnerName || "Partner";
@@ -7556,11 +7560,11 @@
         document.getElementById("qr-partner-context").textContent = context;
         if (typeof closeDrawer === "function") closeDrawer();
         qrSheet.classList.add("open");
-        notifBackdrop?.classList.add("open");
+        qrBackdrop?.classList.add("open");
       }
       function closeQrSheet() {
         qrSheet?.classList.remove("open");
-        notifBackdrop?.classList.remove("open");
+        qrBackdrop?.classList.remove("open");
       }
       document.querySelectorAll("[data-show-qr]").forEach(btn => {
         btn.addEventListener("click", (e) => {
@@ -7569,8 +7573,8 @@
         });
       });
       document.getElementById("qr-close")?.addEventListener("click", closeQrSheet);
-      // Backdrop click closes whichever sheet is open (notif / person / qr).
-      notifBackdrop?.addEventListener("click", closeQrSheet);
+      // Backdrop click closes the QR sheet (other sheets bind their own).
+      qrBackdrop?.addEventListener("click", closeQrSheet);
 
       // ── Stable · live search across the active pane ──────
       // Filters .stable-row elements in the currently-visible pane
